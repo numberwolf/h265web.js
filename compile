@@ -7,3 +7,4 @@ COREPATH="${BASHPATH}/src/core"
 gulp init
 cp ${COREPATH}/missile.wasm $OUTPATH
 
+echo "FINISHED!"
