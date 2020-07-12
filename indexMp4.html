@@ -170,43 +170,34 @@
         player.setDurationMs(durationMs);
 
         // player load success
-        timeLoop = window.setInterval(function(){
-        // while (true) {
-            // var popData     = mp4Obj.popBuffer(1)["data"];
-            // var popDataAudio= mp4Obj.popBuffer(2)["data"];
-            var popData     = mp4Obj.popBuffer(1)
+        timeLoop = window.setInterval(function() {
+            var popData     = mp4Obj.popBuffer(1);
+            var popDataAudio= mp4Obj.popBuffer(2);
+            // {pts: 95.29469387755103, data: Uint8Array(1117)}
+            // console.log("after popBuffer:");
+            // console.log(popDataAudio)
+            
+            if (popData != null) {
+                player.appendHevcFrame(popData);
+                // console.log("to append video");
+                // console.log(popData);
 
-            // if (popData != null && popData["pts"] > 100) {
-                var popDataAudio= mp4Obj.popBuffer(2);
-                // {pts: 95.29469387755103, data: Uint8Array(1117)}
-                // console.log("after popBuffer:");
-                // console.log(popDataAudio)
+            } else {
+                // break;
+            }
+
+            if (popDataAudio && popDataAudio != null) { //  && popDataAudio.length > 4
+                player.appendAACFrame(popDataAudio);
                 
-                if (popData != null) {
-                    player.appendHevcFrame(popData);
-                    // console.log("to append video");
-                    // console.log(popData);
+            }
 
-                } else {
-                    // break;
-                }
+            // console.log("=================================");
+            if (popDataAudio == null && popData == null) {
+                // break;
+                console.log("to break loop");
+                window.clearInterval(timeLoop);
+            }
 
-                if (popDataAudio && popDataAudio != null) { //  && popDataAudio.length > 4
-                    // console.log("to append audio");
-                    // console.log(popDataAudio);
-                    player.appendAACFrame(popDataAudio);
-                    
-                }
-
-                // console.log("=================================");
-                if (popDataAudio == null && popData == null) {
-                    // break;
-                    console.log("to break loop");
-                    window.clearInterval(timeLoop);
-                }
-            // } // end seek 100
-
-        // }
         }, 1);
 
         setTimeout(function() {
@@ -240,55 +231,6 @@
         console.log("get fps" + fps + ",sampleRate : " + sampleRate);
         console.log(size);
 
-        // function playerCreateCallback() {
-        //     console.log("createPlayer Done!");
-        //     player.setDurationMs(durationMs);
-
-        //     // player load success
-        //     timeLoop = window.setInterval(function(){
-        //     // while (true) {
-        //         // var popData     = mp4Obj.popBuffer(1)["data"];
-        //         // var popDataAudio= mp4Obj.popBuffer(2)["data"];
-        //         var popData     = mp4Obj.popBuffer(1)
-
-        //         // if (popData != null && popData["pts"] > 100) {
-        //             var popDataAudio= mp4Obj.popBuffer(2);
-        //             // {pts: 95.29469387755103, data: Uint8Array(1117)}
-        //             // console.log("after popBuffer:");
-        //             // console.log(popDataAudio)
-                    
-        //             if (popData != null) {
-        //                 player.appendHevcFrame(popData);
-        //                 // console.log("to append video");
-        //                 // console.log(popData);
-
-        //             } else {
-        //                 // break;
-        //             }
-
-        //             if (popDataAudio && popDataAudio != null) { //  && popDataAudio.length > 4
-        //                 // console.log("to append audio");
-        //                 // console.log(popDataAudio);
-        //                 player.appendAACFrame(popDataAudio);
-                        
-        //             }
-
-        //             // console.log("=================================");
-        //             if (popDataAudio == null && popData == null) {
-        //                 // break;
-        //                 console.log("to break loop");
-        //                 window.clearInterval(timeLoop);
-        //             }
-        //         // } // end seek 100
-
-        //     // }
-        //     }, 1);
-
-        //     document.getElementById("startPlay").disabled = false;
-        // }
-
-        // width       : size["width"] + "px",
-        // height      : size["height"] + "px",
         if (playerStatus) {
             player.settingPlayer({
                 fps             : fps,
@@ -309,20 +251,6 @@
     }
 
     fileReader.onload = fileReaderOnLoad; // init player
-        
-
-// try {
-// window.setInterval(function(){
-//     var popData = mp4Obj.popBuffer(1);
-//     if (popData != null) {
-//         player.appendHevcFrame(streamBytes);
-//     }
-//     console.log(popData);
-// }, 1000/25); // 1000/24 fps=24
-// } catch (e) {
-//     alert('Crash[brower]! Please refresh your page');
-//     throw e;
-// }
 
     function initMedia() {
         console.log("init media");

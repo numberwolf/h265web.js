@@ -1,10 +1,190 @@
 --------------------------------------------------
-### VideoMissilePlayer
-一个无插件的`hevc`播放器
-```bash
-# build
-$ bash compile
+# h265web.js
+
+### 核心JS
+`./src`
+
+### 编译
+
+##### 编译步骤
+
+```shell
+bash compile
 ```
+
+##### 编译产出
+
+`./dist`
+
+##### 引入
+
+```javascript
+<script src="dist/missile.js"></script>
+```
+
+### 示例Demo
+
+* ./index265.html 单独播放hevc文件
+
+* ./index265aac.html 播放Hevc+AAC
+
+* ./index265aacWS.html 播放hevc+AAC 直播Stream (websocket)
+
+* ./indexMp4.html 播放hevc编码的mp4文件
+
+### 使用说明
+
+##### 针对 hevc aac 文件
+
+1）新建播放器
+
+```javascript
+function callback() {
+    // TODO
+}
+
+player = InitPlayerImp({
+    width   : "600px",
+    height  : "600px",
+    fps     : 25,
+    fixed   : false
+});
+player.initPlayer(callback);
+```
+
+2) 开始播放
+
+```javascript
+function stopPlay() {
+    player.stop();
+}
+
+function continuePlay() {
+    player.continueStart();
+}
+
+player.reStartPlay(play_video_url, fps);
+player.reStartPlayAudio(play_audio_url);
+```
+
+##### 针对hevc aac 帧/流
+
+1）初始化播放器
+
+```javascript
+player = Init(function() {
+    player.createPlayer({
+        width   : "600px",
+        height  : "600px",
+        fps     : 25,
+        fixed   : false
+    }, callback); // init player
+});
+````
+
+2）通过WS或者其他协议获取到hevc或者aac流数据
+
+```javascript
+var streamBytes = formatRet["streamData"];
+
+if (tag_type == SLICE_TAG_VIDEO) {
+    player.appendHevcFrame(streamBytes); // Uint8Array
+} else if (tag_type == SLICE_TAG_AUDIO) {
+    player.appendAACFrame(streamBytes);
+}
+````
+
+3）播放控制
+
+```javascript
+player.play(); // 播放
+player.pause(); // 暂停 
+player.continues(); // 继续
+player.stop(); // 结束播放
+```
+
+##### 播放H.265编码的 mp4
+
+1）初始化Mp4 解析器
+
+```javascript
+var mp4Obj = InitMp4Parser();
+
+var streamBuf = new Uint8Array(fileReader.result).buffer; // new FileReader().result
+console.log(streamBuf);
+
+mp4Obj.demux(streamBuf);
+
+// 属性
+var durationMs  = mp4Obj.getDurationMs();
+var fps         = mp4Obj.getFPS();
+var sampleRate  = mp4Obj.getSampleRate();
+var size        = mp4Obj.getSize();
+```
+
+2）播放器设置
+
+```javascript
+
+player = Init(function() {
+    playerStatus = player.createPlayer({
+        width           : "600px",
+        height          : "600px",
+        appendHevcType  : APPEND_TYPE_FRAME
+    }, null);
+});
+
+// 设置播放器属性 帧率 采样率
+player.settingPlayer({
+    fps             : fps,
+    sampleRate      : sampleRate
+});
+// 设置时长
+player.setDurationMs(durationMs);
+```
+
+3）逐帧播放
+
+```javascript
+var popData     = mp4Obj.popBuffer(1); // 视频
+var popDataAudio= mp4Obj.popBuffer(2); // 音频
+
+if (popData != null) {
+    player.appendHevcFrame(popData);
+}
+if (popDataAudio && popDataAudio != null) {
+    player.appendAACFrame(popDataAudio);
+}
+```
+
+4）播放控制
+
+```javascript
+// 暂停
+player.stop();
+
+// 播放
+player.play(function() {
+    /*
+     * 回调函数，控制进度条
+     */
+    // play progress
+    var tmp_video_pts_val = VIDEO_PTS_VAL < 0 ? 0 : VIDEO_PTS_VAL;
+    console.log("tmp_video_pts_val: " + tmp_video_pts_val);
+
+    document.getElementById("play_progress").value = tmp_video_pts_val;
+    var pts_txt_hour = Math.floor(tmp_video_pts_val / 3600);
+    var pts_txt_minu = Math.floor((tmp_video_pts_val % 3600) / 60);
+    var pts_txt_seco = Math.floor((tmp_video_pts_val % 60));
+    var pts_txt = pts_txt_hour + ":" + pts_txt_minu + ":" + pts_txt_seco;
+
+    console.log("pts_txt:" + pts_txt);
+    document.getElementById("pts_label").innerHTML = pts_txt + "/" + g_dur_txt;
+});
+```
+
+
+### 目录结构
 
 ```struct
 |-- dist
@@ -21,19 +201,10 @@ $ bash compile
 |-- README.MD
 ```
 
-### Demo
-目录下`demo.html`
 
-#### 示例图
-<img src="../readme/demo.png" width="300px" />
+### 示例图
+<img src="./demo.png" width="300px" />
 
-#### JS Import
-```js
-// 引入JS
-// 记住 wasm 和 js统一目录
-<script src="dist/missile.js"></script>
-```
-具体实用可以参考 `demo.html`
 
 
 ### 有问题反馈
