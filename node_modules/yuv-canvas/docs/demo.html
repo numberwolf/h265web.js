@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>yuv-canvas demo</title>
+</head>
+<body>
+  <h1><a href="https://github.com/brion/yuv-canvas">yuv-canvas</a> demo</h1>
+  
+  <p>This canvas is drawn from the three planar images below:</p>
+
+  <canvas></canvas>
+
+  <p><button id=benchmark>Benchmark</button> <span id=fps></span></p>
+
+  <p>Try moving the sliders to apply a multiplier to each plane separately.</p>
+
+  <table>
+    <tr>
+      <th>Y (luma)</th>
+      <th>U (chroma)</th>
+      <th>V (chroma)</th>
+    </tr>
+    <tr>
+      <th><input id=yfader type=range min=0 max=2 value=1 step=0.1></td>
+      <th><input id=ufader type=range min=0 max=2 value=1 step=0.1></td>
+      <th><input id=vfader type=range min=0 max=2 value=1 step=0.1></td>
+    </tr>
+    <tr>
+      <td><img id=yplane src=cat-y.jpg width=320></td>
+      <td><img id=uplane src=cat-u.jpg width=160></td>
+      <td><img id=vplane src=cat-v.jpg width=160></td>
+    </tr>
+  </table>
+
+  <p>See <a href="https://github.com/brion/yuv-canvas/blob/master/demo/demo.js#L1">source code of this demo</a>.</p>
+
+  <script src="demo-bundled.js"></script>
+</body>
+</html>

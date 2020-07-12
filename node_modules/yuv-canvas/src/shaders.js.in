@@ -1,0 +1,6 @@
+module.exports = {
+  vertex: YCBCR_VERTEX_SHADER,
+  fragment: YCBCR_FRAGMENT_SHADER,
+  vertexStripe: YCBCR_STRIPE_VERTEX_SHADER,
+  fragmentStripe: YCBCR_STRIPE_FRAGMENT_SHADER
+};

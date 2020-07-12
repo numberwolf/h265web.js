@@ -1,0 +1,17 @@
+.DS_Store
+*.swp~
+#
+# Media
+#
+*.mp4
+*.hevc
+*.265
+*.h265
+*.aac
+*.pcm
+*.mp3
+#
+# py
+#
+test.py
+test1.py

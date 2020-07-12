@@ -1,0 +1,96 @@
+<!DOCType html>
+<html>
+<!--
+    hevc vod
+-->
+<head>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+
+    <meta charset="utf-8">
+
+    <title>VideoMissilePlayer Demo</title>
+    <!--
+        0.引入JS
+          记住 wasm 和 js统一目录
+    -->
+    <script src="dist/missile.js"></script>
+</head>
+<body style="background-color: #666666">
+
+
+<center>
+    <h3><font color="white"><i>Video Missile Player Demo Show</i></font></h3>
+
+    <!--
+        1.在这里初始化一个div的box
+    -->
+    <div id="glplayer">
+    </div>
+</center>
+
+<center>
+    <div style="background-color: #aaaaaa;margin:10px;width:600px;height:200px;">
+        <div id="statusDiv" style="color:gray"></div>
+
+        Input hevc Address (Protocol:Http):
+        <br><br>
+
+        <input style="width:90%;height:30px;text-align: center;background-color: #e9e9e9" type="text" id="play_url" value="/Movies/veilside1.hevc" disabled="disabled"  >
+
+        <br><br>
+
+        <button id="startPlay" onclick="startPlay(1)">重播/开始 [>] </button>
+        <!-- <button id="continuePlay" onclick="startPlay(0)">继续 Continue</button> -->
+        <!-- <button onclick="stopPlay()">暂停 Stop</button> -->
+        <button onclick="stopPlay()">结束 [||] </button>
+    </div>
+
+</center>
+
+<script>
+player = null;
+
+function startPlay(is_restart=1) {
+    if (is_restart == 1) {
+        var play_url        = document.getElementById("play_url").value;
+        player.reStartPlay(play_url, 25);
+    } else {
+        player.continueStart();
+    }
+}
+
+function stopPlay() {
+    player.stop();
+}
+
+function initSuc() {
+    document.getElementById("statusDiv").innerHTML      = "";
+    document.getElementById("startPlay").disabled       = false;
+    // document.getElementById("continuePlay").disabled    = false;
+}
+
+window.onload = function() {
+    document.getElementById("statusDiv").innerHTML      = "Loading...";
+    document.getElementById("startPlay").disabled       = true;
+    // document.getElementById("continuePlay").disabled    = true;
+
+    /**
+        2.在这里初始化播放器对象
+        @param width    播放器宽度
+        @param height   播放器高度
+        @param fps      帧率
+        @param fixed    true: 严格按照长宽充满容器 
+                        false:按照比例
+     */
+    player = InitPlayerImp({
+        width   : "600px",
+        height  : "600px",
+        fps     : 25,
+        fixed   : false
+    });
+    player.initPlayer(initSuc);
+};
+
+</script>
+</body>
+</html>

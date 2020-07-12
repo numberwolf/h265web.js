@@ -1,0 +1,9 @@
+#!/bin/bash
+set -x
+BASHPATH=`pwd`
+OUTPATH="${BASHPATH}/dist"
+COREPATH="${BASHPATH}/src/core"
+
+gulp init
+cp ${COREPATH}/missile.wasm $OUTPATH
+
