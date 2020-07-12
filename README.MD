@@ -1,6 +1,11 @@
 --------------------------------------------------
 # h265web.js
 
+* 在线预览地址 http://hevc.realrace.cn/
+
+* 示例图 
+> <img src="./demo.png" width="600px" />
+
 ### 核心JS
 `./src`
 
@@ -200,10 +205,6 @@ player.play(function() {
 |-- LICENSE
 |-- README.MD
 ```
-
-
-### 示例图
-<img src="./demo.png" width="300px" />
 
 
 
