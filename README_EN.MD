@@ -3,57 +3,51 @@
 
 <img src="logo@300x300.png" width="300px" />
 
-> logo设计与制作(著作权归属) : porschegt23@foxmail.com (Q:531365872)
-
-* Lang: 
-    * <a href="README.MD" >Chinese</a>
-    * <a href="README_EN.MD" >English</a> 
-
-> Technology knows no borders
+> logo designer & copyright : porschegt23@foxmail.com (Q:531365872)
 
 ----------------------------------------
 
-* 在线预览地址 http://hevc.realrace.cn/
+* Preview (online) http://hevc.realrace.cn/
 
 * 示例图 
 > <img src="./demo.png" width="600px" />
 
-### 核心JS
+### Core JS
 `./src`
 
-### 编译
+### Compile & Build
 
-##### 编译步骤
+##### Compile Script
 
 ```shell
 bash compile
 ```
 
-##### 编译产出
+##### Compile Output
 
 `./dist`
 
-##### 引入
+##### Use and include
 
 ```javascript
 <script src="dist/missile.js"></script>
 ```
 
-### 示例Demo
+### Example
 
-* ./index265.html 单独播放hevc文件
+* `./index265.html` Play h265 file
 
-* ./index265aac.html 播放Hevc+AAC
+* `./index265aac.html` Play Hevc+AAC file
 
-* ./index265aacWS.html 播放hevc+AAC 直播Stream (websocket)
+* `./index265aacWS.html` Play (Live) hevc+AAC Stream by websocket
 
-* ./indexMp4.html 播放hevc编码的mp4文件
+* `./indexMp4.html` Play mp4 box file (h.265 codec)
 
-### 使用说明
+### How to use
 
-##### 针对 hevc aac 文件
+##### Play hevc aac files
 
-1）新建播放器
+1）Init player
 
 ```javascript
 function callback() {
@@ -69,7 +63,7 @@ player = InitPlayerImp({
 player.initPlayer(callback);
 ```
 
-2) 开始播放
+2) Play start
 
 ```javascript
 function stopPlay() {
@@ -84,7 +78,7 @@ player.reStartPlay(play_video_url, fps);
 player.reStartPlayAudio(play_audio_url);
 ```
 
-##### 针对hevc aac 帧/流
+##### Play hevc aac Stream (Frame)
 
 1）初始化播放器
 
@@ -99,7 +93,7 @@ player = Init(function() {
 });
 ````
 
-2）通过WS或者其他协议获取到hevc或者aac流数据
+2）Use websocket or others protocal to recv hevc or aac frame , and play
 
 ```javascript
 var streamBytes = formatRet["streamData"];
@@ -111,18 +105,18 @@ if (tag_type == SLICE_TAG_VIDEO) {
 }
 ````
 
-3）播放控制
+3）Player Control
 
 ```javascript
-player.play(); // 播放
-player.pause(); // 暂停 
-player.continues(); // 继续
-player.stop(); // 结束播放
+player.play(); // Play
+player.pause(); // Pause
+player.continues(); // Continue
+player.stop(); // Finish Play
 ```
 
-##### 播放H.265编码的 mp4
+##### Play mp4 box with h.265 Codec
 
-1）初始化Mp4 解析器
+1）Init Mp4 Parser
 
 ```javascript
 var mp4Obj = InitMp4Parser();
@@ -132,14 +126,14 @@ console.log(streamBuf);
 
 mp4Obj.demux(streamBuf);
 
-// 属性
+// Attributes for media
 var durationMs  = mp4Obj.getDurationMs();
 var fps         = mp4Obj.getFPS();
 var sampleRate  = mp4Obj.getSampleRate();
 var size        = mp4Obj.getSize();
 ```
 
-2）播放器设置
+2）Player setting
 
 ```javascript
 
@@ -151,20 +145,20 @@ player = Init(function() {
     }, null);
 });
 
-// 设置播放器属性 帧率 采样率
+// Set framerate/samplerate/duration(option)
 player.settingPlayer({
     fps             : fps,
     sampleRate      : sampleRate
 });
-// 设置时长
+// Set Duration
 player.setDurationMs(durationMs);
 ```
 
-3）逐帧播放
+3）Play with frame by frame
 
 ```javascript
-var popData     = mp4Obj.popBuffer(1); // 视频
-var popDataAudio= mp4Obj.popBuffer(2); // 音频
+var popData     = mp4Obj.popBuffer(1); // Video
+var popDataAudio= mp4Obj.popBuffer(2); // Audio
 
 if (popData != null) {
     player.appendHevcFrame(popData);
@@ -174,16 +168,16 @@ if (popDataAudio && popDataAudio != null) {
 }
 ```
 
-4）播放控制
+4）Player control
 
 ```javascript
-// 暂停
+// Stop and Finished
 player.stop();
 
-// 播放
+// Play
 player.play(function() {
     /*
-     * 回调函数，控制进度条
+     * Play callback
      */
     // play progress
     var tmp_video_pts_val = VIDEO_PTS_VAL < 0 ? 0 : VIDEO_PTS_VAL;
@@ -201,7 +195,7 @@ player.play(function() {
 ```
 
 
-### 目录结构
+### Project Dir Struct
 
 ```struct
 |-- dist
@@ -220,13 +214,13 @@ player.play(function() {
 
 
 
-### 有问题反馈
-在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
+### Q&A
+If you have any problems, you can send mail to me, or use QQ to talk with me. ~^_^~
 
-* 邮件(porschegt23#foxmail.com, 把#换成@)
+* Email(porschegt23@foxmail.com)
 * QQ: 531365872
 
-- 现阶段目前播放器 浏览应用接入层做开源。
+- Wasm made by myself.
 
 ----------------------------
 
