@@ -9,7 +9,7 @@
 
 * Preview (online) http://hevc.realrace.cn/
 
-* 示例图 
+* Capture
 > <img src="./demo.png" width="600px" />
 
 ### Core JS
