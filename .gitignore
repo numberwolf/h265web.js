@@ -10,8 +10,7 @@
 *.aac
 *.pcm
 *.mp3
-#
-# py
-#
-test.py
-test1.py
+#Node stuff
+package-lock.json
+node_modules
+bundle_player.js

@@ -1,10 +1,6 @@
-var MP4Box = require('mp4box'); // Or whatever import method you prefer.
-
-// mp4boxfile = MP4Box.createFile();
-// movieInfo = null;
-
-const STARTCODE     = new Uint8Array([0, 0, 0, 1]);
-const SAMPLEINDEX   = {
+const MP4Box = require('mp4box')
+const STARTCODE = new Uint8Array([0, 0, 0, 1])
+const SAMPLEINDEX = {
     96000 : 0x00,
     88200 : 0x01,
     64000 : 0x02,
@@ -21,11 +17,6 @@ const SAMPLEINDEX   = {
     'Reserved' : 0x0d, // == 0x0e
     'frequency is written explictly' : 0x0f
 }
-
-global.InitMp4Parser = function() {
-    var liveImpObject = new Mp4Parser();
-    return liveImpObject;
-};
 
 function Mp4Parser() {
     // Class Object
@@ -49,7 +40,7 @@ Mp4Parser.prototype.setStartCode = function(dataStream, replace=false) {
     }
 
     return returnStream;
-};
+}
 
 /** 
   * 添加ADTS头 
@@ -121,8 +112,7 @@ Mp4Parser.prototype.setAACAdts = function(dataStream) {
     returnStream.set(dataStream, adtsHead.length);
 
     return returnStream;
-};
-
+}
 
 Mp4Parser.prototype.demux = function(dataStream) {
     var _this = this;
@@ -314,27 +304,27 @@ Mp4Parser.prototype.demux = function(dataStream) {
 
     this.mp4boxfile.appendBuffer(dataStream);
     this.mp4boxfile.flush();
-};
+}
 
 Mp4Parser.prototype.play = function() {
 
-};
+}
 
 Mp4Parser.prototype.getDurationMs = function() {
     return this.durationMs;
-};
+}
 
 Mp4Parser.prototype.getFPS = function() {
     return this.fps;
-};
+}
 
 Mp4Parser.prototype.getSampleRate = function() {
     return this.sampleRate;
-};
+}
 
 Mp4Parser.prototype.getSize = function() {
     return this.size;
-};
+}
 
 /*
  * _this.sampleQueue.shift();
@@ -387,13 +377,13 @@ Mp4Parser.prototype.popBuffer = function(track_id = 1) {
         pts  : firstPTS,
         data : data
     }
-};
+}
 
 Mp4Parser.prototype.addBuffer = function(mp4track) {
     var _this = this;
 	var track_id = mp4track.id;
     _this.mp4boxfile.setExtractionOptions(track_id);
-};
+}
 
 Mp4Parser.prototype.initializeAllSourceBuffers = function() {
     var _this = this;
@@ -406,7 +396,7 @@ Mp4Parser.prototype.initializeAllSourceBuffers = function() {
 		}
 		_this.initializeSourceBuffers();
 	}
-};
+}
 
 Mp4Parser.prototype.onInitAppended = function(e) {
     var _this = this;
@@ -422,7 +412,7 @@ Mp4Parser.prototype.onInitAppended = function(e) {
             _this.mp4boxfile.start();
 		}
 	}
-};
+}
 
 Mp4Parser.prototype.initializeSourceBuffers = function() {
     var _this    = this;
@@ -443,8 +433,6 @@ Mp4Parser.prototype.initializeSourceBuffers = function() {
 	}
 	//initAllButton.disabled = true;	
 	//initButton.disabled = true;
-};
+}
 
-
-
-
+module.exports = Mp4Parser

@@ -3,7 +3,7 @@
  */
 const AudioContext 	= window.AudioContext || window.webkitAudioContext;
 const AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame
-
+const def = require('../consts')
 /**
  * @brief: construct
  */
@@ -20,7 +20,7 @@ AudioImp.prototype.init = function(options={}) {
 		sampleRate = options["sampleRate"];
 	}
 
-	_this.appendType = APPEND_TYPE_STREAM;
+	_this.appendType = def.APPEND_TYPE_STREAM;
 	if ("appendType" in options) {
 		_this.appendType = options["appendType"];
 	}
@@ -244,7 +244,7 @@ AudioImp.prototype.decodeSample = function(sourceIndex = -1, dstIndex = -1) {
 		i++;
 
 		var arrayBuf = null;
-		if (_this.appendType == APPEND_TYPE_STREAM) {
+		if (_this.appendType == def.APPEND_TYPE_STREAM) {
 			arrayBuf = track;
 		} else { // APPEND_TYPE_FRAME
 			arrayBuf = track["data"];
@@ -369,11 +369,4 @@ AudioImp.prototype.cleanQueue = function() {
 // AudioImp.prototype.continuePlay = function() {
 // 	this.seek(0, this.useDuration);
 // };
-
-
-
-
-
-
-
-
+module.exports = AudioImp
