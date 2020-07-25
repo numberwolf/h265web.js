@@ -1,44 +1,19 @@
 {
-  "name": "VideoMissilePlayer",
+  "name": "videomissileplayer",
   "version": "1.0.0",
   "description": "-------------------------------------------------- ### VideoMissilePlayer 一个无插件的`hevc`播放器         - 具体设计可以看我的这篇文章 https://www.jianshu.com/p/130f061eb229 - 现阶段目前播放器 浏览应用接入层做开源，可以直接拿来用。wasm源码目前暂时不做开源。",
-  "main": "gulpfile.js",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "browserify player.js > bundle_player.js && node server.js",
+    "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/numberwolf/VideoMissilePlayer.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/numberwolf/VideoMissilePlayer/issues"
-  },
-  "homepage": "https://github.com/numberwolf/VideoMissilePlayer#readme",
-  "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean": "^0.4.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-print": "^5.0.2",
-    "gulp-sequence": "^1.0.0",
-    "gulp-streamify": "^1.0.2",
-    "gulp-uglify": "^3.0.2",
+  "dependencies": {
+    "browserify": "^16.5.1",
+    "mp4box": "^0.3.20",
+    "pinipig": "^1.6.1",
     "yuv-buffer": "^1.0.0",
     "yuv-canvas": "^1.2.6"
   },
-  "dependencies": {
-    "@babel/preset-env": "^7.7.7",
-    "@babel/preset-react": "^7.7.4",
-    "@babel/runtime": "^7.7.7",
-    "babel-preset-mobx": "^2.0.0"
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
