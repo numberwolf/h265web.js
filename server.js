@@ -15,7 +15,7 @@ const sendWSFile = ctx => {
 }
 
 server.createServer({
-    port: 80,
+    port: 8999,
     routes: [
         {
             url: '/',

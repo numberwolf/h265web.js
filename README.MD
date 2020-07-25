@@ -20,10 +20,19 @@
 
 ### Running 
 
->`npm start` # just want to test and see
+>`npm start` # just want to test and see, open 127.0.0.1:8999
 
 >`npm run dev` # as dev
 
+### Transcoding Your Media File To Hevc Codec
+
+```bash
+ffmpeg -i input.mp4 \
+-vcodec libx265 \
+-acodec aac -preset medium -maxrate 1000k -bufsize 1000k \
+-vtag hev1 \
+-y video.mp4
+```
 
 ### Project Dir Struct
 
