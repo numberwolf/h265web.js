@@ -10,7 +10,7 @@
 * Preview (online) http://hevc.realrace.cn/
 
 * Capture
-> <img src="./res/demo.png" width="600px" />
+> <img src="./res/show.png" width="600px" />
 
 ### Setup
 
