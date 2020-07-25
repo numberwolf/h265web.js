@@ -11,7 +11,7 @@ module.exports = config => {
             height: config.height || def.DEFAULT_HEIGHT,
             fps: config.fps || def.DEFAULT_FPS,
             fixed: config.fixed || def.DEFAULT_FIXED,
-            sampleRate: config.sampleRate || DEFAULT_SAMPLERATE,
+            sampleRate: config.sampleRate || def.DEFAULT_SAMPLERATE,
             appendHevcType: config.appendHevcType || def.APPEND_TYPE_STREAM
         },
         frameList: [],
@@ -21,6 +21,13 @@ module.exports = config => {
         videoPTS: -1,
         loop: null,
         isPlaying: false
+    }
+    player.setSize = (width, height) => {
+        player.config.width = width || def.DEFAULT_WIDTH
+        player.config.height = height || def.DEFAULT_HEIGHT
+    }
+    player.setFrameRate = (fps) => {
+        player.config.fps = fps || def.DEFAULT_FPS
     }
     player.setDurationMs = (durationMs = -1) => {
         player.durationMs = durationMs
@@ -49,6 +56,8 @@ module.exports = config => {
         console.log('Playing ...')
     }
     player.stop = () => {
+        console.log("============ STOP ===============")
+        player.loop && window.clearInterval(player.loop)
         player.pause()
         player.endAudio()
         Module.cwrap('release', 'number', [])()
