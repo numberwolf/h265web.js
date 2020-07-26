@@ -13,12 +13,12 @@ module.exports = sampleRate => {
 		play: () => ctx.resume().then(() => console.log(',audio state: ' + ctx.state)),
 		decode: audioFrames => {
 			const input = new Uint8Array(audioFrames.map(x => x.data).reduce((a, b) => [...a, ...b], []))
-			ctx.decodeAudioData(input.buffer, buffer => {
+			return ctx.decodeAudioData(input.buffer).then(buffer => {
 				src.buffer = buffer
 				src.connect(ctx.destination)
 				src.start()
 				console.log('audio decoded ', audioFrames.length, ' audio frames')
-			}, e => { throw new Error('Error with decoding audio data' + e.err) })
+			})
 		}
 	}
 }

@@ -3,7 +3,6 @@ const Module = require('./missile.js')
 const Audio = require('./decoder/audio')
 const decodeVideoFrame = require('./decoder/video')
 const canvas = require('./canvas')
-const def = require('./consts')
 module.exports = ({container, url}) => {
     const videoFrames = []
     const audioFrames = []
@@ -32,7 +31,6 @@ module.exports = ({container, url}) => {
         }
         loadFrames()
         console.log('Audio Frames: ', audioFrames.length, 'Video Frames: ',videoFrames.length)
-        audio.decode(audioFrames)
         player.pause = () => audio.pause() && window.clearInterval(player.loop)
         player.play = () => {
             //TODO: get video in sync with audio based on audio's processed frame (ratio 1.6)
@@ -53,7 +51,8 @@ module.exports = ({container, url}) => {
         }
         console.log('WASM initialized with code: ' + Module.cwrap('initMissile', 'number', [])())
         console.log('Initialized Decoder with code: ' + Module.cwrap('initializeDecoder', 'number', [])())
-        player.whenReady()
+        console.log('SampleRate:',player.sampleRate, 'Duration:', player.duration,'Size:', player.size,'fps:', player.fps)
+        audio.decode(audioFrames).then(player.whenReady)
     })
     player.onReady = whenReady => player.whenReady = whenReady
     return player

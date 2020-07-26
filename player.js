@@ -7,6 +7,7 @@ window.onload = () => {
     const status = document.createElement('div')
     status.textContent = 'Loading...'
     const play = document.createElement('button')
+    play.style.fontSize = '23px'
     play.textContent = '[>]'
     play.disabled = true
     play.onclick = () => {
@@ -15,12 +16,16 @@ window.onload = () => {
         player.isPlaying ? player.play() : player.stop()
     }
     const ptsLabel = document.createElement('span')
+    ptsLabel.style.fontSize = '23px'
     const progress = document.createElement('progress')
+    progress.style.width = '80%'
+    progress.style.height = '80px'
+    
     progress.value = 0
     document.body.appendChild(status)
     document.body.appendChild(play)
-    document.body.appendChild(ptsLabel)
     document.body.appendChild(progress)    
+    document.body.appendChild(ptsLabel)
 
     const player = Player({
         container: document.querySelector('div#glplayer'),
