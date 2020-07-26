@@ -26,9 +26,11 @@
 
 ### Transcoding Your Media File To Hevc Codec
 
+> Notice: You should add attribute of pix_fmt to I420.
+
 ```bash
 ffmpeg -i input.mp4 \
--vcodec libx265 \
+-vcodec libx265 -pix_fmt \
 -acodec aac -preset medium -maxrate 1000k -bufsize 1000k \
 -vtag hev1 \
 -y video.mp4
