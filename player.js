@@ -1,16 +1,19 @@
 //TODO: check if browser has web assembly and the audio decoder, and a decent screen, otherwise don't even load the page
 // const $ = id => document.getElementById(id)
 const Player = require('./src/player')
-const InitMp4Parser = require('./src/demuxer/mp4')
-const def = require('./src/consts')
 const durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
-const videoURL = '/res/video.mp4'
-window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
+
+window.onload = () => {
     const status = document.createElement('div')
     status.textContent = 'Loading...'
     const play = document.createElement('button')
     play.textContent = '[>]'
     play.disabled = true
+    play.onclick = () => {
+        player.isPlaying = !player.isPlaying
+        play.textContent = player.isPlaying ? '[||]' : '[>]'
+        player.isPlaying ? player.play() : player.stop()
+    }
     const ptsLabel = document.createElement('span')
     const progress = document.createElement('progress')
     progress.value = 0
@@ -18,60 +21,24 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
     document.body.appendChild(play)
     document.body.appendChild(ptsLabel)
     document.body.appendChild(progress)    
-    // demux mp4
-    const mp4Obj = new InitMp4Parser()
-    // mp4Obj.demux(streamBuffer)
-    // const durationMs  = mp4Obj.getDurationMs()
-    // const fps         = mp4Obj.getFPS()
-    // const sampleRate  = mp4Obj.getSampleRate()
-    // const size        = mp4Obj.getSize()
-    // ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
+
     const player = Player({
-        width: 600,
-        height: 600,
-        sampleRate: 44100, 
-        fps: 25,
-        appendHevcType: def.APPEND_TYPE_FRAME,
-        fixed: false // is strict to resolution?
+        container: document.querySelector('div#glplayer'),
+        url: '/res/video.mp4'
     })
-    
-    //TODO: get all the data at once syncronously or feed data through a callback if streamed
-    const feedMp4Data = () => {
-        const videoFrame = mp4Obj.popBuffer(1)
-        const audioFrame = mp4Obj.popBuffer(2)
-        videoFrame && player.appendHevcFrame(videoFrame)
-        audioFrame && player.appendAACFrame(audioFrame)
-        if(!videoFrame && !audioFrame) return
-        setTimeout(feedMp4Data, 0)
+    player.onReady(() => {
+        ptsLabel.textContent = '0:0:0/' + durationText(progress.max = player.duration / 1000)
+        status.textContent = ''
+        play.disabled = false
+        //hide loading gif
+    })
+    player.onUpdate = (videoPTS, audioPTS) => {
+        const now = durationText(progress.value = videoPTS)
+        const total = durationText(player.duration / 1000)
+        ptsLabel.textContent = `${now}/${total}`
     }
-    
-    status.textContent = ''
-    play.disabled = false
-    play.onclick = () => {
-        player.isPlaying = !player.isPlaying
-        play.textContent = player.isPlaying ? '[||]' : '[>]'
-        if(player.isPlaying) {
-            // demux mp4
-            mp4Obj.demux(streamBuffer)
-            const durationMs  = mp4Obj.getDurationMs()
-            const fps         = mp4Obj.getFPS()
-            const sampleRate  = mp4Obj.getSampleRate()
-            const size        = mp4Obj.getSize()
-            ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
-            player.setDurationMs(durationMs)
-
-            // player.setSize(size.width, size.height)
-            player.setFrameRate(fps)
-
-            feedMp4Data()
-
-            player.play(videoPTS => {
-                progress.value = videoPTS
-                const now = durationText(videoPTS)
-                const total = durationText(durationMs / 1000)
-                ptsLabel.textContent = `${now}/${total}`
-            })
-        } else player.stop()
+    player.onStop = () => {
+        console.log('Video stopped ...')
+        player.isPlaying && play.onclick()
     }
-})
-
+}
