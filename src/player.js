@@ -46,7 +46,7 @@ module.exports = config => {
         player.loop && window.clearInterval(player.loop)
         player.audio.pause()
     }
-    player.play = callback => {
+    player.play = (callback) => {
         player.loop = window.setInterval(() => {
             player.videoPTS * 1000 >= player.durationMs && player.stop()
             player.playFrame()

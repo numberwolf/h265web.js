@@ -20,12 +20,13 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
     document.body.appendChild(progress)    
     // demux mp4
     const mp4Obj = new InitMp4Parser()
-    // mp4Obj.demux(streamBuffer)
-    // const durationMs  = mp4Obj.getDurationMs()
-    // const fps         = mp4Obj.getFPS()
-    // const sampleRate  = mp4Obj.getSampleRate()
-    // const size        = mp4Obj.getSize()
-    // ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
+    mp4Obj.demux(streamBuffer)
+    const durationMs  = mp4Obj.getDurationMs()
+    const fps         = mp4Obj.getFPS()
+    const sampleRate  = mp4Obj.getSampleRate()
+    const size        = mp4Obj.getSize()
+    ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
+
     const player = Player({
         width: 600,
         height: 600,
@@ -34,6 +35,10 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         appendHevcType: def.APPEND_TYPE_FRAME,
         fixed: false // is strict to resolution?
     })
+
+    player.setDurationMs(durationMs)
+    // player.setSize(size.width, size.height)
+    player.setFrameRate(fps)
     
     //TODO: get all the data at once syncronously or feed data through a callback if streamed
     const feedMp4Data = () => {
@@ -44,6 +49,8 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         if(!videoFrame && !audioFrame) return
         setTimeout(feedMp4Data, 0)
     }
+
+    feedMp4Data()
     
     status.textContent = ''
     play.disabled = false
@@ -51,19 +58,19 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         player.isPlaying = !player.isPlaying
         play.textContent = player.isPlaying ? '[||]' : '[>]'
         if(player.isPlaying) {
-            // demux mp4
-            mp4Obj.demux(streamBuffer)
-            const durationMs  = mp4Obj.getDurationMs()
-            const fps         = mp4Obj.getFPS()
-            const sampleRate  = mp4Obj.getSampleRate()
-            const size        = mp4Obj.getSize()
-            ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
-            player.setDurationMs(durationMs)
+            // // demux mp4
+            // mp4Obj.demux(streamBuffer)
+            // const durationMs  = mp4Obj.getDurationMs()
+            // const fps         = mp4Obj.getFPS()
+            // const sampleRate  = mp4Obj.getSampleRate()
+            // const size        = mp4Obj.getSize()
+            // ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
+            // player.setDurationMs(durationMs)
 
-            // player.setSize(size.width, size.height)
-            player.setFrameRate(fps)
+            // // player.setSize(size.width, size.height)
+            // player.setFrameRate(fps)
 
-            feedMp4Data()
+            // feedMp4Data()
 
             player.play(videoPTS => {
                 progress.value = videoPTS
@@ -71,7 +78,7 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
                 const total = durationText(durationMs / 1000)
                 ptsLabel.textContent = `${now}/${total}`
             })
-        } else player.stop()
-    }
+        } else player.pause()
+    } // player.stop()
 })
 
