@@ -39,7 +39,7 @@ const convert10BitYuv420 = (y, u, v, w, h, dest) => {
 			g           = (cy*w + cx)<<1
             g2          = g*2
             g3 = g/2
-			rb          = 0 //(cy*w + cx)>>1 //TODO: figure out the color index
+			rb          = (cy*w + cx)>>1
 			blue        = (u[rb] | u[rb + 1] << 8) - 512
 			red         = (v[rb] | v[rb + 1] << 8) - 512
 			redish      = 409 * red + 512
