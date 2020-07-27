@@ -2,7 +2,7 @@
 const YUVBuffer = require('yuv-buffer')
 const YUVCanvas = require('yuv-canvas')
 const Module = require('./missile.js')
-const AudioImp = require('./decoder/audio')
+const AudioModule = require('./decoder/audio')
 const def = require('./consts')
 module.exports = config => {
     const player = {
@@ -16,7 +16,10 @@ module.exports = config => {
         },
         frameList: [],
         stream: new Uint8Array(),
-        audio: new AudioImp(),
+        audio: AudioModule({
+            sampleRate: config.sampleRate,
+            appendType: config.appendHevcType
+        }),
         durationMs: -1.0,
         videoPTS: -1,
         loop: null,
@@ -36,10 +39,10 @@ module.exports = config => {
     player.appendAACFrame = streamBytes => player.audio.addSample(streamBytes)
     player.endAudio = () => {
         player.audio.stop()
-        player.audio.init({
-            sampleRate  : player.config.sampleRate,
-            appendType  : player.config.appendHevcType
-        })
+        // player.audio.init({
+        //     sampleRate  : player.config.sampleRate,
+        //     appendType  : player.config.appendHevcType
+        // })
     }
     player.cleanSample = () => player.audio.cleanQueue()
     player.pause = () => {
@@ -192,10 +195,10 @@ module.exports = config => {
     player.canvasBox = canvasBox
     player.canvas = canvas
     player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
-    player.audio.init({
-        sampleRate  : player.config.sampleRate,
-        appendType  : player.config.appendHevcType
-    })
+    // player.audio.init({
+    //     sampleRate  : player.config.sampleRate,
+    //     appendType  : player.config.appendHevcType
+    // })
     console.log('WASM initialized with code: ' + Module.cwrap('initMissile', 'number', [])())
     console.log('Initialized Decoder with code: ' + Module.cwrap('initializeDecoder', 'number', [])())
     console.log('player config', player.config)
