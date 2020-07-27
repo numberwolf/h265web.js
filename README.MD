@@ -3,7 +3,7 @@
 
 <img src="./res/logo@300x300.png" width="300px" />
 
-> logo designer & copyright : porschegt23@foxmail.com (Q:531365872)
+> logo designer & copyright : porschegt23@foxmail.com (Q:531365872 Discord:numberwolf#8694)
 
 ----------------------------------------
 
@@ -61,6 +61,7 @@ If you have any problems, you can send mail to me, or use QQ to talk with me. ~^
 
 * Email(porschegt23@foxmail.com)
 * QQ: 531365872
+* Discord:numberwolf#8694
 
 - Wasm made by myself.
 
