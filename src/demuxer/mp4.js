@@ -116,16 +116,17 @@ Mp4Parser.prototype.setAACAdts = function(dataStream) {
 
 Mp4Parser.prototype.demux = function(dataStream) {
     var _this = this;
-    dataStream.fileStart = 0;
+    dataStream.fileStart= 0;
 
-    _this.mp4boxfile     = MP4Box.createFile();
-    _this.movieInfo      = null;
+    _this.seekPos       = 0;
+    _this.mp4boxfile    = MP4Box.createFile();
+    _this.movieInfo     = null;
 
-    _this.durationMs     = -1.0;
-    _this.fps            = -1;
-    _this.sampleRate     = -1;
-    _this.aacProfile     = 2; // LC
-    _this.size           = {
+    _this.durationMs    = -1.0;
+    _this.fps           = -1;
+    _this.sampleRate    = -1;
+    _this.aacProfile    = 2; // LC
+    _this.size          = {
         width   : -1,
         height  : -1
     };
@@ -133,8 +134,8 @@ Mp4Parser.prototype.demux = function(dataStream) {
     /*
      * item : {pts: 0, frame: Uint8Array}
      */
-    _this.trackVideos    = [];
-    _this.trackAudios    = [];
+    _this.trackVideos   = [];
+    _this.trackAudios   = [];
 
     //var mp4boxfile = MP4Box.createFile();
     _this.mp4boxfile.onError = function(e) {
@@ -169,7 +170,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
             // console.log("pts:" + pts);
 
             var pts = (samples[i].dts) / samples[i].timescale;
-            // console.log("pts:" + pts);
+            console.log("pts:" + pts);
 
             if (id == 1) {
                 /*
@@ -299,7 +300,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
         _this.size["height"]    = info.videoTracks[0].track_height;
         
         _this.initializeAllSourceBuffers();
-        _this.mp4boxfile.start();
+        // _this.mp4boxfile.start();
     };
 
     this.mp4boxfile.appendBuffer(dataStream);
@@ -324,6 +325,14 @@ Mp4Parser.prototype.getSampleRate = function() {
 
 Mp4Parser.prototype.getSize = function() {
     return this.size;
+}
+
+Mp4Parser.prototype.seek = function(second) {
+    this.seekPos = parseInt(second);
+    console.log("to seek:" + this.seekPos);
+    this.mp4boxfile.seek(this.seekPos, true);
+    // this.mp4boxfile.seek(5, true);
+    this.mp4boxfile.start();
 }
 
 /*

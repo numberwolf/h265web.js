@@ -21,11 +21,22 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
     // demux mp4
     const mp4Obj = new InitMp4Parser()
     mp4Obj.demux(streamBuffer)
+    mp4Obj.seek(0);
     const durationMs  = mp4Obj.getDurationMs()
     const fps         = mp4Obj.getFPS()
     const sampleRate  = mp4Obj.getSampleRate()
     const size        = mp4Obj.getSize()
     ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
+
+    // progress
+    progress.addEventListener('click', function (e) {
+        var x = e.pageX - this.offsetLeft; // or e.offsetX (less support, though)
+        var y = e.pageY - this.offsetTop;  // or e.offsetY
+        var clickedValue = x * this.max / this.offsetWidth;
+        console.log('Current position: ' + clickedValue);
+        console.log('Current value: ' + this.value);
+        mp4Obj.seek(clickedValue);
+    });
 
     const player = Player({
         width: 600,
