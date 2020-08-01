@@ -21,22 +21,12 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
     // demux mp4
     const mp4Obj = new InitMp4Parser()
     mp4Obj.demux(streamBuffer)
-    mp4Obj.seek(0);
+    mp4Obj.seek(5);
     const durationMs  = mp4Obj.getDurationMs()
     const fps         = mp4Obj.getFPS()
     const sampleRate  = mp4Obj.getSampleRate()
     const size        = mp4Obj.getSize()
     ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
-
-    // progress
-    progress.addEventListener('click', function (e) {
-        var x = e.pageX - this.offsetLeft; // or e.offsetX (less support, though)
-        var y = e.pageY - this.offsetTop;  // or e.offsetY
-        var clickedValue = x * this.max / this.offsetWidth;
-        console.log('Current position: ' + clickedValue);
-        console.log('Current value: ' + this.value);
-        mp4Obj.seek(clickedValue);
-    });
 
     const player = Player({
         width: 600,
@@ -46,11 +36,6 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         appendHevcType: def.APPEND_TYPE_FRAME,
         fixed: false // is strict to resolution?
     })
-
-    player.setDurationMs(durationMs)
-    // player.setSize(size.width, size.height)
-    player.setFrameRate(fps)
-    
     //TODO: get all the data at once syncronously or feed data through a callback if streamed
     const feedMp4Data = () => {
         const videoFrame = mp4Obj.popBuffer(1)
@@ -60,6 +45,30 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         if(!videoFrame && !audioFrame) return
         setTimeout(feedMp4Data, 0)
     }
+
+    const playCallback = videoPTS => {
+        progress.value = videoPTS
+        const now = durationText(videoPTS)
+        const total = durationText(durationMs / 1000)
+        ptsLabel.textContent = `${now}/${total}`
+    }
+
+    // progress
+    progress.addEventListener('click', function (e) {
+        var x = e.pageX - this.offsetLeft; // or e.offsetX (less support, though)
+        var y = e.pageY - this.offsetTop;  // or e.offsetY
+        var clickedValue = x * this.max / this.offsetWidth;
+        console.log('Current position: ' + clickedValue);
+        console.log('Current value: ' + this.value);
+        player.cleanSample();
+        player.cleanVideoQueue();
+        mp4Obj.seek(clickedValue);
+        feedMp4Data()
+    });
+
+    player.setDurationMs(durationMs)
+    // player.setSize(size.width, size.height)
+    player.setFrameRate(fps)
 
     feedMp4Data()
     
@@ -82,13 +91,7 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
             // player.setFrameRate(fps)
 
             // feedMp4Data()
-
-            player.play(videoPTS => {
-                progress.value = videoPTS
-                const now = durationText(videoPTS)
-                const total = durationText(durationMs / 1000)
-                ptsLabel.textContent = `${now}/${total}`
-            })
+            player.play(playCallback, mp4Obj.seekPos)
         } else player.pause()
     } // player.stop()
 })

@@ -118,7 +118,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
     var _this = this;
     dataStream.fileStart= 0;
 
-    _this.seekPos       = 0;
+    _this.seekPos       = -1;
     _this.mp4boxfile    = MP4Box.createFile();
     _this.movieInfo     = null;
 
@@ -154,6 +154,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
         //     + " samples on track "+ id 
         //     + (user ? " for object " + user: "")
         // );
+
         /*
          * track_id 1video 2audio
          */
@@ -170,7 +171,14 @@ Mp4Parser.prototype.demux = function(dataStream) {
             // console.log("pts:" + pts);
 
             var pts = (samples[i].dts) / samples[i].timescale;
-            console.log("pts:" + pts);
+
+            // Seek Opera
+            // if (_this.seekPos > 0) {
+            //     if (pts < (_this.seekPos - _this.seekDiffTime)) {
+            //         continue;
+            //     }
+            // }
+            console.log("id:" + id + ", pts:" + pts);
 
             if (id == 1) {
                 /*
@@ -291,6 +299,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
         _this.durationMs        = 1000 * tmpDurationSec;
         _this.fps               = info.videoTracks[0].nb_samples / tmpDurationSec;
         // console.log(_this.durationMs, _this.fps);
+        _this.seekDiffTime      = 1 / _this.fps;
 
         _this.sampleRate        = info.audioTracks[0].audio.sample_rate;
         // codec: 'mp4a.40.5'  profile=5 HE-AAC
@@ -308,7 +317,6 @@ Mp4Parser.prototype.demux = function(dataStream) {
 }
 
 Mp4Parser.prototype.play = function() {
-
 }
 
 Mp4Parser.prototype.getDurationMs = function() {
@@ -328,10 +336,11 @@ Mp4Parser.prototype.getSize = function() {
 }
 
 Mp4Parser.prototype.seek = function(second) {
-    this.seekPos = parseInt(second);
-    console.log("to seek:" + this.seekPos);
-    this.mp4boxfile.seek(this.seekPos, true);
-    // this.mp4boxfile.seek(5, true);
+    if (second > 0) {
+        this.seekPos = parseInt(second);
+        console.log("to seek:" + this.seekPos);
+        this.mp4boxfile.seek(this.seekPos, true);
+    }
     this.mp4boxfile.start();
 }
 

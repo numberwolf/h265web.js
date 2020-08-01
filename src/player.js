@@ -44,18 +44,41 @@ module.exports = config => {
         //     appendType  : player.config.appendHevcType
         // })
     }
-    player.cleanSample = () => player.audio.cleanQueue()
+    player.cleanSample = () => {
+        player.audio.cleanQueue()
+    }
+    player.cleanVideoQueue = () => {
+        if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
+            player.stream = new Uint8Array();
+        } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
+            player.frameList.length = 0;
+        }
+    }
     player.pause = () => {
         player.loop && window.clearInterval(player.loop)
         player.audio.pause()
     }
-    player.play = (callback) => {
-        player.loop = window.setInterval(() => {
-            player.videoPTS * 1000 >= player.durationMs && player.stop()
-            player.playFrame()
-            callback && callback(player.videoPTS)
-        }, 1000 / player.config.fps)
-        player.audio.play()
+    player.play = (callback, seekPos = -1) => {
+        if (player.videoPTS >= seekPos) {
+            player.loop = window.setInterval(() => {
+                player.videoPTS * 1000 >= player.durationMs && player.stop()
+                player.playFrame(false)
+                callback && callback(player.videoPTS)
+            }, 1000 / player.config.fps)
+            player.audio.play()
+        } else {
+            player.loop = window.setInterval(() => {
+                player.videoPTS * 1000 >= player.durationMs && player.stop()
+                player.playFrame(true)
+                callback && callback(player.videoPTS)
+
+                if (player.videoPTS >= seekPos) {
+                    window.clearInterval(player.loop)
+                    player.loop = null
+                    player.play(callback, seekPos)
+                }
+            }, 0)
+        }
         console.log('Playing ...')
     }
     player.stop = () => {
@@ -106,7 +129,7 @@ module.exports = config => {
         else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME)
             return player.frameList.push(streamBytes)
     }
-    player.playFrame = () => {
+    player.playFrame = (skip = false) => {
         let nalBuf  = null
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             nalBuf = player.nextNalu() // nal
@@ -123,23 +146,27 @@ module.exports = config => {
             const decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length)
             if (decRet >= 0) {
                 const ptr = Module.cwrap('getFrame', 'number', [])()
-                if(!ptr) throw new Error('ERROR ptr is not a Number!')
+                if(!ptr) {
+                    throw new Error('ERROR ptr is not a Number!')
+                }
                 // sub block [m,n] //TODO: put all of this into a nextFrame() function
-                const width = Module.HEAPU32[ptr / 4]
-                const height = Module.HEAPU32[ptr / 4 + 1]
-                const imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
-                const sizeWH = width * height
-                const imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
-                const imageBufferB = Module.HEAPU8.subarray(
-                    imgBufferPtr + sizeWH + 8, 
-                    imgBufferPtr + sizeWH + 8 + sizeWH / 4
-                )
-                const imageBufferR = Module.HEAPU8.subarray(
-                    imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
-                    imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
-                )
-                if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
-                else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR)
+                if (skip == false) {
+                    const width = Module.HEAPU32[ptr / 4]
+                    const height = Module.HEAPU32[ptr / 4 + 1]
+                    const imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
+                    const sizeWH = width * height
+                    const imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
+                    const imageBufferB = Module.HEAPU8.subarray(
+                        imgBufferPtr + sizeWH + 8, 
+                        imgBufferPtr + sizeWH + 8 + sizeWH / 4
+                    )
+                    const imageBufferR = Module.HEAPU8.subarray(
+                        imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
+                        imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
+                    )
+                    if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
+                    else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR)
+                }
             } //  end if decRet
             Module._free(offset)
         }
