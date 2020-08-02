@@ -16,10 +16,14 @@ module.exports = options => {
 	    sourceList: 	[],
 	    startStatus: 	false,
 	    sampleQueue: 	[],
-	    durationMs: 	-1
+	    durationMs: 	-1,
+	    alignVideoPTS: 	0
 	}
 	audioModule.setDurationMs = (durationMs = -1) => {
 	    audioModule.durationMs = durationMs
+	}
+	audioModule.setAlignVPTS = (pts = -1) => {
+		audioModule.alignVideoPTS = pts;
 	}
 	/**
 	 * @brief Swap SourceNode To Play When before node play end
@@ -86,8 +90,10 @@ module.exports = options => {
 			return 1
 		}
 
+		// AAC 1frame= 1024*1000000/44100 = 22.2ms
+		// ~ 0.02s * 20 ~ 0.4s
 		var mergeBuf = null
-		var maxCount = audioModule.sampleQueue.length >= 50 ? 50 : audioModule.sampleQueue.length
+		var maxCount = audioModule.sampleQueue.length >= 20 ? 20 : audioModule.sampleQueue.length
 
 		var addSure = false
 		var track 	= audioModule.sampleQueue[0] // 先不shift
@@ -98,10 +104,10 @@ module.exports = options => {
 				data: Uint8Array
 			 }
 			 */
-			if (addSure == false && global.VIDEO_PTS_VAL >= 0) {
+			if (addSure == false && audioModule.alignVideoPTS >= 0) {
 				var firstPts = track["pts"]
-				console.log("audio pts " + firstPts + ",VIDEO_PTS_VAL " + global.VIDEO_PTS_VAL)
-				var distince = firstPts - global.VIDEO_PTS_VAL
+				console.log("audio pts " + firstPts + ",VIDEO_PTS_VAL " + audioModule.alignVideoPTS)
+				var distince = firstPts - audioModule.alignVideoPTS
 				if (
 					(distince > 0 && distince <= AUDIO_WAIT)  // < 1 frame
 					|| (distince < 0 && -1 * distince <= AUDIO_WAIT) // < 1 frame
@@ -202,11 +208,12 @@ module.exports = options => {
 	}
 	audioModule.stop = () => {
 		audioModule.pause()
-		audioModule.sampleQueue = []
+		// audioModule.sampleQueue = []
+		audioModule.cleanQueue()
 		audioModule.sourceChannel = -1
 	}
 	audioModule.cleanQueue = () => {
-		audioModule.sampleQueue = []
+		audioModule.sampleQueue.length = 0
 	}
 	/* Construct */
 	audioModule.sourceList.push(audioModule.audioCtx.createBufferSource())

@@ -1,10 +1,11 @@
 //TODO: check if browser has web assembly and the audio decoder, and a decent screen, otherwise don't even load the page
 // const $ = id => document.getElementById(id)
-const Player = require('./src/player')
+const Player = require('./src/decoder/player')
 const InitMp4Parser = require('./src/demuxer/mp4')
 const def = require('./src/consts')
 const durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
 const videoURL = '/res/video.mp4'
+
 window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
     const status = document.createElement('div')
     status.textContent = 'Loading...'
@@ -21,7 +22,7 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
     // demux mp4
     const mp4Obj = new InitMp4Parser()
     mp4Obj.demux(streamBuffer)
-    mp4Obj.seek(5);
+    mp4Obj.seek(-1);
     const durationMs  = mp4Obj.getDurationMs()
     const fps         = mp4Obj.getFPS()
     const sampleRate  = mp4Obj.getSampleRate()
@@ -31,10 +32,16 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
     const player = Player({
         width: 600,
         height: 600,
-        sampleRate: 44100, 
-        fps: 25,
+        sampleRate: sampleRate, 
+        fps: fps,
         appendHevcType: def.APPEND_TYPE_FRAME,
         fixed: false // is strict to resolution?
+    })
+    player.setPlayingCall(videoPTS => {
+        progress.value = videoPTS
+        const now = durationText(videoPTS)
+        const total = durationText(durationMs / 1000)
+        ptsLabel.textContent = `${now}/${total}`
     })
     //TODO: get all the data at once syncronously or feed data through a callback if streamed
     const feedMp4Data = () => {
@@ -46,30 +53,24 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         setTimeout(feedMp4Data, 0)
     }
 
-    const playCallback = videoPTS => {
-        progress.value = videoPTS
-        const now = durationText(videoPTS)
-        const total = durationText(durationMs / 1000)
-        ptsLabel.textContent = `${now}/${total}`
-    }
-
-    // progress
+    /**
+     * SEEK Progress
+     */
     progress.addEventListener('click', function (e) {
         var x = e.pageX - this.offsetLeft; // or e.offsetX (less support, though)
         var y = e.pageY - this.offsetTop;  // or e.offsetY
         var clickedValue = x * this.max / this.offsetWidth;
         console.log('Current position: ' + clickedValue);
         console.log('Current value: ' + this.value);
-        player.cleanSample();
-        player.cleanVideoQueue();
-        mp4Obj.seek(clickedValue);
-        feedMp4Data()
+        player.seek(() => {
+            mp4Obj.seek(clickedValue);
+            feedMp4Data();
+        }, clickedValue);
     });
 
     player.setDurationMs(durationMs)
     // player.setSize(size.width, size.height)
     player.setFrameRate(fps)
-
     feedMp4Data()
     
     status.textContent = ''
@@ -91,7 +92,7 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
             // player.setFrameRate(fps)
 
             // feedMp4Data()
-            player.play(playCallback, mp4Obj.seekPos)
+            player.play(mp4Obj.seekPos)
         } else player.pause()
     } // player.stop()
 })

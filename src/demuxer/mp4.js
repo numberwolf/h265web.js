@@ -1,5 +1,8 @@
 const MP4Box = require('mp4box')
-const STARTCODE = new Uint8Array([0, 0, 0, 1])
+const HEVDEF = require('../decoder/hevc-header')
+const HEVDEFIMP = require('../decoder/hevc-imp')
+const BUFFMOD = require('./buffer')
+// const STARTCODE = new Uint8Array([0, 0, 0, 1])
 const SAMPLEINDEX = {
     96000 : 0x00,
     88200 : 0x01,
@@ -28,15 +31,15 @@ function Mp4Parser() {
 Mp4Parser.prototype.setStartCode = function(dataStream, replace=false) {
     var returnStream = null;
     if (replace) {
-        returnStream = dataStream;
-        returnStream[0] = STARTCODE[0];
-        returnStream[1] = STARTCODE[1];
-        returnStream[2] = STARTCODE[2];
-        returnStream[3] = STARTCODE[3];
+        returnStream    = dataStream;
+        returnStream[0] = HEVDEF.DEFINE_STARTCODE[0];
+        returnStream[1] = HEVDEF.DEFINE_STARTCODE[1];
+        returnStream[2] = HEVDEF.DEFINE_STARTCODE[2];
+        returnStream[3] = HEVDEF.DEFINE_STARTCODE[3];
     } else {
-        returnStream = new Uint8Array(STARTCODE.length + dataStream.length);
-        returnStream.set(STARTCODE, 0);
-        returnStream.set(dataStream, STARTCODE.length);
+        returnStream = new Uint8Array(HEVDEF.DEFINE_STARTCODE.length + dataStream.length);
+        returnStream.set(HEVDEF.DEFINE_STARTCODE, 0);
+        returnStream.set(dataStream, HEVDEF.DEFINE_STARTCODE.length);
     }
 
     return returnStream;
@@ -130,6 +133,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
         width   : -1,
         height  : -1
     };
+    _this.bufObject     = BUFFMOD();
 
     /*
      * item : {pts: 0, frame: Uint8Array}
@@ -148,29 +152,51 @@ Mp4Parser.prototype.demux = function(dataStream) {
         //     _this.mp4boxfile.seek(200, true);
         //     global.VIDEO_TEST_SEEK = false;
         // }
-        
         // console.log(
         //     "Received " + samples.length 
         //     + " samples on track "+ id 
         //     + (user ? " for object " + user: "")
         // );
+        let loop1 = window.setInterval(() => {
+            let isVideo = id == 1 ? true : false;
+            if (id == 1) {
+                for (var i = 0; i < samples.length; i++) {
+                    let pts = (samples[i].dts) / samples[i].timescale;
+                    // console.log(samples[i].data);
+                    let frameType = HEVDEFIMP.GET_NALU_TYPE(samples[i].data[4]);
+                    let isKey = frameType == HEVDEF.DEFINE_KEY_FRAME ? true : false;
+                    _this.bufObject.appendFrame(pts, samples[i].data, isVideo, isKey);
+                }
+                console.log(_this.bufObject.videoBuffer);
+            } else {
+                for (var i = 0; i < samples.length; i++) {
+                    let pts = (samples[i].dts) / samples[i].timescale;
+                    _this.bufObject.appendFrame(pts, samples[i].data, isVideo, true);
+                }
+                console.log(_this.bufObject.audioBuffer);
+            }
+            
+            window.clearInterval(loop1);
+            loop1 = null;
+        }, 0)
+        return;
 
         /*
          * track_id 1video 2audio
          */
-        for (var i = 0; i < samples.length; i++) {
-            var sample  = samples[i];
-            var data    = sample.data;
-            var frame   = null;
+        for (let i = 0; i < samples.length; i++) {
+            let sample  = samples[i];
+            let data    = sample.data;
+            let frame   = null;
             if (data == null || data.length < 4 || !data) {
                 continue;
             }
 
-            // var pts = (samples[i].dts + samples[i].cts) / _this.movieInfo.timescale;
-            // var pts = samples[i].dts + samples[i].cts;
+            // let pts = (samples[i].dts + samples[i].cts) / _this.movieInfo.timescale;
+            // let pts = samples[i].dts + samples[i].cts;
             // console.log("pts:" + pts);
 
-            var pts = (samples[i].dts) / samples[i].timescale;
+            let pts = (samples[i].dts) / samples[i].timescale;
 
             // Seek Opera
             // if (_this.seekPos > 0) {
@@ -178,24 +204,24 @@ Mp4Parser.prototype.demux = function(dataStream) {
             //         continue;
             //     }
             // }
-            console.log("id:" + id + ", pts:" + pts);
+            // console.log("id:" + id + ", pts:" + pts);
 
             if (id == 1) {
                 /*
                  * 针对265的NALU填充
                  */
-                var hvcC    = sample.description.hvcC;
+                let hvcC    = sample.description.hvcC;
                 
                 if (i == 0) {
-                    var naluArr = hvcC.nalu_arrays;
+                    let naluArr = hvcC.nalu_arrays;
                     // var data    = hvcC.data;
                     // console.log(naluArr);
                     // 64, 1, 12, 1, 255, 255, 1, 96, 0, 0, 3, 0, 144, 0, 0, 3, 0, 0, 3, 0, 63, 149, 152, 9
                     // 0, 0, 0, 1, 64, 1, 12, 78, 1, 5, 255, 255, 255,
-                    var naluVPS = _this.setStartCode(naluArr[0][0].data, false);
-                    var naluSPS = _this.setStartCode(naluArr[1][0].data, false);
-                    var naluPPS = _this.setStartCode(naluArr[2][0].data, false);
-                    var naluSEI = _this.setStartCode(naluArr[3][0].data, false);
+                    let naluVPS = _this.setStartCode(naluArr[0][0].data, false);
+                    let naluSPS = _this.setStartCode(naluArr[1][0].data, false);
+                    let naluPPS = _this.setStartCode(naluArr[2][0].data, false);
+                    let naluSEI = _this.setStartCode(naluArr[3][0].data, false);
 
                     // var naluLen = naluVPS.length + naluSPS.length + naluPPS.length + naluSEI.length;
                     // console.log("naluLen:" + naluLen + ", framelen:" + (naluLen+data.length));
@@ -217,6 +243,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
                     data : frame
                 });
             } else if (id == 2) {
+                // console.log("id:" + id + ", pts:" + pts);
                 /*
                      * esds
          first line -- -- --  3  e  s  d  s -- -- -- -- 开始

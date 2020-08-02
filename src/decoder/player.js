@@ -2,8 +2,8 @@
 const YUVBuffer = require('yuv-buffer')
 const YUVCanvas = require('yuv-canvas')
 const Module = require('./missile.js')
-const AudioModule = require('./decoder/audio')
-const def = require('./consts')
+const AudioModule = require('./audio')
+const def = require('../consts')
 module.exports = config => {
     const player = {
         config: {
@@ -12,7 +12,8 @@ module.exports = config => {
             fps: config.fps || def.DEFAULT_FPS,
             fixed: config.fixed || def.DEFAULT_FIXED,
             sampleRate: config.sampleRate || def.DEFAULT_SAMPLERATE,
-            appendHevcType: config.appendHevcType || def.APPEND_TYPE_STREAM
+            appendHevcType: config.appendHevcType || def.APPEND_TYPE_STREAM,
+            frameDur: config.frameDur || def.DEFAULT_FRAME_DUR,
         },
         frameList: [],
         stream: new Uint8Array(),
@@ -23,18 +24,24 @@ module.exports = config => {
         durationMs: -1.0,
         videoPTS: -1,
         loop: null,
-        isPlaying: false
+        isPlaying: false,
+        playingCallback : null,
+        isNewSeek: false
     }
     player.setSize = (width, height) => {
         player.config.width = width || def.DEFAULT_WIDTH
         player.config.height = height || def.DEFAULT_HEIGHT
     }
-    player.setFrameRate = (fps) => {
-        player.config.fps = fps || def.DEFAULT_FPS
+    player.setFrameRate = (fps = 25) => {
+        player.config.fps = fps
+        player.config.frameDur = 1000 / fps
     }
     player.setDurationMs = (durationMs = -1) => {
         player.durationMs = durationMs
         player.audio.setDurationMs(durationMs)
+    }
+    player.setPlayingCall = callback => {
+        player.playingCallback = callback;
     }
     player.appendAACFrame = streamBytes => player.audio.addSample(streamBytes)
     player.endAudio = () => {
@@ -57,41 +64,71 @@ module.exports = config => {
     player.pause = () => {
         player.loop && window.clearInterval(player.loop)
         player.audio.pause()
+        player.isPlaying = false
     }
-    player.play = (callback, seekPos = -1) => {
-        if (player.videoPTS >= seekPos) {
+    player.checkFinished = () => {
+        if (player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
+            player.pause();
+            return true;
+        }
+        return false;
+    }
+    // player.resetPTS = (ptsSec) => {
+    //     player.videoPTS = ptsSec || def.DEFAULT_PTS_SEC;
+    // }
+    player.seek = (execCall, seekPos = -1) => {
+        player.pause()
+        player.cleanSample();
+        player.cleanVideoQueue();
+        if (execCall) {
+            execCall();
+        }
+        player.isNewSeek = true;
+        player.play(seekPos);
+    }
+    player.play = (seekPos = -1) => {
+        player.isPlaying = true
+        if (player.videoPTS >= seekPos && !player.isNewSeek) {
             player.loop = window.setInterval(() => {
-                player.videoPTS * 1000 >= player.durationMs && player.stop()
-                player.playFrame(false)
-                callback && callback(player.videoPTS)
-            }, 1000 / player.config.fps)
-            player.audio.play()
-        } else {
-            player.loop = window.setInterval(() => {
-                player.videoPTS * 1000 >= player.durationMs && player.stop()
                 player.playFrame(true)
-                callback && callback(player.videoPTS)
+                if (!player.checkFinished()) {
+                    player.playingCallback && player.playingCallback(player.videoPTS)
+                }
+            }, 1000 / player.config.fps)
 
-                if (player.videoPTS >= seekPos) {
-                    window.clearInterval(player.loop)
-                    player.loop = null
-                    player.play(callback, seekPos)
+            player.audio.play()
+        } else { // SEEK if (player.videoPTS < seekPos && player.isNewSeek)
+            player.loop = window.setInterval(() => {
+                // console.log(seekPos + " ~ " +(player.videoPTS * 1000) + " ~2 " + player.durationMs);
+
+                player.playFrame(false)
+                if (!player.checkFinished()) {
+                    // player.playingCallback && player.playingCallback(player.videoPTS)
+
+                    if (player.videoPTS >= seekPos) {
+                        window.clearInterval(player.loop)
+                        player.loop = null
+                        player.play(seekPos)
+                    }
                 }
             }, 0)
+            player.isNewSeek = false;
         }
         console.log('Playing ...')
     }
     player.stop = () => {
         console.log("============ STOP ===============")
         player.loop && window.clearInterval(player.loop)
+        player.loop = null
         player.pause()
         player.endAudio()
         Module.cwrap('release', 'number', [])()
         Module.cwrap('initializeDecoder', 'number', [])()
         player.stream = new Uint8Array()
-        player.frameList = []
+        player.frameList.length = 0
         player.durationMs = -1.0
         player.videoPTS = -1
+        player.isPlaying = false
     }
     player.nextNalu = (onceGetNalCount=1) => {
         if (player.stream.length <= 4) return false
@@ -129,17 +166,23 @@ module.exports = config => {
         else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME)
             return player.frameList.push(streamBytes)
     }
-    player.playFrame = (skip = false) => {
+    player.playFrame = (show = false) => {
         let nalBuf  = null
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             nalBuf = player.nextNalu() // nal
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
             const frame = player.frameList.shift() // nal
             !frame && console.log('got empty frame')
-            if(!frame) return false //TODO: remove
+            if(!frame) {
+                return false //TODO: remove
+            }
             nalBuf = frame.data
             player.videoPTS = frame.pts
-        } else return false
+            player.audio.setAlignVPTS(frame.pts)
+            // console.log("playFrame videoPTS: " + player.videoPTS)
+        } else {
+            return false
+        }
         if (nalBuf != false) {
             const offset = Module._malloc(nalBuf.length)
             Module.HEAP8.set(nalBuf, offset)
@@ -150,7 +193,7 @@ module.exports = config => {
                     throw new Error('ERROR ptr is not a Number!')
                 }
                 // sub block [m,n] //TODO: put all of this into a nextFrame() function
-                if (skip == false) {
+                if (show) {
                     const width = Module.HEAPU32[ptr / 4]
                     const height = Module.HEAPU32[ptr / 4 + 1]
                     const imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
@@ -170,6 +213,7 @@ module.exports = config => {
             } //  end if decRet
             Module._free(offset)
         }
+        return true;
     }
     //canvas related functions
     player.drawImage = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
