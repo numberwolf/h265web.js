@@ -4,7 +4,8 @@ module.exports = () => {
 		/**
 		 * [
 		 *	[{pts: 0.01, isKey: true, data: uint8array(...)}, {}, ..., {}] 0 sec / index
-		 * 	[] 1 sec
+		 * 	[...] 1 sec
+		 * 	[...] 2 sec
 		 * 	...
 		 * ]
 		 */

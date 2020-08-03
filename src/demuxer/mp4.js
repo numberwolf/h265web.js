@@ -147,123 +147,73 @@ Mp4Parser.prototype.demux = function(dataStream) {
     };
 
     _this.mp4boxfile.onSamples = function (id, user, samples) {
-        // console.log("global.VIDEO_TEST_SEEK" + global.VIDEO_TEST_SEEK);
-        // if (global.VIDEO_TEST_SEEK == true) {
-        //     _this.mp4boxfile.seek(200, true);
-        //     global.VIDEO_TEST_SEEK = false;
-        // }
-        // console.log(
-        //     "Received " + samples.length 
-        //     + " samples on track "+ id 
-        //     + (user ? " for object " + user: "")
-        // );
         let loop1 = window.setInterval(() => {
-            let isVideo = id == 1 ? true : false;
-            if (id == 1) {
-                for (var i = 0; i < samples.length; i++) {
-                    let pts = (samples[i].dts) / samples[i].timescale;
+            for (var i = 0; i < samples.length; i++) {
+
+                let sample  = samples[i];
+                let data    = sample.data;
+                let frame   = null;
+                if (data == null || data.length < 4 || !data) {
+                    continue;
+                }
+
+                let pts = (samples[i].dts) / samples[i].timescale;
+                let isVideo = id == 1 ? true : false;
+                if (id == 1) {
+                    /*
+                     * 针对265的NALU填充
+                     */
+                    let hvcC = sample.description.hvcC;
                     // console.log(samples[i].data);
                     let frameType = HEVDEFIMP.GET_NALU_TYPE(samples[i].data[4]);
                     let isKey = frameType == HEVDEF.DEFINE_KEY_FRAME ? true : false;
+
+                    if (isKey) {
+                        // full ...
+                        let naluArr = hvcC.nalu_arrays;
+                        // var data = hvcC.data;
+                        // console.log(naluArr);
+                        // 64, 1, 12, 1, 255, 255, 1, 96, 0, 0, 3, 0, 144, 0, 0, 3, 0, 0, 3, 0, 63, 149, 152, 9
+                        // 0, 0, 0, 1, 64, 1, 12, 78, 1, 5, 255, 255, 255,
+                        let naluVPS = _this.setStartCode(naluArr[0][0].data, false);
+                        let naluSPS = _this.setStartCode(naluArr[1][0].data, false);
+                        let naluPPS = _this.setStartCode(naluArr[2][0].data, false);
+                        let naluSEI = _this.setStartCode(naluArr[3][0].data, false);
+
+                        frame = new Uint8Array(
+                            naluVPS.length + naluSPS.length + naluPPS.length + naluSEI.length + data.length
+                        );
+                        frame.set(naluVPS, 0);
+                        frame.set(naluSPS, naluVPS.length);
+                        frame.set(naluPPS, naluVPS.length + naluSPS.length);
+                        frame.set(naluSEI, naluVPS.length + naluSPS.length + naluPPS.length);
+                        frame.set(_this.setStartCode(data, true), naluVPS.length + naluSPS.length + naluPPS.length + naluSEI.length);
+                    } else {
+                        frame = _this.setStartCode(data, true);
+                    }
                     _this.bufObject.appendFrame(pts, samples[i].data, isVideo, isKey);
-                }
-                console.log(_this.bufObject.videoBuffer);
-            } else {
-                for (var i = 0; i < samples.length; i++) {
-                    let pts = (samples[i].dts) / samples[i].timescale;
-                    _this.bufObject.appendFrame(pts, samples[i].data, isVideo, true);
-                }
-                console.log(_this.bufObject.audioBuffer);
-            }
-            
-            window.clearInterval(loop1);
-            loop1 = null;
-        }, 0)
-        return;
-
-        /*
-         * track_id 1video 2audio
-         */
-        for (let i = 0; i < samples.length; i++) {
-            let sample  = samples[i];
-            let data    = sample.data;
-            let frame   = null;
-            if (data == null || data.length < 4 || !data) {
-                continue;
-            }
-
-            // let pts = (samples[i].dts + samples[i].cts) / _this.movieInfo.timescale;
-            // let pts = samples[i].dts + samples[i].cts;
-            // console.log("pts:" + pts);
-
-            let pts = (samples[i].dts) / samples[i].timescale;
-
-            // Seek Opera
-            // if (_this.seekPos > 0) {
-            //     if (pts < (_this.seekPos - _this.seekDiffTime)) {
-            //         continue;
-            //     }
-            // }
-            // console.log("id:" + id + ", pts:" + pts);
-
-            if (id == 1) {
-                /*
-                 * 针对265的NALU填充
-                 */
-                let hvcC    = sample.description.hvcC;
-                
-                if (i == 0) {
-                    let naluArr = hvcC.nalu_arrays;
-                    // var data    = hvcC.data;
-                    // console.log(naluArr);
-                    // 64, 1, 12, 1, 255, 255, 1, 96, 0, 0, 3, 0, 144, 0, 0, 3, 0, 0, 3, 0, 63, 149, 152, 9
-                    // 0, 0, 0, 1, 64, 1, 12, 78, 1, 5, 255, 255, 255,
-                    let naluVPS = _this.setStartCode(naluArr[0][0].data, false);
-                    let naluSPS = _this.setStartCode(naluArr[1][0].data, false);
-                    let naluPPS = _this.setStartCode(naluArr[2][0].data, false);
-                    let naluSEI = _this.setStartCode(naluArr[3][0].data, false);
-
-                    // var naluLen = naluVPS.length + naluSPS.length + naluPPS.length + naluSEI.length;
-                    // console.log("naluLen:" + naluLen + ", framelen:" + (naluLen+data.length));
-
-                    frame = new Uint8Array(
-                        naluVPS.length + naluSPS.length + naluPPS.length + naluSEI.length + data.length
-                    );
-                    frame.set(naluVPS, 0);
-                    frame.set(naluSPS, naluVPS.length);
-                    frame.set(naluPPS, naluVPS.length + naluSPS.length);
-                    frame.set(naluSEI, naluVPS.length + naluSPS.length + naluPPS.length);
-                    frame.set(_this.setStartCode(data, true), naluVPS.length + naluSPS.length + naluPPS.length + naluSEI.length);
-                } else {
-                    frame = _this.setStartCode(data, true);
-                }
-
-                _this.trackVideos.push({
-                    pts  : pts,
-                    data : frame
-                });
-            } else if (id == 2) {
-                // console.log("id:" + id + ", pts:" + pts);
-                /*
+                } else if (id == 2) {
+                    /*
                      * esds
          first line -- -- --  3  e  s  d  s -- -- -- -- 开始
                     00 00 00 33 65 73 64 73 00 00 00 00 03 80 80 80     ...3esds........
                     22 00 02 00 04 80 80 80 14 40 15 00 00 00 00 00     "........@......
                     80 00 00 00 7F CA 05 80 80 80 02 12 08 06 80 80     ...............
                     80 01 02                                            ...
-                 */
-                // var esdsParseData = sample.description.esds.data;
-                // _this.trackAudios.push(data);
-                frame = _this.setAACAdts(data);
-                _this.trackAudios.push({
-                    pts  : pts,
-                    data : frame
-                });
-                // console.log(frame);
+                    */
+                    // var esdsParseData = sample.description.esds.data;
+                    // _this.trackAudios.push(data);
+                    frame = _this.setAACAdts(data);
+                    _this.bufObject.appendFrame(pts, samples[i].data, isVideo, true);
+                    
+                } else {}
             }
-        }
-        
-        // console.log(samples);
+            console.log(_this.bufObject.videoBuffer);
+            console.log(_this.bufObject.audioBuffer);
+            window.clearInterval(loop1);
+            loop1 = null;
+        }, 0);
+        return;
     };
 
 /*
@@ -336,7 +286,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
         _this.size["height"]    = info.videoTracks[0].track_height;
         
         _this.initializeAllSourceBuffers();
-        // _this.mp4boxfile.start();
+        _this.mp4boxfile.start();
     };
 
     this.mp4boxfile.appendBuffer(dataStream);
@@ -362,13 +312,14 @@ Mp4Parser.prototype.getSize = function() {
     return this.size;
 }
 
+// @TODO
 Mp4Parser.prototype.seek = function(second) {
-    if (second > 0) {
-        this.seekPos = parseInt(second);
-        console.log("to seek:" + this.seekPos);
-        this.mp4boxfile.seek(this.seekPos, true);
-    }
-    this.mp4boxfile.start();
+    // if (second > 0) {
+    //     this.seekPos = parseInt(second);
+    //     console.log("to seek:" + this.seekPos);
+    //     this.mp4boxfile.seek(this.seekPos, true);
+    // }
+    // this.mp4boxfile.start();
 }
 
 /*
@@ -379,41 +330,7 @@ Mp4Parser.prototype.popBuffer = function(track_id = 1) {
     var _this       = this;
     var data        = null;
     var firstPTS    = -1;
-
-    if (track_id == 1 && _this.trackVideos.length > 0) {
-        var track = _this.trackVideos.shift();
-        if (firstPTS < 0) {
-            firstPTS = track["pts"];
-        }
-        data = track["data"];
-
-    } else if (track_id == 2 && _this.trackAudios.length > 0) {
-        // 一次十帧  0.02s * 10
-        var audioOnceLimit = 2;
-        // var audioOnceLimit = _this.trackAudios.length;
-        
-        while (_this.trackAudios.length > 0 && audioOnceLimit >= 0) {
-            var track = _this.trackAudios.shift();
-            // console.log(track);
-
-            if (firstPTS < 0) {
-                firstPTS = track["pts"];
-            }
-
-            var item = track["data"];
-            if (data == null) {
-                data = item;
-            } else {
-                var tmp = new Uint8Array(data.length + item.length);
-                tmp.set(data, 0);
-                tmp.set(item, data.length);
-
-                data = tmp;
-            }
-            audioOnceLimit--;
-        }
-        
-    }
+    // @TODO
 
     if (data == null) {
         return null;
