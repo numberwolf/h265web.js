@@ -157,21 +157,18 @@ Mp4Parser.prototype.demux = function(dataStream) {
                     continue;
                 }
 
-                let pts = (samples[i].dts) / samples[i].timescale;
-                let isVideo = id == 1 ? true : false;
+                let pts = (sample.dts) / sample.timescale;
                 if (id == 1) {
                     /*
                      * 针对265的NALU填充
                      */
                     let hvcC = sample.description.hvcC;
                     // console.log(samples[i].data);
-                    let frameType = HEVDEFIMP.GET_NALU_TYPE(samples[i].data[4]);
+                    let frameType = HEVDEFIMP.GET_NALU_TYPE(data[4]);
                     let isKey = frameType == HEVDEF.DEFINE_KEY_FRAME ? true : false;
 
-                    if (isKey) {
-                        // full ...
+                    if (isKey) {//isKey
                         let naluArr = hvcC.nalu_arrays;
-                        // var data = hvcC.data;
                         // console.log(naluArr);
                         // 64, 1, 12, 1, 255, 255, 1, 96, 0, 0, 3, 0, 144, 0, 0, 3, 0, 0, 3, 0, 63, 149, 152, 9
                         // 0, 0, 0, 1, 64, 1, 12, 78, 1, 5, 255, 255, 255,
@@ -191,7 +188,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
                     } else {
                         frame = _this.setStartCode(data, true);
                     }
-                    _this.bufObject.appendFrame(pts, samples[i].data, isVideo, isKey);
+                    _this.bufObject.appendFrame(pts, frame, true, isKey);
                 } else if (id == 2) {
                     /*
                      * esds
@@ -204,12 +201,12 @@ Mp4Parser.prototype.demux = function(dataStream) {
                     // var esdsParseData = sample.description.esds.data;
                     // _this.trackAudios.push(data);
                     frame = _this.setAACAdts(data);
-                    _this.bufObject.appendFrame(pts, samples[i].data, isVideo, true);
+                    _this.bufObject.appendFrame(pts, frame, false, true);
                     
                 } else {}
             }
-            console.log(_this.bufObject.videoBuffer);
-            console.log(_this.bufObject.audioBuffer);
+            // console.log(_this.bufObject.videoBuffer);
+            // console.log(_this.bufObject.audioBuffer);
             window.clearInterval(loop1);
             loop1 = null;
         }, 0);
@@ -326,19 +323,15 @@ Mp4Parser.prototype.seek = function(second) {
  * _this.sampleQueue.shift();
  * @Param Int track_id 1Video 2Audio
  */
-Mp4Parser.prototype.popBuffer = function(track_id = 1) {
-    var _this       = this;
-    var data        = null;
-    var firstPTS    = -1;
-    // @TODO
-
-    if (data == null) {
+Mp4Parser.prototype.popBuffer = function(track_id = 1, ptsec = -1) {
+    if (ptsec < 0) {
         return null;
     }
-    return {
-        pts  : firstPTS,
-        data : data
-    }
+    if (track_id == 1) {
+        return this.bufObject.vFrame(ptsec);
+    } else if (track_id == 2) {
+        return this.bufObject.aFrame(ptsec);
+    } else {}
 }
 
 Mp4Parser.prototype.addBuffer = function(mp4track) {

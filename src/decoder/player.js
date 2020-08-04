@@ -162,9 +162,10 @@ module.exports = config => {
     }
     player.appendHevcFrame = streamBytes => { //TODO: assert if streamBytes is not null
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM)
-            return player.stream = new Uint8Array([...player.stream].concat(...streamBytes))
-        else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME)
-            return player.frameList.push(streamBytes)
+            player.stream = new Uint8Array([...player.stream].concat(...streamBytes))
+        else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
+            player.frameList.push(streamBytes)
+        }
     }
     player.playFrame = (show = false) => {
         let nalBuf  = null
@@ -179,7 +180,6 @@ module.exports = config => {
             nalBuf = frame.data
             player.videoPTS = frame.pts
             player.audio.setAlignVPTS(frame.pts)
-            // console.log("playFrame videoPTS: " + player.videoPTS)
         } else {
             return false
         }

@@ -39,6 +39,18 @@ module.exports = () => {
 		bufferModule.videoBuffer.length = 0;
 		bufferModule.audioBuffer.length = 0;
 	};
+	bufferModule.vFrame = (ptsec = -1) => {
+		if (ptsec < 0 || ptsec > bufferModule.videoBuffer.length - 1) {
+			return;
+		}
+		return bufferModule.videoBuffer[ptsec];
+	};
+	bufferModule.aFrame = (ptsec = -1) => {
+		if (ptsec < 0 || ptsec > bufferModule.audioBuffer.length - 1) {
+			return;
+		}
+		return bufferModule.audioBuffer[ptsec];
+	};
 
 	return bufferModule;
 }

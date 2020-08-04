@@ -48,18 +48,14 @@ module.exports = options => {
 		}
 		audioModule.decodeSample(dstIndex, sourceIndex)
 	}
-	// todo
-	audioModule.seek = (sourceIndex = -1, timeData = 0.0) => {
-		audioModule.sourceList[sourceIndex].start(0, timeData)
-	}
 	audioModule.addSample = (sampleArr = null) => {
 	 	if (sampleArr == null || !sampleArr || sampleArr == undefined) {
 	 		return false
 	 	}
-	 	if (audioModule.durationMs > 0 
-	 		&& sampleArr["pts"] * 1000 >= audioModule.durationMs - 10) {
-	 		return true
-	 	}
+	 	// if (audioModule.durationMs > 0 
+	 	// 	&& sampleArr["pts"] * 1000 >= audioModule.durationMs - 10) {
+	 	// 	return true
+	 	// }
 		audioModule.sampleQueue.push(sampleArr)
 	    return true
 	}
@@ -128,7 +124,7 @@ module.exports = options => {
 					if (distince < 0) { // throw this frame
 						console.log("throw this frame")
 						track = audioModule.sampleQueue.shift()
-						console.log(track)
+						// console.log(track)
 						i++
 						continue
 					}
