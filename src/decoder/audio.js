@@ -88,12 +88,15 @@ module.exports = options => {
 
 		// AAC 1frame= 1024*1000000/44100 = 22.2ms
 		// ~ 0.02s * 20 ~ 0.4s
-		var mergeBuf = null
-		var maxCount = audioModule.sampleQueue.length >= 20 ? 20 : audioModule.sampleQueue.length
+		let mergeBuf = null;
+		let maxCount = audioModule.sampleQueue.length >= def.DEFAULT_CONSU_SAMPLE_LEN ? def.DEFAULT_CONSU_SAMPLE_LEN : audioModule.sampleQueue.length;
 
-		var addSure = false
-		var track 	= audioModule.sampleQueue[0] // 先不shift
-		for (var i = 0; i < maxCount; ) { // i++
+		let addSure 	= false;
+		let track 		= audioModule.sampleQueue[0];
+		let firstPts 	= track["pts"];
+		for (let i = 0; i < maxCount; ) { // i++
+			// track = audioModule.sampleQueue[0];
+			// let firstPts = track["pts"];
 			/*
 			 {
 				pts: int
@@ -101,16 +104,15 @@ module.exports = options => {
 			 }
 			 */
 			if (addSure == false && audioModule.alignVideoPTS >= 0) {
-				var firstPts = track["pts"]
-				console.log("audio pts " + firstPts + ",VIDEO_PTS_VAL " + audioModule.alignVideoPTS)
-				var distince = firstPts - audioModule.alignVideoPTS
+				let distince = firstPts - audioModule.alignVideoPTS;
 				if (
 					(distince > 0 && distince <= AUDIO_WAIT)  // < 1 frame
-					|| (distince < 0 && -1 * distince <= AUDIO_WAIT) // < 1 frame
+					|| (distince < 0 && (-1 * distince) <= AUDIO_WAIT) // < 1 frame
 					|| distince == 0
 				) { // OK
-					addSure = true
+					addSure = true;
 				} else {
+					console.log("audio pts " + firstPts + ",VIDEO_PTS_VAL " + audioModule.alignVideoPTS);
 					if (distince > 0) {
 						// num: do not continue, or thread will be block
 						// console.log("continue await " + firstPts + "," + global.VIDEO_PTS_VAL);
@@ -122,20 +124,22 @@ module.exports = options => {
 					}
 
 					if (distince < 0) { // throw this frame
-						console.log("throw this frame")
-						track = audioModule.sampleQueue.shift()
-						// console.log(track)
-						i++
-						continue
+						console.log("throw this frame");
+						track = audioModule.sampleQueue.shift();
+						firstPts = track["pts"];
+						// i++
+						continue;
 					}
 				}
 			}
-			if (track == null) {
-				track = audioModule.sampleQueue.shift()
-			}
-			i++
 
-			var arrayBuf = null
+			// Feed
+			if (track == null) {
+				track = audioModule.sampleQueue.shift();
+			}
+			i++;
+
+			let arrayBuf = null
 			if (audioModule.options.appendType == def.APPEND_TYPE_STREAM) {
 				arrayBuf = track
 			} else { // APPEND_TYPE_FRAME
@@ -145,22 +149,26 @@ module.exports = options => {
 			if (mergeBuf == null) {
 				mergeBuf = new Uint8Array(arrayBuf)
 			} else {
-				var mergeTmp = new Uint8Array(arrayBuf.length + mergeBuf.length)
+				let mergeTmp = new Uint8Array(arrayBuf.length + mergeBuf.length)
 				mergeTmp.set(mergeBuf, 0)
 				mergeTmp.set(arrayBuf, mergeBuf.length)
 				mergeBuf = mergeTmp
 			}
-			track = null
+			if (audioModule.sampleQueue.length <= 0) {
+				break;
+			}
+			track = null;
 		}
-		var inputBuf = null
-		var inputBuf = mergeBuf
-		// // mp3 Windows (pcm count) padding
-		// if (mergeBuf.length < 1152) {
-		// 	inputBuf = new Uint8Array(1152);
-		// 	inputBuf.set(mergeBuf ,0);
-		// } else {
-		// 	inputBuf = mergeBuf;
-		// }
+		let inputBuf = mergeBuf
+		// mp3 Windows (pcm count) padding
+		/*
+		if (mergeBuf.length < 1152) {
+			inputBuf = new Uint8Array(1152);
+			inputBuf.set(mergeBuf ,0);
+		} else {
+			inputBuf = mergeBuf;
+		}
+		*/
 
 		if (inputBuf == null || inputBuf.length < 1) {
 			audioModule.sourceList[sourceIndex].connect(audioModule.audioCtx.destination)
@@ -169,7 +177,7 @@ module.exports = options => {
 			return 1
 		}
 
-		var inputArrayBuffer = inputBuf.buffer
+		let inputArrayBuffer = inputBuf.buffer
 		try {
 			audioModule.audioCtx.decodeAudioData(
 				inputArrayBuffer, function(buffer) {

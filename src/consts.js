@@ -2,9 +2,11 @@
  * Video
  *      APPEND_TYPE_STREAM 	: Uint8Array(str1 + str2 + ...)
  * 		APPEND_TYPE_FRAME	: [ {pts:xxx, data:Uint8Array(...) }, ...]
+ *      APPEND_TYPE_SEQUENCE  : [ [{pts:xxx, data:Uint8Array(...) }], ...]
  * Audio
  * 		APPEND_TYPE_STREAM 	: [ Uint8Array(...) , ...]
  *		APPEND_TYPE_FRAME	: [ {pts:xxx, data:Uint8Array(...) }, ...]
+ *      APPEND_TYPE_SEQUENCE  : [ [{pts:xxx, data:Uint8Array(...) }], ...]
  */
 module.exports = {
     // SLICE_TAG_AUDIO: 0x08,
@@ -13,10 +15,12 @@ module.exports = {
     // DISCONN_CMD: 1002,
     APPEND_TYPE_STREAM: 0x00,
     APPEND_TYPE_FRAME:  0x01,
+    APPEND_TYPE_SEQUENCE:  0x02, // sec
     DEFAULT_WIDTH:      400,
     DEFAULT_HEIGHT:     400,
     DEFAULT_FPS:        25,
     DEFAULT_FRAME_DUR:  40,
     DEFAULT_FIXED:      false,
-    DEFAULT_SAMPLERATE: 44100
+    DEFAULT_SAMPLERATE: 44100,
+    DEFAULT_CONSU_SAMPLE_LEN: 20
 }

@@ -36,7 +36,7 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         height: 600,
         sampleRate: sampleRate, 
         fps: fps,
-        appendHevcType: def.APPEND_TYPE_FRAME,
+        appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
         fixed: false // is strict to resolution?
     })
     player.setPlayingCall(videoPTS => {
@@ -50,9 +50,6 @@ window.onload = () => fetch(videoURL).then(res => res.arrayBuffer()).then(stream
         let feedLoop = window.setInterval(() => {
             const videoFrame = mp4Obj.popBuffer(1, sec);
             const audioFrame = mp4Obj.popBuffer(2, sec);
-            // console.log("feed=========================>" + sec);
-            // console.log(sec + " <======> " + durationSec);
-            // console.log(videoFrame);
             if (videoFrame != null) {
                 for (var i = 0; i < videoFrame.length; i++) {
                     player.appendHevcFrame(videoFrame[i]);

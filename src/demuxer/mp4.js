@@ -134,6 +134,8 @@ Mp4Parser.prototype.demux = function(dataStream) {
         height  : -1
     };
     _this.bufObject     = BUFFMOD();
+    // _this.video_start_time = -1;
+    // _this.audio_start_time = -1;
 
     /*
      * item : {pts: 0, frame: Uint8Array}
@@ -189,6 +191,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
                         frame = _this.setStartCode(data, true);
                     }
                     _this.bufObject.appendFrame(pts, frame, true, isKey);
+
                 } else if (id == 2) {
                     /*
                      * esds
