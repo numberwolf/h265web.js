@@ -57,7 +57,7 @@ ffmpeg -i input.mp4 \
 |-- dist
 |-- lib
 |-- src
-	|-- h265webjs.js
+    |-- h265webjs.js
     |-- decoder
         |-- audio.js
         |-- missile.js
