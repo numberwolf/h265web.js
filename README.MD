@@ -70,8 +70,8 @@ ffmpeg -i input.mp4 \
 |-- package.json
 |-- play.js
 |-- res
-	|-- LICENSE
-    |-- README_CHINESE.md
+|-- LICENSE
+|-- README_CHINESE.md
 |-- README.MD
 ```
 
