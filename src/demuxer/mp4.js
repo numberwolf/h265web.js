@@ -230,7 +230,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
 */
 
     this.mp4boxfile.onReady = function(info) {
-        console.log(info);
+        // console.log(info);
         _this.movieInfo = info;
         /*
         {
@@ -313,12 +313,17 @@ Mp4Parser.prototype.getSize = function() {
 }
 
 // @TODO
-Mp4Parser.prototype.seek = function(second) {
-    // if (second > 0) {
-    //     this.seekPos = parseInt(second);
-    //     console.log("to seek:" + this.seekPos);
-    //     this.mp4boxfile.seek(this.seekPos, true);
-    // }
+Mp4Parser.prototype.seek = function(pts) {
+    if (pts >= 0) {
+        // this.seekPos = parseInt(pts);
+        // console.log("to seek:" + this.seekPos);
+        // this.mp4boxfile.seek(this.seekPos, true);
+        // todo
+        let realPos = this.bufObject.seekIDR(pts);
+        this.seekPos = realPos;
+        console.log("toSeek: " + realPos);
+    }
+    // console.log(this.bufObject.idrIdxBuffer);
     // this.mp4boxfile.start();
 }
 

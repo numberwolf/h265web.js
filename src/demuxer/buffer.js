@@ -10,7 +10,12 @@ module.exports = () => {
 		 * ]
 		 */
 		videoBuffer: [],
-		audioBuffer: []
+		audioBuffer: [],
+		/**
+		 * Idr s
+		 * [0.00, ..., {pts}]
+		 */
+		idrIdxBuffer: []
 	};
 	bufferModule.appendFrame = (pts, data, video = true, isKey = false) => {
 		let frame = null;
@@ -25,6 +30,9 @@ module.exports = () => {
 				bufferModule.videoBuffer[idxPts].push(frame);
 			} else {
 				bufferModule.videoBuffer.push([frame]);
+			}
+			if (isKey) {
+				bufferModule.idrIdxBuffer.push(pts);
 			}
         } else {
         	// audio
@@ -50,6 +58,29 @@ module.exports = () => {
 			return;
 		}
 		return bufferModule.audioBuffer[ptsec];
+	};
+	bufferModule.seekIDR = (pts = -1.0) => {
+		if (pts < 0) {
+			return null;
+		}
+		let idxPts = parseInt(pts);
+		if (bufferModule.idrIdxBuffer.includes(pts)) {
+			return pts;
+		} else {
+			// Find IDR Frame Position
+			for (let i = 0; i < bufferModule.idrIdxBuffer.length; i++) {
+				/**
+				 * |-----[last]|
+				 *        ^ 
+				 * |-----[i] [i+1]----|
+				 *          ^ <- pts
+				 */
+				if (i == bufferModule.idrIdxBuffer.length ||
+					bufferModule.idrIdxBuffer[i] < pts && bufferModule.idrIdxBuffer[i+1] > pts) {
+					return bufferModule.idrIdxBuffer[i];
+				}
+			} // end for
+		}
 	};
 
 	return bufferModule;

@@ -13,6 +13,10 @@ module.exports = {
     // SLICE_TAG_VIDEO: 0x09,
     // PLAY_CMD: 1001,
     // DISCONN_CMD: 1002,
+    DEFAILT_WEBGL_PLAY_ID: "glplayer",
+    PLAYER_IN_TYPE_MP4: "mp4",
+    PLAYER_IN_TYPE_M3U8_VOD: "m3u8",
+    PLAYER_IN_TYPE_HLS: "hls",
     APPEND_TYPE_STREAM: 0x00,
     APPEND_TYPE_FRAME:  0x01,
     APPEND_TYPE_SEQUENCE:  0x02, // sec

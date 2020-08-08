@@ -4,9 +4,13 @@
     <link href="/favicon.ico" rel="icon" type="image/x-icon" />
     <meta charset="utf-8">
     <title>Player</title>
+    <script src='bundle_player.js'></script>
 </head>
 <body style="background-color: #666666">
     <div id="glplayer"></div>
-    <script src='bundle_player.js'></script>
+    <script>
+    	var h265webjs = makeH265webjs("/res/video.mp4", {type: "mp4", player: "glplayer"});
+    	h265webjs.do();
+    </script>
 </body>
 </html>

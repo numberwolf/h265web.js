@@ -39,7 +39,7 @@ module.exports = options => {
 			return null
 		}
 		try {
-			console.log("swap source " + sourceIndex + " to " + dstIndex)
+			// console.log("swap source " + sourceIndex + " to " + dstIndex)
 			audioModule.sourceList[sourceIndex].disconnect(audioModule.audioCtx.destination)
 			audioModule.sourceList[sourceIndex] = null
 		} catch (e) {
@@ -112,7 +112,7 @@ module.exports = options => {
 				) { // OK
 					addSure = true;
 				} else {
-					console.log("audio pts " + firstPts + ",VIDEO_PTS_VAL " + audioModule.alignVideoPTS);
+					// console.log("audio pts " + firstPts + ",VIDEO_PTS_VAL " + audioModule.alignVideoPTS);
 					if (distince > 0) {
 						// num: do not continue, or thread will be block
 						// console.log("continue await " + firstPts + "," + global.VIDEO_PTS_VAL);
@@ -124,7 +124,7 @@ module.exports = options => {
 					}
 
 					if (distince < 0) { // throw this frame
-						console.log("throw this frame");
+						// console.log("throw this frame");
 						track = audioModule.sampleQueue.shift();
 						firstPts = track["pts"];
 						// i++

@@ -14,6 +14,7 @@ module.exports = config => {
             sampleRate: config.sampleRate || def.DEFAULT_SAMPLERATE,
             appendHevcType: config.appendHevcType || def.APPEND_TYPE_STREAM,
             frameDur: config.frameDur || def.DEFAULT_FRAME_DUR,
+            playerId: config.player || def.DEFAILT_WEBGL_PLAY_ID
         },
         frameList: [],
         stream: new Uint8Array(),
@@ -58,7 +59,7 @@ module.exports = config => {
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             player.stream = new Uint8Array();
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
-            player.frameList.length = 0;
+            player.frameList = [];
         }
     }
     player.pause = () => {
@@ -73,11 +74,9 @@ module.exports = config => {
         }
         return false;
     }
-    // player.resetPTS = (ptsSec) => {
-    //     player.videoPTS = ptsSec || def.DEFAULT_PTS_SEC;
-    // }
+    // @TODO
     player.seek = (execCall, seekPos = -1) => {
-        player.pause()
+        player.pause();
         player.cleanSample();
         player.cleanVideoQueue();
         if (execCall) {
@@ -85,6 +84,8 @@ module.exports = config => {
         }
         player.isNewSeek = true;
         player.play(seekPos);
+        // temp set videoPTS to int() idx
+        player.videoPTS = parseInt(seekPos);
     }
     player.play = (seekPos = -1) => {
         player.isPlaying = true
@@ -253,7 +254,8 @@ module.exports = config => {
         }
         return [width, height]
     }
-    const canvasBox = document.querySelector('div#glplayer')
+    // const canvasBox = document.querySelector('div#glplayer')
+    const canvasBox = document.querySelector('div#' + player.config.playerId);
     canvasBox.style.backgroundColor = 'black'
     canvasBox.style.width = player.config.width + 'px'
     canvasBox.style.height = player.config.height + 'px'
@@ -266,6 +268,10 @@ module.exports = config => {
     player.canvasBox = canvasBox
     player.canvas = canvas
     player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
+
+    // toast
+    // const toast = document.createElement('div');
+
     // player.audio.init({
     //     sampleRate  : player.config.sampleRate,
     //     appendType  : player.config.appendHevcType
