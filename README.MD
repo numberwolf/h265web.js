@@ -3,11 +3,9 @@
 
 <img src="./res/logo@300x300.png" width="300px" />
 
-> Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 Discord:numberwolf#8694)
+* Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 Discord:numberwolf#8694)
 
-> LICENSE : GPL-3.0
-
-> https://www.gnu.org/licenses/gpl-3.0.md
+* LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
 ----------------------------------------
 
 * Capture
