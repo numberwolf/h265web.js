@@ -3,9 +3,14 @@
 
 <img src="./res/logo@300x300.png" width="300px" />
 
-* Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 Discord:numberwolf#8694)
+* Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 ,Discord:numberwolf#8694)
 
 * LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
+
+> If h265webjs help you, you can click star button, it offered me more impetus to develop h265webjs!  
+
+> `~^_^~`    
+
 ----------------------------------------
 
 * Capture
@@ -31,9 +36,11 @@
 
 ### Setup
 
->`npm i --save-dev` # devs only
+> Check wasm support: https://www.caniuse.com/#search=wasm
 
->`npm i` # normally
+> `npm i --save-dev` # devs only
+
+> `npm i` # normally
 
 ### Running 
 
@@ -57,7 +64,7 @@ ffmpeg -i input.mp4 \
 |-- dist
 |-- lib
 |-- src
-	|-- h265webjs.js
+    |-- h265webjs.js
     |-- decoder
         |-- audio.js
         |-- missile.js

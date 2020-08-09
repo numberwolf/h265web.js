@@ -3,14 +3,24 @@
 <head>
     <link href="/favicon.ico" rel="icon" type="image/x-icon" />
     <meta charset="utf-8">
-    <title>Player</title>
-    <script src='bundle_player.js'></script>
+    <title>h265webjs - https://github.com/numberwolf/h265web.js</title>
+    <meta charset="utf-8" name="author" content="ChangYanlong">
+    <meta charset="utf-8" name="email" content="porschegt23@foxmail.com">
+    <meta charset="utf-8" name="discord" content="numberwolf#8694">
+    <meta charset="utf-8" name="github" content="https://github.com/numberwolf/h265web.js">
+    <script src='h265webjs.js'></script>
 </head>
-<body style="background-color: #666666">
+<body>
     <div id="glplayer"></div>
     <script>
-    	var h265webjs = makeH265webjs("/res/video.mp4", {type: "mp4", player: "glplayer"});
-    	h265webjs.do();
+    	var url = "/res/video.mp4";
+    	var config = {
+    		type: "mp4", 
+    		player: "glplayer",
+    		width: 600,
+    		height: 600
+    	};
+    	makeH265webjs(url, config).do();
     </script>
 </body>
 </html>

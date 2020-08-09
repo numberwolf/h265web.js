@@ -46,11 +46,7 @@ module.exports = config => {
     }
     player.appendAACFrame = streamBytes => player.audio.addSample(streamBytes)
     player.endAudio = () => {
-        player.audio.stop()
-        // player.audio.init({
-        //     sampleRate  : player.config.sampleRate,
-        //     appendType  : player.config.appendHevcType
-        // })
+        player.audio.stop();
     }
     player.cleanSample = () => {
         player.audio.cleanQueue()
@@ -76,6 +72,7 @@ module.exports = config => {
     }
     // @TODO
     player.seek = (execCall, seekPos = -1) => {
+        let statusNow = player.isPlaying;
         player.pause();
         player.cleanSample();
         player.cleanVideoQueue();
@@ -83,9 +80,11 @@ module.exports = config => {
             execCall();
         }
         player.isNewSeek = true;
-        player.play(seekPos);
         // temp set videoPTS to int() idx
         player.videoPTS = parseInt(seekPos);
+        if (statusNow) {
+            player.play(seekPos);
+        }
     }
     player.play = (seekPos = -1) => {
         player.isPlaying = true
@@ -254,31 +253,24 @@ module.exports = config => {
         }
         return [width, height]
     }
-    // const canvasBox = document.querySelector('div#glplayer')
-    const canvasBox = document.querySelector('div#' + player.config.playerId);
-    canvasBox.style.backgroundColor = 'black'
-    canvasBox.style.width = player.config.width + 'px'
-    canvasBox.style.height = player.config.height + 'px'
-    const canvas = document.createElement('canvas')
-    canvas.style.width = canvasBox.clientWidth + 'px'
-    canvas.style.height = canvasBox.clientHeight + 'px'
-    canvas.style.top = '0px'
-    canvas.style.left = '0px'
-    canvasBox.appendChild(canvas)
-    player.canvasBox = canvasBox
-    player.canvas = canvas
-    player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
-
-    // toast
-    // const toast = document.createElement('div');
-
-    // player.audio.init({
-    //     sampleRate  : player.config.sampleRate,
-    //     appendType  : player.config.appendHevcType
-    // })
-    console.log('WASM initialized with code: ' + Module.cwrap('initMissile', 'number', [])())
-    console.log('Initialized Decoder with code: ' + Module.cwrap('initializeDecoder', 'number', [])())
-    console.log('player config', player.config)
-
-    return player
+    player.makeGL = () => {
+        const canvasBox = document.querySelector('div#' + player.config.playerId);
+        canvasBox.style.backgroundColor = 'black'
+        canvasBox.style.width = player.config.width + 'px'
+        canvasBox.style.height = player.config.height + 'px'
+        const canvas = document.createElement('canvas')
+        canvas.style.width = canvasBox.clientWidth + 'px'
+        canvas.style.height = canvasBox.clientHeight + 'px'
+        canvas.style.top = '0px'
+        canvas.style.left = '0px'
+        canvasBox.appendChild(canvas)
+        player.canvasBox = canvasBox
+        player.canvas = canvas
+        player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
+        // toast
+        // const toast = document.createElement('div');
+        // console.log('player config', player.config)
+    };
+    player.makeGL();
+    return player;
 }
