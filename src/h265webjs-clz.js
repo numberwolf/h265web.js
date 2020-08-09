@@ -1,12 +1,17 @@
 const Player = require('./decoder/player')
 const InitMp4Parser = require('./demuxer/mp4')
 const def = require('./consts')
+const Module = require('./decoder/missile.js')
 const durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
 
 class H265webjsClazz {
     /**
      * @param videoURL String
-     * @param config Dict: {player : string}
+     * @param config Dict: {
+     *              player : string
+     *              width : int32
+     *              height : int32
+     * }
      */
     constructor(videoURL, config) {
         this.videoURL = videoURL;
@@ -15,14 +20,31 @@ class H265webjsClazz {
 
     do() {
         let type = this.config.type || def.PLAYER_IN_TYPE_MP4;
-        let playerId = this.config.player || def.DEFAILT_WEBGL_PLAY_ID;
-
         let configFormat = {
-            playerId : playerId
+            playerId : this.config.player || def.DEFAILT_WEBGL_PLAY_ID,
+            playerW : this.config.width || def.DEFAULT_WIDTH,
+            playerH : this.config.height || def.DEFAULT_HEIGHT
         };
-        if (type == def.PLAYER_IN_TYPE_MP4) {
-            this.makeMP4Player(configFormat);
-        }
+        if (!window.WebAssembly) {
+            let tip = 'unsupport WASM!';
+            if (/iPhone|iPad/.test(window.navigator.userAgent)) {
+                tip += ' ios:min-version 11'
+            }
+            alert(tip);
+            alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
+        } else {
+            console.log("to onRuntimeInitialized");
+            Module.onRuntimeInitialized = () => {
+                console.log('WASM initialized');
+                Module.cwrap('initMissile', 'number', [])();
+                console.log('Initialized Decoder');
+                Module.cwrap('initializeDecoder', 'number', [])();
+
+                if (type == def.PLAYER_IN_TYPE_MP4) {
+                    this.makeMP4Player(configFormat);
+                }
+            };
+        } // end if c
     }
 
     makeMP4Player(configFormat) {
@@ -53,9 +75,9 @@ class H265webjsClazz {
             const durationSec = parseInt(durationMs / 1000);
 
             const player = Player({
-                width: 600,
-                height: 600,
-                sampleRate: sampleRate, 
+                width: configFormat.playerW,
+                height: configFormat.playerH,
+                sampleRate: sampleRate,
                 fps: fps,
                 appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
                 fixed: false, // is strict to resolution?
@@ -129,7 +151,7 @@ class H265webjsClazz {
             play.onclick = () => {
                 player.isPlaying = !player.isPlaying
                 play.textContent = player.isPlaying ? '[||]' : '[>]'
-                if(player.isPlaying) {
+                if (player.isPlaying) {
                     // // demux mp4
                     // mp4Obj.demux(streamBuffer)
                     // const durationMs  = mp4Obj.getDurationMs()
@@ -146,7 +168,7 @@ class H265webjsClazz {
                     player.play(mp4Obj.seekPos)
                 } else player.pause()
             } // player.stop()
-        });
+        }); // end fetch
     }
 }
 
