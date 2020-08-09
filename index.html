@@ -12,6 +12,7 @@
 </head>
 <body>
     <div id="glplayer"></div>
+    <div id="glplayer2"></div>
     <script>
     	var url = "/res/video.mp4";
     	var config = {
@@ -20,7 +21,8 @@
     		width: 600,
     		height: 600
     	};
-    	makeH265webjs(url, config).do();
-    </script>
+    	var h265 = makeH265webjs(url, config);
+    	h265.do();
+	</script>
 </body>
 </html>

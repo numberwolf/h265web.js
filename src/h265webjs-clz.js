@@ -1,8 +1,8 @@
-const Player = require('./decoder/player')
-const InitMp4Parser = require('./demuxer/mp4')
-const def = require('./consts')
-const Module = require('./decoder/missile.js')
-const durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
+var Player = require('./decoder/player')
+var InitMp4Parser = require('./demuxer/mp4')
+var def = require('./consts')
+var Module = require('./decoder/missile.js')
+var durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
 
 class H265webjsClazz {
     /**
@@ -14,6 +14,11 @@ class H265webjsClazz {
      * }
      */
     constructor(videoURL, config) {
+        this.mp4Obj = null;
+        this.progress = null;
+        this.timerFeed = null;
+        this.player = null;
+
         this.videoURL = videoURL;
         this.config = config;
     }
@@ -48,6 +53,7 @@ class H265webjsClazz {
     }
 
     makeMP4Player(configFormat) {
+        let _this = this;
         fetch(this.videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
             const status = document.createElement('div')
             status.textContent = 'Loading...'
@@ -55,26 +61,26 @@ class H265webjsClazz {
             play.textContent = '[>]'
             play.disabled = true
             const ptsLabel = document.createElement('span')
-            const progress = document.createElement('progress')
-            progress.value = 0
+            this.progress = document.createElement('progress')
+            this.progress.value = 0
             document.body.appendChild(status)
             document.body.appendChild(play)
             document.body.appendChild(ptsLabel)
-            document.body.appendChild(progress)
+            document.body.appendChild(this.progress)
             // demux mp4
-            let timerFeed = null;
-            const mp4Obj = new InitMp4Parser()
-            mp4Obj.demux(streamBuffer)
-            mp4Obj.seek(-1);
-            const durationMs  = mp4Obj.getDurationMs()
-            const fps         = mp4Obj.getFPS()
-            const sampleRate  = mp4Obj.getSampleRate()
-            const size        = mp4Obj.getSize()
-            ptsLabel.textContent = '0:0:0/' + durationText(progress.max = durationMs / 1000)
+            this.timerFeed = null;
+            this.mp4Obj = new InitMp4Parser()
+            this.mp4Obj.demux(streamBuffer)
+            this.mp4Obj.seek(-1);
+            const durationMs  = this.mp4Obj.getDurationMs()
+            const fps         = this.mp4Obj.getFPS()
+            const sampleRate  = this.mp4Obj.getSampleRate()
+            const size        = this.mp4Obj.getSize()
+            ptsLabel.textContent = '0:0:0/' + durationText(this.progress.max = durationMs / 1000)
             // dur seconds
             const durationSec = parseInt(durationMs / 1000);
 
-            const player = Player({
+            this.player = Player({
                 width: configFormat.playerW,
                 height: configFormat.playerH,
                 sampleRate: sampleRate,
@@ -83,25 +89,25 @@ class H265webjsClazz {
                 fixed: false, // is strict to resolution?
                 playerId: configFormat.playerId
             })
-            player.setPlayingCall(videoPTS => {
-                progress.value = videoPTS
+            this.player.setPlayingCall(videoPTS => {
+                this.progress.value = videoPTS
                 const now = durationText(videoPTS)
                 const total = durationText(durationMs / 1000)
                 ptsLabel.textContent = `${now}/${total}`
             })
             //TODO: get all the data at once syncronously or feed data through a callback if streamed
             const feedMP4Data = (secIdx=0, idrIdx=0) => {
-                timerFeed = window.setInterval(() => {
-                    const videoFrame = mp4Obj.popBuffer(1, secIdx);
-                    const audioFrame = mp4Obj.popBuffer(2, secIdx);
+                this.timerFeed = window.setInterval(() => {
+                    const videoFrame = this.mp4Obj.popBuffer(1, secIdx);
+                    const audioFrame = this.mp4Obj.popBuffer(2, secIdx);
                     if (videoFrame != null) {
                         for (var i = 0; i < videoFrame.length; i++) {
-                            player.appendHevcFrame(videoFrame[i]);
+                            this.player.appendHevcFrame(videoFrame[i]);
                         }
                     }
                     if (audioFrame != null) {
                         for (var i = 0; i < audioFrame.length; i++) {
-                            player.appendAACFrame(audioFrame[i]);
+                            this.player.appendAACFrame(audioFrame[i]);
                         }
                     }
                     if (videoFrame != null || audioFrame != null) {
@@ -110,8 +116,8 @@ class H265webjsClazz {
                     
                     // console.log(secIdx + "," + durationSec);
                     if (secIdx >= durationSec) {
-                        window.clearInterval(timerFeed);
-                        timerFeed = null;
+                        window.clearInterval(this.timerFeed);
+                        this.timerFeed = null;
                         console.log("loading finished");
                         return;
                     }
@@ -125,33 +131,33 @@ class H265webjsClazz {
             /**
              * SEEK Progress
              */
-            progress.addEventListener('click', function (e) {
-                var x = e.pageX - this.offsetLeft; // or e.offsetX (less support, though)
-                var y = e.pageY - this.offsetTop;  // or e.offsetY
-                var clickedValue = x * this.max / this.offsetWidth;
+            _this.progress.addEventListener('click', (e) => {
+                let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
+                let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
+                let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
                 // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
-                if (timerFeed) {
-                    window.clearInterval(timerFeed);
-                    timerFeed = null;
+                if (_this.timerFeed) {
+                    window.clearInterval(_this.timerFeed);
+                    _this.timerFeed = null;
                 }
-                player.seek(() => {
-                    mp4Obj.seek(clickedValue);
+                _this.player.seek(() => {
+                    _this.mp4Obj.seek(clickedValue);
                     // temp : give idx to feed and seek
-                    feedMP4Data(parseInt(mp4Obj.seekPos), clickedValue);
+                    feedMP4Data(parseInt(_this.mp4Obj.seekPos), clickedValue);
                 }, clickedValue);
             });
 
-            player.setDurationMs(durationMs)
+            this.player.setDurationMs(durationMs)
             // player.setSize(size.width, size.height)
-            player.setFrameRate(fps)
+            this.player.setFrameRate(fps)
             feedMP4Data(0)
             
             status.textContent = ''
             play.disabled = false
             play.onclick = () => {
-                player.isPlaying = !player.isPlaying
-                play.textContent = player.isPlaying ? '[||]' : '[>]'
-                if (player.isPlaying) {
+                this.player.isPlaying = !this.player.isPlaying
+                play.textContent = this.player.isPlaying ? '[||]' : '[>]'
+                if (this.player.isPlaying) {
                     // // demux mp4
                     // mp4Obj.demux(streamBuffer)
                     // const durationMs  = mp4Obj.getDurationMs()
@@ -165,9 +171,9 @@ class H265webjsClazz {
                     // player.setFrameRate(fps)
 
                     // feedMP4Data()
-                    player.play(mp4Obj.seekPos)
-                } else player.pause()
-            } // player.stop()
+                    this.player.play(this.mp4Obj.seekPos)
+                } else this.player.pause()
+            } // this.player.stop()
         }); // end fetch
     }
 }
