@@ -14,7 +14,7 @@ module.exports = config => {
             sampleRate: config.sampleRate || def.DEFAULT_SAMPLERATE,
             appendHevcType: config.appendHevcType || def.APPEND_TYPE_STREAM,
             frameDur: config.frameDur || def.DEFAULT_FRAME_DUR,
-            playerId: config.player || def.DEFAILT_WEBGL_PLAY_ID
+            playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID
         },
         frameList: [],
         stream: new Uint8Array(),
@@ -254,11 +254,12 @@ module.exports = config => {
         return [width, height]
     }
     player.makeGL = () => {
-        const canvasBox = document.querySelector('div#' + player.config.playerId);
+        let canvasBox = document.querySelector('div#' + player.config.playerId);
+        canvasBox.style.position = 'relative';
         canvasBox.style.backgroundColor = 'black'
         canvasBox.style.width = player.config.width + 'px'
         canvasBox.style.height = player.config.height + 'px'
-        const canvas = document.createElement('canvas')
+        let canvas = document.createElement('canvas')
         canvas.style.width = canvasBox.clientWidth + 'px'
         canvas.style.height = canvasBox.clientHeight + 'px'
         canvas.style.top = '0px'

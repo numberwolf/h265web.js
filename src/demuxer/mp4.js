@@ -321,7 +321,7 @@ Mp4Parser.prototype.seek = function(pts) {
         // todo
         let realPos = this.bufObject.seekIDR(pts);
         this.seekPos = realPos;
-        console.log("toSeek: " + realPos);
+        // console.log("toSeek: " + realPos);
     }
     // console.log(this.bufObject.idrIdxBuffer);
     // this.mp4boxfile.start();

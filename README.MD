@@ -14,7 +14,7 @@
 ----------------------------------------
 
 * Capture
-> <img src="./res/show.png" width="600px" />
+> <img src="./res/demo.png" width="600px" />
 
 ### Features
 
@@ -26,11 +26,15 @@
 
 * Seek with nearly IDR frame
 
+* Support Play/Pause control by click player
+
+* Toast of remind
+
+* Protect your website video playing keep away from malicious adver
+
 ### TodoList
 
 * Seek with P/B Frame
-
-* Toast of remind
 
 * Support HLS/M3u8-Vod
 
