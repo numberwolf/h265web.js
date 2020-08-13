@@ -255,6 +255,7 @@ module.exports = config => {
     }
     player.makeGL = () => {
         let canvasBox = document.querySelector('div#' + player.config.playerId);
+        canvasBox.style.position = 'relative';
         canvasBox.style.backgroundColor = 'black'
         canvasBox.style.width = player.config.width + 'px'
         canvasBox.style.height = player.config.height + 'px'
