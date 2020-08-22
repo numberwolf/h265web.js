@@ -50,7 +50,8 @@ class H265webjsClazz {
                 if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
                     _this.makeMP4Player(_this.configFormat);
                     _this.playerUtilBuildMask();
-                    _this.playUtilHiddenMask();
+                    // _this.playUtilHiddenMask();
+                    this.playUtilShowMask();
                 }
             };
         } // end if c
@@ -112,10 +113,10 @@ class H265webjsClazz {
         // maskFg.style.filter = 'alpha(opacity=0)';
         // maskFg.innerHTML = ">>>>>>>>>>>>>>..";
 
-        maskImg.style.width = '20%'
-        maskImg.style.height = '20%'
-        maskImg.style.top = '40%'
-        maskImg.style.left = '40%'
+        maskImg.style.width = '30%'
+        maskImg.style.height = '30%'
+        maskImg.style.top = '35%'
+        maskImg.style.left = '35%'
         maskImg.style.display = 'block';
         maskImg.style.position = 'absolute';
         maskImg.style.zIndex = '1001';
