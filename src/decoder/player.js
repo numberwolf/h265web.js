@@ -196,6 +196,7 @@ module.exports = config => {
                 if (show) {
                     const width = Module.HEAPU32[ptr / 4]
                     const height = Module.HEAPU32[ptr / 4 + 1]
+                    
                     const imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
                     const sizeWH = width * height
                     const imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
