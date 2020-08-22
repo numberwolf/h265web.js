@@ -31,9 +31,9 @@ server.createServer({
                 close: () => {}
             }
         },
-        {url: '/missile.wasm', get: ctx => {
+        {url: '/dist/missile.wasm', get: ctx => {
             ctx.res.writeHead(200, { accept: '*', 'content-type': 'application/wasm'})
-            ctx.res.end(fs.readFileSync('./missile.wasm'))
+            ctx.res.end(fs.readFileSync('./dist/missile.wasm'))
         }},
         {url: '/*', get: server.staticFileServer('.')}
     ]
