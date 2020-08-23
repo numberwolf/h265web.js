@@ -48,7 +48,7 @@
 
 ### Example
 
-> 1. You can running demo on <Running> Step.
+> 1. You can running demo on Running Step.
 
 > 2. How to use it? See play.js + index.html
 
