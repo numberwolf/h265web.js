@@ -1,6 +1,6 @@
 // buffer
 module.exports = () => {
-	const bufferModule = {
+	let bufferModule = {
 		/**
 		 * [
 		 *	[{pts: 0.01, isKey: true, data: uint8array(...)}, {}, ..., {}] 0 sec / index

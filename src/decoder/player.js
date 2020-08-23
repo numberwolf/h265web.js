@@ -1,11 +1,11 @@
 //TODO: separate out the canvas logic and the hevc decoder logic
-const YUVBuffer = require('yuv-buffer')
-const YUVCanvas = require('yuv-canvas')
-const Module = require('./missile.js')
-const AudioModule = require('./audio')
-const def = require('../consts')
+var YUVBuffer = require('yuv-buffer')
+var YUVCanvas = require('yuv-canvas')
+var Module = require('./missile.js')
+var AudioModule = require('./audio')
+var def = require('../consts')
 module.exports = config => {
-    const player = {
+    let player = {
         config: {
             width: config.width || def.DEFAULT_WIDTH,
             height: config.height || def.DEFAULT_HEIGHT,
@@ -137,19 +137,19 @@ module.exports = config => {
             if (i + 5 >= player.stream.length) {
                 if (startTag == -1) return false;
                 else {
-                    const ret = player.stream.subarray(startTag)
+                    let ret = player.stream.subarray(startTag)
                     player.stream = new Uint8Array()
                     return ret
                 }
             }
             // find nal
-            const is3BitHeader = player.stream.slice(0, 3).join(' ') == '0 0 1'
-            const is4BitHeader = player.stream.slice(0, 4).join(' ') == '0 0 0 1'
+            let is3BitHeader = player.stream.slice(0, 3).join(' ') == '0 0 1'
+            let is4BitHeader = player.stream.slice(0, 4).join(' ') == '0 0 0 1'
             if (is3BitHeader || is4BitHeader) {
                 if (startTag == -1) startTag = i
                 else {
                     if (onceGetNalCount <= 1) {
-                        const ret = player.stream.subarray(startTag, i)
+                        let ret = player.stream.subarray(startTag, i)
                         player.stream = player.stream.subarray(i)
                         return ret
                     }
@@ -172,7 +172,7 @@ module.exports = config => {
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             nalBuf = player.nextNalu() // nal
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
-            const frame = player.frameList.shift() // nal
+            let frame = player.frameList.shift() // nal
             !frame && console.log('got empty frame')
             if(!frame) {
                 return false //TODO: remove
@@ -184,27 +184,27 @@ module.exports = config => {
             return false
         }
         if (nalBuf != false) {
-            const offset = Module._malloc(nalBuf.length)
+            let offset = Module._malloc(nalBuf.length)
             Module.HEAP8.set(nalBuf, offset)
-            const decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length)
+            let decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length)
             if (decRet >= 0) {
-                const ptr = Module.cwrap('getFrame', 'number', [])()
+                let ptr = Module.cwrap('getFrame', 'number', [])()
                 if(!ptr) {
                     throw new Error('ERROR ptr is not a Number!')
                 }
                 // sub block [m,n] //TODO: put all of this into a nextFrame() function
                 if (show) {
-                    const width = Module.HEAPU32[ptr / 4]
-                    const height = Module.HEAPU32[ptr / 4 + 1]
+                    let width = Module.HEAPU32[ptr / 4]
+                    let height = Module.HEAPU32[ptr / 4 + 1]
                     
-                    const imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
-                    const sizeWH = width * height
-                    const imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
-                    const imageBufferB = Module.HEAPU8.subarray(
+                    let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
+                    let sizeWH = width * height
+                    let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
+                    let imageBufferB = Module.HEAPU8.subarray(
                         imgBufferPtr + sizeWH + 8, 
                         imgBufferPtr + sizeWH + 8 + sizeWH / 4
                     )
-                    const imageBufferR = Module.HEAPU8.subarray(
+                    let imageBufferR = Module.HEAPU8.subarray(
                         imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
                         imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
                     )
@@ -218,8 +218,8 @@ module.exports = config => {
     }
     //canvas related functions
     player.drawImage = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
-        const displayWH = player.checkDisplaySize(width, height) // TODO: only need to do this for one frame or not at all
-        const format = YUVBuffer.format({
+        let displayWH = player.checkDisplaySize(width, height) // TODO: only need to do this for one frame or not at all
+        let format = YUVBuffer.format({
             width:          width,
             height:         height,
             chromaWidth:    width/2,
@@ -227,7 +227,7 @@ module.exports = config => {
             displayWidth:   player.canvas.offsetWidth,
             displayHeight:  player.canvas.offsetHeight
         })
-        const frame = YUVBuffer.frame(format)
+        let frame = YUVBuffer.frame(format)
         frame.y.bytes = imageBufferY
         frame.y.stride = width
         frame.u.bytes = imageBufferB
@@ -237,16 +237,16 @@ module.exports = config => {
         player.yuv.drawFrame(frame)
     }
     player.checkDisplaySize = (widthIn, heightIn) => {
-        const biggerWidth = widthIn / player.config.width > heightIn / player.config.height
-        const fixedWidth = (player.config.width / widthIn).toFixed(2)
-        const fixedHeight = (player.config.height / heightIn).toFixed(2)
-        const scaleRatio = biggerWidth ? fixedWidth : fixedHeight
-        const isFixed = player.config.fixed
-        const width = isFixed ? player.config.width : parseInt(widthIn  * scaleRatio)
-        const height = isFixed ? player.config.height : parseInt(heightIn * scaleRatio)
+        let biggerWidth = widthIn / player.config.width > heightIn / player.config.height
+        let fixedWidth = (player.config.width / widthIn).toFixed(2)
+        let fixedHeight = (player.config.height / heightIn).toFixed(2)
+        let scaleRatio = biggerWidth ? fixedWidth : fixedHeight
+        let isFixed = player.config.fixed
+        let width = isFixed ? player.config.width : parseInt(widthIn  * scaleRatio)
+        let height = isFixed ? player.config.height : parseInt(heightIn * scaleRatio)
         if (player.canvas.offsetWidth != width || player.canvas.offsetHeight != height) {
-            const topMargin = parseInt((player.canvasBox.offsetHeight - height) / 2)
-            const leftMargin = parseInt((player.canvasBox.offsetWidth - width) / 2)
+            let topMargin = parseInt((player.canvasBox.offsetHeight - height) / 2)
+            let leftMargin = parseInt((player.canvasBox.offsetWidth - width) / 2)
             player.canvas.style.marginTop = topMargin + 'px'
             player.canvas.style.marginLeft = leftMargin + 'px'
             player.canvas.style.width = width + 'px'
@@ -270,8 +270,8 @@ module.exports = config => {
         player.canvas = canvas
         player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
         // toast
-        // const toast = document.createElement('div');
-        // console.log('player config', player.config)
+        // let toast = document.createElement('div');
+        console.log('player config', player.config)
     };
     player.makeGL();
     return player;

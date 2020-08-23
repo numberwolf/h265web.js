@@ -1,10 +1,13 @@
 var Player = require('./decoder/player')
 var InitMp4Parser = require('./demuxer/mp4')
 var def = require('./consts')
+var staticMem = require('./utils/static-mem')
 var Module = require('./decoder/missile.js')
 var durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
 
 class H265webjsClazz {
+    // static myStaticProp = 42;
+
     /**
      * @param videoURL String
      * @param config Dict: {
@@ -45,20 +48,33 @@ class H265webjsClazz {
             alert(tip);
             alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
         } else {
-            console.log("to onRuntimeInitialized");
-            Module.onRuntimeInitialized = () => {
-                console.log('WASM initialized');
-                Module.cwrap('initMissile', 'number', [])();
-                console.log('Initialized Decoder');
-                Module.cwrap('initializeDecoder', 'number', [])();
-
+            console.log("to onRuntimeInitialized " 
+                + global.STATIC_MEM_wasmDecoderState);
+            if (global.STATIC_MEM_wasmDecoderState == 1) {
+                console.log("wasm already inited!");
                 if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
                     _this.makeMP4Player(_this.configFormat);
                     _this.playerUtilBuildMask();
                     // _this.playUtilHiddenMask();
                     this.playUtilShowMask();
                 }
-            };
+            } else {
+                Module.onRuntimeInitialized = () => {
+                    global.STATIC_MEM_wasmDecoderState = 1;
+
+                    console.log('WASM initialized ' + global.STATIC_MEM_wasmDecoderState);
+                    Module.cwrap('initMissile', 'number', [])();
+                    console.log('Initialized Decoder');
+                    Module.cwrap('initializeDecoder', 'number', [])();
+
+                    if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
+                        _this.makeMP4Player(_this.configFormat);
+                        _this.playerUtilBuildMask();
+                        // _this.playUtilHiddenMask();
+                        this.playUtilShowMask();
+                    }
+                };
+            }
         } // end if c
     }
 
