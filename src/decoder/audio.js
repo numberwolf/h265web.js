@@ -86,7 +86,7 @@ module.exports = options => {
 			return 1
 		}
 
-		// AAC 1frame= 1024*1000000/44100 = 22.2ms
+		// AAC 1frame= 1024*1000000/44100/1000 = 23.2ms
 		// ~ 0.02s * 20 ~ 0.4s
 		let mergeBuf = null;
 		let maxCount = audioModule.sampleQueue.length >= def.DEFAULT_CONSU_SAMPLE_LEN ? def.DEFAULT_CONSU_SAMPLE_LEN : audioModule.sampleQueue.length;

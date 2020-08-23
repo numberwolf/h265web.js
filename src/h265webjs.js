@@ -15,10 +15,15 @@ class H265webjsClazz {
      */
     constructor(videoURL, config) {
         this.mp4Obj = null;
+        this.hlsObj = null; // @Todo
+
+        // util
         this.progress = null;
         this.timerFeed = null;
         this.player = null;
         this.playBar = null;
+        this.status = null;
+        this.ptsLabel = null;
         this.controlBar = null;
 
         this.videoURL = videoURL;
@@ -50,7 +55,8 @@ class H265webjsClazz {
                 if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
                     _this.makeMP4Player(_this.configFormat);
                     _this.playerUtilBuildMask();
-                    _this.playUtilHiddenMask();
+                    // _this.playUtilHiddenMask();
+                    this.playUtilShowMask();
                 }
             };
         } // end if c
@@ -197,9 +203,9 @@ class H265webjsClazz {
         this.controlBar.style.position = 'absolute';
         this.controlBar.style.zIndex = '1003';
 
-        let status = document.createElement('div')
-        status.style.color = 'white';
-        status.textContent = 'Loading...'
+        this.status = document.createElement('div')
+        this.status.style.color = 'white';
+        this.status.textContent = 'Loading...'
 
         _this.playBar = document.createElement('button')
         _this.playBar.textContent = '>'
@@ -207,22 +213,37 @@ class H265webjsClazz {
         _this.playBar.style.width = '5%'
         _this.playBar.style.margin = '3px'
 
-        let ptsLabel = document.createElement('span')
-        ptsLabel.style.color = 'white';
-        ptsLabel.style.float = 'right';
-        ptsLabel.style.margin = '3px'
+        this.ptsLabel = document.createElement('span')
+        this.ptsLabel.style.color = 'white';
+        this.ptsLabel.style.float = 'right';
+        this.ptsLabel.style.margin = '3px'
 
         this.progress = document.createElement('progress')
         this.progress.value = 0
         this.playUtilProgress();
         this.controlBar.appendChild(this.progress)
-        this.controlBar.appendChild(status)
+        this.controlBar.appendChild(this.status)
         this.controlBar.appendChild(_this.playBar)
-        this.controlBar.appendChild(ptsLabel)
-        
-        
+        this.controlBar.appendChild(this.ptsLabel)
 
-        // document.body.appendChild(controlBar)
+        /*
+         * Switch Media
+         */
+        if (this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
+            this.mp4Entry();
+        }
+
+    }
+
+    /********************************************************************
+     ********************************************************************
+     ********************                    ****************************
+     ********************     media type     ****************************
+     ********************                    ****************************
+     ********************************************************************
+     ********************************************************************/
+    mp4Entry() {
+        let _this = this;
 
         fetch(this.videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
             
@@ -235,7 +256,7 @@ class H265webjsClazz {
             let fps         = this.mp4Obj.getFPS()
             let sampleRate  = this.mp4Obj.getSampleRate()
             let size        = this.mp4Obj.getSize()
-            ptsLabel.textContent = '0:0:0/' + durationText(this.progress.max = durationMs / 1000)
+            this.ptsLabel.textContent = '0:0:0/' + durationText(this.progress.max = durationMs / 1000)
             // dur seconds
             let durationSec = parseInt(durationMs / 1000);
 
@@ -252,7 +273,7 @@ class H265webjsClazz {
                 this.progress.value = videoPTS
                 let now = durationText(videoPTS)
                 let total = durationText(durationMs / 1000)
-                ptsLabel.textContent = `${now}/${total}`
+                _this.ptsLabel.textContent = `${now}/${total}`
             })
             //TODO: get all the data at once syncronously or feed data through a callback if streamed
             let feedMP4Data = (secIdx=0, idrIdx=0) => {
@@ -311,13 +332,14 @@ class H265webjsClazz {
             _this.player.setFrameRate(fps)
             feedMP4Data(0)
             
-            status.textContent = ''
+            _this.status.textContent = ''
             _this.playBar.disabled = false
             _this.playBar.onclick = () => {
                 _this.playControl();
             } // this.player.stop()
         }); // end fetch
     }
+
 }
 
 exports.H265webjs = H265webjsClazz;
