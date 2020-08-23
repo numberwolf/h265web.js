@@ -46,6 +46,12 @@
 
 > `npm i` # normally
 
+### Example
+
+> 1. You can running demo on <Running> Step.
+
+> 2. How to use it? See play.js + index.html
+
 ### Running 
 
 >`npm start` # just want to test and see, open 127.0.0.1:8999
@@ -57,7 +63,8 @@
 ```bash
 ffmpeg -i input.mp4 \
 -vcodec libx265 -pix_fmt \
--acodec aac -preset medium -maxrate 1000k -bufsize 1000k \
+-acodec aac -ac 2 -ar 44100 \
+-preset medium -maxrate 1000k -bufsize 1000k \
 -vtag hev1 \
 -y video.mp4
 ```
