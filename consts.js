@@ -15,6 +15,8 @@ module.exports = {
     // DISCONN_CMD: 1002,
     DEFAILT_WEBGL_PLAY_ID: "glplayer",
     PLAYER_IN_TYPE_MP4: "mp4",
+    PLAYER_IN_TYPE_TS: "ts",
+    PLAYER_IN_TYPE_MPEGTS: "mpegts",
     PLAYER_IN_TYPE_M3U8_VOD: "m3u8",
     PLAYER_IN_TYPE_M3U8_LIVE: "hls",
     APPEND_TYPE_STREAM: 0x00,

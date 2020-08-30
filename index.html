@@ -12,17 +12,24 @@
 </head>
 <body>
     <div id="glplayer"></div>
-    <!-- <div id="glplayer2"></div> -->
     <script>
     	var url = "/res/video.mp4";
     	var config = {
-    		type: "mp4", 
+    		type: "mp4",
     		player: "glplayer",
     		width: 600,
     		height: 600
     	};
-    	var h265 = makeH265webjs(url, config);
-    	h265.do();
+    	makeH265webjs(url, config).do();
+
+    	// var url = "/res/veilside.ts";
+    	// var config = {
+    	// 	type: "ts",
+    	// 	player: "glplayer",
+    	// 	width: 600,
+    	// 	height: 600
+    	// };
+    	// makeH265webjs(url, config).do();
 	</script>
 </body>
 </html>

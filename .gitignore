@@ -16,3 +16,5 @@ node_modules
 bundle_player.js
 # Others
 VideoMissileServerDemo
+
+res/

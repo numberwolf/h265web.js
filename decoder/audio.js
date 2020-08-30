@@ -1,9 +1,9 @@
 const AudioContext 	= window.AudioContext || window.webkitAudioContext;
-const AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame
-const def = require('../consts');
+var AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame
+var def = require('../consts');
 
 module.exports = options => {
-	const audioModule = {
+	let audioModule = {
 		options: {
 			sampleRate: options.sampleRate || 44100,
 			appendType: options.appendType || def.APPEND_TYPE_STREAM
@@ -126,7 +126,9 @@ module.exports = options => {
 					if (distince < 0) { // throw this frame
 						// console.log("throw this frame");
 						track = audioModule.sampleQueue.shift();
-						firstPts = track["pts"];
+						if (track && track != null && track != undefined) {
+							firstPts = track["pts"];
+						}
 						// i++
 						continue;
 					}

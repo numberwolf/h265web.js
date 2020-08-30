@@ -11,6 +11,8 @@
 
 > `~^_^~`    
 
+
+
 ----------------------------------------
 
 * Capture
@@ -21,6 +23,8 @@
 * Support all yuv pixel formats
 
 * Support mp4 box
+
+* Support mpegTS box (depend on: [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) , (Git: https://github.com/numberwolf/MPEG-Demuxer.js)
 
 * Play/pause/stop
 
@@ -41,8 +45,6 @@
 ### Setup
 
 > Check wasm support: https://www.caniuse.com/#search=wasm
-
-> `npm i --save-dev` # devs only
 
 > `npm i` # normally
 
