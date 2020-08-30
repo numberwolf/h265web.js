@@ -16,6 +16,10 @@ module.exports = config => {
             frameDur: config.frameDur || def.DEFAULT_FRAME_DUR,
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID
         },
+        /*
+         * frame.data
+         * frame.pts
+         */
         frameList: [],
         stream: new Uint8Array(),
         audio: AudioModule({
@@ -23,7 +27,7 @@ module.exports = config => {
             appendType: config.appendHevcType
         }),
         durationMs: -1.0,
-        videoPTS: -1,
+        videoPTS: 0,
         loop: null,
         isPlaying: false,
         playingCallback : null,
@@ -65,6 +69,7 @@ module.exports = config => {
     }
     player.checkFinished = () => {
         if (player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
+            // console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
             player.pause();
             return true;
         }
@@ -88,12 +93,14 @@ module.exports = config => {
     }
     player.play = (seekPos = -1) => {
         player.isPlaying = true
+        // console.log("videoPTS:" + player.videoPTS);
         if (player.videoPTS >= seekPos && !player.isNewSeek) {
             player.loop = window.setInterval(() => {
                 player.playFrame(true)
                 if (!player.checkFinished()) {
                     player.playingCallback && player.playingCallback(player.videoPTS)
                 }
+                // console.log("videoPTS:" + player.videoPTS);
             }, 1000 / player.config.fps)
 
             player.audio.play()
@@ -127,7 +134,7 @@ module.exports = config => {
         player.stream = new Uint8Array()
         player.frameList.length = 0
         player.durationMs = -1.0
-        player.videoPTS = -1
+        player.videoPTS = 0
         player.isPlaying = false
     }
     player.nextNalu = (onceGetNalCount=1) => {
@@ -168,6 +175,7 @@ module.exports = config => {
         }
     }
     player.playFrame = (show = false) => {
+        // console.log(show);
         let nalBuf  = null
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             nalBuf = player.nextNalu() // nal
@@ -177,6 +185,7 @@ module.exports = config => {
             if(!frame) {
                 return false //TODO: remove
             }
+            // console.log(frame);
             nalBuf = frame.data
             player.videoPTS = frame.pts
             player.audio.setAlignVPTS(frame.pts)
@@ -184,24 +193,40 @@ module.exports = config => {
             return false
         }
         if (nalBuf != false) {
-            let offset = Module._malloc(nalBuf.length)
-            Module.HEAP8.set(nalBuf, offset)
-            let decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length)
-            if (decRet >= 0) {
-                let ptr = Module.cwrap('getFrame', 'number', [])()
+            // console.log(nalBuf);
+
+            let offset = Module._malloc(nalBuf.length);
+            Module.HEAP8.set(nalBuf, offset);
+
+            let decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length);
+            // console.log(decRet);
+
+            if (decRet < 0) {
+                Module._free(offset);
+                return false;
+            }
+
+            // while (decRet == 0) {
+            //     decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length);
+            //     console.log(decRet);
+            // }
+
+            if (decRet > 0) {
+                let ptr = Module.cwrap('getFrame', 'number', [])();
                 if(!ptr) {
-                    throw new Error('ERROR ptr is not a Number!')
+                    throw new Error('ERROR ptr is not a Number!');
                 }
                 // sub block [m,n] //TODO: put all of this into a nextFrame() function
                 if (show) {
-                    let width = Module.HEAPU32[ptr / 4]
-                    let height = Module.HEAPU32[ptr / 4 + 1]
-                    
+                    let width = Module.HEAPU32[ptr / 4];
+                    let height = Module.HEAPU32[ptr / 4 + 1];
+                    // console.log(width, height);
+
                     let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
                     let sizeWH = width * height
                     let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
                     let imageBufferB = Module.HEAPU8.subarray(
-                        imgBufferPtr + sizeWH + 8, 
+                        imgBufferPtr + sizeWH + 8,
                         imgBufferPtr + sizeWH + 8 + sizeWH / 4
                     )
                     let imageBufferR = Module.HEAPU8.subarray(
@@ -212,7 +237,7 @@ module.exports = config => {
                     else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR)
                 }
             } //  end if decRet
-            Module._free(offset)
+            Module._free(offset);
         }
         return true;
     }

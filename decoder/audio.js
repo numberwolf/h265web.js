@@ -126,7 +126,9 @@ module.exports = options => {
 					if (distince < 0) { // throw this frame
 						// console.log("throw this frame");
 						track = audioModule.sampleQueue.shift();
-						firstPts = track["pts"];
+						if (track && track != null && track != undefined) {
+							firstPts = track["pts"];
+						}
 						// i++
 						continue;
 					}

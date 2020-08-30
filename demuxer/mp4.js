@@ -1,7 +1,7 @@
-const MP4Box = require('mp4box')
-const HEVDEF = require('../decoder/hevc-header')
-const HEVDEFIMP = require('../decoder/hevc-imp')
-const BUFFMOD = require('./buffer')
+const MP4Box = require('mp4box');
+const HEVDEF = require('../decoder/hevc-header');
+const HEVDEFIMP = require('../decoder/hevc-imp');
+const BUFFMOD = require('./buffer');
 // const STARTCODE = new Uint8Array([0, 0, 0, 1])
 const SAMPLEINDEX = {
     96000 : 0x00,
@@ -19,7 +19,7 @@ const SAMPLEINDEX = {
     7350 : 0x0c,
     'Reserved' : 0x0d, // == 0x0e
     'frequency is written explictly' : 0x0f
-}
+};
 
 function Mp4Parser() {
     // Class Object
@@ -93,11 +93,18 @@ Mp4Parser.prototype.setAACAdts = function(dataStream) {
     /*
    ff       f1         50     40       01       7f       fc       --> 01182007
 11111111 11110001 01010000 0100 0000 00000001 01111111 11111100
+|---12bits--|
                                |
 |------------- 28bits----------|-----------------28 bits-------|
                                  |00 00000001 011| = pkt length = 1011 = 11 (bytes)
                                  --------------------------------------------------
                                  |     ff f1 50 40 01 7f fc 01 18 20 07 <- 11 bytes
+
+   ff       f1              50                 40       01       7f       fc       --> 01182007
+11111111|1111 0  00  1  | 01     0100 00 | 0100 0000|00000001|01111111|11111100
+|---12bits--| 1b 2b  1b   2b      4b
+      v       v           v        v
+   syncword  ID          profile  freq
     */
     var adtsHead        = new Uint8Array(7);
     var packetLen       = adtsHead.length + dataStream.length;
@@ -123,7 +130,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
 
     _this.seekPos       = -1;
     _this.mp4boxfile    = MP4Box.createFile();
-    _this.movieInfo     = null;
+    _this.movieInfo     = null; // mp4box init object
 
     _this.durationMs    = -1.0;
     _this.fps           = -1;
@@ -140,8 +147,8 @@ Mp4Parser.prototype.demux = function(dataStream) {
     /*
      * item : {pts: 0, frame: Uint8Array}
      */
-    _this.trackVideos   = [];
-    _this.trackAudios   = [];
+    // _this.trackVideos   = [];
+    // _this.trackAudios   = [];
 
     //var mp4boxfile = MP4Box.createFile();
     _this.mp4boxfile.onError = function(e) {
@@ -170,6 +177,7 @@ Mp4Parser.prototype.demux = function(dataStream) {
                     let isKey = frameType == HEVDEF.DEFINE_KEY_FRAME ? true : false;
 
                     if (isKey) {//isKey
+                        // console.log(data, data[4]);
                         let naluArr = hvcC.nalu_arrays;
                         // console.log(naluArr);
                         // 64, 1, 12, 1, 255, 255, 1, 96, 0, 0, 3, 0, 144, 0, 0, 3, 0, 0, 3, 0, 63, 149, 152, 9

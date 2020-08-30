@@ -1,9 +1,10 @@
-var Player = require('./decoder/player')
-var InitMp4Parser = require('./demuxer/mp4')
-var def = require('./consts')
-var staticMem = require('./utils/static-mem')
-var Module = require('./decoder/missile.js')
-var durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`
+var Player = require('./decoder/player-core');
+var Mp4Parser = require('./demuxer/mp4');
+var MpegTSParser = require('./demuxer/ts');
+var def = require('./consts');
+var staticMem = require('./utils/static-mem');
+var Module = require('./decoder/missile.js');
+var durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`;
 
 class H265webjsClazz {
     // static myStaticProp = 42;
@@ -18,6 +19,7 @@ class H265webjsClazz {
      */
     constructor(videoURL, config) {
         this.mp4Obj = null;
+        this.mpegTsObj = null; // @Todo
         this.hlsObj = null; // @Todo
 
         // util
@@ -48,7 +50,7 @@ class H265webjsClazz {
             alert(tip);
             alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
         } else {
-            console.log("to onRuntimeInitialized " 
+            console.log("to onRuntimeInitialized "
                 + global.STATIC_MEM_wasmDecoderState);
             if (global.STATIC_MEM_wasmDecoderState == 1) {
                 console.log("wasm already inited!");
@@ -67,12 +69,10 @@ class H265webjsClazz {
                     console.log('Initialized Decoder');
                     Module.cwrap('initializeDecoder', 'number', [])();
 
-                    if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
-                        _this.makeMP4Player(_this.configFormat);
-                        _this.playerUtilBuildMask();
-                        // _this.playUtilHiddenMask();
-                        this.playUtilShowMask();
-                    }
+                    _this.makeMP4Player(_this.configFormat);
+                    _this.playerUtilBuildMask();
+                    // _this.playUtilHiddenMask();
+                    _this.playUtilShowMask();
                 };
             }
         } // end if c
@@ -160,7 +160,7 @@ class H265webjsClazz {
         // canvasBox.appendChild(maskFg);
         canvasBox.appendChild(maskImg);
         canvasBox.appendChild(this.controlBar);
-        
+
     }
 
     playUtilShowMask() {
@@ -191,7 +191,11 @@ class H265webjsClazz {
         } else { // to play
             this.playUtilHiddenMask();
             this.playBar.textContent = '||';
-            this.player.play(this.mp4Obj.seekPos);
+            if (this.mp4Obj != null) {
+                this.player.play(this.mp4Obj.seekPos);
+            } else {
+                this.player.play(0);
+            }
         }
     }
 
@@ -202,9 +206,9 @@ class H265webjsClazz {
         this.progress.style.borderTop = '1px #aaa solid';
         this.progress.style.backgroundColor = 'white';
         this.progress.style.width = '100%';
-        this.progress.style.setProperty("-webkit-progress-bar", 
+        this.progress.style.setProperty("-webkit-progress-bar",
             "background-color(#d7d7d7)");
-        this.progress.style.setProperty("-webkit-progress-value", 
+        this.progress.style.setProperty("-webkit-progress-value",
             "background-color(#aadd6a)");
     }
 
@@ -245,11 +249,17 @@ class H265webjsClazz {
         /*
          * Switch Media
          */
+        // console.log("type: " + this.configFormat.type);
         if (this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
             this.mp4Entry();
+        } else if (
+            this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
+            this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
+        {
+            this.mpegTsEntry()
         }
 
-    }
+    } // end
 
     /********************************************************************
      ********************************************************************
@@ -262,10 +272,10 @@ class H265webjsClazz {
         let _this = this;
 
         fetch(this.videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
-            
+
             // demux mp4
             this.timerFeed = null;
-            this.mp4Obj = new InitMp4Parser()
+            this.mp4Obj = new Mp4Parser()
             this.mp4Obj.demux(streamBuffer)
             this.mp4Obj.seek(-1);
             let durationMs  = this.mp4Obj.getDurationMs()
@@ -284,13 +294,13 @@ class H265webjsClazz {
                 appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
                 fixed: false, // is strict to resolution?
                 playerId: this.configFormat.playerId
-            })
+            });
             this.player.setPlayingCall(videoPTS => {
                 this.progress.value = videoPTS
                 let now = durationText(videoPTS)
                 let total = durationText(durationMs / 1000)
                 _this.ptsLabel.textContent = `${now}/${total}`
-            })
+            });
             //TODO: get all the data at once syncronously or feed data through a callback if streamed
             let feedMP4Data = (secIdx=0, idrIdx=0) => {
                 this.timerFeed = window.setInterval(() => {
@@ -309,7 +319,7 @@ class H265webjsClazz {
                     if (videoFrame != null || audioFrame != null) {
                         secIdx++;
                     }
-                    
+
                     // console.log(secIdx + "," + durationSec);
                     if (secIdx >= durationSec) {
                         window.clearInterval(this.timerFeed);
@@ -347,13 +357,123 @@ class H265webjsClazz {
             // player.setSize(size.width, size.height)
             _this.player.setFrameRate(fps)
             feedMP4Data(0)
-            
+
             _this.status.textContent = ''
             _this.playBar.disabled = false
             _this.playBar.onclick = () => {
                 _this.playControl();
             } // this.player.stop()
         }); // end fetch
+    }
+
+    mpegTsEntry() {
+        // console.log("entry ts");
+        let _this = this;
+        this.timerFeed = null;
+        this.mpegTsObj = new MpegTSParser.MpegTs();
+        this.mpegTsObj.onReadyOBJ = _this;
+        this.mpegTsObj.onReady = this.mpegTsEntryReady;
+        /*
+         * start
+         */
+        this.mpegTsObj.demux(this.videoURL);
+    }
+
+    /**
+     * @brief onReadyOBJ is h265webclazz
+     */
+    mpegTsEntryReady (onReadyOBJ) {
+        let _this = onReadyOBJ;
+        let durationMs  = _this.mpegTsObj.getDurationMs();
+        let fps         = _this.mpegTsObj.getFPS();
+        let sampleRate  = _this.mpegTsObj.getSampleRate();
+        let size        = _this.mpegTsObj.getSize();
+        // console.log(sampleRate);
+        // dur seconds
+        let durationSecFloat = durationMs / 1000;
+        let durationSec = parseInt(durationSecFloat);
+
+        _this.ptsLabel.textContent = '0:0:0/' + durationText(_this.progress.max = durationMs / 1000)
+
+        _this.player = Player({
+            width: _this.configFormat.playerW,
+            height: _this.configFormat.playerH,
+            sampleRate: sampleRate,
+            fps: fps,
+            appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
+            fixed: false, // is strict to resolution?
+            playerId: _this.configFormat.playerId
+        });
+        _this.player.setDurationMs(durationMs);
+        // player.setSize(size.width, size.height);
+        _this.player.setFrameRate(fps);
+
+        _this.player.setPlayingCall(videoPTS => {
+            _this.progress.value = videoPTS
+            let now = durationText(videoPTS)
+            let total = durationText(durationMs / 1000)
+            _this.ptsLabel.textContent = `${now}/${total}`
+        });
+
+        //TODO: get all the data at once syncronously or feed data through a callback if streamed
+        let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
+            _this.timerFeed = window.setInterval(() => {
+                let videoFrame = _this.mpegTsObj.popBuffer(1, secIdx);
+                let audioFrame = _this.mpegTsObj.popBuffer(2, secIdx);
+                if (videoFrame != null) {
+                    for (var i = 0; i < videoFrame.length; i++) {
+                        _this.player.appendHevcFrame(videoFrame[i]);
+                    }
+                }
+                if (audioFrame != null) {
+                    for (var i = 0; i < audioFrame.length; i++) {
+                        _this.player.appendAACFrame(audioFrame[i]);
+                    }
+                }
+                if (videoFrame != null || audioFrame != null) {
+                    secIdx++;
+                }
+
+                // console.log(secIdx + "," + durationSecFloat);
+                if (secIdx >= durationSecFloat) {
+                    window.clearInterval(_this.timerFeed);
+                    _this.timerFeed = null;
+                    console.log("loading finished");
+                    return;
+                }
+
+            // setTimeout(() => {
+            //     feedMP4Data(secIdx, idrIdx);
+            // }, 100);
+            }, 10);
+        };
+
+        /**
+         * SEEK Progress
+         */
+        _this.progress.addEventListener('click', (e) => {
+            let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
+            let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
+            let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
+            // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
+            if (_this.timerFeed) {
+                window.clearInterval(_this.timerFeed);
+                _this.timerFeed = null;
+            }
+            _this.player.seek(() => {
+                _this.mpegTsObj.seek(clickedValue);
+                // temp : give idx to feed and seek
+                feedMP4Data(parseInt(_this.mpegTsObj.seekPos), clickedValue);
+            }, clickedValue);
+        });
+
+        // feed
+        feedMP4Data(0)
+        _this.status.textContent = ''
+        _this.playBar.disabled = false
+        _this.playBar.onclick = () => {
+            _this.playControl();
+        } // _this.player.stop()
     }
 
 }
