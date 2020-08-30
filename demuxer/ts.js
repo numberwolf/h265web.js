@@ -1,4 +1,4 @@
-const TsDemuxerJs = require('tsdemuxerjs');
+const TsDemuxerJs = require('mpeg.js');
 const BUFFMOD = require('./buffer');
 
 class TsParserClazz {

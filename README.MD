@@ -24,7 +24,7 @@
 
 * Support mp4 box
 
-* Support mpegTS box (depend on: [![npm version](https://badge.fury.io/js/tsdemuxerjs.svg)](https://www.npmjs.com/package/tsdemuxerjs)) (Git: https://github.com/numberwolf/TSDemuxer.js)
+* Support mpegTS box (depend on: [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) , (Git: https://github.com/numberwolf/MPEG-Demuxer.js)
 
 * Play/pause/stop
 
