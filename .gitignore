@@ -18,3 +18,4 @@ bundle_player.js
 VideoMissileServerDemo
 
 res/
+dist/*

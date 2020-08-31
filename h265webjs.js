@@ -194,7 +194,7 @@ class H265webjsClazz {
             if (this.mp4Obj != null) {
                 this.player.play(this.mp4Obj.seekPos);
             } else {
-                this.player.play(0);
+                this.player.play(this.mpegTsEntry.seekPos);
             }
         }
     }
@@ -367,16 +367,27 @@ class H265webjsClazz {
     }
 
     mpegTsEntry() {
-        // console.log("entry ts");
+        console.log("entry ts");
         let _this = this;
         this.timerFeed = null;
         this.mpegTsObj = new MpegTSParser.MpegTs();
-        this.mpegTsObj.onReadyOBJ = _this;
-        this.mpegTsObj.onReady = this.mpegTsEntryReady;
-        /*
-         * start
-         */
-        this.mpegTsObj.demux(this.videoURL);
+        this.mpegTsObj.bindReady(_this);
+
+        this.mpegTsObj.onDemuxed = this.mpegTsEntryReady;
+        this.mpegTsObj.onReady = () => {
+            console.log("onReady");
+            /*
+             * start
+             */
+            fetch(_this.videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
+                streamBuffer.fileStart = 0;
+                // array buffer to unit8array
+                let streamUint8Buf = new Uint8Array(streamBuffer);
+                // console.log(streamUint8Buf);
+                _this.mpegTsObj.demux(streamUint8Buf);
+            });
+        };
+        this.mpegTsObj.initMPEG();
     }
 
     /**
