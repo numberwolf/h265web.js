@@ -674,7 +674,7 @@ module.exports = config => {
         player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
         // toast
         // let toast = document.createElement('div');
-        console.log('player config', player.config)
+        // console.log('player config', player.config)
     };
     player.makeGL();
     return player;
@@ -743,6 +743,8 @@ module.exports = () => {
 		return bufferModule.audioBuffer[ptsec];
 	};
 	bufferModule.seekIDR = (pts = -1.0) => {
+		console.log("seek => ", pts);
+		console.log(bufferModule.idrIdxBuffer);
 		if (pts < 0) {
 			return null;
 		}
@@ -1254,7 +1256,7 @@ class TsParserClazz {
                 if (readData.type == 0) {
 
                 	let pktFrame = _this._packetHandle(readData.layer);
-                	let isKey = readData.keyFrame == 1 ? 1 : 0;
+                	let isKey = readData.keyframe == 1 ? true : false;
                 	_this.bufObject.appendFrame(pts, pktFrame, true, isKey);
 
                 } else {
