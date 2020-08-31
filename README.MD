@@ -58,8 +58,6 @@
 
 >`npm start` # just want to test and see, open 127.0.0.1:8999
 
->`npm run dev` # as dev
-
 ### Transcoding Your Media File To Hevc Codec
 
 ```bash

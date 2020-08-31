@@ -1,1 +1,3 @@
 ffmpeg -ss 10 -i veilside.mp4 -t 15 -vcodec libx265 -x265-params "bframes=0:keyint=5" -acodec aac -pix_fmt yuv420p -f mpegts -y veilside2.ts
+ffmpeg -ss 20 -i ./res/xinxiaomen.mp4 -t 10 -vcodec libx265 -x265-params "bframes=0:keyint=10" -r 24 -filter_complex "scale=720:1280" -preset fast -maxrate 800k -bufsize 800k -acodec aac -ar 22050 -ac 1 -pix_fmt yuv420p -f mpegts -y ./res/veilside2.ts
+ffmpeg -ss 20 -t 30 -i ./res/xinxiaomen.mp4 -ss 20 -t 30 -i ./res/shuw.mp4 -vcodec libx265 -x265-params "bframes=0:keyint=10" -r 24 -filter_complex "scale=720:1280[video]" -map '[video]' -map '1:a' -preset fast -maxrate 800k -bufsize 800k -acodec aac -ar 22050 -ac 1 -pix_fmt yuv420p -f mpegts -y ./res/veilside2.ts

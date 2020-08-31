@@ -9,7 +9,7 @@
   "dependencies": {
     "browserify": "^16.5.1",
     "mp4box": "^0.3.20",
-    "mpeg.js": "^0.1.7",
+    "mpeg.js": "^0.1.8",
     "pinipig": "^1.6.1",
     "yuv-buffer": "^1.0.0",
     "yuv-canvas": "^1.2.6"
