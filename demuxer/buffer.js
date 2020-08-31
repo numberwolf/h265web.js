@@ -60,6 +60,8 @@ module.exports = () => {
 		return bufferModule.audioBuffer[ptsec];
 	};
 	bufferModule.seekIDR = (pts = -1.0) => {
+		// console.log("seek => ", pts);
+		// console.log(bufferModule.idrIdxBuffer);
 		if (pts < 0) {
 			return null;
 		}

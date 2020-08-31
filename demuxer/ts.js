@@ -72,7 +72,7 @@ class TsParserClazz {
                 if (readData.type == 0) {
 
                 	let pktFrame = _this._packetHandle(readData.layer);
-                	let isKey = readData.keyFrame == 1 ? 1 : 0;
+                	let isKey = readData.keyframe == 1 ? true : false;
                 	_this.bufObject.appendFrame(pts, pktFrame, true, isKey);
 
                 } else {
