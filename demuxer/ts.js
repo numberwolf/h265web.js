@@ -1,4 +1,4 @@
-const TsDemuxerJs = require('mpeg.js');
+const MPEG_JS = require('mpeg.js');
 const BUFFMOD = require('./buffer');
 
 class TsParserClazz {
@@ -30,7 +30,89 @@ class TsParserClazz {
     	this.extensionInfo = {};
 
     	this.onReady = null;
+    	this.onDemuxed = null;
     	this.onReadyOBJ = null;
+    }
+
+    initMPEG() {
+    	let _this = this;
+    	this.mpegTsObj = new MPEG_JS.MPEG_JS({});
+
+    	this.mpegTsObj.onDemuxed = () => {
+    		_this.mediaInfo = _this.mpegTsObj.readMediaInfo();
+            // console.log(_this.mediaInfo);
+
+            _this.extensionInfo = _this.mpegTsObj.readExtensionInfo();
+            // console.log(_this.extensionInfo);
+
+            _this.durationMs 	= _this.mediaInfo.duration * 1000;
+            _this.fps 			= _this.mediaInfo.vFps;
+            _this.sampleRate 	= _this.mediaInfo.sampleRate;
+            // console.log("samplerate:" + _this.sampleRate);
+
+            if (_this.extensionInfo.vWidth > 0 && _this.extensionInfo.vHeight > 0) {
+            	_this.size.width = _this.extensionInfo.vWidth;
+            	_this.size.height = _this.extensionInfo.vHeight;
+            }
+
+         	// if (this.aacDec == null) {
+	        //     this.aacDec = new AACDecoder.AACDecoder(_this.mediaInfo);
+	        // } else {
+	        //     this.aacDec.updateConfig(_this.mediaInfo);
+	        // }
+
+            let readData = null;
+            while(1) {
+                readData = _this.mpegTsObj.readPacket();
+                if (readData.size <= 0) {
+                    break;
+                }
+
+                let pts = readData.dtime;
+                if (readData.type == 0) {
+
+                	let pktFrame = _this._packetHandle(readData.layer);
+                	let isKey = readData.keyFrame == 1 ? 1 : 0;
+                	_this.bufObject.appendFrame(pts, pktFrame, true, isKey);
+
+                } else {
+                	// console.log("pts: " + pts);
+                	// console.log(readData.data.length);
+                	if (_this.mediaInfo.aCodec == "aac") {
+
+                		// console.log(readData.data);
+                		let aacDataList = readData.data;
+
+                		// let debugData = null;
+                		// let tempIdx = 0;
+                		for (var i = 0; i < aacDataList.length; i++) {
+                			let aacDataItem = aacDataList[i];
+                			_this.bufObject.appendFrame(aacDataItem.ptime, aacDataItem.data, false, true);
+                		}
+                		// _this.bufObject.appendFrame(readData.ptime, readData.src, false, true);
+                	} else {
+                		_this.bufObject.appendFrame(pts, readData.data, false, true);
+                	}
+                }
+                // console.log(pts);
+            }
+            // console.log(_this.bufObject.videoBuffer);
+            // console.log(_this.bufObject.audioBuffer);
+
+            if (_this.onDemuxed != null) {
+            	_this.onDemuxed(_this.onReadyOBJ);
+            }
+    	};
+    	
+    	this.mpegTsObj.onReady = () => {
+    		// console.log("ready");
+    		if (_this.onReady != null) {
+            	// console.log("on ready");
+            	_this.onReady(_this.onReadyOBJ);
+            }
+    	};
+
+    	this.mpegTsObj.initDemuxer();
     }
 
     _packetHandle(layer) {
@@ -63,59 +145,13 @@ class TsParserClazz {
     	return pktFrame;
     }
 
+    bindReady(bindObject) {
+    	this.onReadyOBJ = bindObject;
+    }
+
     // public
-    demux(videoURL) {
-    	let _this = this;
-    	this.mpegTsObj = new TsDemuxerJs.TsDemuxerJsMod(videoURL, {});
-
-    	let callback = () => {
-            _this.mediaInfo = _this.mpegTsObj.readMediaInfo();
-            // console.log(_this.mediaInfo);
-
-            _this.extensionInfo = _this.mpegTsObj.readExtensionInfo();
-            // console.log(_this.extensionInfo);
-
-            _this.durationMs 	= _this.mediaInfo.duration * 1000;
-            _this.fps 			= _this.mediaInfo.vFps;
-            _this.sampleRate 	= _this.mediaInfo.sampleRate;
-            // console.log("samplerate:" + _this.sampleRate);
-
-            if (_this.extensionInfo.vWidth > 0 && _this.extensionInfo.vHeight > 0) {
-            	_this.size.width = _this.extensionInfo.vWidth;
-            	_this.size.height = _this.extensionInfo.vHeight;
-            }
-
-            if (_this.onReady != null) {
-            	console.log("on ready");
-            	_this.onReady(_this.onReadyOBJ);
-            }
-
-            let readData = null;
-            while(1) {
-                readData = _this.mpegTsObj.readPacket();
-                if (readData.size <= 0) {
-                    break;
-                }
-
-                let pts = readData.dtime;
-                // console.log(readData.data);
-                if (readData.type == 0) {
-                	let pktFrame = _this._packetHandle(readData.layer);
-                	let isKey = readData.keyFrame == 1 ? 1 : 0;
-                	_this.bufObject.appendFrame(pts, pktFrame, true, isKey);
-                } else {
-                	// console.log("pts: " + pts);
-                	// console.log(readData.data);
-                	_this.bufObject.appendFrame(pts, readData.data, false, true);
-                }
-                // console.log(pts);
-            }
-            // console.log(_this.bufObject.videoBuffer);
-        };
-    	/*
-         * start
-         */
-        this.mpegTsObj.do(callback);
+    demux(uint8buffer) {
+    	this.mpegTsObj.demuxUint8Buf(uint8buffer);
     }
 
     /*

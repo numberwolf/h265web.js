@@ -101,10 +101,10 @@ Mp4Parser.prototype.setAACAdts = function(dataStream) {
                                  |     ff f1 50 40 01 7f fc 01 18 20 07 <- 11 bytes
 
    ff       f1              50                 40       01       7f       fc       --> 01182007
-11111111|1111 0  00  1  | 01     0100 00 | 0100 0000|00000001|01111111|11111100
-|---12bits--| 1b 2b  1b   2b      4b
-      v       v           v        v
-   syncword  ID          profile  freq
+11111111|1111 0  00  1  | 01     0100 0  0|01 0   0  00 [00|00000001|011] 11111|111111  00
+|---12bits--| 1b 2b  1b   2b      4b  1b  3b  1b  1b          13b             11b       2b
+      v       v           v        v              v           v               v
+   syncword  ID          profile  freq           home        pkt_len         fullness
     */
     var adtsHead        = new Uint8Array(7);
     var packetLen       = adtsHead.length + dataStream.length;

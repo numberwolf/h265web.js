@@ -296,7 +296,7 @@ module.exports = config => {
         player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
         // toast
         // let toast = document.createElement('div');
-        console.log('player config', player.config)
+        // console.log('player config', player.config)
     };
     player.makeGL();
     return player;

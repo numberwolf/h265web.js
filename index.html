@@ -13,23 +13,23 @@
 <body>
     <div id="glplayer"></div>
     <script>
-    	var url = "/res/video.mp4";
-    	var config = {
-    		type: "mp4",
-    		player: "glplayer",
-    		width: 600,
-    		height: 600
-    	};
-    	makeH265webjs(url, config).do();
-
-    	// var url = "/res/veilside.ts";
+    	// var url = "/res/video.mp4";
     	// var config = {
-    	// 	type: "ts",
+    	// 	type: "mp4",
     	// 	player: "glplayer",
     	// 	width: 600,
     	// 	height: 600
     	// };
     	// makeH265webjs(url, config).do();
+
+    	var url = "/res/veilside.ts";
+    	var config = {
+    		type: "ts",
+    		player: "glplayer",
+    		width: 600,
+    		height: 600
+    	};
+    	makeH265webjs(url, config).do();
 	</script>
 </body>
 </html>
