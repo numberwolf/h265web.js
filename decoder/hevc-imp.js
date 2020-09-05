@@ -24,5 +24,41 @@ module.exports = {
                 return HevHeader.DEFINE_OTHERS_FRAME;
             }
         }
+    },
+    /**
+     * layer :
+     *          nalu layer
+     *              vps sps pps sei
+     *          vlc  layer
+     *              vlc data
+     */
+    PACK_NALU           : (layer) => {
+        let naluLayer   = layer.nalu;
+        let vlcLayer    = layer.vlc;
+        let vlc         = vlcLayer.vlc;
+
+        let pktFrame    = new Uint8Array(
+                naluLayer.vps.length 
+                + naluLayer.sps.length 
+                + naluLayer.pps.length 
+                + naluLayer.sei.length 
+                + vlc.length
+        );
+
+        pktFrame.set(naluLayer.vps, 0);
+
+        pktFrame.set(naluLayer.sps, 
+            naluLayer.vps.length);
+
+        pktFrame.set(naluLayer.pps, 
+            naluLayer.vps.length + naluLayer.sps.length);
+
+        pktFrame.set(naluLayer.sei, 
+            naluLayer.vps.length + naluLayer.sps.length + naluLayer.pps.length);
+
+        pktFrame.set(vlc, 
+            naluLayer.vps.length + naluLayer.sps.length + naluLayer.pps.length + naluLayer.sei.length);
+
+        return pktFrame;
     }
 };

@@ -1,5 +1,5 @@
 const H265webjs = require('./h265webjs');
-const M3U8 = require('./demuxer/m3u8');
+const M3U8Base = require('./demuxer/m3u8base');
 const MPEG_JS = require('mpeg.js');
 
 global.makeH265webjs = (videoURL, config) => {
@@ -8,7 +8,7 @@ global.makeH265webjs = (videoURL, config) => {
 }
 
 global.makeTestHLS = () => {
-	let hls = new M3U8.M3u8();
+	let hls = new M3U8Base.M3u8Base();
 	let mpegTsObj = new MPEG_JS.MPEG_JS({});
 
 	let tsList = [];

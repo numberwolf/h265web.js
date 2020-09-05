@@ -1,206 +1,207 @@
-const def = require('../consts');
-
-// #EXTM3U
-// #EXT-X-VERSION:3
-// #EXT-X-MEDIA-SEQUENCE:1116126
-// #EXT-X-TARGETDURATION:10
-// #EXTINF:10.000,
-// cctv1hd-1598889356000.ts
-// #EXTINF:10.000,
-// cctv1hd-1598889366000.ts
-// #EXTINF:10.000,
-// cctv1hd-1598889376000.ts
-// #EXTINF:10.000,
-// cctv1hd-1598889386000.ts
-// #EXTINF:10.000,
-// cctv1hd-1598889396000.ts
-// #EXTINF:10.000,
-// cctv1hd-1598889406000.ts
-// ...
-// #EXT-X-ENDLIST <-- vod, if live will not include this tag
-
-const matchers = {
-  lineDelimiter: /\r?\n/,
-  extensionHeader: '#EXTM3U',
-  tagPrefix: '#EXT',
-  segmentPrefix: '#EXTINF',
-  segmentParse: /^#EXTINF: *([0-9.]+)(, *(.+?)?)?$/,
-  tagParse: /^#EXT-X-([A-Z-]+)(:(.+))?$/,
-  version: 'VERSION',
-  allowCache: 'ALLOW-CACHE',
-  combined: 'COMBINED',
-  endList: 'ENDLIST',
-  targetDuration: 'TARGETDURATION',
-  mediaSequence: 'MEDIA-SEQUENCE',
-  discontinuity: 'DISCONTINUITY',
-  streamInf: 'STREAM-INF',
-  isComment: (line) => line && line[0] === '#' && !(line.startsWith(matchers.tagPrefix)),
-  isBlank: (line) => line === '',
-  canStrip: (line) => matchers.isBlank(line) || matchers.isComment(line),
-  defaultMinDur : 99999,
-  hlsSliceLimit : 5
-}
+const M3U8Base = require('./m3u8base');
+const MPEG_JS = require('mpeg.js');
+const BUFFMOD = require('./buffer');
+const HEVC_IMP = require('../decoder/hevc-imp');
 
 class M3u8ParserModule {
 	constructor() {
-		this._slices = [];
-		// default is Live HLS
-		this._type = def.PLAYER_IN_TYPE_M3U8_LIVE;
-		this._preURI = "";
+		this.hls = new M3U8Base.M3u8Base();
+		this.mpegTsObj = new MPEG_JS.MPEG_JS({});
+		this.tsList = [];
+		this.vStartTime = 0;
+		this.aStartTime = 0;
+		this.lockWait = {
+			state : false,
+			lockMember : {
+				dur : 0
+			}
+		};
+		this.timerFeed = null;
 
-		// event
-		this.onTransportStream = null;
+		this.bufObject = BUFFMOD();
+		this.fps           = -1;
+	    this.sampleRate    = -1;
+	    this.size          = {
+	        width   : -1,
+	        height  : -1
+	    };
+	    this.mediaInfo 	= {};
+    	this.extensionInfo = {};
+
+    	// event
+    	this.onReadyOBJ = null;
+    	this.onDemuxed = null;
 	}
 
-	fetchM3u8(videoURL) {
+	demux(videoURL) {
 		let _this = this;
-		// fetch('http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8')
-		fetch(videoURL)
-  		.then(res => res.text())
-  		.then(hlsBody => {
-  			// console.log(hlsBody);
-  			let uriParseRet = _this._uriParse(videoURL);
-  			if (uriParseRet == true) {
-  				return _this._m3u8Parse(hlsBody);
-  			} else {
-  				console.log("Parse URL ERROR : " + videoURL);
-  				return null;
-  			}
-  		})
-  		.then(minDur => {
-  			if (minDur != null && this._type == def.PLAYER_IN_TYPE_M3U8_LIVE) {
-				setTimeout(() => {
-					_this.fetchM3u8(videoURL);
-				}, minDur * 1000);
-			}
-  		});
+		this.hls.onTransportStream = (streamURI, streamDur) => {
+			console.log("Event onTransportStream ===> ", streamURI, streamDur);
+			// demuxURL(streamURI);
+			_this.tsList.push({
+				streamURI : streamURI,
+				streamDur : streamDur
+			});
+		};
+
+		this.hls.onFinished = (callFinData) => {
+			console.log("onFinished : ");
+			console.log(callFinData);
+		};
+
+		this.mpegTsObj.onDemuxed = () => {
+			if (_this.mediaInfo == null) {
+				_this.mediaInfo = _this.mpegTsObj.readMediaInfo();
+
+				_this.durationMs 	= _this.mediaInfo.duration * 1000;
+	            _this.fps 			= _this.mediaInfo.vFps;
+	            _this.sampleRate 	= _this.mediaInfo.sampleRate;
+	            // console.log("samplerate:" + _this.sampleRate);
+	        }
+	        if (_this.extensionInfo == null) {
+	        	_this.extensionInfo = _this.mpegTsObj.readExtensionInfo();
+	            if (_this.extensionInfo.vWidth > 0 && _this.extensionInfo.vHeight > 0) {
+	            	_this.size.width = _this.extensionInfo.vWidth;
+	            	_this.size.height = _this.extensionInfo.vHeight;
+	            }
+	        }
+
+			console.log("DURATION===>" + _this.mediaInfo.duration);
+
+	        while(1) {
+	            let readData = _this.mpegTsObj.readPacket();
+	            if (readData.size <= 0) {
+	                break;
+	            }
+	            let pts = readData.dtime;
+	            if (readData.type == 0) {
+	            	console.log("vStartTime:" + _this.vStartTime);
+	            	console.log(pts + _this.vStartTime);
+
+	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
+                	let isKey = readData.keyframe == 1 ? true : false;
+                	_this.bufObject.appendFrame(pts + _this.vStartTime, pktFrame, true, isKey);
+
+	            } else {
+	            	// console.log(pts + aStartTime);
+	            	if (_this.mediaInfo.aCodec == "aac") {
+                		// console.log(readData.data);
+                		let aacDataList = readData.data;
+
+                		// let debugData = null;
+                		// let tempIdx = 0;
+                		for (var i = 0; i < aacDataList.length; i++) {
+                			let aacDataItem = aacDataList[i];
+                			_this.bufObject.appendFrame(
+                				aacDataItem.ptime + _this.vStartTime, aacDataItem.data, false, true);
+                		}
+                		// _this.bufObject.appendFrame(readData.ptime, readData.src, false, true);
+                	} else {
+                		_this.bufObject.appendFrame(
+                			pts + _this.vStartTime, readData.data, false, true);
+                	}
+	            }
+	        }
+	        // vStartTime += mediaInfo.vDuration;
+	        // aStartTime += mediaInfo.aDuration;
+	        console.log(_this.lockWait.lockMember.dur);
+	        _this.vStartTime += parseFloat(_this.lockWait.lockMember.dur);
+	        _this.aStartTime += parseFloat(_this.lockWait.lockMember.dur);
+	        console.log("vStartTime:" + _this.vStartTime);
+	        _this.lockWait.state = false;
+
+	        if (_this.onDemuxed != null) {
+            	_this.onDemuxed(_this.onReadyOBJ);
+            }
+	    };
+
+		this.mpegTsObj.onReady = () => {
+	        console.log("onReady");
+	        /*
+	         * start
+	         */
+	        // fetch(videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
+	        //     streamBuffer.fileStart = 0;
+	        //     // array buffer to unit8array
+	        //     let streamUint8Buf = new Uint8Array(streamBuffer);
+	        //     // console.log(streamUint8Buf);
+	        //     mpegTsObj.demux(streamUint8Buf);
+	        // });
+
+	        // run
+	        // /res/hls/veilside.m3u8
+			// _this.hls.fetchM3u8("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8");
+			_this.hls.fetchM3u8(videoURL);
+			// hls.fetchM3u8("/res/hls/veilside.m3u8");
+	    };
+
+	    this.mpegTsObj.initDemuxer();
+
+	    this.timerFeed = window.setInterval(() => {
+	    	if (_this.tsList.length > 0 && _this.lockWait.state == false) {
+	    		let item = _this.tsList.shift();
+	    		let itemURI = item.streamURI;
+	    		let itemDur = item.streamDur;
+
+	    		console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+	    		_this.lockWait.state = true;
+	    		_this.lockWait.lockMember.dur = itemDur;
+	    		_this.mpegTsObj.demuxURL(itemURI);
+	    		console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+	    	}
+	    }, 50);
 	}
 
-	_uriParse(videoURL) {
-		let headPart = videoURL.split("//");
-		let subPartProtocal = null;
-		let subPartBody = null;
+	bindReady(bindObject) {
+    	this.onReadyOBJ = bindObject;
+    }
 
-		if (headPart.length < 1) {
-			console.log("HLS URI ERROR : " + videoURL);
-			return false;
-		}
-
-		if (headPart.length > 1) {
-			subPartProtocal = headPart[0];
-			subPartBody = headPart[1].split("/");
-			this._preURI = subPartProtocal + "//";
-		} else {
-			subPartBody = headPart[0].split("/");
-		}
-
-		for (var i = 0; i < subPartBody.length - 1; i++) {
-			this._preURI += subPartBody[i] + "/";
-		}
-		// console.log("pre uri ", this._preURI);
-
-		return true;
+	/*
+	 * _this.sampleQueue.shift();
+	 * @Param Int track_id 1Video 2Audio
+	 */
+    popBuffer (track_id = 1, ptsec = -1) {
+	    if (ptsec < 0) {
+	        return null;
+	    }
+	    if (track_id == 1) {
+	    	// console.log("ptsec : " + ptsec);
+	    	// console.log(this.bufObject.vFrame(ptsec));
+	        return this.bufObject.vFrame(ptsec);
+	    } else if (track_id == 2) {
+	        return this.bufObject.aFrame(ptsec);
+	    } else {}
 	}
 
-	// return ts item list
-	_m3u8Parse(hlsBody) {
-		let _this = this;
-
-		let lines = hlsBody.split(matchers.lineDelimiter);
-		let minDur = matchers.defaultMinDur;
-
-		for (var i = 0; i < lines.length; i++) {
-			let line = lines[i];
-			if (line.length < 1) {
-				continue;
-			}
-			// console.log(i, line);
-
-			let tagParse = this._readTag(line);
-			if (tagParse != null) {
-				// console.log(tagParse);
-				/*
-				 * Tag Deal
-				 */
-				switch (tagParse.key) {
-					case matchers.version:
-						break;
-					case matchers.mediaSequence:
-						break;
-					case matchers.allowCache:
-						break;
-					case matchers.discontinuity:
-						break;
-					case matchers.targetDuration:
-						break;
-					case matchers.combined:
-						break;
-					case matchers.streamInf:
-						break;
-					case matchers.endList:
-						this._type = def.PLAYER_IN_TYPE_M3U8_VOD;
-						return true; // end
-					default:
-						console.log("unknow tag" + tagParse.key);
-				}
-			}
-
-			let segmentParse = matchers.segmentParse.exec(line);
-			if (segmentParse != null) {
-				let segmentDur = segmentParse[1];
-				if (minDur > segmentDur) {
-					minDur = segmentDur;
-				}
-				// console.log(segmentParse);
-				// console.log("segment: " + line);
-				i += 1; // pointer to media file
-
-				let mediaFile = lines[i];
-				let mediaURI = this._preURI + mediaFile;
-
-				if (this._slices.indexOf(mediaURI) < 0) {
-					this._slices.push(mediaURI);
-
-					if (this.onTransportStream != null) {
-						this.onTransportStream(mediaURI, segmentDur);
-					}
-				}
-
-				// test
-				// fetch(mediaURI).then(res => res.arrayBuffer()).then(streamBuffer => {
-				// 	console.log(streamBuffer);
-				// });
-			}
-
-		} // end for
-
-		if (this._slices.length > matchers.hlsSliceLimit && 
-			this._type == def.PLAYER_IN_TYPE_M3U8_LIVE) {
-			this._slices = this._slices.slice(-1 * matchers.hlsSliceLimit);
-			console.log(
-				this._slices.length, 
-				this._slices[this._slices.length - 2], 
-				this._slices[this._slices.length - 1]);
-		}
-
-		// console.log(this._slices);
-		// console.log(minDur, this._type);
-
-		return minDur;
+	getDurationMs () {
+    	return this.durationMs;
 	}
 
-	_readTag(line) {
-		let parsed = matchers.tagParse.exec(line);
-		if (parsed !== null) {
-			return {
-				key: parsed[1],
-				value: parsed[3]
-			};
-		}
+	getFPS () {
+	    return this.fps;
+	}
 
-		return null;
-	 }
+	getSampleRate () {
+	    return this.sampleRate;
+	}
 
+	getSize () {
+	    return this.size;
+	}
+
+	seek (pts) {
+	    if (pts >= 0) {
+	        // this.seekPos = parseInt(pts);
+	        // console.log("to seek:" + this.seekPos);
+	        // this.mp4boxfile.seek(this.seekPos, true);
+	        // todo
+	        let realPos = this.bufObject.seekIDR(pts);
+	        this.seekPos = realPos;
+	        // console.log("toSeek: " + realPos);
+	    }
+	    // console.log(this.bufObject.idrIdxBuffer);
+	    // this.mp4boxfile.start();
+	}
 
 }
 

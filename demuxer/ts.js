@@ -1,10 +1,10 @@
 const MPEG_JS = require('mpeg.js');
 const BUFFMOD = require('./buffer');
+const HEVC_IMP = require('../decoder/hevc-imp');
 
 class TsParserModule {
     constructor() {
     	this.seekPos       = -1;
-	    this.movieInfo     = null;
 
 	    this.durationMs    = -1.0;
 	    this.fps           = -1;
@@ -29,6 +29,7 @@ class TsParserModule {
     	this.mediaInfo = {};
     	this.extensionInfo = {};
 
+    	// event
     	this.onReady = null;
     	this.onDemuxed = null;
     	this.onReadyOBJ = null;
@@ -71,7 +72,7 @@ class TsParserModule {
                 let pts = readData.dtime;
                 if (readData.type == 0) {
 
-                	let pktFrame = _this._packetHandle(readData.layer);
+                	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
                 	_this.bufObject.appendFrame(pts, pktFrame, true, isKey);
 
@@ -114,7 +115,7 @@ class TsParserModule {
 
     	this.mpegTsObj.initDemuxer();
     }
-
+    /*
     _packetHandle(layer) {
     	let naluLayer 	= layer.nalu;
     	let vlcLayer 	= layer.vlc;
@@ -144,6 +145,7 @@ class TsParserModule {
 
     	return pktFrame;
     }
+    */
 
     bindReady(bindObject) {
     	this.onReadyOBJ = bindObject;
