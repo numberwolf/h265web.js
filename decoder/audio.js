@@ -1,6 +1,6 @@
 const AudioContext 	= window.AudioContext || window.webkitAudioContext;
-var AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame
-var def = require('../consts');
+const AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame
+const def = require('../consts');
 
 module.exports = options => {
 	let audioModule = {

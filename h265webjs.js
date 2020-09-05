@@ -1,12 +1,14 @@
-var Player = require('./decoder/player-core');
-var Mp4Parser = require('./demuxer/mp4');
-var MpegTSParser = require('./demuxer/ts');
-var def = require('./consts');
-var staticMem = require('./utils/static-mem');
-var Module = require('./decoder/missile.js');
-var durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`;
+const Player = require('./decoder/player-core');
+const MPEG_JS = require('mpeg.js');
+const Mp4Parser = require('./demuxer/mp4');
+const MpegTSParser = require('./demuxer/ts');
+const M3U8Parser = require('./demuxer/m3u8');
+const def = require('./consts');
+const staticMem = require('./utils/static-mem');
+const Module = require('./decoder/missile.js');
+const durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`;
 
-class H265webjsClazz {
+class H265webjsModule {
     // static myStaticProp = 42;
 
     /**
@@ -256,7 +258,9 @@ class H265webjsClazz {
             this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
             this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
         {
-            this.mpegTsEntry()
+            this.mpegTsEntry();
+        } else if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+            this.m3u8Entry();
         }
 
     } // end
@@ -487,6 +491,99 @@ class H265webjsClazz {
         } // _this.player.stop()
     }
 
+    /**
+     * @brief m3u8
+     */
+    m3u8Entry() {
+        let _this = this;
+        this.hlsObj = new M3U8Parser.M3u8();
+        let tsPartObj = new MPEG_JS.MPEG_JS({});
+
+        let tsList = [];
+        let vStartTime = 0;
+        let aStartTime = 0;
+        let lockWait = {
+            state : false,
+            lockMember : {
+                dur : 0
+            }
+        };
+
+        this.hlsObj.onTransportStream = (streamURI, streamDur) => {
+            console.log("Event onTransportStream ===> ", streamURI, streamDur);
+            // demuxURL(streamURI);
+            tsList.push({
+                streamURI : streamURI,
+                streamDur : streamDur
+            });
+        };
+
+        tsPartObj.onDemuxed = () => {
+            let mediaInfo = tsPartObj.readMediaInfo();
+            let extensionInfo = tsPartObj.readExtensionInfo();
+
+            console.log("DURATION===>" + mediaInfo.duration);
+
+            while(1) {
+                let readData = tsPartObj.readPacket();
+                if (readData.size <= 0) {
+                    break;
+                }
+                let pts = readData.dtime;
+                if (readData.type == 0) {
+                    console.log("vStartTime:" + vStartTime);
+                    console.log(pts + vStartTime);
+                } else {
+                    // console.log(pts + aStartTime);
+                }
+            }
+            // vStartTime += mediaInfo.vDuration;
+            // aStartTime += mediaInfo.aDuration;
+            console.log(lockWait.lockMember.dur);
+            vStartTime += parseFloat(lockWait.lockMember.dur);
+            aStartTime += parseFloat(lockWait.lockMember.dur);
+            console.log("vStartTime:" + vStartTime);
+            lockWait.state = false;
+        };
+
+
+        tsPartObj.onReady = () => {
+            console.log("onReady");
+            /*
+             * start
+             */
+            // fetch(videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
+            //     streamBuffer.fileStart = 0;
+            //     // array buffer to unit8array
+            //     let streamUint8Buf = new Uint8Array(streamBuffer);
+            //     // console.log(streamUint8Buf);
+            //     tsPartObj.demux(streamUint8Buf);
+            // });
+
+            // run
+            // /res/hls/veilside.m3u8
+            // hls.fetchM3u8("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8");
+            // hls.fetchM3u8("/res/hls/veilside.m3u8");
+            _this.hlsObj.fetchM3u8(_this.videoURL);
+        };
+
+        tsPartObj.initDemuxer();
+
+        this.timerFeed = window.setInterval(() => {
+            if (tsList.length > 0 && lockWait.state == false) {
+                let item = tsList.shift();
+                let itemURI = item.streamURI;
+                let itemDur = item.streamDur;
+
+                console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+                lockWait.state = true;
+                lockWait.lockMember.dur = itemDur;
+                tsPartObj.demuxURL(itemURI);
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+            }
+        }, 50);
+    }
+
 }
 
-exports.H265webjs = H265webjsClazz;
+exports.H265webjs = H265webjsModule;

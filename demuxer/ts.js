@@ -1,7 +1,7 @@
 const MPEG_JS = require('mpeg.js');
 const BUFFMOD = require('./buffer');
 
-class TsParserClazz {
+class TsParserModule {
     constructor() {
     	this.seekPos       = -1;
 	    this.movieInfo     = null;
@@ -202,4 +202,4 @@ class TsParserClazz {
 	}
 }
 
-exports.MpegTs = TsParserClazz;
+exports.MpegTs = TsParserModule;

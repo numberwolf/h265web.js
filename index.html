@@ -22,14 +22,25 @@
     	// };
     	// makeH265webjs(url, config).do();
 
-    	var url = "/res/veilside2.ts";
-    	var config = {
-    		type: "ts",
-    		player: "glplayer",
-    		width: 600,
-    		height: 600
-    	};
-    	makeH265webjs(url, config).do();
+    	// var url = "/res/veilside2.ts";
+    	// var config = {
+    	// 	type: "ts",
+    	// 	player: "glplayer",
+    	// 	width: 600,
+    	// 	height: 600
+    	// };
+    	// makeH265webjs(url, config).do();
+
+        // makeTestHLS();
+
+        var url = "http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8";
+        var config = {
+            type: "hls",
+            player: "glplayer",
+            width: 600,
+            height: 600
+        };
+        makeH265webjs(url, config).do();
 	</script>
 </body>
 </html>
