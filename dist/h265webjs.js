@@ -489,7 +489,7 @@ module.exports = config => {
     player.checkFinished = (mode = def.PLAYER_MODE_VOD) => {
         if (mode == def.PLAYER_MODE_VOD && 
             player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
-            console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
+            // console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
             player.pause();
             return true;
         }
@@ -513,7 +513,7 @@ module.exports = config => {
     }
     player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD) => {
         player.isPlaying = true
-        console.log("mode:" + mode);
+        // console.log("mode:" + mode);
         if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
             (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
@@ -521,7 +521,7 @@ module.exports = config => {
                 if (!player.checkFinished(mode)) {
                     player.playingCallback && player.playingCallback(player.videoPTS)
                 }
-                console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
+                // console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
             }, 1000 / player.config.fps)
 
             player.audio.play()
@@ -606,7 +606,7 @@ module.exports = config => {
             if(!frame) {
                 return false //TODO: remove
             }
-            console.log(frame);
+            // console.log(frame);
             nalBuf = frame.data
             player.videoPTS = frame.pts
             player.audio.setAlignVPTS(frame.pts)
@@ -620,7 +620,7 @@ module.exports = config => {
             Module.HEAP8.set(nalBuf, offset);
 
             let decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length);
-            console.log(decRet);
+            // console.log(decRet);
 
             if (decRet < 0) {
                 Module._free(offset);
@@ -641,7 +641,7 @@ module.exports = config => {
                 if (show) {
                     let width = Module.HEAPU32[ptr / 4];
                     let height = Module.HEAPU32[ptr / 4 + 1];
-                    console.log(width, height);
+                    // console.log(width, height);
 
                     let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
                     let sizeWH = width * height
@@ -758,8 +758,12 @@ module.exports = () => {
 			}
         } else {
         	// audio
-        	if (bufferModule.audioBuffer.length - 1 >= idxPts) {
-				bufferModule.audioBuffer[idxPts].push(frame);
+        	if (bufferModule.audioBuffer.length - 1 >= idxPts 
+        		&& bufferModule.audioBuffer[idxPts] != undefined 
+        		&& bufferModule.audioBuffer[idxPts] != null) {
+        		if (bufferModule.audioBuffer[idxPts]) {
+					bufferModule.audioBuffer[idxPts].push(frame);
+				}
 			} else {
 				bufferModule.audioBuffer.push([frame]);
 			}
@@ -909,8 +913,8 @@ class M3u8ParserModule {
 		};
 
 		this.hls.onFinished = (callFinData) => {
-			console.log("onFinished : ");
-			console.log(callFinData);
+			// console.log("onFinished : ");
+			// console.log(callFinData);
 
 			if (callFinData.type == def.PLAYER_IN_TYPE_M3U8_VOD) {
 				_this.durationMs = callFinData.duration * 1000;
@@ -941,7 +945,7 @@ class M3u8ParserModule {
 	            }
 	        }
 
-			console.log("DURATION===>" + _this.mediaInfo.duration);
+			// console.log("DURATION===>" + _this.mediaInfo.duration);
 
 			if (_this.onDemuxed != null) {
             	_this.onDemuxed(_this.onReadyOBJ);
@@ -954,13 +958,16 @@ class M3u8ParserModule {
 	            if (readData.size <= 0) {
 	                break;
 	            }
-	            let pts = readData.dtime;
+	            let pts = readData.dtime > 0 ? readData.dtime : readData.ptime;
+	            if (pts < 0) {
+	            	continue;
+	            }
 	            if (firstPts < 0 && pts <= 0.04) {
 	            	needIncrStart = true;
 	            }
 	            if (readData.type == 0) {
-	            	console.log("vStartTime:" + _this.vStartTime);
-	            	console.log(pts + _this.vStartTime);
+	            	// console.log("vStartTime:" + _this.vStartTime);
+	            	// console.log(pts + _this.vStartTime);
 
 	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
@@ -1042,11 +1049,11 @@ class M3u8ParserModule {
 	    		let itemURI = item.streamURI;
 	    		let itemDur = item.streamDur;
 
-	    		console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+	    		// console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
 	    		_this.lockWait.state = true;
 	    		_this.lockWait.lockMember.dur = itemDur;
 	    		_this.mpegTsObj.demuxURL(itemURI);
-	    		console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+	    		// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
 	    	}
 	    }, 50);
 	}
@@ -1213,7 +1220,7 @@ class M3u8BaseParserModule {
 		for (var i = 0; i < subPartBody.length - 1; i++) {
 			this._preURI += subPartBody[i] + "/";
 		}
-		console.log("pre uri ", this._preURI);
+		// console.log("pre uri ", this._preURI);
 
 		return true;
 	}
@@ -2149,7 +2156,6 @@ class H265webjsModule {
     }
 
     playControl() {
-        console.log(111);
         let mode = def.PLAYER_MODE_VOD;
         // _this.hlsConf.hlsType
         if (this.player.isPlaying) { // to pause
@@ -2160,14 +2166,11 @@ class H265webjsModule {
             this.playUtilHiddenMask();
             this.playBar.textContent = '||';
             if (this.mp4Obj != null) {
-                console.log("111-222");
                 this.player.play(this.mp4Obj.seekPos, mode);
             } else if (this.mpegTsObj != null) {
-                console.log("111-333");
                 this.player.play(this.mpegTsObj.seekPos, mode);
             } else if (this.hlsObj != null) {
-                console.log("111-444");
-                console.log("this.hlsConf.hlsType:" + this.hlsConf.hlsType);
+                // console.log("this.hlsConf.hlsType:" + this.hlsConf.hlsType);
                 if (this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
                     mode = def.PLAYER_MODE_NOTIME_LIVE;
                 }
@@ -2581,9 +2584,7 @@ class H265webjsModule {
 
                 _this.status.textContent = '';
                 _this.playBar.disabled = false;
-                console.log("hlsType1:" + _this.hlsConf.hlsType);
                 _this.playBar.onclick = () => {
-                    console.log("hlsType:" + _this.hlsConf.hlsType);
                     _this.playControl();
                 } // _this.player.stop()
 
@@ -2628,7 +2629,7 @@ class H265webjsModule {
         this.hlsObj.onSamples = (readyObj, frame) => {
             let _this = this;
             if (frame.video == true) {
-                console.log("FRAME==========>" + frame.pts);
+                // console.log("FRAME==========>" + frame.pts);
                 _this.player.appendHevcFrame(frame);
             } else {
                 _this.player.appendAACFrame(frame);

@@ -105,7 +105,7 @@ class M3u8BaseParserModule {
 		for (var i = 0; i < subPartBody.length - 1; i++) {
 			this._preURI += subPartBody[i] + "/";
 		}
-		console.log("pre uri ", this._preURI);
+		// console.log("pre uri ", this._preURI);
 
 		return true;
 	}

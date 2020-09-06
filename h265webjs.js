@@ -189,7 +189,6 @@ class H265webjsModule {
     }
 
     playControl() {
-        console.log(111);
         let mode = def.PLAYER_MODE_VOD;
         // _this.hlsConf.hlsType
         if (this.player.isPlaying) { // to pause
@@ -200,14 +199,11 @@ class H265webjsModule {
             this.playUtilHiddenMask();
             this.playBar.textContent = '||';
             if (this.mp4Obj != null) {
-                console.log("111-222");
                 this.player.play(this.mp4Obj.seekPos, mode);
             } else if (this.mpegTsObj != null) {
-                console.log("111-333");
                 this.player.play(this.mpegTsObj.seekPos, mode);
             } else if (this.hlsObj != null) {
-                console.log("111-444");
-                console.log("this.hlsConf.hlsType:" + this.hlsConf.hlsType);
+                // console.log("this.hlsConf.hlsType:" + this.hlsConf.hlsType);
                 if (this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
                     mode = def.PLAYER_MODE_NOTIME_LIVE;
                 }
@@ -621,9 +617,7 @@ class H265webjsModule {
 
                 _this.status.textContent = '';
                 _this.playBar.disabled = false;
-                console.log("hlsType1:" + _this.hlsConf.hlsType);
                 _this.playBar.onclick = () => {
-                    console.log("hlsType:" + _this.hlsConf.hlsType);
                     _this.playControl();
                 } // _this.player.stop()
 
@@ -668,7 +662,7 @@ class H265webjsModule {
         this.hlsObj.onSamples = (readyObj, frame) => {
             let _this = this;
             if (frame.video == true) {
-                console.log("FRAME==========>" + frame.pts);
+                // console.log("FRAME==========>" + frame.pts);
                 _this.player.appendHevcFrame(frame);
             } else {
                 _this.player.appendAACFrame(frame);
