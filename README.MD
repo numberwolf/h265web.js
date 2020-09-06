@@ -15,8 +15,12 @@
 
 ----------------------------------------
 
-* Capture
+* Capture VOD
+    * VOD
 > <img src="./res/demo.png" width="600px" />
+
+    * LIVE
+> <img src="./res/demoLive.png" width="600px" />
 
 ### Features
 

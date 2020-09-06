@@ -68,9 +68,10 @@ module.exports = config => {
         player.audio.pause()
         player.isPlaying = false
     }
-    player.checkFinished = () => {
-        if (player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
-            // console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
+    player.checkFinished = (mode = def.PLAYER_MODE_VOD) => {
+        if (mode == def.PLAYER_MODE_VOD && 
+            player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
+            console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
             player.pause();
             return true;
         }
@@ -92,16 +93,17 @@ module.exports = config => {
             player.play(seekPos);
         }
     }
-    player.play = (seekPos = -1) => {
+    player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD) => {
         player.isPlaying = true
-        // console.log("videoPTS:" + player.videoPTS);
-        if (player.videoPTS >= seekPos && !player.isNewSeek) {
+        console.log("mode:" + mode);
+        if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
+            (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
                 player.playFrame(true)
-                if (!player.checkFinished()) {
+                if (!player.checkFinished(mode)) {
                     player.playingCallback && player.playingCallback(player.videoPTS)
                 }
-                // console.log("videoPTS:" + player.videoPTS);
+                console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
             }, 1000 / player.config.fps)
 
             player.audio.play()
@@ -110,7 +112,7 @@ module.exports = config => {
                 // console.log(seekPos + " ~ " +(player.videoPTS * 1000) + " ~2 " + player.durationMs);
 
                 player.playFrame(false)
-                if (!player.checkFinished()) {
+                if (!player.checkFinished(mode)) {
                     // player.playingCallback && player.playingCallback(player.videoPTS)
 
                     if (player.videoPTS >= seekPos) {
@@ -186,7 +188,7 @@ module.exports = config => {
             if(!frame) {
                 return false //TODO: remove
             }
-            // console.log(frame);
+            console.log(frame);
             nalBuf = frame.data
             player.videoPTS = frame.pts
             player.audio.setAlignVPTS(frame.pts)
@@ -200,7 +202,7 @@ module.exports = config => {
             Module.HEAP8.set(nalBuf, offset);
 
             let decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length);
-            // console.log(decRet);
+            console.log(decRet);
 
             if (decRet < 0) {
                 Module._free(offset);
@@ -221,7 +223,7 @@ module.exports = config => {
                 if (show) {
                     let width = Module.HEAPU32[ptr / 4];
                     let height = Module.HEAPU32[ptr / 4 + 1];
-                    // console.log(width, height);
+                    console.log(width, height);
 
                     let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
                     let sizeWH = width * height

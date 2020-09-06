@@ -38,7 +38,7 @@ const matchers = {
 	isBlank: (line) => line === '',
 	canStrip: (line) => matchers.isBlank(line) || matchers.isComment(line),
 	defaultMinDur : 99999,
-	hlsSliceLimit : 5
+	hlsSliceLimit : 100
 }
 
 class M3u8BaseParserModule {
@@ -83,6 +83,8 @@ class M3u8BaseParserModule {
 	}
 
 	_uriParse(videoURL) {
+		this._preURI = "";
+
 		let headPart = videoURL.split("//");
 		let subPartProtocal = null;
 		let subPartBody = null;
@@ -103,7 +105,7 @@ class M3u8BaseParserModule {
 		for (var i = 0; i < subPartBody.length - 1; i++) {
 			this._preURI += subPartBody[i] + "/";
 		}
-		// console.log("pre uri ", this._preURI);
+		console.log("pre uri ", this._preURI);
 
 		return true;
 	}

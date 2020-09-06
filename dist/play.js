@@ -30,7 +30,10 @@ module.exports = {
     DEFAULT_FRAME_DUR:  40,
     DEFAULT_FIXED:      false,
     DEFAULT_SAMPLERATE: 44100,
-    DEFAULT_CONSU_SAMPLE_LEN: 20
+    DEFAULT_CONSU_SAMPLE_LEN: 20,
+    PLAYER_MODE_VOD: "vod",
+    PLAYER_MODE_NOTIME_LIVE: "no_time_live",
+    DEFAULT_STRING_LIVE: "LIVE"
 }
 
 },{}],2:[function(require,module,exports){
@@ -483,9 +486,10 @@ module.exports = config => {
         player.audio.pause()
         player.isPlaying = false
     }
-    player.checkFinished = () => {
-        if (player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
-            // console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
+    player.checkFinished = (mode = def.PLAYER_MODE_VOD) => {
+        if (mode == def.PLAYER_MODE_VOD && 
+            player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
+            console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
             player.pause();
             return true;
         }
@@ -507,16 +511,17 @@ module.exports = config => {
             player.play(seekPos);
         }
     }
-    player.play = (seekPos = -1) => {
+    player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD) => {
         player.isPlaying = true
-        // console.log("videoPTS:" + player.videoPTS);
-        if (player.videoPTS >= seekPos && !player.isNewSeek) {
+        console.log("mode:" + mode);
+        if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
+            (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
                 player.playFrame(true)
-                if (!player.checkFinished()) {
+                if (!player.checkFinished(mode)) {
                     player.playingCallback && player.playingCallback(player.videoPTS)
                 }
-                // console.log("videoPTS:" + player.videoPTS);
+                console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
             }, 1000 / player.config.fps)
 
             player.audio.play()
@@ -525,7 +530,7 @@ module.exports = config => {
                 // console.log(seekPos + " ~ " +(player.videoPTS * 1000) + " ~2 " + player.durationMs);
 
                 player.playFrame(false)
-                if (!player.checkFinished()) {
+                if (!player.checkFinished(mode)) {
                     // player.playingCallback && player.playingCallback(player.videoPTS)
 
                     if (player.videoPTS >= seekPos) {
@@ -601,7 +606,7 @@ module.exports = config => {
             if(!frame) {
                 return false //TODO: remove
             }
-            // console.log(frame);
+            console.log(frame);
             nalBuf = frame.data
             player.videoPTS = frame.pts
             player.audio.setAlignVPTS(frame.pts)
@@ -615,7 +620,7 @@ module.exports = config => {
             Module.HEAP8.set(nalBuf, offset);
 
             let decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number'])(offset, nalBuf.length);
-            // console.log(decRet);
+            console.log(decRet);
 
             if (decRet < 0) {
                 Module._free(offset);
@@ -636,7 +641,7 @@ module.exports = config => {
                 if (show) {
                     let width = Module.HEAPU32[ptr / 4];
                     let height = Module.HEAPU32[ptr / 4 + 1];
-                    // console.log(width, height);
+                    console.log(width, height);
 
                     let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
                     let sizeWH = width * height
@@ -891,6 +896,7 @@ class M3u8ParserModule {
     	this.onSamples = null;
 	}
 
+	// time onFinish -> onDemuxed
 	demux(videoURL) {
 		let _this = this;
 		this.hls.onTransportStream = (streamURI, streamDur) => {
@@ -903,8 +909,8 @@ class M3u8ParserModule {
 		};
 
 		this.hls.onFinished = (callFinData) => {
-			// console.log("onFinished : ");
-			// console.log(callFinData);
+			console.log("onFinished : ");
+			console.log(callFinData);
 
 			if (callFinData.type == def.PLAYER_IN_TYPE_M3U8_VOD) {
 				_this.durationMs = callFinData.duration * 1000;
@@ -935,25 +941,31 @@ class M3u8ParserModule {
 	            }
 	        }
 
-			// console.log("DURATION===>" + _this.mediaInfo.duration);
+			console.log("DURATION===>" + _this.mediaInfo.duration);
 
 			if (_this.onDemuxed != null) {
             	_this.onDemuxed(_this.onReadyOBJ);
             }
 
+            let firstPts = -1;
+            let needIncrStart = false;
 	        while(1) {
 	            let readData = _this.mpegTsObj.readPacket();
 	            if (readData.size <= 0) {
 	                break;
 	            }
 	            let pts = readData.dtime;
+	            if (firstPts < 0 && pts <= 0.04) {
+	            	needIncrStart = true;
+	            }
 	            if (readData.type == 0) {
-	            	// console.log("vStartTime:" + _this.vStartTime);
-	            	// console.log(pts + _this.vStartTime);
+	            	console.log("vStartTime:" + _this.vStartTime);
+	            	console.log(pts + _this.vStartTime);
 
 	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
-                	let bufFrame = new BUFFER_FRAME.BufferFrame(pts + _this.vStartTime, isKey, pktFrame, true);
+                	let vPts = needIncrStart == true ? pts + _this.vStartTime : pts;
+                	let bufFrame = new BUFFER_FRAME.BufferFrame(vPts, isKey, pktFrame, true);
                 	_this.bufObject.appendFrame(bufFrame.pts, bufFrame.data, true, bufFrame.isKey);
 
                 	if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
@@ -971,8 +983,8 @@ class M3u8ParserModule {
                 			let aacDataItem = aacDataList[i];
                 			// let aacPts = aacDataItem.ptime + _this.vStartTime;
 		                	// let aacData = aacDataItem.data;
-
-		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aacDataItem.ptime + _this.vStartTime, true, aacDataItem.data, false);
+		                	let aPts = needIncrStart == true ? aacDataItem.ptime + _this.vStartTime : pts;
+		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, aacDataItem.data, false);
 
                 			_this.bufObject.appendFrameByBufferFrame(bufFrame);
                 			if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
@@ -985,7 +997,8 @@ class M3u8ParserModule {
 	                	// bufFrame.isKey = true;
 	                	// bufFrame.video = false;
 
-	                	let bufFrame = new BUFFER_FRAME.BufferFrame(pts + _this.vStartTime, true, readData.data, false);
+	                	let aPts = needIncrStart == true ? pts + _this.vStartTime : pts;
+	                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, readData.data, false);
 
                 		_this.bufObject.appendFrameByBufferFrame(bufFrame);
                 		if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
@@ -1029,11 +1042,11 @@ class M3u8ParserModule {
 	    		let itemURI = item.streamURI;
 	    		let itemDur = item.streamDur;
 
-	    		// console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+	    		console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
 	    		_this.lockWait.state = true;
 	    		_this.lockWait.lockMember.dur = itemDur;
 	    		_this.mpegTsObj.demuxURL(itemURI);
-	    		// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+	    		console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
 	    	}
 	    }, 50);
 	}
@@ -1133,7 +1146,7 @@ const matchers = {
 	isBlank: (line) => line === '',
 	canStrip: (line) => matchers.isBlank(line) || matchers.isComment(line),
 	defaultMinDur : 99999,
-	hlsSliceLimit : 5
+	hlsSliceLimit : 100
 }
 
 class M3u8BaseParserModule {
@@ -1178,6 +1191,8 @@ class M3u8BaseParserModule {
 	}
 
 	_uriParse(videoURL) {
+		this._preURI = "";
+
 		let headPart = videoURL.split("//");
 		let subPartProtocal = null;
 		let subPartBody = null;
@@ -1198,7 +1213,7 @@ class M3u8BaseParserModule {
 		for (var i = 0; i < subPartBody.length - 1; i++) {
 			this._preURI += subPartBody[i] + "/";
 		}
-		// console.log("pre uri ", this._preURI);
+		console.log("pre uri ", this._preURI);
 
 		return true;
 	}
@@ -1966,8 +1981,11 @@ class H265webjsModule {
      */
     constructor(videoURL, config) {
         this.mp4Obj = null;
-        this.mpegTsObj = null; // @Todo
+        this.mpegTsObj = null;
         this.hlsObj = null; // @Todo
+        this.hlsConf = {
+            hlsType : def.PLAYER_IN_TYPE_M3U8_VOD
+        }
 
         // util
         this.progress = null;
@@ -2131,6 +2149,9 @@ class H265webjsModule {
     }
 
     playControl() {
+        console.log(111);
+        let mode = def.PLAYER_MODE_VOD;
+        // _this.hlsConf.hlsType
         if (this.player.isPlaying) { // to pause
             this.playUtilShowMask();
             this.playBar.textContent = '>';
@@ -2139,9 +2160,20 @@ class H265webjsModule {
             this.playUtilHiddenMask();
             this.playBar.textContent = '||';
             if (this.mp4Obj != null) {
-                this.player.play(this.mp4Obj.seekPos);
+                console.log("111-222");
+                this.player.play(this.mp4Obj.seekPos, mode);
+            } else if (this.mpegTsObj != null) {
+                console.log("111-333");
+                this.player.play(this.mpegTsObj.seekPos, mode);
+            } else if (this.hlsObj != null) {
+                console.log("111-444");
+                console.log("this.hlsConf.hlsType:" + this.hlsConf.hlsType);
+                if (this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
+                    mode = def.PLAYER_MODE_NOTIME_LIVE;
+                }
+                this.player.play(this.hlsObj.seekPos, mode);
             } else {
-                this.player.play(this.mpegTsEntry.seekPos);
+                console.log("unknow play resource type");
             }
         }
     }
@@ -2449,6 +2481,7 @@ class H265webjsModule {
         this.hlsObj = new M3U8Parser.M3u8();
         this.hlsObj.bindReady(_this);
 
+        // time onFinish -> onDemuxed
         this.hlsObj.onFinished = (readyObj, callFinData) => {
             if (readyFinState == false) {
                 // get type duration
@@ -2457,6 +2490,7 @@ class H265webjsModule {
                 durationSecFloat = durationMs / 1000;
                 _this.ptsLabel.textContent = '0:0:0/' + durationText(_this.progress.max = durationMs / 1000)
 
+                _this.hlsConf.hlsType = callFinData.type;
                 readyFinState = true;
             } // end if
         };
@@ -2482,10 +2516,15 @@ class H265webjsModule {
                 _this.player.setFrameRate(fps);
 
                 _this.player.setPlayingCall(videoPTS => {
-                    _this.progress.value = videoPTS
-                    let now = durationText(videoPTS)
-                    let total = durationText(durationMs / 1000)
-                    _this.ptsLabel.textContent = `${now}/${total}`
+                    _this.progress.value = videoPTS;
+                    let now = durationText(videoPTS);
+                    let total = durationText(durationMs / 1000);
+                    // def.DEFAULT_STRING_LIVE
+                    if (_this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
+                        _this.ptsLabel.textContent = `${now}/${def.DEFAULT_STRING_LIVE}`;
+                    } else {
+                        _this.ptsLabel.textContent = `${now}/${total}`;
+                    }
                 });
 
                 let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
@@ -2540,9 +2579,11 @@ class H265webjsModule {
                     }, clickedValue);
                 });
 
-                _this.status.textContent = ''
-                _this.playBar.disabled = false
+                _this.status.textContent = '';
+                _this.playBar.disabled = false;
+                console.log("hlsType1:" + _this.hlsConf.hlsType);
                 _this.playBar.onclick = () => {
+                    console.log("hlsType:" + _this.hlsConf.hlsType);
                     _this.playControl();
                 } // _this.player.stop()
 
@@ -2587,7 +2628,7 @@ class H265webjsModule {
         this.hlsObj.onSamples = (readyObj, frame) => {
             let _this = this;
             if (frame.video == true) {
-                // console.log("FRAME==========>" + frame.pts);
+                console.log("FRAME==========>" + frame.pts);
                 _this.player.appendHevcFrame(frame);
             } else {
                 _this.player.appendAACFrame(frame);

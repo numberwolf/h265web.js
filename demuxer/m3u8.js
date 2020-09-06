@@ -40,6 +40,7 @@ class M3u8ParserModule {
     	this.onSamples = null;
 	}
 
+	// time onFinish -> onDemuxed
 	demux(videoURL) {
 		let _this = this;
 		this.hls.onTransportStream = (streamURI, streamDur) => {
@@ -52,8 +53,8 @@ class M3u8ParserModule {
 		};
 
 		this.hls.onFinished = (callFinData) => {
-			// console.log("onFinished : ");
-			// console.log(callFinData);
+			console.log("onFinished : ");
+			console.log(callFinData);
 
 			if (callFinData.type == def.PLAYER_IN_TYPE_M3U8_VOD) {
 				_this.durationMs = callFinData.duration * 1000;
@@ -84,25 +85,31 @@ class M3u8ParserModule {
 	            }
 	        }
 
-			// console.log("DURATION===>" + _this.mediaInfo.duration);
+			console.log("DURATION===>" + _this.mediaInfo.duration);
 
 			if (_this.onDemuxed != null) {
             	_this.onDemuxed(_this.onReadyOBJ);
             }
 
+            let firstPts = -1;
+            let needIncrStart = false;
 	        while(1) {
 	            let readData = _this.mpegTsObj.readPacket();
 	            if (readData.size <= 0) {
 	                break;
 	            }
 	            let pts = readData.dtime;
+	            if (firstPts < 0 && pts <= 0.04) {
+	            	needIncrStart = true;
+	            }
 	            if (readData.type == 0) {
-	            	// console.log("vStartTime:" + _this.vStartTime);
-	            	// console.log(pts + _this.vStartTime);
+	            	console.log("vStartTime:" + _this.vStartTime);
+	            	console.log(pts + _this.vStartTime);
 
 	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
-                	let bufFrame = new BUFFER_FRAME.BufferFrame(pts + _this.vStartTime, isKey, pktFrame, true);
+                	let vPts = needIncrStart == true ? pts + _this.vStartTime : pts;
+                	let bufFrame = new BUFFER_FRAME.BufferFrame(vPts, isKey, pktFrame, true);
                 	_this.bufObject.appendFrame(bufFrame.pts, bufFrame.data, true, bufFrame.isKey);
 
                 	if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
@@ -120,8 +127,8 @@ class M3u8ParserModule {
                 			let aacDataItem = aacDataList[i];
                 			// let aacPts = aacDataItem.ptime + _this.vStartTime;
 		                	// let aacData = aacDataItem.data;
-
-		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aacDataItem.ptime + _this.vStartTime, true, aacDataItem.data, false);
+		                	let aPts = needIncrStart == true ? aacDataItem.ptime + _this.vStartTime : pts;
+		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, aacDataItem.data, false);
 
                 			_this.bufObject.appendFrameByBufferFrame(bufFrame);
                 			if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
@@ -134,7 +141,8 @@ class M3u8ParserModule {
 	                	// bufFrame.isKey = true;
 	                	// bufFrame.video = false;
 
-	                	let bufFrame = new BUFFER_FRAME.BufferFrame(pts + _this.vStartTime, true, readData.data, false);
+	                	let aPts = needIncrStart == true ? pts + _this.vStartTime : pts;
+	                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, readData.data, false);
 
                 		_this.bufObject.appendFrameByBufferFrame(bufFrame);
                 		if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
@@ -178,11 +186,11 @@ class M3u8ParserModule {
 	    		let itemURI = item.streamURI;
 	    		let itemDur = item.streamDur;
 
-	    		// console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+	    		console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
 	    		_this.lockWait.state = true;
 	    		_this.lockWait.lockMember.dur = itemDur;
 	    		_this.mpegTsObj.demuxURL(itemURI);
-	    		// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+	    		console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
 	    	}
 	    }, 50);
 	}
