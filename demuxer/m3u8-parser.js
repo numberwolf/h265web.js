@@ -1,1 +1,0 @@
-var def = require('./consts');

@@ -1,9 +1,10 @@
 //TODO: separate out the canvas logic and the hevc decoder logic
-var YUVBuffer = require('yuv-buffer')
-var YUVCanvas = require('yuv-canvas')
-var Module = require('./missile.js')
-var AudioModule = require('./audio')
-var def = require('../consts')
+const YUVBuffer = require('yuv-buffer');
+const YUVCanvas = require('yuv-canvas');
+const Module = require('./missile.js');
+const AudioModule = require('./audio');
+const def = require('../consts');
+
 module.exports = config => {
     let player = {
         config: {

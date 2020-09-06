@@ -20,6 +20,10 @@
 
 ### Features
 
+* Support M3u8-Vod Play!
+
+* Support M3u8-Vod Seek!
+
 * Support all yuv pixel formats
 
 * Support mp4 box
@@ -40,7 +44,7 @@
 
 * Seek with P/B Frame
 
-* Support HLS/M3u8-Vod
+* Support HLS Live Stream
 
 ### Setup
 
