@@ -71,7 +71,9 @@
 
 >`npm start` # just want to test and see, open 127.0.0.1:8999
 
-### Transcoding Your Media File To Hevc Codec
+### Transcoding Your Media With HEVC Codec
+
+##### MP4
 
 ```bash
 ffmpeg -i input.mp4 \
@@ -80,6 +82,35 @@ ffmpeg -i input.mp4 \
 -preset medium -maxrate 1000k -bufsize 1000k \
 -vtag hev1 \
 -y video.mp4
+```
+
+##### MPEG-TS
+
+```bash
+ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
+-vcodec libx265 -x265-params "bframes=0:keyint=10" -r 24 -filter_complex "scale=720:1280" -preset fast -maxrate 800k -bufsize 800k \
+-acodec aac -ar 22050 -ac 1 \
+-pix_fmt yuv420p \
+-f mpegts -y ./res/veilside2.ts
+```
+
+##### HLS/M3U8
+
+> Capture your screen
+
+```bash
+ffmpeg -f avfoundation -i 1:0 \
+-q 4 -r 10 \
+-filter_complex "scale=1280:720" \
+-pix_fmt yuv420p \
+-vcodec libx265 \
+-ar 22050 -ab 64k -ac 1 -acodec aac \
+-threads 4 \
+-preset veryfast \
+-f segment \
+-segment_list test.m3u8 \
+-segment_time 5 \
+-y /Users/numberwolf/Documents/webroot/VideoMissile/VideoMissilePlayer/res/hls1/v-%03d.ts
 ```
 
 ### Project Dir Struct
