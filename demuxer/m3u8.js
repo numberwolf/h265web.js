@@ -1,7 +1,9 @@
 const M3U8Base = require('./m3u8base');
 const MPEG_JS = require('mpeg.js');
+const BUFFER_FRAME = require('./bufferFrame');
 const BUFFMOD = require('./buffer');
 const HEVC_IMP = require('../decoder/hevc-imp');
+const def = require('../consts');
 
 class M3u8ParserModule {
 	constructor() {
@@ -18,6 +20,9 @@ class M3u8ParserModule {
 		};
 		this.timerFeed = null;
 
+		this.seekPos       = -1;
+
+	    this.durationMs    = -1.0;
 		this.bufObject = BUFFMOD();
 		this.fps           = -1;
 	    this.sampleRate    = -1;
@@ -25,18 +30,20 @@ class M3u8ParserModule {
 	        width   : -1,
 	        height  : -1
 	    };
-	    this.mediaInfo 	= {};
-    	this.extensionInfo = {};
+	    this.mediaInfo 	= null;
+    	this.extensionInfo = null;
 
     	// event
     	this.onReadyOBJ = null;
+    	this.onFinished = null;
     	this.onDemuxed = null;
+    	this.onSamples = null;
 	}
 
 	demux(videoURL) {
 		let _this = this;
 		this.hls.onTransportStream = (streamURI, streamDur) => {
-			console.log("Event onTransportStream ===> ", streamURI, streamDur);
+			// console.log("Event onTransportStream ===> ", streamURI, streamDur);
 			// demuxURL(streamURI);
 			_this.tsList.push({
 				streamURI : streamURI,
@@ -45,15 +52,26 @@ class M3u8ParserModule {
 		};
 
 		this.hls.onFinished = (callFinData) => {
-			console.log("onFinished : ");
-			console.log(callFinData);
+			// console.log("onFinished : ");
+			// console.log(callFinData);
+
+			if (callFinData.type == def.PLAYER_IN_TYPE_M3U8_VOD) {
+				_this.durationMs = callFinData.duration * 1000;
+			} else {
+				_this.durationMs = -1;
+			}
+
+			if (_this.onFinished != null) {
+				_this.onFinished(_this.onReadyOBJ, callFinData);
+			}
 		};
 
 		this.mpegTsObj.onDemuxed = () => {
 			if (_this.mediaInfo == null) {
 				_this.mediaInfo = _this.mpegTsObj.readMediaInfo();
+				// console.log("mediaInfo: ",_this.mediaInfo);
 
-				_this.durationMs 	= _this.mediaInfo.duration * 1000;
+				// _this.durationMs 	= _this.mediaInfo.duration * 1000;
 	            _this.fps 			= _this.mediaInfo.vFps;
 	            _this.sampleRate 	= _this.mediaInfo.sampleRate;
 	            // console.log("samplerate:" + _this.sampleRate);
@@ -66,7 +84,11 @@ class M3u8ParserModule {
 	            }
 	        }
 
-			console.log("DURATION===>" + _this.mediaInfo.duration);
+			// console.log("DURATION===>" + _this.mediaInfo.duration);
+
+			if (_this.onDemuxed != null) {
+            	_this.onDemuxed(_this.onReadyOBJ);
+            }
 
 	        while(1) {
 	            let readData = _this.mpegTsObj.readPacket();
@@ -75,12 +97,15 @@ class M3u8ParserModule {
 	            }
 	            let pts = readData.dtime;
 	            if (readData.type == 0) {
-	            	console.log("vStartTime:" + _this.vStartTime);
-	            	console.log(pts + _this.vStartTime);
+	            	// console.log("vStartTime:" + _this.vStartTime);
+	            	// console.log(pts + _this.vStartTime);
 
 	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
-                	_this.bufObject.appendFrame(pts + _this.vStartTime, pktFrame, true, isKey);
+                	let bufFrame = new BUFFER_FRAME.BufferFrame(pts + _this.vStartTime, isKey, pktFrame, true);
+                	_this.bufObject.appendFrame(bufFrame.pts, bufFrame.data, true, bufFrame.isKey);
+
+                	if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
 
 	            } else {
 	            	// console.log(pts + aStartTime);
@@ -90,29 +115,39 @@ class M3u8ParserModule {
 
                 		// let debugData = null;
                 		// let tempIdx = 0;
+                		// AAC 多片 不能直接引用同一个对象修改，不然会发生内存地址错误问题 播放错误
                 		for (var i = 0; i < aacDataList.length; i++) {
                 			let aacDataItem = aacDataList[i];
-                			_this.bufObject.appendFrame(
-                				aacDataItem.ptime + _this.vStartTime, aacDataItem.data, false, true);
+                			// let aacPts = aacDataItem.ptime + _this.vStartTime;
+		                	// let aacData = aacDataItem.data;
+
+		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aacDataItem.ptime + _this.vStartTime, true, aacDataItem.data, false);
+
+                			_this.bufObject.appendFrameByBufferFrame(bufFrame);
+                			if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
+                			// console.log(bufFrame);
                 		}
                 		// _this.bufObject.appendFrame(readData.ptime, readData.src, false, true);
                 	} else {
-                		_this.bufObject.appendFrame(
-                			pts + _this.vStartTime, readData.data, false, true);
+                		// bufFrame.pts = pts + _this.vStartTime;
+	                	// bufFrame.data = readData.data;
+	                	// bufFrame.isKey = true;
+	                	// bufFrame.video = false;
+
+	                	let bufFrame = new BUFFER_FRAME.BufferFrame(pts + _this.vStartTime, true, readData.data, false);
+
+                		_this.bufObject.appendFrameByBufferFrame(bufFrame);
+                		if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
                 	}
 	            }
 	        }
 	        // vStartTime += mediaInfo.vDuration;
 	        // aStartTime += mediaInfo.aDuration;
-	        console.log(_this.lockWait.lockMember.dur);
+	        // console.log(_this.lockWait.lockMember.dur);
 	        _this.vStartTime += parseFloat(_this.lockWait.lockMember.dur);
 	        _this.aStartTime += parseFloat(_this.lockWait.lockMember.dur);
-	        console.log("vStartTime:" + _this.vStartTime);
+	        // console.log("vStartTime:" + _this.vStartTime);
 	        _this.lockWait.state = false;
-
-	        if (_this.onDemuxed != null) {
-            	_this.onDemuxed(_this.onReadyOBJ);
-            }
 	    };
 
 		this.mpegTsObj.onReady = () => {
@@ -143,11 +178,11 @@ class M3u8ParserModule {
 	    		let itemURI = item.streamURI;
 	    		let itemDur = item.streamDur;
 
-	    		console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+	    		// console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
 	    		_this.lockWait.state = true;
 	    		_this.lockWait.lockMember.dur = itemDur;
 	    		_this.mpegTsObj.demuxURL(itemURI);
-	    		console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+	    		// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
 	    	}
 	    }, 50);
 	}

@@ -13,30 +13,20 @@
 <body>
     <div id="glplayer"></div>
     <script>
-    	// var url = "/res/video.mp4";
-    	// var config = {
-    	// 	type: "mp4",
-    	// 	player: "glplayer",
-    	// 	width: 600,
-    	// 	height: 600
-    	// };
-    	// makeH265webjs(url, config).do();
+        // var type = "mp4";
+        // var type = "ts";
+        var type = "hls";
 
+        // var url = "/res/video.mp4";
     	// var url = "/res/veilside2.ts";
-    	// var config = {
-    	// 	type: "ts",
-    	// 	player: "glplayer",
-    	// 	width: 600,
-    	// 	height: 600
-    	// };
-    	// makeH265webjs(url, config).do();
+        // var url = "/res/hls/v-000.ts"
+        // var url = "http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8";
+        var url = "/res/hls/veilside.m3u8";
 
         // makeTestHLS();
 
-        // var url = "http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8";
-        var url = "/res/hls/veilside.m3u8";
         var config = {
-            type: "hls",
+            type: type,
             player: "glplayer",
             width: 600,
             height: 600

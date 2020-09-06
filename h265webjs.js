@@ -328,7 +328,7 @@ class H265webjsModule {
                     if (secIdx >= durationSec) {
                         window.clearInterval(this.timerFeed);
                         this.timerFeed = null;
-                        console.log("loading finished");
+                        // console.log("loading finished");
                         return;
                     }
 
@@ -442,6 +442,7 @@ class H265webjsModule {
                 }
                 if (audioFrame != null) {
                     for (var i = 0; i < audioFrame.length; i++) {
+                        // console.log(audioFrame[i]);
                         _this.player.appendAACFrame(audioFrame[i]);
                     }
                 }
@@ -453,7 +454,7 @@ class H265webjsModule {
                 if (secIdx >= durationSecFloat) {
                     window.clearInterval(_this.timerFeed);
                     _this.timerFeed = null;
-                    console.log("loading finished");
+                    // console.log("loading finished");
                     return;
                 }
 
@@ -496,9 +497,163 @@ class H265webjsModule {
      */
     m3u8Entry() {
         let _this = this;
+        let readyFinState = false;
+        let durationMs = 0;
+        let durationSecFloat;
+
         this.hlsObj = new M3U8Parser.M3u8();
+        this.hlsObj.bindReady(_this);
+
+        this.hlsObj.onFinished = (readyObj, callFinData) => {
+            if (readyFinState == false) {
+                // get type duration
+                // init player duration
+                durationMs  = _this.hlsObj.getDurationMs();
+                durationSecFloat = durationMs / 1000;
+                _this.ptsLabel.textContent = '0:0:0/' + durationText(_this.progress.max = durationMs / 1000)
+
+                readyFinState = true;
+            } // end if
+        };
+
+        this.hlsObj.onDemuxed = (readyObj) => {
+            if (_this.player == null) {
+                let fps         = _this.hlsObj.getFPS();
+                let sampleRate  = _this.hlsObj.getSampleRate();
+                let size        = _this.hlsObj.getSize();
+                // console.log("sampleRate: " + sampleRate);
+                
+                _this.player = Player({
+                    width: _this.configFormat.playerW,
+                    height: _this.configFormat.playerH,
+                    sampleRate: sampleRate,
+                    fps: fps,
+                    appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
+                    fixed: false, // is strict to resolution?
+                    playerId: _this.configFormat.playerId
+                });
+                _this.player.setDurationMs(durationMs);
+                // player.setSize(size.width, size.height);
+                _this.player.setFrameRate(fps);
+
+                _this.player.setPlayingCall(videoPTS => {
+                    _this.progress.value = videoPTS
+                    let now = durationText(videoPTS)
+                    let total = durationText(durationMs / 1000)
+                    _this.ptsLabel.textContent = `${now}/${total}`
+                });
+
+                let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
+                    _this.timerFeed = window.setInterval(() => {
+                        let videoFrame = _this.hlsObj.popBuffer(1, secIdx);
+                        let audioFrame = _this.hlsObj.popBuffer(2, secIdx);
+                        if (videoFrame != null) {
+                            for (var i = 0; i < videoFrame.length; i++) {
+                                _this.player.appendHevcFrame(videoFrame[i]);
+                            }
+                        }
+                        if (audioFrame != null) {
+                            for (var i = 0; i < audioFrame.length; i++) {
+                                // console.log(audioFrame[i]);
+                                _this.player.appendAACFrame(audioFrame[i]);
+                            }
+                        }
+                        if (videoFrame != null || audioFrame != null) {
+                            secIdx++;
+                        }
+
+                        // console.log(secIdx + "," + durationSecFloat);
+                        if (secIdx >= durationSecFloat) {
+                            window.clearInterval(_this.timerFeed);
+                            _this.timerFeed = null;
+                            // console.log("loading finished");
+                            return;
+                        }
+
+                    // setTimeout(() => {
+                    //     feedMP4Data(secIdx, idrIdx);
+                    // }, 100);
+                    }, 10);
+                };
+
+                /**
+                 * SEEK Progress
+                 */
+                _this.progress.addEventListener('click', (e) => {
+                    let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
+                    let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
+                    let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
+                    // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
+                    if (_this.timerFeed) {
+                        window.clearInterval(_this.timerFeed);
+                        _this.timerFeed = null;
+                    }
+                    _this.player.seek(() => {
+                        _this.hlsObj.seek(clickedValue);
+                        // temp : give idx to feed and seek
+                        feedMP4Data(parseInt(_this.hlsObj.seekPos), clickedValue);
+                    }, clickedValue);
+                });
+
+                _this.status.textContent = ''
+                _this.playBar.disabled = false
+                _this.playBar.onclick = () => {
+                    _this.playControl();
+                } // _this.player.stop()
+
+            };
+
+            // push frame to player
+            // let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
+            //     _this.timerFeed = window.setInterval(() => {
+            //         let videoFrame = _this.hlsObj.popBuffer(1, secIdx);
+            //         let audioFrame = _this.hlsObj.popBuffer(2, secIdx);
+            //         if (videoFrame != null) {
+            //             for (var i = 0; i < videoFrame.length; i++) {
+            //                 _this.player.appendHevcFrame(videoFrame[i]);
+            //             }
+            //         }
+            //         if (audioFrame != null) {
+            //             for (var i = 0; i < audioFrame.length; i++) {
+            //                 _this.player.appendAACFrame(audioFrame[i]);
+            //             }
+            //         }
+            //         if (videoFrame != null || audioFrame != null) {
+            //             secIdx++;
+            //         }
+
+            //         // console.log(secIdx + "," + durationSecFloat);
+            //         if (secIdx >= durationSecFloat) {
+            //             window.clearInterval(_this.timerFeed);
+            //             _this.timerFeed = null;
+            //             console.log("loading finished");
+            //             return;
+            //         }
+
+            //     // setTimeout(() => {
+            //     //     feedMP4Data(secIdx, idrIdx);
+            //     // }, 100);
+            //     }, 5);
+            // };
+            // // feed
+            // feedMP4Data(0);
+        }; // end onDemuxed
+
+        this.hlsObj.onSamples = (readyObj, frame) => {
+            let _this = this;
+            if (frame.video == true) {
+                // console.log("FRAME==========>" + frame.pts);
+                _this.player.appendHevcFrame(frame);
+            } else {
+                _this.player.appendAACFrame(frame);
+            }
+
+        }; // end onSamples
+
+        // start
         this.hlsObj.demux(this.videoURL);
-    }
+        
+    } // end m3u8 
 
 }
 

@@ -1,3 +1,4 @@
+const BUFFER_FRAME = require('./bufferFrame');
 // buffer
 module.exports = () => {
 	let bufferModule = {
@@ -18,12 +19,7 @@ module.exports = () => {
 		idrIdxBuffer: []
 	};
 	bufferModule.appendFrame = (pts, data, video = true, isKey = false) => {
-		let frame = null;
-		frame = {
-			pts : pts,
-			data : data,
-			isKey : isKey
-		};
+		let frame = new BUFFER_FRAME.BufferFrame(pts, isKey, data, video);
 		let idxPts = parseInt(pts);
 		if (video) {
 			if (bufferModule.videoBuffer.length - 1 >= idxPts) {
@@ -40,6 +36,28 @@ module.exports = () => {
 				bufferModule.audioBuffer[idxPts].push(frame);
 			} else {
 				bufferModule.audioBuffer.push([frame]);
+			}
+        }
+	};
+	// by object
+	bufferModule.appendFrameByBufferFrame = (bufFrame) => {
+		let pts = bufFrame.pts;
+		let idxPts = parseInt(pts);
+		if (bufFrame.video) {
+			if (bufferModule.videoBuffer.length - 1 >= idxPts) {
+				bufferModule.videoBuffer[idxPts].push(bufFrame);
+			} else {
+				bufferModule.videoBuffer.push([bufFrame]);
+			}
+			if (isKey) {
+				bufferModule.idrIdxBuffer.push(pts);
+			}
+        } else {
+        	// audio
+        	if (bufferModule.audioBuffer.length - 1 >= idxPts) {
+				bufferModule.audioBuffer[idxPts].push(bufFrame);
+			} else {
+				bufferModule.audioBuffer.push([bufFrame]);
 			}
         }
 	};

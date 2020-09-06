@@ -47,11 +47,12 @@ class M3u8BaseParserModule {
 		// default is Live HLS
 		this._type = def.PLAYER_IN_TYPE_M3U8_LIVE;
 		this._preURI = "";
-		this.duration = 0;
+		this.duration = -1;
 
 		// event
 		this.onTransportStream = null;
 		/*
+		 * event of after every file parse
 		 * {...}
 		 */
 		this.onFinished = null;
@@ -146,7 +147,7 @@ class M3u8BaseParserModule {
 						this._type = def.PLAYER_IN_TYPE_M3U8_VOD;
 						if (this.onFinished != null) {
 							let callFinData = {
-								type : def.PLAYER_IN_TYPE_M3U8_VOD,
+								type : this._type,
 								duration : this.duration
 							}
 							this.onFinished(callFinData);
@@ -190,14 +191,22 @@ class M3u8BaseParserModule {
 		if (this._slices.length > matchers.hlsSliceLimit && 
 			this._type == def.PLAYER_IN_TYPE_M3U8_LIVE) {
 			this._slices = this._slices.slice(-1 * matchers.hlsSliceLimit);
-			console.log(
-				this._slices.length, 
-				this._slices[this._slices.length - 2], 
-				this._slices[this._slices.length - 1]);
+			// console.log(
+			// 	this._slices.length, 
+			// 	this._slices[this._slices.length - 2], 
+			// 	this._slices[this._slices.length - 1]);
 		}
 
 		// console.log(this._slices);
 		// console.log(minDur, this._type);
+
+		if (this.onFinished != null) {
+			let callFinData = {
+				type : this._type,
+				duration : -1
+			}
+			this.onFinished(callFinData);
+		}
 
 		return minDur;
 	}
