@@ -15,14 +15,19 @@
 
 ----------------------------------------
 
-* Capture VOD
-    * VOD
+#### Capture VOD
+
+##### VOD
+
 > <img src="./res/demo.png" width="600px" />
 
-    * LIVE
+##### LIVE
+
 > <img src="./res/demoLive.png" width="600px" />
 
 ### Features
+
+* Support HLS Play! (Live Mode!)
 
 * Support M3u8-Vod Play!
 
