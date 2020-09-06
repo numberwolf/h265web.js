@@ -42,6 +42,8 @@
 
 ### TodoList
 
+* Player UI refactor
+
 * Seek with P/B Frame
 
 * Support HLS Live Stream
