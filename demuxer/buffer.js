@@ -32,8 +32,12 @@ module.exports = () => {
 			}
         } else {
         	// audio
-        	if (bufferModule.audioBuffer.length - 1 >= idxPts) {
-				bufferModule.audioBuffer[idxPts].push(frame);
+        	if (bufferModule.audioBuffer.length - 1 >= idxPts 
+        		&& bufferModule.audioBuffer[idxPts] != undefined 
+        		&& bufferModule.audioBuffer[idxPts] != null) {
+        		if (bufferModule.audioBuffer[idxPts]) {
+					bufferModule.audioBuffer[idxPts].push(frame);
+				}
 			} else {
 				bufferModule.audioBuffer.push([frame]);
 			}

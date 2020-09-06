@@ -21,8 +21,11 @@ class H265webjsModule {
      */
     constructor(videoURL, config) {
         this.mp4Obj = null;
-        this.mpegTsObj = null; // @Todo
+        this.mpegTsObj = null;
         this.hlsObj = null; // @Todo
+        this.hlsConf = {
+            hlsType : def.PLAYER_IN_TYPE_M3U8_VOD
+        }
 
         // util
         this.progress = null;
@@ -186,6 +189,8 @@ class H265webjsModule {
     }
 
     playControl() {
+        let mode = def.PLAYER_MODE_VOD;
+        // _this.hlsConf.hlsType
         if (this.player.isPlaying) { // to pause
             this.playUtilShowMask();
             this.playBar.textContent = '>';
@@ -194,9 +199,17 @@ class H265webjsModule {
             this.playUtilHiddenMask();
             this.playBar.textContent = '||';
             if (this.mp4Obj != null) {
-                this.player.play(this.mp4Obj.seekPos);
+                this.player.play(this.mp4Obj.seekPos, mode);
+            } else if (this.mpegTsObj != null) {
+                this.player.play(this.mpegTsObj.seekPos, mode);
+            } else if (this.hlsObj != null) {
+                // console.log("this.hlsConf.hlsType:" + this.hlsConf.hlsType);
+                if (this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
+                    mode = def.PLAYER_MODE_NOTIME_LIVE;
+                }
+                this.player.play(this.hlsObj.seekPos, mode);
             } else {
-                this.player.play(this.mpegTsEntry.seekPos);
+                console.log("unknow play resource type");
             }
         }
     }
@@ -504,6 +517,7 @@ class H265webjsModule {
         this.hlsObj = new M3U8Parser.M3u8();
         this.hlsObj.bindReady(_this);
 
+        // time onFinish -> onDemuxed
         this.hlsObj.onFinished = (readyObj, callFinData) => {
             if (readyFinState == false) {
                 // get type duration
@@ -512,6 +526,7 @@ class H265webjsModule {
                 durationSecFloat = durationMs / 1000;
                 _this.ptsLabel.textContent = '0:0:0/' + durationText(_this.progress.max = durationMs / 1000)
 
+                _this.hlsConf.hlsType = callFinData.type;
                 readyFinState = true;
             } // end if
         };
@@ -537,10 +552,15 @@ class H265webjsModule {
                 _this.player.setFrameRate(fps);
 
                 _this.player.setPlayingCall(videoPTS => {
-                    _this.progress.value = videoPTS
-                    let now = durationText(videoPTS)
-                    let total = durationText(durationMs / 1000)
-                    _this.ptsLabel.textContent = `${now}/${total}`
+                    _this.progress.value = videoPTS;
+                    let now = durationText(videoPTS);
+                    let total = durationText(durationMs / 1000);
+                    // def.DEFAULT_STRING_LIVE
+                    if (_this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
+                        _this.ptsLabel.textContent = `${now}/${def.DEFAULT_STRING_LIVE}`;
+                    } else {
+                        _this.ptsLabel.textContent = `${now}/${total}`;
+                    }
                 });
 
                 let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
@@ -595,8 +615,8 @@ class H265webjsModule {
                     }, clickedValue);
                 });
 
-                _this.status.textContent = ''
-                _this.playBar.disabled = false
+                _this.status.textContent = '';
+                _this.playBar.disabled = false;
                 _this.playBar.onclick = () => {
                     _this.playControl();
                 } // _this.player.stop()

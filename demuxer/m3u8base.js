@@ -38,7 +38,7 @@ const matchers = {
 	isBlank: (line) => line === '',
 	canStrip: (line) => matchers.isBlank(line) || matchers.isComment(line),
 	defaultMinDur : 99999,
-	hlsSliceLimit : 5
+	hlsSliceLimit : 100
 }
 
 class M3u8BaseParserModule {
@@ -83,6 +83,8 @@ class M3u8BaseParserModule {
 	}
 
 	_uriParse(videoURL) {
+		this._preURI = "";
+
 		let headPart = videoURL.split("//");
 		let subPartProtocal = null;
 		let subPartBody = null;
