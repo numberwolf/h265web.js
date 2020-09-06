@@ -55,8 +55,6 @@
 
 * Seek with P/B Frame
 
-* Support HLS Live Stream
-
 ### Setup
 
 > Check wasm support: https://www.caniuse.com/#search=wasm
