@@ -2213,16 +2213,16 @@ class H265webjsModule {
     }
 
     playUtilProgress() {
-        this.progress.style.borderRadius = '2px';
-        this.progress.style.borderLeft = '1px #ccc solid';
-        this.progress.style.borderRight = '1px #ccc solid';
-        this.progress.style.borderTop = '1px #aaa solid';
-        this.progress.style.backgroundColor = 'white';
+        // this.progress.style.borderRadius = '2px';
+        // this.progress.style.borderLeft = '1px #ccc solid';
+        // this.progress.style.borderRight = '1px #ccc solid';
+        // this.progress.style.borderTop = '1px #aaa solid';
+        // this.progress.style.backgroundColor = 'white';
         this.progress.style.width = '100%';
-        this.progress.style.setProperty("-webkit-progress-bar",
-            "background-color(#d7d7d7)");
-        this.progress.style.setProperty("-webkit-progress-value",
-            "background-color(#aadd6a)");
+        // this.progress.style.setProperty("-webkit-progress-bar",
+        //     "background-color(#d7d7d7)");
+        // this.progress.style.setProperty("-webkit-progress-value",
+        //     "background-color(#aadd6a)");
     }
 
     _makeMP4Player() {
@@ -2306,6 +2306,8 @@ class H265webjsModule {
 
         if (this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
             _this.progress.hidden = true;
+        } else {
+            _this.progress.hidden = false;
         }
         /**
          * SEEK Progress
