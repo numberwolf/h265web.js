@@ -94,34 +94,34 @@ module.exports = config => {
         }
     }
     player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD) => {
-        player.isPlaying = true
+        player.isPlaying = true;
         // console.log("mode:" + mode);
         if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
             (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
-                player.playFrame(true)
+                player.playFrame(true);
                 if (!player.checkFinished(mode)) {
-                    player.playingCallback && player.playingCallback(player.videoPTS)
+                    player.playingCallback && player.playingCallback(player.videoPTS);
                 }
                 // console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
-            }, 1000 / player.config.fps)
+            }, 1000 / player.config.fps);
 
-            player.audio.play()
+            player.audio.play();
         } else { // SEEK if (player.videoPTS < seekPos && player.isNewSeek)
             player.loop = window.setInterval(() => {
                 // console.log(seekPos + " ~ " +(player.videoPTS * 1000) + " ~2 " + player.durationMs);
 
-                player.playFrame(false)
+                player.playFrame(false);
                 if (!player.checkFinished(mode)) {
                     // player.playingCallback && player.playingCallback(player.videoPTS)
 
                     if (player.videoPTS >= seekPos) {
-                        window.clearInterval(player.loop)
-                        player.loop = null
-                        player.play(seekPos)
+                        window.clearInterval(player.loop);
+                        player.loop = null;
+                        player.play(seekPos);
                     }
                 }
-            }, 0)
+            }, 0);
             player.isNewSeek = false;
         }
         console.log('Playing ...')
@@ -183,10 +183,10 @@ module.exports = config => {
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             nalBuf = player.nextNalu() // nal
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
-            let frame = player.frameList.shift() // nal
-            !frame && console.log('got empty frame')
+            let frame = player.frameList.shift(); // nal
+            !frame && console.log('got empty frame');
             if(!frame) {
-                return false //TODO: remove
+                return false;
             }
             // console.log(frame);
             nalBuf = frame.data
@@ -195,7 +195,7 @@ module.exports = config => {
         } else {
             return false
         }
-        if (nalBuf != false) {
+        if (nalBuf != false && show) {
             // console.log(nalBuf);
 
             let offset = Module._malloc(nalBuf.length);
@@ -215,30 +215,32 @@ module.exports = config => {
             // }
 
             if (decRet > 0) {
+                // let ptr = Module.cwrap('getFrame', 'number', [])();
+                // if(!ptr) {
+                //     throw new Error('ERROR ptr is not a Number!');
+                // }
+                // sub block [m,n] //TODO: put all of this into a nextFrame() function
                 let ptr = Module.cwrap('getFrame', 'number', [])();
                 if(!ptr) {
                     throw new Error('ERROR ptr is not a Number!');
                 }
-                // sub block [m,n] //TODO: put all of this into a nextFrame() function
-                if (show) {
-                    let width = Module.HEAPU32[ptr / 4];
-                    let height = Module.HEAPU32[ptr / 4 + 1];
-                    // console.log(width, height);
+                let width = Module.HEAPU32[ptr / 4];
+                let height = Module.HEAPU32[ptr / 4 + 1];
+                // console.log(width, height);
 
-                    let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
-                    let sizeWH = width * height
-                    let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
-                    let imageBufferB = Module.HEAPU8.subarray(
-                        imgBufferPtr + sizeWH + 8,
-                        imgBufferPtr + sizeWH + 8 + sizeWH / 4
-                    )
-                    let imageBufferR = Module.HEAPU8.subarray(
-                        imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
-                        imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
-                    )
-                    if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
-                    else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR)
-                }
+                let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1];
+                let sizeWH = width * height;
+                let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
+                let imageBufferB = Module.HEAPU8.subarray(
+                    imgBufferPtr + sizeWH + 8,
+                    imgBufferPtr + sizeWH + 8 + sizeWH / 4
+                );
+                let imageBufferR = Module.HEAPU8.subarray(
+                    imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
+                    imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
+                );
+                if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
+                else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR);
             } //  end if decRet
             Module._free(offset);
         }

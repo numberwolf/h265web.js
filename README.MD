@@ -27,6 +27,8 @@
 
 ### Features
 
+* Seek Speed : Improve 300%+
+
 * Support HLS Play! (Live Mode!)
 
 * Support M3u8-Vod Play!
@@ -48,6 +50,8 @@
 * Toast of remind
 
 * Protect your website video playing keep away from malicious adver
+
+* Fixed Bug : M3u8 Seek
 
 ### TodoList
 

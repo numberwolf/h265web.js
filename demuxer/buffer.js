@@ -27,7 +27,7 @@ module.exports = () => {
 			} else {
 				bufferModule.videoBuffer.push([frame]);
 			}
-			if (isKey) {
+			if (isKey && !bufferModule.idrIdxBuffer.includes(pts)) {
 				bufferModule.idrIdxBuffer.push(pts);
 			}
         } else {
@@ -42,6 +42,8 @@ module.exports = () => {
 				bufferModule.audioBuffer.push([frame]);
 			}
         }
+
+        return true;
 	};
 	// by object
 	bufferModule.appendFrameByBufferFrame = (bufFrame) => {
@@ -53,7 +55,7 @@ module.exports = () => {
 			} else {
 				bufferModule.videoBuffer.push([bufFrame]);
 			}
-			if (isKey) {
+			if (isKey && !bufferModule.idrIdxBuffer.includes(pts)) {
 				bufferModule.idrIdxBuffer.push(pts);
 			}
         } else {
@@ -64,6 +66,8 @@ module.exports = () => {
 				bufferModule.audioBuffer.push([bufFrame]);
 			}
         }
+
+        return true;
 	};
 	bufferModule.cleanPipeline = () => {
 		bufferModule.videoBuffer.length = 0;
@@ -82,6 +86,8 @@ module.exports = () => {
 		return bufferModule.audioBuffer[ptsec];
 	};
 	bufferModule.seekIDR = (pts = -1.0) => {
+		// console.log(bufferModule.idrIdxBuffer);
+		// console.log(bufferModule.videoBuffer);
 		// console.log("seek => ", pts);
 		// console.log(bufferModule.idrIdxBuffer);
 		if (pts < 0) {

@@ -512,34 +512,34 @@ module.exports = config => {
         }
     }
     player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD) => {
-        player.isPlaying = true
+        player.isPlaying = true;
         // console.log("mode:" + mode);
         if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
             (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
-                player.playFrame(true)
+                player.playFrame(true);
                 if (!player.checkFinished(mode)) {
-                    player.playingCallback && player.playingCallback(player.videoPTS)
+                    player.playingCallback && player.playingCallback(player.videoPTS);
                 }
                 // console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
-            }, 1000 / player.config.fps)
+            }, 1000 / player.config.fps);
 
-            player.audio.play()
+            player.audio.play();
         } else { // SEEK if (player.videoPTS < seekPos && player.isNewSeek)
             player.loop = window.setInterval(() => {
                 // console.log(seekPos + " ~ " +(player.videoPTS * 1000) + " ~2 " + player.durationMs);
 
-                player.playFrame(false)
+                player.playFrame(false);
                 if (!player.checkFinished(mode)) {
                     // player.playingCallback && player.playingCallback(player.videoPTS)
 
                     if (player.videoPTS >= seekPos) {
-                        window.clearInterval(player.loop)
-                        player.loop = null
-                        player.play(seekPos)
+                        window.clearInterval(player.loop);
+                        player.loop = null;
+                        player.play(seekPos);
                     }
                 }
-            }, 0)
+            }, 0);
             player.isNewSeek = false;
         }
         console.log('Playing ...')
@@ -601,10 +601,10 @@ module.exports = config => {
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
             nalBuf = player.nextNalu() // nal
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
-            let frame = player.frameList.shift() // nal
-            !frame && console.log('got empty frame')
+            let frame = player.frameList.shift(); // nal
+            !frame && console.log('got empty frame');
             if(!frame) {
-                return false //TODO: remove
+                return false;
             }
             // console.log(frame);
             nalBuf = frame.data
@@ -613,7 +613,7 @@ module.exports = config => {
         } else {
             return false
         }
-        if (nalBuf != false) {
+        if (nalBuf != false && show) {
             // console.log(nalBuf);
 
             let offset = Module._malloc(nalBuf.length);
@@ -633,30 +633,32 @@ module.exports = config => {
             // }
 
             if (decRet > 0) {
+                // let ptr = Module.cwrap('getFrame', 'number', [])();
+                // if(!ptr) {
+                //     throw new Error('ERROR ptr is not a Number!');
+                // }
+                // sub block [m,n] //TODO: put all of this into a nextFrame() function
                 let ptr = Module.cwrap('getFrame', 'number', [])();
                 if(!ptr) {
                     throw new Error('ERROR ptr is not a Number!');
                 }
-                // sub block [m,n] //TODO: put all of this into a nextFrame() function
-                if (show) {
-                    let width = Module.HEAPU32[ptr / 4];
-                    let height = Module.HEAPU32[ptr / 4 + 1];
-                    // console.log(width, height);
+                let width = Module.HEAPU32[ptr / 4];
+                let height = Module.HEAPU32[ptr / 4 + 1];
+                // console.log(width, height);
 
-                    let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1]
-                    let sizeWH = width * height
-                    let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH)
-                    let imageBufferB = Module.HEAPU8.subarray(
-                        imgBufferPtr + sizeWH + 8,
-                        imgBufferPtr + sizeWH + 8 + sizeWH / 4
-                    )
-                    let imageBufferR = Module.HEAPU8.subarray(
-                        imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
-                        imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
-                    )
-                    if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
-                    else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR)
-                }
+                let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1];
+                let sizeWH = width * height;
+                let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
+                let imageBufferB = Module.HEAPU8.subarray(
+                    imgBufferPtr + sizeWH + 8,
+                    imgBufferPtr + sizeWH + 8 + sizeWH / 4
+                );
+                let imageBufferR = Module.HEAPU8.subarray(
+                    imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
+                    imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
+                );
+                if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
+                else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR);
             } //  end if decRet
             Module._free(offset);
         }
@@ -753,7 +755,7 @@ module.exports = () => {
 			} else {
 				bufferModule.videoBuffer.push([frame]);
 			}
-			if (isKey) {
+			if (isKey && !bufferModule.idrIdxBuffer.includes(pts)) {
 				bufferModule.idrIdxBuffer.push(pts);
 			}
         } else {
@@ -768,6 +770,8 @@ module.exports = () => {
 				bufferModule.audioBuffer.push([frame]);
 			}
         }
+
+        return true;
 	};
 	// by object
 	bufferModule.appendFrameByBufferFrame = (bufFrame) => {
@@ -779,7 +783,7 @@ module.exports = () => {
 			} else {
 				bufferModule.videoBuffer.push([bufFrame]);
 			}
-			if (isKey) {
+			if (isKey && !bufferModule.idrIdxBuffer.includes(pts)) {
 				bufferModule.idrIdxBuffer.push(pts);
 			}
         } else {
@@ -790,6 +794,8 @@ module.exports = () => {
 				bufferModule.audioBuffer.push([bufFrame]);
 			}
         }
+
+        return true;
 	};
 	bufferModule.cleanPipeline = () => {
 		bufferModule.videoBuffer.length = 0;
@@ -808,6 +814,8 @@ module.exports = () => {
 		return bufferModule.audioBuffer[ptsec];
 	};
 	bufferModule.seekIDR = (pts = -1.0) => {
+		// console.log(bufferModule.idrIdxBuffer);
+		// console.log(bufferModule.videoBuffer);
 		// console.log("seek => ", pts);
 		// console.log(bufferModule.idrIdxBuffer);
 		if (pts < 0) {
@@ -880,13 +888,15 @@ class M3u8ParserModule {
 		};
 		this.timerFeed = null;
 
-		this.seekPos       = -1;
+		this.seekPos       	= -1;
+		this.vPreFramePTS	= 0;
+		this.aPreFramePTS	= 0;
 
-	    this.durationMs    = -1.0;
-		this.bufObject = BUFFMOD();
-		this.fps           = -1;
-	    this.sampleRate    = -1;
-	    this.size          = {
+	    this.durationMs    	= -1.0;
+		this.bufObject 		= BUFFMOD();
+		this.fps           	= -1;
+	    this.sampleRate    	= -1;
+	    this.size          	= {
 	        width   : -1,
 	        height  : -1
 	    };
@@ -903,6 +913,9 @@ class M3u8ParserModule {
 	// time onFinish -> onDemuxed
 	demux(videoURL) {
 		let _this = this;
+		this.vPreFramePTS = 0.0;
+		this.aPreFramePTS = 0.0;
+
 		this.hls.onTransportStream = (streamURI, streamDur) => {
 			// console.log("Event onTransportStream ===> ", streamURI, streamDur);
 			// demuxURL(streamURI);
@@ -962,22 +975,27 @@ class M3u8ParserModule {
 	            if (pts < 0) {
 	            	continue;
 	            }
-	            if (firstPts < 0 && pts <= 0.04) {
-	            	needIncrStart = true;
-	            }
 	            if (readData.type == 0) {
+	            	if (firstPts < 0 && pts <= _this.vPreFramePTS) {
+		            	needIncrStart = true;
+		            }
 	            	// console.log("vStartTime:" + _this.vStartTime);
 	            	// console.log(pts + _this.vStartTime);
 
 	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
                 	let vPts = needIncrStart == true ? pts + _this.vStartTime : pts;
+
                 	let bufFrame = new BUFFER_FRAME.BufferFrame(vPts, isKey, pktFrame, true);
                 	_this.bufObject.appendFrame(bufFrame.pts, bufFrame.data, true, bufFrame.isKey);
+                	_this.vPreFramePTS = vPts;
 
                 	if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
 
 	            } else {
+	            	if (firstPts < 0 && pts <= _this.aPreFramePTS) {
+		            	needIncrStart = true;
+		            }
 	            	// console.log(pts + aStartTime);
 	            	if (_this.mediaInfo.aCodec == "aac") {
                 		// console.log(readData.data);
@@ -994,6 +1012,7 @@ class M3u8ParserModule {
 		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, aacDataItem.data, false);
 
                 			_this.bufObject.appendFrameByBufferFrame(bufFrame);
+                			_this.aPreFramePTS = aPts;
                 			if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
                 			// console.log(bufFrame);
                 		}
@@ -1008,6 +1027,7 @@ class M3u8ParserModule {
 	                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, readData.data, false);
 
                 		_this.bufObject.appendFrameByBufferFrame(bufFrame);
+                		_this.aPreFramePTS = aPts;
                 		if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
                 	}
 	            }
@@ -1973,7 +1993,6 @@ const M3U8Parser = require('./demuxer/m3u8');
 const def = require('./consts');
 const staticMem = require('./utils/static-mem');
 const Module = require('./decoder/missile.js');
-const durationText = duration => `${Math.floor(duration / 3600)}:${Math.floor((duration % 3600) / 60)}:${Math.floor((duration % 60))}`;
 
 class H265webjsModule {
     // static myStaticProp = 42;
@@ -2027,7 +2046,7 @@ class H265webjsModule {
             if (global.STATIC_MEM_wasmDecoderState == 1) {
                 console.log("wasm already inited!");
                 if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
-                    _this.makeMP4Player(_this.configFormat);
+                    _this._makeMP4Player(_this.configFormat);
                     _this.playerUtilBuildMask();
                     // _this.playUtilHiddenMask();
                     this.playUtilShowMask();
@@ -2041,7 +2060,7 @@ class H265webjsModule {
                     console.log('Initialized Decoder');
                     Module.cwrap('initializeDecoder', 'number', [])();
 
-                    _this.makeMP4Player(_this.configFormat);
+                    _this._makeMP4Player(_this.configFormat);
                     _this.playerUtilBuildMask();
                     // _this.playUtilHiddenMask();
                     _this.playUtilShowMask();
@@ -2066,6 +2085,15 @@ class H265webjsModule {
             "maskFg" : document.querySelector('div#' + maskBgTag.maskFgId),
             "maskImg" : document.querySelector('img#' + maskBgTag.maskImg),
         }
+    }
+
+    _durationText(duration) {
+        if (duration < 0) {
+            return "Play";
+        }
+        return Math.floor(duration / 3600) 
+        + ":" + Math.floor((duration % 3600) / 60) 
+        + ":" + Math.floor(duration % 60);
     }
 
     // @TODO
@@ -2194,7 +2222,7 @@ class H265webjsModule {
             "background-color(#aadd6a)");
     }
 
-    makeMP4Player() {
+    _makeMP4Player() {
         let _this = this;
 
         this.controlBar = document.createElement('div');
@@ -2245,6 +2273,45 @@ class H265webjsModule {
 
     } // end
 
+    _makeMP4PlayerView(durationMs, fps, sampleRate, size) {
+        let _this = this;
+        this.ptsLabel.textContent = '0:0:0/' + _this._durationText(this.progress.max = durationMs / 1000);
+        // dur seconds
+        // let durationSec = parseInt(durationMs / 1000);
+
+        this.player = Player({
+            width: this.configFormat.playerW,
+            height: this.configFormat.playerH,
+            sampleRate: sampleRate,
+            fps: fps,
+            appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
+            fixed: false, // is strict to resolution?
+            playerId: this.configFormat.playerId
+        });
+        this.player.setPlayingCall(videoPTS => {
+            _this.progress.value = videoPTS
+            let now = _this._durationText(videoPTS)
+            let total = _this._durationText(durationMs / 1000)
+            // _this.ptsLabel.textContent = `${now}/${total}`
+            // def.DEFAULT_STRING_LIVE
+            if (_this.hlsObj != null && _this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
+                _this.ptsLabel.textContent = `${now}/${def.DEFAULT_STRING_LIVE}`;
+            } else {
+                _this.ptsLabel.textContent = `${now}/${total}`;
+            }
+        });
+
+        _this.player.setDurationMs(durationMs);
+        // player.setSize(size.width, size.height);
+        _this.player.setFrameRate(fps);
+
+        _this.status.textContent = '';
+        _this.playBar.disabled = false;
+        _this.playBar.onclick = () => {
+            _this.playControl();
+        } // this.player.stop()
+    }
+
     /********************************************************************
      ********************************************************************
      ********************                    ****************************
@@ -2256,35 +2323,19 @@ class H265webjsModule {
         let _this = this;
 
         fetch(this.videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
-
             // demux mp4
             this.timerFeed = null;
-            this.mp4Obj = new Mp4Parser()
-            this.mp4Obj.demux(streamBuffer)
+            this.mp4Obj = new Mp4Parser();
+            this.mp4Obj.demux(streamBuffer);
             this.mp4Obj.seek(-1);
-            let durationMs  = this.mp4Obj.getDurationMs()
-            let fps         = this.mp4Obj.getFPS()
-            let sampleRate  = this.mp4Obj.getSampleRate()
-            let size        = this.mp4Obj.getSize()
-            this.ptsLabel.textContent = '0:0:0/' + durationText(this.progress.max = durationMs / 1000)
-            // dur seconds
+            let durationMs  = this.mp4Obj.getDurationMs();
+            let fps         = this.mp4Obj.getFPS();
+            let sampleRate  = this.mp4Obj.getSampleRate();
+            let size        = this.mp4Obj.getSize();
+            this._makeMP4PlayerView(durationMs, fps, sampleRate, size);
+            // // dur seconds
             let durationSec = parseInt(durationMs / 1000);
 
-            this.player = Player({
-                width: this.configFormat.playerW,
-                height: this.configFormat.playerH,
-                sampleRate: sampleRate,
-                fps: fps,
-                appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
-                fixed: false, // is strict to resolution?
-                playerId: this.configFormat.playerId
-            });
-            this.player.setPlayingCall(videoPTS => {
-                this.progress.value = videoPTS
-                let now = durationText(videoPTS)
-                let total = durationText(durationMs / 1000)
-                _this.ptsLabel.textContent = `${now}/${total}`
-            });
             //TODO: get all the data at once syncronously or feed data through a callback if streamed
             let feedMP4Data = (secIdx=0, idrIdx=0) => {
                 this.timerFeed = window.setInterval(() => {
@@ -2311,10 +2362,6 @@ class H265webjsModule {
                         // console.log("loading finished");
                         return;
                     }
-
-                // setTimeout(() => {
-                //     feedMP4Data(secIdx, idrIdx);
-                // }, 100);
                 }, 10);
             }
 
@@ -2337,16 +2384,7 @@ class H265webjsModule {
                 }, clickedValue);
             });
 
-            _this.player.setDurationMs(durationMs)
-            // player.setSize(size.width, size.height)
-            _this.player.setFrameRate(fps)
-            feedMP4Data(0)
-
-            _this.status.textContent = ''
-            _this.playBar.disabled = false
-            _this.playBar.onclick = () => {
-                _this.playControl();
-            } // this.player.stop()
+            feedMP4Data(0);
         }); // end fetch
     }
 
@@ -2384,31 +2422,11 @@ class H265webjsModule {
         let sampleRate  = _this.mpegTsObj.getSampleRate();
         let size        = _this.mpegTsObj.getSize();
         // console.log(sampleRate);
+
+        _this._makeMP4PlayerView(durationMs, fps, sampleRate, size);
         // dur seconds
         let durationSecFloat = durationMs / 1000;
         let durationSec = parseInt(durationSecFloat);
-
-        _this.ptsLabel.textContent = '0:0:0/' + durationText(_this.progress.max = durationMs / 1000)
-
-        _this.player = Player({
-            width: _this.configFormat.playerW,
-            height: _this.configFormat.playerH,
-            sampleRate: sampleRate,
-            fps: fps,
-            appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
-            fixed: false, // is strict to resolution?
-            playerId: _this.configFormat.playerId
-        });
-        _this.player.setDurationMs(durationMs);
-        // player.setSize(size.width, size.height);
-        _this.player.setFrameRate(fps);
-
-        _this.player.setPlayingCall(videoPTS => {
-            _this.progress.value = videoPTS
-            let now = durationText(videoPTS)
-            let total = durationText(durationMs / 1000)
-            _this.ptsLabel.textContent = `${now}/${total}`
-        });
 
         //TODO: get all the data at once syncronously or feed data through a callback if streamed
         let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
@@ -2437,10 +2455,6 @@ class H265webjsModule {
                     // console.log("loading finished");
                     return;
                 }
-
-            // setTimeout(() => {
-            //     feedMP4Data(secIdx, idrIdx);
-            // }, 100);
             }, 10);
         };
 
@@ -2464,12 +2478,7 @@ class H265webjsModule {
         });
 
         // feed
-        feedMP4Data(0)
-        _this.status.textContent = ''
-        _this.playBar.disabled = false
-        _this.playBar.onclick = () => {
-            _this.playControl();
-        } // _this.player.stop()
+        feedMP4Data(0);
     }
 
     /**
@@ -2491,7 +2500,7 @@ class H265webjsModule {
                 // init player duration
                 durationMs  = _this.hlsObj.getDurationMs();
                 durationSecFloat = durationMs / 1000;
-                _this.ptsLabel.textContent = '0:0:0/' + durationText(_this.progress.max = durationMs / 1000)
+                _this.ptsLabel.textContent = '0:0:0/' + _this._durationText(_this.progress.max = durationMs / 1000)
 
                 _this.hlsConf.hlsType = callFinData.type;
                 readyFinState = true;
@@ -2504,31 +2513,7 @@ class H265webjsModule {
                 let sampleRate  = _this.hlsObj.getSampleRate();
                 let size        = _this.hlsObj.getSize();
                 // console.log("sampleRate: " + sampleRate);
-                
-                _this.player = Player({
-                    width: _this.configFormat.playerW,
-                    height: _this.configFormat.playerH,
-                    sampleRate: sampleRate,
-                    fps: fps,
-                    appendHevcType: def.APPEND_TYPE_FRAME, // APPEND_TYPE_SEQUENCE
-                    fixed: false, // is strict to resolution?
-                    playerId: _this.configFormat.playerId
-                });
-                _this.player.setDurationMs(durationMs);
-                // player.setSize(size.width, size.height);
-                _this.player.setFrameRate(fps);
-
-                _this.player.setPlayingCall(videoPTS => {
-                    _this.progress.value = videoPTS;
-                    let now = durationText(videoPTS);
-                    let total = durationText(durationMs / 1000);
-                    // def.DEFAULT_STRING_LIVE
-                    if (_this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
-                        _this.ptsLabel.textContent = `${now}/${def.DEFAULT_STRING_LIVE}`;
-                    } else {
-                        _this.ptsLabel.textContent = `${now}/${total}`;
-                    }
-                });
+                _this._makeMP4PlayerView(durationMs, fps, sampleRate, size);
 
                 let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
                     _this.timerFeed = window.setInterval(() => {
@@ -2581,49 +2566,7 @@ class H265webjsModule {
                         feedMP4Data(parseInt(_this.hlsObj.seekPos), clickedValue);
                     }, clickedValue);
                 });
-
-                _this.status.textContent = '';
-                _this.playBar.disabled = false;
-                _this.playBar.onclick = () => {
-                    _this.playControl();
-                } // _this.player.stop()
-
             };
-
-            // push frame to player
-            // let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
-            //     _this.timerFeed = window.setInterval(() => {
-            //         let videoFrame = _this.hlsObj.popBuffer(1, secIdx);
-            //         let audioFrame = _this.hlsObj.popBuffer(2, secIdx);
-            //         if (videoFrame != null) {
-            //             for (var i = 0; i < videoFrame.length; i++) {
-            //                 _this.player.appendHevcFrame(videoFrame[i]);
-            //             }
-            //         }
-            //         if (audioFrame != null) {
-            //             for (var i = 0; i < audioFrame.length; i++) {
-            //                 _this.player.appendAACFrame(audioFrame[i]);
-            //             }
-            //         }
-            //         if (videoFrame != null || audioFrame != null) {
-            //             secIdx++;
-            //         }
-
-            //         // console.log(secIdx + "," + durationSecFloat);
-            //         if (secIdx >= durationSecFloat) {
-            //             window.clearInterval(_this.timerFeed);
-            //             _this.timerFeed = null;
-            //             console.log("loading finished");
-            //             return;
-            //         }
-
-            //     // setTimeout(() => {
-            //     //     feedMP4Data(secIdx, idrIdx);
-            //     // }, 100);
-            //     }, 5);
-            // };
-            // // feed
-            // feedMP4Data(0);
         }; // end onDemuxed
 
         this.hlsObj.onSamples = (readyObj, frame) => {
