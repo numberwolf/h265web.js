@@ -17,6 +17,5 @@ bundle_player.js
 # Others
 VideoMissileServerDemo
 
-res/
 dist/*
 aa
