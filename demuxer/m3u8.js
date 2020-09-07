@@ -20,13 +20,15 @@ class M3u8ParserModule {
 		};
 		this.timerFeed = null;
 
-		this.seekPos       = -1;
+		this.seekPos       	= -1;
+		this.vPreFramePTS	= 0;
+		this.aPreFramePTS	= 0;
 
-	    this.durationMs    = -1.0;
-		this.bufObject = BUFFMOD();
-		this.fps           = -1;
-	    this.sampleRate    = -1;
-	    this.size          = {
+	    this.durationMs    	= -1.0;
+		this.bufObject 		= BUFFMOD();
+		this.fps           	= -1;
+	    this.sampleRate    	= -1;
+	    this.size          	= {
 	        width   : -1,
 	        height  : -1
 	    };
@@ -43,6 +45,9 @@ class M3u8ParserModule {
 	// time onFinish -> onDemuxed
 	demux(videoURL) {
 		let _this = this;
+		this.vPreFramePTS = 0.0;
+		this.aPreFramePTS = 0.0;
+
 		this.hls.onTransportStream = (streamURI, streamDur) => {
 			// console.log("Event onTransportStream ===> ", streamURI, streamDur);
 			// demuxURL(streamURI);
@@ -102,22 +107,27 @@ class M3u8ParserModule {
 	            if (pts < 0) {
 	            	continue;
 	            }
-	            if (firstPts < 0 && pts <= 0.04) {
-	            	needIncrStart = true;
-	            }
 	            if (readData.type == 0) {
+	            	if (firstPts < 0 && pts <= _this.vPreFramePTS) {
+		            	needIncrStart = true;
+		            }
 	            	// console.log("vStartTime:" + _this.vStartTime);
 	            	// console.log(pts + _this.vStartTime);
 
 	            	let pktFrame = HEVC_IMP.PACK_NALU(readData.layer);
                 	let isKey = readData.keyframe == 1 ? true : false;
                 	let vPts = needIncrStart == true ? pts + _this.vStartTime : pts;
+
                 	let bufFrame = new BUFFER_FRAME.BufferFrame(vPts, isKey, pktFrame, true);
                 	_this.bufObject.appendFrame(bufFrame.pts, bufFrame.data, true, bufFrame.isKey);
+                	_this.vPreFramePTS = vPts;
 
                 	if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
 
 	            } else {
+	            	if (firstPts < 0 && pts <= _this.aPreFramePTS) {
+		            	needIncrStart = true;
+		            }
 	            	// console.log(pts + aStartTime);
 	            	if (_this.mediaInfo.aCodec == "aac") {
                 		// console.log(readData.data);
@@ -134,6 +144,7 @@ class M3u8ParserModule {
 		                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, aacDataItem.data, false);
 
                 			_this.bufObject.appendFrameByBufferFrame(bufFrame);
+                			_this.aPreFramePTS = aPts;
                 			if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
                 			// console.log(bufFrame);
                 		}
@@ -148,6 +159,7 @@ class M3u8ParserModule {
 	                	let bufFrame = new BUFFER_FRAME.BufferFrame(aPts, true, readData.data, false);
 
                 		_this.bufObject.appendFrameByBufferFrame(bufFrame);
+                		_this.aPreFramePTS = aPts;
                 		if (_this.onSamples != null) _this.onSamples(_this.onReadyOBJ, bufFrame);
                 	}
 	            }
