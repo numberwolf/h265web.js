@@ -2304,6 +2304,9 @@ class H265webjsModule {
             }
         });
 
+        if (this.hlsConf.hlsType == def.PLAYER_IN_TYPE_M3U8_LIVE) {
+            _this.progress.hidden = true;
+        }
         /**
          * SEEK Progress
          */
