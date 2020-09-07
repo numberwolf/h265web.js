@@ -35,6 +35,9 @@ class H265webjsModule {
         this.ptsLabel = null;
         this.controlBar = null;
 
+        // func
+        this.feedMP4Data = null;
+
         this.videoURL = videoURL;
         this.configFormat = {
             playerId : config.player || def.DEFAILT_WEBGL_PLAY_ID,
@@ -314,6 +317,42 @@ class H265webjsModule {
             }
         });
 
+        /**
+         * SEEK Progress
+         */
+        _this.progress.addEventListener('click', (e) => {
+            let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
+            let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
+            let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
+            // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
+            if (_this.timerFeed) {
+                window.clearInterval(_this.timerFeed);
+                _this.timerFeed = null;
+            }
+            _this.player.seek(() => {
+                // _this.mp4Obj.seek(clickedValue);
+                // // temp : give idx to feed and seek
+                // this.feedMP4Data(parseInt(_this.mp4Obj.seekPos), clickedValue);
+
+                if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
+                    _this.mp4Obj.seek(clickedValue);
+                    // temp : give idx to feed and seek
+                    _this.feedMP4Data(parseInt(_this.mp4Obj.seekPos), clickedValue);
+                } else if (
+                    _this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
+                    _this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
+                {
+                    _this.mpegTsObj.seek(clickedValue);
+                    // temp : give idx to feed and seek
+                    _this.feedMP4Data(parseInt(_this.mpegTsObj.seekPos), clickedValue);
+                } else if (_this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+                    _this.hlsObj.seek(clickedValue);
+                    // temp : give idx to feed and seek
+                    _this.feedMP4Data(parseInt(_this.hlsObj.seekPos), clickedValue);
+                }
+            }, clickedValue);
+        });
+
         _this.player.setDurationMs(durationMs);
         // player.setSize(size.width, size.height);
         _this.player.setFrameRate(fps);
@@ -350,7 +389,7 @@ class H265webjsModule {
             let durationSec = parseInt(durationMs / 1000);
 
             //TODO: get all the data at once syncronously or feed data through a callback if streamed
-            let feedMP4Data = (secIdx=0, idrIdx=0) => {
+            this.feedMP4Data = (secIdx=0, idrIdx=0) => {
                 this.timerFeed = window.setInterval(() => {
                     let videoFrame = this.mp4Obj.popBuffer(1, secIdx);
                     let audioFrame = this.mp4Obj.popBuffer(2, secIdx);
@@ -377,27 +416,7 @@ class H265webjsModule {
                     }
                 }, 10);
             }
-
-            /**
-             * SEEK Progress
-             */
-            _this.progress.addEventListener('click', (e) => {
-                let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
-                let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
-                let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
-                // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
-                if (_this.timerFeed) {
-                    window.clearInterval(_this.timerFeed);
-                    _this.timerFeed = null;
-                }
-                _this.player.seek(() => {
-                    _this.mp4Obj.seek(clickedValue);
-                    // temp : give idx to feed and seek
-                    feedMP4Data(parseInt(_this.mp4Obj.seekPos), clickedValue);
-                }, clickedValue);
-            });
-
-            feedMP4Data(0);
+            this.feedMP4Data(0);
         }); // end fetch
     }
 
@@ -442,7 +461,7 @@ class H265webjsModule {
         let durationSec = parseInt(durationSecFloat);
 
         //TODO: get all the data at once syncronously or feed data through a callback if streamed
-        let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
+        _this.feedMP4Data = (secIdx = 0, idrIdx = 0) => {
             _this.timerFeed = window.setInterval(() => {
                 let videoFrame = _this.mpegTsObj.popBuffer(1, secIdx);
                 let audioFrame = _this.mpegTsObj.popBuffer(2, secIdx);
@@ -470,28 +489,8 @@ class H265webjsModule {
                 }
             }, 10);
         };
-
-        /**
-         * SEEK Progress
-         */
-        _this.progress.addEventListener('click', (e) => {
-            let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
-            let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
-            let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
-            // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
-            if (_this.timerFeed) {
-                window.clearInterval(_this.timerFeed);
-                _this.timerFeed = null;
-            }
-            _this.player.seek(() => {
-                _this.mpegTsObj.seek(clickedValue);
-                // temp : give idx to feed and seek
-                feedMP4Data(parseInt(_this.mpegTsObj.seekPos), clickedValue);
-            }, clickedValue);
-        });
-
         // feed
-        feedMP4Data(0);
+        _this.feedMP4Data(0);
     }
 
     /**
@@ -528,7 +527,7 @@ class H265webjsModule {
                 // console.log("sampleRate: " + sampleRate);
                 _this._makeMP4PlayerView(durationMs, fps, sampleRate, size);
 
-                let feedMP4Data = (secIdx = 0, idrIdx = 0) => {
+                this.feedMP4Data = (secIdx = 0, idrIdx = 0) => {
                     _this.timerFeed = window.setInterval(() => {
                         let videoFrame = _this.hlsObj.popBuffer(1, secIdx);
                         let audioFrame = _this.hlsObj.popBuffer(2, secIdx);
@@ -554,31 +553,8 @@ class H265webjsModule {
                             // console.log("loading finished");
                             return;
                         }
-
-                    // setTimeout(() => {
-                    //     feedMP4Data(secIdx, idrIdx);
-                    // }, 100);
                     }, 10);
                 };
-
-                /**
-                 * SEEK Progress
-                 */
-                _this.progress.addEventListener('click', (e) => {
-                    let x = e.pageX - _this.progress.offsetLeft; // or e.offsetX (less support, though)
-                    let y = e.pageY - _this.progress.offsetTop;  // or e.offsetY
-                    let clickedValue = x * _this.progress.max / _this.progress.offsetWidth;
-                    // console.log('Current value: ' + this.value + ', Target position: ' + clickedValue);
-                    if (_this.timerFeed) {
-                        window.clearInterval(_this.timerFeed);
-                        _this.timerFeed = null;
-                    }
-                    _this.player.seek(() => {
-                        _this.hlsObj.seek(clickedValue);
-                        // temp : give idx to feed and seek
-                        feedMP4Data(parseInt(_this.hlsObj.seekPos), clickedValue);
-                    }, clickedValue);
-                });
             };
         }; // end onDemuxed
 
