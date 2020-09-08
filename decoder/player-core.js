@@ -77,8 +77,13 @@ module.exports = config => {
         }
         return false;
     }
-    // @TODO
-    player.seek = (execCall, seekPos = -1) => {
+    /**
+     * options:
+     *      seekTime        : seekTime,
+     *      mode            : _this.playMode,
+    *       accurateSeek    : _this.configFormat.accurateSeek
+     */
+    player.seek = (execCall, options = {}) => {
         let statusNow = player.isPlaying;
         player.pause();
         player.cleanSample();
@@ -88,18 +93,20 @@ module.exports = config => {
         }
         player.isNewSeek = true;
         // temp set videoPTS to int() idx
-        player.videoPTS = parseInt(seekPos);
+        player.videoPTS = parseInt(options.seekTime);
         if (statusNow) {
-            player.play(seekPos);
+            // setTimeout(() => {
+            player.play(options.seekTime, options.mode, options.accurateSeek);
+            // }, 1000);
         }
     }
-    player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD) => {
+    player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD, accurateSeek = false) => {
         player.isPlaying = true;
         // console.log("mode:" + mode);
         if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
             (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
-                player.playFrame(true);
+                player.playFrame(true, accurateSeek);
                 if (!player.checkFinished(mode)) {
                     player.playingCallback && player.playingCallback(player.videoPTS);
                 }
@@ -111,7 +118,7 @@ module.exports = config => {
             player.loop = window.setInterval(() => {
                 // console.log(seekPos + " ~ " +(player.videoPTS * 1000) + " ~2 " + player.durationMs);
 
-                player.playFrame(false);
+                player.playFrame(false, accurateSeek);
                 if (!player.checkFinished(mode)) {
                     // player.playingCallback && player.playingCallback(player.videoPTS)
 
@@ -177,7 +184,7 @@ module.exports = config => {
             player.frameList.push(streamBytes)
         }
     }
-    player.playFrame = (show = false) => {
+    player.playFrame = (show = false, accurateSeek = false) => {
         // console.log(show);
         let nalBuf  = null
         if (player.config.appendHevcType == def.APPEND_TYPE_STREAM) {
@@ -195,9 +202,17 @@ module.exports = config => {
         } else {
             return false
         }
-        if (nalBuf != false && show) {
-            // console.log(nalBuf);
 
+        /**
+         * conditions: "or"
+         * pre) nalBuf is not empty
+         * 1) seek to target and accurateSeek
+         * 2) show it
+         */
+        if (nalBuf != false 
+        && (!show && accurateSeek) || show
+        ) {
+            // console.log(nalBuf);
             let offset = Module._malloc(nalBuf.length);
             Module.HEAP8.set(nalBuf, offset);
 
@@ -214,7 +229,8 @@ module.exports = config => {
             //     console.log(decRet);
             // }
 
-            if (decRet > 0) {
+            // If show, draw YUV webGL
+            if (decRet > 0 && show) {
                 // let ptr = Module.cwrap('getFrame', 'number', [])();
                 // if(!ptr) {
                 //     throw new Error('ERROR ptr is not a Number!');

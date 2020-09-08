@@ -19,15 +19,15 @@
 
 ##### VOD
 
-> <img src="./assets/demo.png" width="600px" />
+> <img src="./assets/demo2.png" width="500px" />
 
 ##### LIVE
 
-> <img src="./assets/demoLive.png" width="600px" />
+> <img src="./assets/demoLive.png" width="500px" />
 
 ### Features
 
-* Seek Speed : Improve 300%+
+* Support accurate seek action
 
 * Support HLS Play! (Live Mode!)
 
@@ -55,9 +55,9 @@
 
 ### TodoList
 
-* Player UI refactor
+* Full Screen play
 
-* Seek with P/B Frame
+* Player UI refactor
 
 ### Setup
 

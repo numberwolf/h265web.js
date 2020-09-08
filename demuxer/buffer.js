@@ -88,7 +88,7 @@ module.exports = () => {
 	bufferModule.seekIDR = (pts = -1.0) => {
 		// console.log(bufferModule.idrIdxBuffer);
 		// console.log(bufferModule.videoBuffer);
-		// console.log("seek => ", pts);
+		// console.log("seek target => ", pts);
 		// console.log(bufferModule.idrIdxBuffer);
 		if (pts < 0) {
 			return null;
