@@ -19,7 +19,7 @@
 
 ##### VOD
 
-> <img src="./assets/demo1.png" width="500px" />
+> <img src="./assets/demo2.png" width="500px" />
 
 ##### LIVE
 
