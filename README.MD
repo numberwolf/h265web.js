@@ -27,7 +27,7 @@
 
 ### Features
 
-* Seek Speed : Improve 300%+
+* Support accurate seek action
 
 * Support HLS Play! (Live Mode!)
 
@@ -55,9 +55,9 @@
 
 ### TodoList
 
-* Player UI refactor
+* Full Screen play
 
-* Seek with P/B Frame
+* Player UI refactor
 
 ### Setup
 
