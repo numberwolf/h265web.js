@@ -19,11 +19,11 @@
 
 ##### VOD
 
-> <img src="./assets/demo1.png" width="400px" />
+> <img src="./assets/demo1.png" width="500px" />
 
 ##### LIVE
 
-> <img src="./assets/demoLive.png" width="400px" />
+> <img src="./assets/demoLive.png" width="500px" />
 
 ### Features
 
