@@ -14,7 +14,7 @@ module.exports = config => {
             fixed: config.fixed || def.DEFAULT_FIXED,
             sampleRate: config.sampleRate || def.DEFAULT_SAMPLERATE,
             appendHevcType: config.appendHevcType || def.APPEND_TYPE_STREAM,
-            frameDur: config.frameDur || def.DEFAULT_FRAME_DUR,
+            frameDurMs: config.frameDur || def.DEFAULT_FRAME_DUR, // got ms
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID
         },
         /*
@@ -31,23 +31,28 @@ module.exports = config => {
         videoPTS: 0,
         loop: null,
         isPlaying: false,
-        playingCallback : null,
-        isNewSeek: false
+        isNewSeek: false,
+        // event
+        onPlayingTime : null,
+        onPlayingFinish : null
     }
     player.setSize = (width, height) => {
         player.config.width = width || def.DEFAULT_WIDTH
         player.config.height = height || def.DEFAULT_HEIGHT
     }
     player.setFrameRate = (fps = 25) => {
-        player.config.fps = fps
-        player.config.frameDur = 1000 / fps
+        player.config.fps = fps;
+        player.config.frameDurMs = 1000 / fps; // got ms
     }
     player.setDurationMs = (durationMs = -1) => {
         player.durationMs = durationMs
         player.audio.setDurationMs(durationMs)
     }
     player.setPlayingCall = callback => {
-        player.playingCallback = callback;
+        player.onPlayingTime = callback;
+    }
+    player.setVoice = voice => {
+        player.audio.setVoice(voice);
     }
     player.appendAACFrame = streamBytes => player.audio.addSample(streamBytes)
     player.endAudio = () => {
@@ -64,15 +69,18 @@ module.exports = config => {
         }
     }
     player.pause = () => {
-        player.loop && window.clearInterval(player.loop)
-        player.audio.pause()
-        player.isPlaying = false
+        player.loop && window.clearInterval(player.loop);
+        player.audio.pause();
+        player.isPlaying = false;
     }
     player.checkFinished = (mode = def.PLAYER_MODE_VOD) => {
-        if (mode == def.PLAYER_MODE_VOD && 
-            player.videoPTS * 1000 >= (player.durationMs - player.config.frameDur)) {
-            // console.log("pause:" + player.videoPTS + ", dur:" + player.durationMs);
-            player.pause();
+        // console.log((mode == def.PLAYER_MODE_VOD) + ",pause:" + player.videoPTS.toFixed(1) + "," + (player.durationMs - player.config.frameDurMs) / 1000);
+        if (mode == def.PLAYER_MODE_VOD &&
+            player.videoPTS.toFixed(1) >= (player.durationMs - player.config.frameDurMs) / 1000) {
+            // player.pause();
+            if (player.onPlayingFinish != null) {
+                player.onPlayingFinish();
+            }
             return true;
         }
         return false;
@@ -103,13 +111,12 @@ module.exports = config => {
     player.play = (seekPos = -1, mode = def.PLAYER_MODE_VOD, accurateSeek = false) => {
         player.isPlaying = true;
         // console.log("mode:" + mode);
-        if (mode == def.PLAYER_MODE_NOTIME_LIVE || 
+        if (mode == def.PLAYER_MODE_NOTIME_LIVE ||
             (player.videoPTS >= seekPos && !player.isNewSeek)) {
             player.loop = window.setInterval(() => {
                 player.playFrame(true, accurateSeek);
-                if (!player.checkFinished(mode)) {
-                    player.playingCallback && player.playingCallback(player.videoPTS);
-                }
+                player.onPlayingTime && player.onPlayingTime(player.videoPTS);
+                player.checkFinished(mode);
                 // console.log("videoPTS:" + player.videoPTS + ",mode:" + mode);
             }, 1000 / player.config.fps);
 
@@ -120,7 +127,7 @@ module.exports = config => {
 
                 player.playFrame(false, accurateSeek);
                 if (!player.checkFinished(mode)) {
-                    // player.playingCallback && player.playingCallback(player.videoPTS)
+                    // player.onPlayingTime && player.onPlayingTime(player.videoPTS)
 
                     if (player.videoPTS >= seekPos) {
                         window.clearInterval(player.loop);
@@ -134,18 +141,18 @@ module.exports = config => {
         console.log('Playing ...')
     }
     player.stop = () => {
-        console.log("============ STOP ===============")
-        player.loop && window.clearInterval(player.loop)
-        player.loop = null
-        player.pause()
-        player.endAudio()
-        Module.cwrap('release', 'number', [])()
-        Module.cwrap('initializeDecoder', 'number', [])()
-        player.stream = new Uint8Array()
-        player.frameList.length = 0
-        player.durationMs = -1.0
-        player.videoPTS = 0
-        player.isPlaying = false
+        console.log("============ STOP ===============");
+        player.loop && window.clearInterval(player.loop);
+        player.loop = null;
+        player.pause();
+        player.endAudio();
+        Module.cwrap('release', 'number', [])();
+        Module.cwrap('initializeDecoder', 'number', [])();
+        player.stream = new Uint8Array();
+        player.frameList.length = 0;
+        player.durationMs = -1.0;
+        player.videoPTS = 0;
+        player.isPlaying = false;
     }
     player.nextNalu = (onceGetNalCount=1) => {
         if (player.stream.length <= 4) return false
@@ -196,11 +203,11 @@ module.exports = config => {
                 return false;
             }
             // console.log(frame);
-            nalBuf = frame.data
-            player.videoPTS = frame.pts
-            player.audio.setAlignVPTS(frame.pts)
+            nalBuf = frame.data;
+            player.videoPTS = frame.pts;
+            player.audio.setAlignVPTS(frame.pts);
         } else {
-            return false
+            return false;
         }
 
         /**
@@ -209,7 +216,7 @@ module.exports = config => {
          * 1) seek to target and accurateSeek
          * 2) show it
          */
-        if (nalBuf != false 
+        if (nalBuf != false
         && (!show && accurateSeek) || show
         ) {
             // console.log(nalBuf);
