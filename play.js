@@ -4,6 +4,9 @@ const MPEG_JS = require('mpeg.js');
 
 global.makeH265webjs = (videoURL, config) => {
     let h265webjs = new H265webjs.H265webjs(videoURL, config);
+    h265webjs.onLoadFinish = () => {
+        h265webjs.setVoice(1.0);
+    };
     return h265webjs;
 }
 
@@ -94,5 +97,5 @@ global.makeTestHLS = () => {
     	}
     }, 50);
 
-	
+
 }
