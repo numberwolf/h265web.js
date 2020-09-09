@@ -31,6 +31,6 @@ module.exports = {
     DEFAULT_SAMPLERATE: 44100,
     DEFAULT_CONSU_SAMPLE_LEN: 20,
     PLAYER_MODE_VOD: "vod",
-    PLAYER_MODE_NOTIME_LIVE: "no_time_live",
+    PLAYER_MODE_NOTIME_LIVE: "live",
     DEFAULT_STRING_LIVE: "LIVE"
 }

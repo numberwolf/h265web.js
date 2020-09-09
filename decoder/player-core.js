@@ -34,7 +34,8 @@ module.exports = config => {
         isNewSeek: false,
         // event
         onPlayingTime : null,
-        onPlayingFinish : null
+        onPlayingFinish : null,
+        onSeekFinish : null
     }
     player.setSize = (width, height) => {
         player.config.width = width || def.DEFAULT_WIDTH
@@ -132,7 +133,8 @@ module.exports = config => {
                     if (player.videoPTS >= seekPos) {
                         window.clearInterval(player.loop);
                         player.loop = null;
-                        player.play(seekPos);
+                        player.play(seekPos, mode, accurateSeek);
+                        if (player.onSeekFinish != null) player.onSeekFinish();
                     }
                 }
             }, 0);

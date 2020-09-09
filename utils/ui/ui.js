@@ -1,10 +1,10 @@
 // UI
 // You can design your own playerUI here
 class UIModule {
-	constructor() {}
+    constructor() {}
 
-	createPlayBtn() {
-		let playBar = document.createElement('button');
+    createPlayBtn() {
+        let playBar = document.createElement('button');
         playBar.textContent = '>';
         playBar.disabled = true;
         playBar.style.width = '5%';
@@ -19,10 +19,10 @@ class UIModule {
         playBar.style.borderRadius = "7px";
 
         return playBar;
-	}
+    }
 
-	createControlBar(width, zindex) {
-		let controlBar = document.createElement('div');
+    createControlBar(width, zindex) {
+        let controlBar = document.createElement('div');
         controlBar.style.width = width + 'px';
         controlBar.style.right = '0%'
         controlBar.style.bottom = '0%'
@@ -31,27 +31,27 @@ class UIModule {
         controlBar.style.zIndex = zindex;
 
         return controlBar;
-	}
+    }
 
-	createStatusBar() {
-		let status = document.createElement('div');
+    createStatusBar() {
+        let status = document.createElement('div');
         status.style.color = 'white';
         status.textContent = 'Loading...';
 
         return status;
-	}
+    }
 
-	createPTSLabel() {
-		let ptsLabel = document.createElement('span')
+    createPTSLabel() {
+        let ptsLabel = document.createElement('span')
         ptsLabel.style.color = 'white';
         ptsLabel.style.float = 'right';
         ptsLabel.style.marginBottom = '5px';
         ptsLabel.style.marginRight = '5px';
         return ptsLabel;
-	}
+    }
 
-	createProgress() {
-		let progress = document.createElement('progress');
+    createProgress() {
+        let progress = document.createElement('progress');
         progress.value = 0;
 
         // progress.style.borderRadius = '2px';
@@ -67,7 +67,7 @@ class UIModule {
         //     "background-color(#aadd6a)");
 
         return progress;
-	}
+    }
 }
 
 exports.UI = UIModule;

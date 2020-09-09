@@ -19,13 +19,19 @@
 
 ##### VOD
 
-> <img src="./assets/demo2.png" width="500px" />
+> <img src="./assets/demo3.png" width="500px" />
 
 ##### LIVE
 
-> <img src="./assets/demoLive.png" width="500px" />
+> <img src="./assets/demo4.png" width="500px" />
 
 ### Features
+
+* Support make your player's ui style
+
+* Open API for Developers! (See Examples in `play.js`)
+
+* Support Volume Setting!
 
 * Support accurate seek action
 
@@ -70,6 +76,8 @@
 > 1. You can running demo on Running Step.
 
 > 2. How to use it? See play.js + index.html
+
+> 3. You can also use the source file in `dist`
 
 ### Running 
 
