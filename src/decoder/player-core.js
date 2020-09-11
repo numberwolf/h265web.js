@@ -2,7 +2,8 @@
 const YUVBuffer = require('yuv-buffer');
 const YUVCanvas = require('yuv-canvas');
 const Module = require('./missile.js');
-const AudioModule = require('./audio');
+const AudioModule = require('./audio-core');
+// const ScreenModule = require('./screen');
 const def = require('../consts');
 
 module.exports = config => {
@@ -27,16 +28,23 @@ module.exports = config => {
             sampleRate: config.sampleRate,
             appendType: config.appendHevcType
         }),
+        // screenView: new ScreenModule.Screen(),
         durationMs: -1.0,
         videoPTS: 0,
         loop: null,
         isPlaying: false,
         isNewSeek: false,
+        // setting
+        showScreen: false,
         // event
         onPlayingTime : null,
         onPlayingFinish : null,
-        onSeekFinish : null
+        onSeekFinish : null,
+        onRender : null
     }
+    player.setScreen = (setVal = false) => {
+        player.showScreen = setVal;
+    };
     player.setSize = (width, height) => {
         player.config.width = width || def.DEFAULT_WIDTH
         player.config.height = height || def.DEFAULT_HEIGHT
@@ -273,57 +281,72 @@ module.exports = config => {
     }
     //canvas related functions
     player.drawImage = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
-        let displayWH = player.checkDisplaySize(width, height) // TODO: only need to do this for one frame or not at all
+        if (player.showScreen && player.onRender != null) {
+            player.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+            // when full screen mode open,
+            // do not render the main window,
+            // only use fullscreen window
+            return;
+        }
+
+        let displayWH = player.checkDisplaySize(width, height); // TODO: only need to do this for one frame or not at all
         let format = YUVBuffer.format({
             width:          width,
             height:         height,
-            chromaWidth:    width/2,
-            chromaHeight:   height/2,
+            chromaWidth:    width / 2,
+            chromaHeight:   height / 2,
             displayWidth:   player.canvas.offsetWidth,
             displayHeight:  player.canvas.offsetHeight
         })
-        let frame = YUVBuffer.frame(format)
-        frame.y.bytes = imageBufferY
-        frame.y.stride = width
-        frame.u.bytes = imageBufferB
-        frame.u.stride = width/2
-        frame.v.bytes = imageBufferR
-        frame.v.stride = width/2
-        player.yuv.drawFrame(frame)
+        let frame = YUVBuffer.frame(format);
+        frame.y.bytes = imageBufferY;
+        frame.y.stride = width;
+        frame.u.bytes = imageBufferB;
+        frame.u.stride = width / 2;
+        frame.v.bytes = imageBufferR;
+        frame.v.stride = width / 2;
+        player.yuv.drawFrame(frame);
+
+        // if (player.showScreen) {
+        //     player.screenView.open();
+        //     player.screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+        // } else {
+        //     player.screenView.close();
+        // }
     }
     player.checkDisplaySize = (widthIn, heightIn) => {
-        let biggerWidth = widthIn / player.config.width > heightIn / player.config.height
-        let fixedWidth = (player.config.width / widthIn).toFixed(2)
-        let fixedHeight = (player.config.height / heightIn).toFixed(2)
-        let scaleRatio = biggerWidth ? fixedWidth : fixedHeight
-        let isFixed = player.config.fixed
-        let width = isFixed ? player.config.width : parseInt(widthIn  * scaleRatio)
-        let height = isFixed ? player.config.height : parseInt(heightIn * scaleRatio)
+        let biggerWidth = widthIn / player.config.width > heightIn / player.config.height;
+        let fixedWidth = (player.config.width / widthIn).toFixed(2);
+        let fixedHeight = (player.config.height / heightIn).toFixed(2);
+        let scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
+        let isFixed = player.config.fixed;
+        let width = isFixed ? player.config.width : parseInt(widthIn  * scaleRatio);
+        let height = isFixed ? player.config.height : parseInt(heightIn * scaleRatio);
         if (player.canvas.offsetWidth != width || player.canvas.offsetHeight != height) {
-            let topMargin = parseInt((player.canvasBox.offsetHeight - height) / 2)
-            let leftMargin = parseInt((player.canvasBox.offsetWidth - width) / 2)
-            player.canvas.style.marginTop = topMargin + 'px'
-            player.canvas.style.marginLeft = leftMargin + 'px'
-            player.canvas.style.width = width + 'px'
-            player.canvas.style.height = height + 'px'
+            let topMargin = parseInt((player.canvasBox.offsetHeight - height) / 2);
+            let leftMargin = parseInt((player.canvasBox.offsetWidth - width) / 2);
+            player.canvas.style.marginTop = topMargin + 'px';
+            player.canvas.style.marginLeft = leftMargin + 'px';
+            player.canvas.style.width = width + 'px';
+            player.canvas.style.height = height + 'px';
         }
-        return [width, height]
+        return [width, height];
     }
     player.makeGL = () => {
         let canvasBox = document.querySelector('div#' + player.config.playerId);
         canvasBox.style.position = 'relative';
-        canvasBox.style.backgroundColor = 'black'
-        canvasBox.style.width = player.config.width + 'px'
-        canvasBox.style.height = player.config.height + 'px'
-        let canvas = document.createElement('canvas')
-        canvas.style.width = canvasBox.clientWidth + 'px'
-        canvas.style.height = canvasBox.clientHeight + 'px'
-        canvas.style.top = '0px'
-        canvas.style.left = '0px'
-        canvasBox.appendChild(canvas)
-        player.canvasBox = canvasBox
-        player.canvas = canvas
-        player.yuv = YUVCanvas.attach(canvas) // player.yuv.clear() //clearing the canvas?
+        canvasBox.style.backgroundColor = 'black';
+        canvasBox.style.width = player.config.width + 'px';
+        canvasBox.style.height = player.config.height + 'px';
+        let canvas = document.createElement('canvas');
+        canvas.style.width = canvasBox.clientWidth + 'px';
+        canvas.style.height = canvasBox.clientHeight + 'px';
+        canvas.style.top = '0px';
+        canvas.style.left = '0px';
+        canvasBox.appendChild(canvas);
+        player.canvasBox = canvasBox;
+        player.canvas = canvas;
+        player.yuv = YUVCanvas.attach(canvas); // player.yuv.clear() //clearing the canvas?
         // toast
         // let toast = document.createElement('div');
         // console.log('player config', player.config)

@@ -1,6 +1,9 @@
-const H265webjs = require('./h265webjs');
+const H265webjs = require('./src/h265webjs');
+const ScreenModule = require('./screen');
 
 global.makeH265webjs = (videoURL, config) => {
+	screenView = new ScreenModule.Screen();
+
 	durationText = duration => {
         if (duration < 0) {
             return "Play";
@@ -17,6 +20,7 @@ global.makeH265webjs = (videoURL, config) => {
     let playBar 		= document.querySelector('#playBtn');
     let showLabel 		= document.querySelector('#showLabel');
     let ptsLabel 		= document.querySelector('#ptsLabel');
+	let fullScreenBtn 	= document.querySelector('#fullScreenBtn');
     let mediaInfo 		= null;
 
     playBar.disabled 	= true;
@@ -33,6 +37,15 @@ global.makeH265webjs = (videoURL, config) => {
         	h265webjs.play();
         }
     };
+
+	fullScreenBtn.onclick = () => {
+		screenView.open();
+		h265webjs.setRenderScreen(true);
+	};
+
+	screenView.onClose = () => {
+		h265webjs.setRenderScreen(false);
+	};
 
     progressPts.addEventListener('click', (e) => {
     	showLabel.textContent = "loading...";
@@ -55,6 +68,11 @@ global.makeH265webjs = (videoURL, config) => {
     	showLabel.textContent = "done";
     };
 
+	h265webjs.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
+		screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+		console.log("on render");
+	};
+
     h265webjs.onMaskClick = () => {
     	if (h265webjs.isPlaying()) {
         	playBar.textContent = '||';
@@ -73,7 +91,7 @@ global.makeH265webjs = (videoURL, config) => {
 			fps: 25
 			sampleRate: 44100
 			size: {
-				width: 864, 
+				width: 864,
 				height: 480
 			}
 		videoType: "vod"

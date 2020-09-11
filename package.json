@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "-------------------------------------------------- ### VideoMissilePlayer 一个无插件的`hevc`播放器",
   "scripts": {
-    "start": "cp decoder/missile.wasm ./dist/missile.wasm && cp demuxer/missilets.wasm ./dist/missilets.wasm && browserify h265webjs.js -o ./dist/h265webjs.js && browserify ./play.js -o ./dist/play.js && node server.js",
+    "start": "cp src/decoder/missile.wasm ./dist/missile.wasm && cp src/demuxer/missilets.wasm ./dist/missilets.wasm && cp -r src/assets dist && browserify src/h265webjs.js -o ./dist/h265webjs.js && browserify ./play.js -o ./dist/play.js && node server.js",
+    "dist": "cp src/decoder/missile.wasm ./dist/missile.wasm && cp src/demuxer/missilets.wasm ./dist/missilets.wasm && cp -r src/assets dist && browserify src/h265webjs.js -o ./dist/h265webjs.js",
     "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
   },
   "dependencies": {
     "browserify": "^16.5.1",
     "mp4box": "^0.3.20",
     "mpeg.js": "^0.1.8",
-    "pinipig": "^1.6.1",
     "yuv-buffer": "^1.0.0",
     "yuv-canvas": "^1.2.6"
   },

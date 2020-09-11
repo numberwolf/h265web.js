@@ -57,6 +57,7 @@ class H265webjsModule {
         this.onLoadFinish = null;
         this.onMaskClick = null;
         this.onSeekFinish = null;
+        this.onRender = null;
     }
 
     /**********
@@ -106,6 +107,10 @@ class H265webjsModule {
                 };
             }
         } // end if c
+    }
+
+    setRenderScreen(setVal = false) {
+        this.player.setScreen(setVal);
     }
 
     play() {
@@ -356,6 +361,11 @@ class H265webjsModule {
         };
         this.player.onSeekFinish = () => {
             if (_this.onSeekFinish != null) _this.onSeekFinish();
+        };
+        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
+            if (this.onRender != null) {
+                this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+            }
         };
 
         _this.player.setDurationMs(durationMs);

@@ -11,41 +11,53 @@
     <script src='dist/play.js'></script>
     <style>
         #controller {
-            background-color: black; 
-            width: 600px; 
+            background-color: black;
+            width: 600px;
             height: 55px;
         }
         #progressPts {
             width: 100%;
         }
         #playBtn {
-            width: 5%; 
-            margin-bottom: 5px; 
-            margin-left: 5px; 
-            color: white; 
-            background: rgb(102, 102, 255); 
-            border: 0px none; 
-            text-align: center; 
-            line-height: 20px; 
-            font-weight: bold; 
+            width: 5%;
+            margin-bottom: 5px;
+            margin-left: 5px;
+            color: white;
+            background: rgb(102, 102, 255);
+            border: 0px none;
+            text-align: center;
+            line-height: 20px;
+            font-weight: bold;
             border-radius: 7px;
         }
         #showLabel {
-            color: white; 
-            float: right; 
-            margin-bottom: 5px; 
+            color: white;
+            float: right;
+            margin-bottom: 5px;
             margin-right: 5px;
         }
         #ptsLabel {
-            color: white; 
-            float: right; 
-            margin-bottom: 5px; 
+            color: white;
+            float: right;
+            margin-bottom: 5px;
             margin-right: 5px;
+        }
+        #fullScreenBtn {
+            float: right;
+            margin-bottom: 5px;
+            margin-right: 5px;
+            color: white;
+            background: rgb(102, 102, 255);
+            border: 0px none;
+            text-align: center;
+            line-height: 20px;
+            font-weight: bold;
+            border-radius: 7px;
         }
         .voice-div {
             width: 25%;
-            float: right; 
-            margin-bottom: 5px; 
+            float: right;
+            margin-bottom: 5px;
             margin-right: 5px;
         }
         .voice-div > span {
@@ -67,6 +79,7 @@
             >
         </button>
         <span id="ptsLabel">0:0:0/0:0:0</span>
+        <button id="fullScreenBtn">[Full Screen]</button>
         <span id="showLabel"></span>
         <div class="voice-div">
             <span>Volume</span>
@@ -75,7 +88,7 @@
     </div>
     <script>
         var type = "mp4";
-        var url = "res/video.mp4";
+        var url = "res/720phevc.mp4";
 
         // var type = "ts";
         // var url = "res/veilside2.ts";
@@ -91,7 +104,7 @@
             width: 600,
             height: 450,
             accurateSeek : true,
-            playIcon : "assets/icon-play@300.png"
+            playIcon : "dist/assets/icon-play@300.png"
         };
         makeH265webjs(url, config).do();
 	</script>
