@@ -3,6 +3,8 @@
 
 <img src="./resource/logo@300x300.png" width="300px" />
 
+* [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js)
+
 * Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 ,Discord:numberwolf#8694)
 
 * LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
