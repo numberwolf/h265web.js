@@ -22,16 +22,18 @@
   "author": "numberwolf - changyanlong",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "browserify ./play.js -o ./dist/play.js && node server.js",
+    "start": "browserify ./play.js -o ./dist/play_mid.js && terser ./dist/play_mid.js -c pure_funcs=[console.log],toplevel=true -m -o ./dist/play.js && node server.js",
     "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
   },
   "dependencies": {
     "h265web.js": "^1.0.0",
+    "webpack": "^4.44.1",
     "yuv-buffer": "^1.0.0",
     "yuv-canvas": "^1.2.6"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "terser-webpack-plugin": "^4.1.0"
   },
   "bugs": {
     "url": "https://github.com/numberwolf/h265web.js/issues"
