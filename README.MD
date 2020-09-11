@@ -1,6 +1,8 @@
 --------------------------------------------------
 # h265web.js
 
+* Github: https://github.com/numberwolf/h265web.js
+
 <img src="./resource/logo@300x300.png" width="300px" />
 
 * [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js)
@@ -14,6 +16,7 @@
 > `~^_^~`    
 
 
+online demo: http://hevc.xvideo.video/
 
 ----------------------------------------
 
