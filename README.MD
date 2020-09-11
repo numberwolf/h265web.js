@@ -1,7 +1,7 @@
 --------------------------------------------------
 # h265web.js
 
-<img src="./assets/logo@300x300.png" width="300px" />
+<img src="./resource/logo@300x300.png" width="300px" />
 
 * Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 ,Discord:numberwolf#8694)
 
