@@ -75,7 +75,9 @@ Full Screen
 
 ### TodoList
 
-* emmmm~
+* New mode, make yuv buffer
+
+* Support AVC Codec play
 
 ### Setup
 
