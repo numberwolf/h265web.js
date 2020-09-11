@@ -1,10 +1,17 @@
 # h265web.js
 
-#### Begin
+#### Begin with Demo
 
-```javascript
-const H265webjs = require('h265web.js');
+```bash
+npm i
+mkdir dist
+cp node_modules/h265web.js/src/decoder/missile.wasm dist/
+cp node_modules/h265web.js/src/demuxer/missilets.wasm dist/
+cp -r node_modules/h265web.js/src/assets dist/
+npm start 
 ```
+
+See: http://127.0.0.1:8999/
 
 #### Use it!
 
