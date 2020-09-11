@@ -1,4 +1,4 @@
-const H265webjs = require('./src/h265webjs');
+const H265webjs = require('h265web.js');
 const ScreenModule = require('./screen');
 
 global.makeH265webjs = (videoURL, config) => {

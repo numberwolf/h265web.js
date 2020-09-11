@@ -19,13 +19,22 @@
 
 ##### VOD
 
-> <img src="./assets/demo3.png" width="500px" />
+Play
+> <img src="./resource/demo.png" width="500px" />
+
+
+Full Screen
+> <img src="./resource/demo1.png" width="500px" />
 
 ##### LIVE
 
-> <img src="./assets/demo4.png" width="500px" />
+> <img src="./resource/demo2.png" width="500px" />
 
 ### Features
+
+* Interface of Full Screen play!
+
+* Define Player UI by yourself
 
 * Support make your player's ui style
 
@@ -61,9 +70,7 @@
 
 ### TodoList
 
-* Full Screen play
-
-* Player UI refactor
+* emmmm~
 
 ### Setup
 
@@ -75,9 +82,8 @@
 
 > 1. You can running demo on Running Step.
 
-> 2. How to use it? See play.js + index.html
+> 2. How to use it? Watch <a href="demo">demo</a> (dir: <a href="demo/README.MD">demo/README.MD</a>)
 
-> 3. You can also use the source file in `dist`
 
 ### Running 
 
@@ -128,27 +134,12 @@ ffmpeg -f avfoundation -i 1:0 \
 ### Project Dir Struct
 
 ```struct
-|-- dist
-|-- lib
+|-- demo `A Example with README`
 |-- src
-    |-- h265webjs.js
-    |-- decoder
-        |-- audio.js
-        |-- missile.js
-        |-- player.js
-        |-- hevc-header.js
-        |-- hevc-imp.js
-    |-- demuxer
-        |-- mp4.js
-        |-- buffer.js
 |-- package.json
-|-- play.js
-|-- res
-|-- LICENSE
-|-- README_CHINESE.md
+|-- LICENSE-GPL3.0
 |-- README.MD
 ```
-
 
 
 ### Q&A
