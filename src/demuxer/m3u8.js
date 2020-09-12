@@ -9,6 +9,9 @@ class M3u8ParserModule {
 	constructor() {
 		this.hls = new M3U8Base.M3u8Base();
 		this.mpegTsObj = new MPEG_JS.MPEG_JS({});
+		this.mpegTsWasmState = false;
+		this.mpegTsWasmRetryLoadTimes = 0;
+
 		this.tsList = [];
 		this.vStartTime = 0;
 		this.aStartTime = 0;
@@ -19,6 +22,7 @@ class M3u8ParserModule {
 			}
 		};
 		this.timerFeed = null;
+		this.timerTsWasm = null;
 
 		this.seekPos       	= -1;
 		this.vPreFramePTS	= 0;
@@ -174,28 +178,36 @@ class M3u8ParserModule {
 	    };
 
 		this.mpegTsObj.onReady = () => {
-	        console.log("onReady");
-	        /*
-	         * start
-	         */
-	        // fetch(videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
-	        //     streamBuffer.fileStart = 0;
-	        //     // array buffer to unit8array
-	        //     let streamUint8Buf = new Uint8Array(streamBuffer);
-	        //     // console.log(streamUint8Buf);
-	        //     mpegTsObj.demux(streamUint8Buf);
-	        // });
-
-	        // run
-	        // /res/hls/veilside.m3u8
-			// _this.hls.fetchM3u8("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8");
-			_this.hls.fetchM3u8(videoURL);
-			// hls.fetchM3u8("/res/hls/veilside.m3u8");
+	        _this._onTsReady(videoURL);
 	    };
 
-	    this.mpegTsObj.initDemuxer();
+	    _this.mpegTsObj.initDemuxer();
 
-	    this.timerFeed = window.setInterval(() => {
+	    this.timerTsWasm = window.setInterval(() => {
+	    	if (!_this.mpegTsWasmState) {
+	    		if (_this.mpegTsWasmRetryLoadTimes >= 3) {
+	    			_this._onTsReady(videoURL);
+	    			window.clearInterval(_this.timerTsWasm);
+		    		_this.timerTsWasm = null;
+	    		} else {
+		    		console.log("retry request wasm");
+		    		_this.mpegTsWasmRetryLoadTimes += 1;
+			    	_this.mpegTsObj.initDemuxer();
+			    }
+		    } else {
+		    	window.clearInterval(_this.timerTsWasm);
+		    	_this.timerTsWasm = null;
+		    }
+	    }, 3000);
+	}
+
+	_onTsReady(videoURL) {
+		let _this = this;
+		console.log("mpegts onReady");
+		_this.hls.fetchM3u8(videoURL);
+		_this.mpegTsWasmState = true;
+
+		_this.timerFeed = window.setInterval(() => {
 	    	if (_this.tsList.length > 0 && _this.lockWait.state == false) {
 	    		let item = _this.tsList.shift();
 	    		let itemURI = item.streamURI;

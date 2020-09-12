@@ -93,13 +93,16 @@ class H265webjsModule {
                     _this._playUtilShowMask();
                 }
             } else {
+                console.log("to onRuntimeInitialized");
                 Module.onRuntimeInitialized = () => {
                     global.STATIC_MEM_wasmDecoderState = 1;
 
                     console.log('WASM initialized ' + global.STATIC_MEM_wasmDecoderState);
-                    Module.cwrap('initMissile', 'number', [])();
+                    let ret1 = Module.cwrap('initMissile', 'number', [])();
+                    console.log(ret1);
                     console.log('Initialized Decoder');
-                    Module.cwrap('initializeDecoder', 'number', [])();
+                    ret1 = Module.cwrap('initializeDecoder', 'number', [])();
+                    console.log(ret1);
 
                     _this._makeMP4Player(_this.configFormat);
                     _this._playerUtilBuildMask();
@@ -313,15 +316,17 @@ class H265webjsModule {
         /*
          * Switch Media
          */
-        // console.log("type: " + this.configFormat.type);
+        console.log("type: " + this.configFormat.type);
         if (this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
             this._mp4Entry();
         } else if (
             this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
             this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
         {
+            console.log("go ts");
             this._mpegTsEntry();
         } else if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+            console.log("go m3u8");
             this._m3u8Entry();
         }
     } // end

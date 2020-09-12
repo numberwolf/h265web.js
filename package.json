@@ -23,16 +23,16 @@
   "author": "numberwolf - changyanlong",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "cp src/decoder/missile.wasm ./dist/missile.wasm && cp src/demuxer/missilets.wasm ./dist/missilets.wasm && cp -r src/assets dist && browserify src/h265webjs.js -o ./dist/h265webjs_tmp.js && terser ./dist/h265webjs_tmp.js -c pure_funcs=[console.log],toplevel=true -m -o ./dist/h265webjs.js && rm ./dist/h265webjs_tmp.js",
+    "start": "cp src/decoder/missile.wasm ./dist/missile.wasm && cp src/demuxer/missilets.wasm ./dist/missilets.wasm && cp -r src/assets dist && browserify src/h265webjs.js -o ./dist/h265webjs_tmp.js && terser ./dist/h265webjs_tmp.js -c pure_funcs=[console.log],toplevel=true -m -o ./dist/h265webjs.js && rm ./dist/h265webjs_tmp.js && browserify play.js -o ./dist/play.js && node server.js",
     "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
   },
   "dependencies": {
     "browserify": "^16.5.1",
     "mp4box": "^0.3.20",
-    "mpeg.js": "^0.1.8",
+    "mpeg.js": "^0.2.4",
+    "webpack": "^4.44.1",
     "yuv-buffer": "^1.0.0",
-    "yuv-canvas": "^1.2.6",
-    "webpack": "^4.44.1"
+    "yuv-canvas": "^1.2.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.4",
