@@ -272,7 +272,7 @@ module.exports = config => {
                     imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
                     imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
                 );
-                if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!')
+                if (!width || !height) throw new Error('Get PicFrame failed! PicWidth/height is equal to 0, maybe timeout!');
                 else player.drawImage(width, height, imageBufferY, imageBufferB, imageBufferR);
             } //  end if decRet
             Module._free(offset);

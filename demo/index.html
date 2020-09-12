@@ -10,15 +10,19 @@
     <meta charset="utf-8" name="github" content="https://github.com/numberwolf/h265web.js">
     <script src='dist/play.js'></script>
     <style>
+        body {
+            background-color: #e9e9e9;
+        }
         #controller {
             background-color: black;
-            width: 600px;
+            width: 800px;
             height: 55px;
         }
         #progressPts {
             width: 100%;
         }
         #playBtn {
+            float: left;
             width: 5%;
             margin-bottom: 5px;
             margin-left: 5px;
@@ -72,37 +76,61 @@
     </style>
 </head>
 <body>
-    <div id="glplayer"></div>
-    <div id="controller">
-        <progress id="progressPts" value="0" max="100"></progress>
-        <button id="playBtn">
-            >
-        </button>
-        <span id="ptsLabel">0:0:0/0:0:0</span>
-        <button id="fullScreenBtn">[Full Screen]</button>
-        <span id="showLabel"></span>
-        <div class="voice-div">
-            <span>Volume</span>
-            <progress id="progressVoice" value="100" max="100"></progress>
+    <center>
+        <h1> h265web.js demo </h1>
+        <div id="glplayer"></div>
+        <div id="controller">
+            <progress id="progressPts" value="0" max="100"></progress>
+            <button id="playBtn">
+                >
+            </button>
+            <span id="ptsLabel">0:0:0/0:0:0</span>
+            <button id="fullScreenBtn">[Full Screen]</button>
+            <span id="showLabel"></span>
+            <div class="voice-div">
+                <span>Volume</span>
+                <progress id="progressVoice" value="100" max="100"></progress>
+            </div>
         </div>
-    </div>
+
+        <br>
+        <img src="https://badge.fury.io/js/h265web.js.svg">
+        <img src="https://badge.fury.io/js/mpeg.js.svg">
+
+        <br>
+        <a href="https://github.com/numberwolf/h265web.js">
+            <font color="blue">https://github.com/numberwolf/h265web.js</font>
+        </a>
+        <br>
+        <a href="http://xvideo.video">
+            <font color="blue">http://xvideo.video</font>
+        </a>
+        <br>
+        <a href="mailto:porschegt23@foxmail.com">
+            <font color="blue">porschegt23@foxmail.com</font>
+        </a>
+    </center>
     <script>
         var type = "mp4";
-        var url = "res/720phevc.mp4";
+        var url = "res/jitui_265.mp4";
+        // var url = "res/720phevc.mp4";
+        // var url = "res/cg720phevc.mp4";
+        // var url = "res/cg1080phevc.mp4";
 
         // var type = "ts";
         // var url = "res/veilside2.ts";
         // var url = "res/hls/v-000.ts"
 
-        // var type = "hls";
+        var type = "hls";
+        var url = "res/m3u82/cg720phevc.m3u8";
         // var url = "res/hls/veilside.m3u8";
         // var url = "res/hls1/test.m3u8";
 
         var config = {
             type: type,
             player: "glplayer",
-            width: 600,
-            height: 450,
+            width: 800,
+            height: 500,
             accurateSeek : true,
             playIcon : "dist/assets/icon-play@300.png"
         };

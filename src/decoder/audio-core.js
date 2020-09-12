@@ -54,7 +54,10 @@ module.exports = options => {
 			console.log("[DEFINE ERROR]disconnect source Index:" + sourceIndex + " error happened!");
 			// return null;
 		}
-		audioModule.decodeSample(dstIndex, sourceIndex);
+		let ret = audioModule.decodeSample(dstIndex, sourceIndex);
+		if (ret == -2) {
+			audioModule.pause();
+		}
 	}
 	audioModule.addSample = (sampleArr = null) => {
 	 	if (sampleArr == null || !sampleArr || sampleArr == undefined) {
@@ -89,10 +92,10 @@ module.exports = options => {
 		}
 
 		if (audioModule.sampleQueue.length == 0) {
-			audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
-			audioModule.sourceList[sourceIndex].start();
-			audioModule.sourceList[sourceIndex].stop();
-			return 1;
+			// audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
+			// audioModule.sourceList[sourceIndex].start();
+			// audioModule.sourceList[sourceIndex].stop();
+			return -2;
 		}
 
 		// AAC 1frame= 1024*1000000/44100/1000 = 23.2ms
@@ -205,7 +208,7 @@ module.exports = options => {
 			);
 		} catch (e) {
 	        alert('Crash[brower]! Please refresh your page');
-	        return -2;
+	        return -3;
 	    }
 		return 0;
 	}
@@ -213,7 +216,10 @@ module.exports = options => {
 		if (audioModule.startStatus == false) {
 			audioModule.startStatus = true;
 			// this.startTime = Date.now();
-			audioModule.decodeSample(0, 1);
+			let ret = audioModule.decodeSample(0, 1);
+			if (ret == -2) {
+				audioModule.pause();
+			}
 		}
 	}
 	audioModule.pause = () => {
