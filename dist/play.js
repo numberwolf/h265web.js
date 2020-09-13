@@ -40143,14 +40143,16 @@ module.exports = config => {
         }
 
         let displayWH = player.checkDisplaySize(width, height); // TODO: only need to do this for one frame or not at all
-        let format = YUVBuffer.format({
+        let yuvConfig = {
             width:          width,
             height:         height,
             chromaWidth:    width / 2,
             chromaHeight:   height / 2,
             displayWidth:   player.canvas.offsetWidth,
             displayHeight:  player.canvas.offsetHeight
-        })
+        };
+        let format = YUVBuffer.format(yuvConfig);
+        // console.log(yuvConfig);
         let frame = YUVBuffer.frame(format);
         frame.y.bytes = imageBufferY;
         frame.y.stride = width;
@@ -40158,6 +40160,7 @@ module.exports = config => {
         frame.u.stride = width / 2;
         frame.v.bytes = imageBufferR;
         frame.v.stride = width / 2;
+        player.yuv.clear();
         player.yuv.drawFrame(frame);
 
         // if (player.showScreen) {
