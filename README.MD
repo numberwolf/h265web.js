@@ -13,7 +13,7 @@
 
 * LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
 
-> If h265webjs help you, you can click star button, it offered me more impetus to develop h265webjs!  
+#### If `h265webjs` help you, please click the `star button`, thx~
 
 > `~^_^~`    
 
