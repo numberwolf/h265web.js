@@ -5,7 +5,7 @@ const MpegTSParser = require('./demuxer/ts');
 const M3U8Parser = require('./demuxer/m3u8');
 const def = require('./consts');
 const staticMem = require('./utils/static-mem');
-// const UI = require('./utils/ui/ui');
+const UI = require('./utils/ui/ui');
 const Module = require('./decoder/missile.js');
 
 class H265webjsModule {
@@ -75,6 +75,9 @@ class H265webjsModule {
                 height : 0
             }
         };
+
+        UI.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
+
         if (!window.WebAssembly) {
             let tip = 'unsupport WASM!';
             if (/iPhone|iPad/.test(window.navigator.userAgent)) {
@@ -374,7 +377,6 @@ class H265webjsModule {
         };
 
         _this.player.setDurationMs(durationMs);
-        // player.setSize(size.width, size.height);
         _this.player.setFrameRate(fps);
 
         if (_this.onLoadFinish != null) {

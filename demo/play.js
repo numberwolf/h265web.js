@@ -1,6 +1,9 @@
 const H265webjs = require('h265web.js');
 const ScreenModule = require('./screen');
 
+const SHOW_LOADING = "LOADING...!";
+const SHOW_DONE = "done.";
+
 global.makeH265webjs = (videoURL, config) => {
 	screenView = new ScreenModule.Screen();
 
@@ -26,7 +29,7 @@ global.makeH265webjs = (videoURL, config) => {
     playBar.disabled 	= true;
     playBar.textContent = '>';
 
-    showLabel.textContent = "loading...";
+    showLabel.textContent = SHOW_LOADING;
 
     playBar.onclick = () => {
         if (h265webjs.isPlaying()) {
@@ -48,7 +51,7 @@ global.makeH265webjs = (videoURL, config) => {
 	};
 
     progressPts.addEventListener('click', (e) => {
-    	showLabel.textContent = "loading...";
+    	showLabel.textContent = SHOW_LOADING;
         let x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
         let y = e.pageY - progressPts.offsetTop;  // or e.offsetY
         let clickedValue = x * progressPts.max / progressPts.offsetWidth;
@@ -65,7 +68,7 @@ global.makeH265webjs = (videoURL, config) => {
     });
 
     h265webjs.onSeekFinish = () => {
-    	showLabel.textContent = "done";
+    	showLabel.textContent = SHOW_DONE;
     };
 
 	h265webjs.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
@@ -106,7 +109,7 @@ global.makeH265webjs = (videoURL, config) => {
 			ptsLabel.textContent = '0:0:0/LIVE';
 		}
 
-		showLabel.textContent = "done";
+		showLabel.textContent = SHOW_DONE;
     };
 
     h265webjs.onPlayTime = (videoPTS) => {

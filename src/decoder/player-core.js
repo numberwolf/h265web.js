@@ -334,10 +334,10 @@ module.exports = config => {
     }
     player.makeGL = () => {
         let canvasBox = document.querySelector('div#' + player.config.playerId);
-        canvasBox.style.position = 'relative';
-        canvasBox.style.backgroundColor = 'black';
-        canvasBox.style.width = player.config.width + 'px';
-        canvasBox.style.height = player.config.height + 'px';
+        // canvasBox.style.position = 'relative';
+        // canvasBox.style.backgroundColor = 'black';
+        // canvasBox.style.width = player.config.width + 'px';
+        // canvasBox.style.height = player.config.height + 'px';
         let canvas = document.createElement('canvas');
         canvas.style.width = canvasBox.clientWidth + 'px';
         canvas.style.height = canvasBox.clientHeight + 'px';

@@ -1,10 +1,13 @@
 const H265webjs = require('./src/h265webjs');
 const ScreenModule = require('./screen');
 
-global.makeH265webjs = (videoURL, config) => {
-	screenView = new ScreenModule.Screen();
+const SHOW_LOADING = "LOADING...!";
+const SHOW_DONE = "done.";
 
-	durationText = duration => {
+global.makeH265webjs = (videoURL, config) => {
+    screenView = new ScreenModule.Screen();
+
+    durationText = duration => {
         if (duration < 0) {
             return "Play";
         }
@@ -14,41 +17,41 @@ global.makeH265webjs = (videoURL, config) => {
         + ":" + Math.floor(durationSecInt % 60);
     };
 
-    let h265webjs 		= new H265webjs.H265webjs(videoURL, config);
-    let progressPts 	= document.querySelector('#progressPts');
-    let progressVoice 	= document.querySelector('#progressVoice');
-    let playBar 		= document.querySelector('#playBtn');
-    let showLabel 		= document.querySelector('#showLabel');
-    let ptsLabel 		= document.querySelector('#ptsLabel');
-	let fullScreenBtn 	= document.querySelector('#fullScreenBtn');
-    let mediaInfo 		= null;
+    let h265webjs       = new H265webjs.H265webjs(videoURL, config);
+    let progressPts     = document.querySelector('#progressPts');
+    let progressVoice   = document.querySelector('#progressVoice');
+    let playBar         = document.querySelector('#playBtn');
+    let showLabel       = document.querySelector('#showLabel');
+    let ptsLabel        = document.querySelector('#ptsLabel');
+    let fullScreenBtn   = document.querySelector('#fullScreenBtn');
+    let mediaInfo       = null;
 
-    playBar.disabled 	= true;
+    playBar.disabled    = true;
     playBar.textContent = '>';
 
-    showLabel.textContent = "loading...";
+    showLabel.textContent = SHOW_LOADING;
 
     playBar.onclick = () => {
         if (h265webjs.isPlaying()) {
-        	playBar.textContent = '>';
-        	h265webjs.pause();
+            playBar.textContent = '>';
+            h265webjs.pause();
         } else {
-        	playBar.textContent = '||';
-        	h265webjs.play();
+            playBar.textContent = '||';
+            h265webjs.play();
         }
     };
 
-	fullScreenBtn.onclick = () => {
-		screenView.open();
-		h265webjs.setRenderScreen(true);
-	};
+    fullScreenBtn.onclick = () => {
+        screenView.open();
+        h265webjs.setRenderScreen(true);
+    };
 
-	screenView.onClose = () => {
-		h265webjs.setRenderScreen(false);
-	};
+    screenView.onClose = () => {
+        h265webjs.setRenderScreen(false);
+    };
 
     progressPts.addEventListener('click', (e) => {
-    	showLabel.textContent = "loading...";
+        showLabel.textContent = SHOW_LOADING;
         let x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
         let y = e.pageY - progressPts.offsetTop;  // or e.offsetY
         let clickedValue = x * progressPts.max / progressPts.offsetWidth;
@@ -65,19 +68,19 @@ global.makeH265webjs = (videoURL, config) => {
     });
 
     h265webjs.onSeekFinish = () => {
-    	showLabel.textContent = "done";
+        showLabel.textContent = SHOW_DONE;
     };
 
-	h265webjs.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
-		screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
-		console.log("on render");
-	};
+    h265webjs.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
+        screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+        console.log("on render");
+    };
 
     h265webjs.onMaskClick = () => {
-    	if (h265webjs.isPlaying()) {
-        	playBar.textContent = '||';
+        if (h265webjs.isPlaying()) {
+            playBar.textContent = '||';
         } else {
-        	playBar.textContent = '>';
+            playBar.textContent = '>';
         }
     };
 
@@ -87,38 +90,37 @@ global.makeH265webjs = (videoURL, config) => {
         console.log(mediaInfo);
         /*
         meta:
-			durationMs: 144400
-			fps: 25
-			sampleRate: 44100
-			size: {
-				width: 864,
-				height: 480
-			}
-		videoType: "vod"
-		*/
-		playBar.disabled = false;
+            durationMs: 144400
+            fps: 25
+            sampleRate: 44100
+            size: {
+                width: 864,
+                height: 480
+            }
+        videoType: "vod"
+        */
+        playBar.disabled = false;
 
-		if (mediaInfo.videoType == "vod") {
-			progressPts.max = mediaInfo.meta.durationMs / 1000;
-			ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
-		} else {
-			progressPts.hidden = true;
-			ptsLabel.textContent = '0:0:0/LIVE';
-		}
+        if (mediaInfo.videoType == "vod") {
+            progressPts.max = mediaInfo.meta.durationMs / 1000;
+            ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
+        } else {
+            progressPts.hidden = true;
+            ptsLabel.textContent = '0:0:0/LIVE';
+        }
 
-		showLabel.textContent = "done";
+        showLabel.textContent = SHOW_DONE;
     };
 
     h265webjs.onPlayTime = (videoPTS) => {
-    	if (mediaInfo.videoType == "vod") {
-			progressPts.value = videoPTS;
-			ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
-		} else {
-			ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
-		}
+        if (mediaInfo.videoType == "vod") {
+            progressPts.value = videoPTS;
+            ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
+        } else {
+            ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+        }
     };
 
-    console.log(h265webjs);
     h265webjs.do();
     return h265webjs;
 }
