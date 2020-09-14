@@ -26,7 +26,7 @@
     "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
   },
   "dependencies": {
-    "h265web.js": "^1.0.7",
+    "h265web.js": "^1.0.8",
     "webpack": "^4.44.1",
     "yuv-buffer": "^1.0.0",
     "yuv-canvas": "^1.2.6"
