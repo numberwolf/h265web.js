@@ -95,7 +95,7 @@ Full Screen
 
 > 1. You can running demo on Running Step.
 
-> 2. How to use it? Watch <a href="demo">demo</a> (dir: <a href="demo/README.MD">demo/README.MD</a>)
+> 2. How to use it? Watch <a href="play.js">play.js</a>
 
 
 ### Running 
