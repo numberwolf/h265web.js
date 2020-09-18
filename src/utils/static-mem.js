@@ -1,1 +1,0 @@
-global.STATIC_MEM_wasmDecoderState = -1;

@@ -1,4 +1,4 @@
-const H265webjs = require('./src/h265webjs');
+const H265webjs = require('./dist/h265webjs');
 const ScreenModule = require('./screen');
 
 const SHOW_LOADING = "LOADING...!";
@@ -17,7 +17,7 @@ global.makeH265webjs = (videoURL, config) => {
         + ":" + Math.floor(durationSecInt % 60);
     };
 
-    let h265webjs       = new H265webjs.H265webjs(videoURL, config);
+    let h265webjs       = new265webjs(videoURL, config);
     let progressPts     = document.querySelector('#progressPts');
     let progressVoice   = document.querySelector('#progressVoice');
     let playBar         = document.querySelector('#playBtn');
@@ -96,10 +96,16 @@ global.makeH265webjs = (videoURL, config) => {
             size: {
                 width: 864,
                 height: 480
-            }
+            },
+            audioNone : false
         videoType: "vod"
         */
         playBar.disabled = false;
+
+        if (mediaInfo.meta.audioNone) {
+            progressVoice.value = 0;
+            progressVoice.style.display = 'none';
+        }
 
         if (mediaInfo.videoType == "vod") {
             progressPts.max = mediaInfo.meta.durationMs / 1000;
