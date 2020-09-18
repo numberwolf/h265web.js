@@ -9,6 +9,10 @@
 
 * Logo designer & Copyright : porschegt23@foxmail.com (QQ:531365872 ,Discord:numberwolf#8694)
 
+* Customized sales: Discord:numberwolf#8694
+
+* 合作 QQ:531365872
+
 * 技术支持QQ群：925466059
 
 * LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
@@ -143,8 +147,11 @@ ffmpeg -f avfoundation -i 1:0 \
 ### Project Dir Struct
 
 ```struct
-|-- demo `A Example with README`
-|-- src
+|-- dist `h265webjs Framework`
+|-- index.html
+|-- play.js
+|-- screen.js
+|-- server.js
 |-- package.json
 |-- LICENSE-GPL3.0
 |-- README.MD
