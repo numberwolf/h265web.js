@@ -102,8 +102,8 @@ class ScreenModule {
         let _this = this;
         let closeBtn = document.createElement('button');
         closeBtn.style.backgroundColor = 'white';
-        closeBtn.style.width = '30px';
-        closeBtn.style.height = '30px';
+        closeBtn.style.width = '100px';
+        closeBtn.style.height = '100px';
         closeBtn.style.display = 'block';
         closeBtn.style.position = 'absolute';
         closeBtn.style.zIndex = '2002';

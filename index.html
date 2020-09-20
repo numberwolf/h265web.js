@@ -76,54 +76,52 @@
     </style>
 </head>
 <body>
-    <center>
-        <h1> h265web.js demo </h1>
-        <div id="glplayer"></div>
-        <div id="controller">
-            <progress id="progressPts" value="0" max="100"></progress>
-            <button id="playBtn">
-                >
-            </button>
-            <span id="ptsLabel">0:0:0/0:0:0</span>
-            <button id="fullScreenBtn">[Full Screen]</button>
-            <span id="showLabel"></span>
-            <div class="voice-div">
-                <span>Volume</span>
-                <progress id="progressVoice" value="100" max="100"></progress>
-            </div>
+    <h1> h265web.js demo </h1>
+    <div id="glplayer"></div>
+    <div id="controller">
+        <progress id="progressPts" value="0" max="100"></progress>
+        <button id="playBtn">
+            >
+        </button>
+        <span id="ptsLabel">0:0:0/0:0:0</span>
+        <button id="fullScreenBtn">[Full Screen]</button>
+        <span id="showLabel"></span>
+        <div class="voice-div">
+            <span>Volume</span>
+            <progress id="progressVoice" value="100" max="100"></progress>
         </div>
+    </div>
 
-        <br>
-        <table>
-            <tr style="color:red;"> 
-                <td>h265web.js</td>
-                <td>mpeg-demuxer.js</td>
-            </tr>
-            <tr> 
-                <td><img src="https://badge.fury.io/js/h265web.js.svg"></td>
-                <td><img src="https://badge.fury.io/js/mpeg.js.svg"></td>
-            </tr>
-        </table>
+    <br>
+    <table>
+        <tr style="color:red;"> 
+            <td>h265web.js</td>
+            <td>mpeg-demuxer.js</td>
+        </tr>
+        <tr> 
+            <td><img src="https://badge.fury.io/js/h265web.js.svg"></td>
+            <td><img src="https://badge.fury.io/js/mpeg.js.svg"></td>
+        </tr>
+    </table>
 
-        <br>
-        <a href="https://github.com/numberwolf/h265web.js">
-            <font color="blue">https://github.com/numberwolf/h265web.js</font>
-        </a>
-        <br>
-        <a href="http://xvideo.video">
-            <font color="blue">http://xvideo.video</font>
-        </a>
-        <br>
-        <a href="mailto:porschegt23@foxmail.com">
-            <font color="blue">porschegt23@foxmail.com</font>
-        </a>
-    </center>
+    <br>
+    <a href="https://github.com/numberwolf/h265web.js">
+        <font color="blue">https://github.com/numberwolf/h265web.js</font>
+    </a>
+    <br>
+    <a href="http://xvideo.video">
+        <font color="blue">http://xvideo.video</font>
+    </a>
+    <br>
+    <a href="mailto:porschegt23@foxmail.com">
+        <font color="blue">porschegt23@foxmail.com</font>
+    </a>
     <script>
         var type = "mp4";
-        // var url = "res/jitui_265.mp4";
+        var url = "res/jitui_265.mp4";
         // var url = "res/720phevc.mp4";
         // var url = "demo/res/cg360phevc.mp4";
-        var url = "res/cg360phevc_an.mp4";
+        //var url = "res/cg360phevc_an.mp4";
         // var url = "demo/res/jitui_265_360p.mp4";
         // var url = "demo/res/cg720phevc.mp4";
         // var url = "res/cg1080phevc.mp4";

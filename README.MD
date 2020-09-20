@@ -47,6 +47,8 @@ Full Screen
 
 * Define Player UI by yourself
 
+* Support media without audio stream
+
 * Support make your player's ui style
 
 * Open API for Developers! (See Examples in `play.js`)
