@@ -11,9 +11,7 @@
 
 * Customized sales: Discord:numberwolf#8694
 
-* 合作 QQ:531365872
-
-* 技术支持QQ群：925466059
+* 定制化开发 QQ:531365872 Mail:porschegt23@foxmail.com
 
 * LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
 
