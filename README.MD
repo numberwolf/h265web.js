@@ -39,7 +39,13 @@ Full Screen
 
 > <img src="./resource/demo2.png" width="500px" />
 
+##### Warning
+
+> You can use it in `localhost` | `127.0.0.1`, if you want to use it for others domain, please contact me.
+
 ### Features
+
+* Support Mp4 with AVC Codec Play!
 
 * Interface of Full Screen play!
 
@@ -164,6 +170,7 @@ If you have any problems, you can send mail to me, or use QQ to talk with me. ~^
 * Email(porschegt23@foxmail.com)
 * QQ: 531365872
 * Discord:numberwolf#8694
+* And wechat account number in issue
 
 - Wasm made by myself.
 
