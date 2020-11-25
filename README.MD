@@ -15,6 +15,10 @@
 
 * LICENSE : GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md
 
+##### Remind~
+
+You can use it in `localhost` | `127.0.0.1`, if you want to use it for others domain, please contact me, I will add your domain to whitelist~
+
 #### If `h265webjs` help you, please click the `star button`, thx~
 
 > `~^_^~`    
@@ -39,9 +43,6 @@ Full Screen
 
 > <img src="./resource/demo2.png" width="500px" />
 
-##### Warning
-
-> You can use it in `localhost` | `127.0.0.1`, if you want to use it for others domain, please contact me.
 
 ### Features
 
