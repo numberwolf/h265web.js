@@ -46,6 +46,8 @@ Full Screen
 
 ### Features
 
+* Support show first frame of video
+
 * Support Mp4 with AVC Codec Play!
 
 * Interface of Full Screen play!
