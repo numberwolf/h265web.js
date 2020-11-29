@@ -1,6 +1,14 @@
 --------------------------------------------------
 # h265web.js
 
+## TODO
+
+* I will write a document for this framework.
+
+* Release a free version.
+
+## h265web.js
+
 * Github: https://github.com/numberwolf/h265web.js
 
 <img src="./resource/logo@300x300.png" width="300px" />
@@ -45,6 +53,8 @@ Full Screen
 
 
 ### Features
+
+* Support restart and seek when pause.
 
 * Support show first frame of video
 
