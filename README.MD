@@ -54,6 +54,8 @@ Full Screen
 
 ### Features
 
+* Support cache buffer option
+
 * Support restart and seek when pause.
 
 * Support show first frame of video
