@@ -54,6 +54,8 @@ Full Screen
 
 ### Features
 
+* Fixed: Frame unsharp
+
 * Support cache buffer option
 
 * Support restart and seek when pause.
