@@ -135,6 +135,7 @@ ffmpeg -i input.mp4 \
 -acodec aac -ac 2 -ar 44100 \
 -preset medium -maxrate 1000k -bufsize 1000k \
 -vtag hev1 \
+-movflags faststart \
 -y video.mp4
 ```
 
