@@ -77,6 +77,14 @@ global.makeH265webjs = (videoURL, config) => {
         console.log("on render");
     };
 
+    h265webjs.onLoadCache = () => {
+        showLabel.textContent = "Caching...";
+    };
+
+    h265webjs.onLoadCacheFinshed = () => {
+        showLabel.textContent = SHOW_DONE;
+    };
+
     h265webjs.onMaskClick = () => {
         if (h265webjs.isPlaying()) {
             playBar.textContent = '||';
