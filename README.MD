@@ -46,7 +46,7 @@ online demo: http://hevc.xvideo.video/
 ##### VOD
 
 Play
-> <img src="./resource/demo.png" width="500px" />
+> <img src="./resource/demo3.png" width="500px" />
 
 
 Full Screen

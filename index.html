@@ -20,15 +20,30 @@
         }
         #progressPts {
             width: 100%;
+            margin-top:0.125rem;
+            border:none;
+            color:yellow;
+            -moz-border-radius:1px;
+            -webkit-border-radius:1px;
+            border-radius:1px;
+        }
+        #progressPts::-moz-progress-bar {
+            background-color:yellow;
+        }
+
+        #progressPts::-webkit-progress-value {
+            background-color:yellow;
         }
         #playBtn {
             float: left;
-            width: 5%;
-            margin-bottom: 5px;
+            width: 4%;
+            margin-top: 3px;
+            margin-bottom: 3px;
             margin-left: 5px;
             color: white;
-            background: rgb(102, 102, 255);
-            border: 0px none;
+            /*background: rgb(0, 0, 0);*/
+            background-color: rgb(0, 0, 0);
+            border: 2px solid white;
             text-align: center;
             line-height: 20px;
             font-weight: bold;
@@ -36,32 +51,45 @@
         }
         #showLabel {
             color: white;
+            background: rgb(0, 0, 0);
+            border: 1px solid white;
+            border-radius: 7px;
+            padding: 1px;
             float: right;
-            margin-bottom: 5px;
+            margin-top: 3px;
             margin-right: 5px;
         }
         #ptsLabel {
             color: white;
+            background: rgb(0, 0, 0);
+            border: 1px solid white;
             float: right;
-            margin-bottom: 5px;
+            border-radius: 7px;
+            padding: 1px;
+            margin-top: 3px;
             margin-right: 5px;
         }
         #fullScreenBtn {
             float: right;
-            margin-bottom: 5px;
+            margin-top: 3px;
             margin-right: 5px;
             color: white;
-            background: rgb(102, 102, 255);
-            border: 0px none;
+            background: rgb(0, 0, 0);
+            border: 2px solid white;
             text-align: center;
             line-height: 20px;
             font-weight: bold;
             border-radius: 7px;
         }
         .voice-div {
-            width: 25%;
+            color: white;
+            background: rgb(0, 0, 0);
+            border: 2px solid white;
+            border-radius: 7px;
+            padding-left: 20px;
+            width: 18%;
             float: right;
-            margin-bottom: 5px;
+            margin-top: 3px;
             margin-right: 5px;
         }
         .voice-div > span {
@@ -72,6 +100,19 @@
         #progressVoice {
             float: left;
             width: 50%;
+            margin-top:0.125rem;
+            border:none;
+            color:yellow;
+            -moz-border-radius:1px;
+            -webkit-border-radius:1px;
+            border-radius:1px;
+        }
+        #progressVoice::-moz-progress-bar {
+            background-color:yellow;
+        }
+
+        #progressVoice::-webkit-progress-value {
+            background-color:yellow;
         }
     </style>
 </head>
@@ -119,7 +160,8 @@
     </a>
 
     <script>
-        var token = "============>>>>>>>>>>>>>>Author:changyanlong|numberwolf,Github:https://github.com/numberwolf,Email:porschegt23@foxmail.com,QQ:531365872,HomePage:http://xvideo.video,Discord:numberwolf#8694,Beijing,WorkIn:Baidu<<<<<<<<<<<<===========";
+        //var token = "============>>>>>>>>>>>>>>Author:changyanlong|numberwolf,Github:https://github.com/numberwolf,Email:porschegt23@foxmail.com,QQ:531365872,HomePage:http://xvideo.video,Discord:numberwolf#8694,Beijing,WorkIn:Baidu<<<<<<<<<<<<===========";
+        var token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
         var type = "mp4";
         var url = "res/video40_265_moov.mp4";
         // var url = "demo/res/p1_265_5s.mp4";
