@@ -14,7 +14,7 @@ README.md：<a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
 __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> help you, please `star` it~__
 
-## 目录
+## Index
 
 - [0、README](#0、readme)
 
