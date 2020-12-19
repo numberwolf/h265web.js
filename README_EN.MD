@@ -16,7 +16,7 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 ## Index
 
-- [0、README](#0、readme)
+- [0、README](#0readme)
 
 	- [Support what?](#supported)
 
@@ -28,9 +28,9 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 	- [Preview image](#previewimage)
 
-- [1、How to use it? See demo code](#1、useitbydemo)
+- [1、How to use it? See demo code](#1useitbydemo)
 
-- [2、SDK/API Document](#2、sdkandapidocument)
+- [2、SDK/API Document](#2sdkandapidocument)
 
 	- [How to install it](#install)
 
@@ -42,7 +42,7 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 	- [Player API Document](#playerapidocument)
 
-- [3、Others help](#3、others)
+- [3、Others help](#3others)
 	
 	- [Transcode and get hevc media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
 
