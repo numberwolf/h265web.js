@@ -162,7 +162,7 @@ const H265webjs = require('./dist/h265webjs');
 
 #### 3）引入h265web.js到你的项目
 
-* 本地引入
+* 本地引入（从Github <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>）
 
 ```javascript
 const H265webjs = require('./dist/h265webjs');
