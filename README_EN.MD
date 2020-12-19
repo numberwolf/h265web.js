@@ -135,7 +135,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 * By github <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
 ```javascript
-// 引入Github的本地文件
+// import from local file
 const H265webjs = require('./dist/h265webjs');
 ```
 
