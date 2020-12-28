@@ -5,6 +5,7 @@
 | 时间 | 2020/12/28 |
 | 内容1 | 1.增加 `import H265webjsModule from './dist/index';` 引入方式 |
 | 内容2 | 2.修复Seek和restart的部分bug |
+| 内容3 | 2.Wasm 文件体积下降 40%，经过nginx压缩后可 < 500kb |
 
 | h265web.js | mpeg.js `(解析ts)` |
 | ---- | ---- |

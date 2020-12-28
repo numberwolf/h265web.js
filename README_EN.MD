@@ -5,6 +5,7 @@
 | Time | 2020/12/28 |
 | 1 | 1.New way to use it: `import H265webjsModule from './dist/index';` |
 | 2 | 2.Fixed some bugs: Seek and restart |
+| 3 | 2.Wasm file size drop 40% |
 
 | h265web.js | mpeg.js `(ts demuxer)` |
 | ---- | ---- |
