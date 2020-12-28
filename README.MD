@@ -1,5 +1,11 @@
 # h265web.js
 
+| 更新 | 内容 |
+| ---- | ---- |
+| 时间 | 2020/12/28 |
+| 内容1 | 1.增加 `import H265webjsModule from './dist/index';` 引入方式 |
+| 内容2 | 2.修复Seek和restart的部分bug |
+
 | h265web.js | mpeg.js `(解析ts)` |
 | ---- | ---- |
 | [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) |
@@ -132,11 +138,18 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### 1）引入包
 
-* 方式1：引入Github的本地文件
+* 方式1.1：引入Github的本地文件 `require`形式 
 
 ```javascript
 // 引入Github的本地文件
-const H265webjs = require('./dist/h265webjs');
+require('./dist/h265webjs');
+```
+
+* 方式1.2：引入Github的本地文件 `import xxx from xxx`形式 （推荐）
+
+```javascript
+// 引入Github的本地文件
+import H265webjsModule from './dist/index';
 ```
 
 * 方式2：从npm商店引入
@@ -164,9 +177,16 @@ const H265webjs = require('./dist/h265webjs');
 
 * 本地引入（从Github <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>）
 
-```javascript
-const H265webjs = require('./dist/h265webjs');
-```
+	* 1）require形式
+	```javascript
+	require('./dist/h265webjs');
+	```
+
+	* 2）`import xxx from xxx`形式 （推荐）
+	```javascript
+	// 引入Github的本地文件
+	import H265webjsModule from './dist/index';
+	```
 
 * npm形式引入
 
@@ -231,24 +251,39 @@ var config = {
 
 * 创建示例Demo
 
-```javascript
-let videoURL = "h265_test.mp4";
-let config = {
-    type: "mp4",
-    player: "glplayer",
-    width: 960,
-    height: 540,
-    accurateSeek : true,
-    playIcon : "dist/assets/icon-play@300.png",
-    loadIcon : "dist/assets/icon-loading.gif",
-    token : token,
-    extInfo : {
-        moovStartFlag : true,
-        readyShow : true
-    }
-};
-let player = new265webjs(videoURL, config);
-````
+	* 1）路径 + 配置
+	```javascript
+	let videoURL = "h265_test.mp4";
+	let config = {
+	    type: "mp4",
+	    player: "glplayer",
+	    width: 960,
+	    height: 540,
+	    accurateSeek : true,
+	    playIcon : "dist/assets/icon-play@300.png",
+	    loadIcon : "dist/assets/icon-loading.gif",
+	    token : token,
+	    extInfo : {
+	        moovStartFlag : true,
+	        readyShow : true
+	    }
+	};
+	````
+
+	* 2）创建播放器
+		* 1. 以`require('./src/h265webjs');`引入为前提
+
+		示例：
+		```javascript
+		let h265webjs = new265webjs(videoURL, config); // 全局方法
+		```
+
+		* 2. 以`import H265webjsModule from './dist/index';`引入为前提 （推荐）
+
+		示例：
+		```javascript
+		let h265webjs = H265webjsModule.createPlayer(videoURL, config);
+		```
 
 <br>
 

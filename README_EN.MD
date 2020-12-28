@@ -1,5 +1,11 @@
 # h265web.js
 
+| Update | Content |
+| ---- | ---- |
+| Time | 2020/12/28 |
+| 1 | 1.New way to use it: `import H265webjsModule from './dist/index';` |
+| 2 | 2.Fixed some bugs: Seek and restart |
+
 | h265web.js | mpeg.js `(ts demuxer)` |
 | ---- | ---- |
 | [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) |
@@ -132,11 +138,17 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### 1）Install SDK Package
 
-* By github <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
+* By github 1.1 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
 ```javascript
 // import from local file
-const H265webjs = require('./dist/h265webjs');
+require('./dist/h265webjs');
+```
+
+* By github 1.2 by `import xxx from xxx` （recommend）
+
+```javascript
+import H265webjsModule from './dist/index';
 ```
 
 * By npm
@@ -163,9 +175,16 @@ const H265webjs = require('./dist/h265webjs');
 
 * Local include
 
-```javascript
-const H265webjs = require('./dist/h265webjs');
-```
+	* 1）require
+	```javascript
+	require('./dist/h265webjs');
+	```
+
+	* 2）`import xxx from xxx` （recommend）
+	```javascript
+	import H265webjsModule from './dist/index';
+	```
+
 
 * Npm include
 
@@ -230,24 +249,39 @@ let config = {
 
 * Example
 
-```javascript
-let videoURL = "h265_test.mp4";
-let config = {
-    type: "mp4",
-    player: "glplayer",
-    width: 960,
-    height: 540,
-    accurateSeek : true,
-    playIcon : "dist/assets/icon-play@300.png",
-    loadIcon : "dist/assets/icon-loading.gif",
-    token : token,
-    extInfo : {
-        moovStartFlag : true,
-        readyShow : true
-    }
-};
-let player = new265webjs(videoURL, config);
-````
+	* 1）URI and Config
+	```javascript
+	let videoURL = "h265_test.mp4";
+	let config = {
+	    type: "mp4",
+	    player: "glplayer",
+	    width: 960,
+	    height: 540,
+	    accurateSeek : true,
+	    playIcon : "dist/assets/icon-play@300.png",
+	    loadIcon : "dist/assets/icon-loading.gif",
+	    token : token,
+	    extInfo : {
+	        moovStartFlag : true,
+	        readyShow : true
+	    }
+	};
+	````
+
+	* 2）Player
+		* 1. If `require('./src/h265webjs');`
+
+		Example:
+		```javascript
+		let h265webjs = new265webjs(videoURL, config); // Global Function
+		```
+
+		* 2. If `import H265webjsModule from './dist/index';`（recommend）
+
+		Example:
+		```javascript
+		let h265webjs = H265webjsModule.createPlayer(videoURL, config);
+		```
 
 <br>
 

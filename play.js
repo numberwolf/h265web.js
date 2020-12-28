@@ -1,13 +1,14 @@
-const H265webjs = require('./dist/h265webjs');
+// require('./src/h265webjs');
+import H265webjsModule from './dist/index';
 const ScreenModule = require('./screen');
 
 const SHOW_LOADING = "LOADING...!";
 const SHOW_DONE = "done.";
 
 global.makeH265webjs = (videoURL, config) => {
-    screenView = new ScreenModule.Screen();
+    let screenView = new ScreenModule.Screen();
 
-    durationText = duration => {
+    let durationText = duration => {
         if (duration < 0) {
             return "Play";
         }
@@ -17,7 +18,8 @@ global.makeH265webjs = (videoURL, config) => {
         + ":" + Math.floor(durationSecInt % 60);
     };
 
-    let h265webjs       = new265webjs(videoURL, config);
+    // let h265webjs       = new265webjs(videoURL, config);
+    let h265webjs       = H265webjsModule.createPlayer(videoURL, config);
     let progressPts     = document.querySelector('#progressPts');
     let progressVoice   = document.querySelector('#progressVoice');
     let playBar         = document.querySelector('#playBtn');
