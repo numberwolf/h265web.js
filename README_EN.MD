@@ -2,10 +2,11 @@
 
 | Update | Content |
 | ---- | ---- |
-| Time | 2020/12/28 |
-| 1 | 1.New way to use it: `import H265webjsModule from './dist/index';` |
-| 2 | 2.Fixed some bugs: Seek and restart |
-| 3 | 3.Wasm file size drop 40% |
+| Time | 2021/01/04 |
+| 1 | 1.Player Support Hevc file|
+| 2 | 2.Player Support Hevc stream|
+| 3 | 3.Remove Play/Pause Mask |
+| 4 | 4.Add Event:`onPlayFinish`, called when play video finished |
 
 | h265web.js | mpeg.js `(ts demuxer)` |
 | ---- | ---- |
@@ -67,6 +68,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | mpeg-ts | Video on demand |  Y  | ---- |
 | m3u8 | Video on demand |  Y  | ---- |
 | hls | Live |  Y  | ---- |
+| H.265 | Video on demand |  Y  | ---- |
+| H.265 | Live |  Y  | ---- |
 | http-flv | Live |  N  | TODO |
 | flv | Video on demand |  N  | TODO |
 
@@ -208,12 +211,11 @@ let config = {
     width: 960,
     height: 540,
     accurateSeek : true,
-    playIcon : "dist/assets/icon-play@300.png",
-    loadIcon : "dist/assets/icon-loading.gif",
     token : token,
     extInfo : {
         moovStartFlag : true,
-        readyShow : true
+        readyShow : true,
+        rawFps : 30
     }
 };
 ```
@@ -222,17 +224,16 @@ let config = {
 
 |  Config | Type | Value | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
-| type  | String | mp4/hls/ts | Y | Media file type |
+| type  | String | mp4/hls/ts/raw265 | Y | Media file type |
 | player  | String | - | Y | Player dom id |
 | width  | Int | - | Y | Player width |
 | height  | Int | - | Y | Player height |
 | accurateSeek  | Bool | true/false | Y | Accurate seek |
-| playIcon  | String | - | Y | Icon for play button on play view |
-| loadIcon  | String | - | Y | Icon for loading status on play view |
 | token  | String | - | Y | player's token |
 | extInfo  | Object | - | N | player extra info |
 | \+ moovStartFlag  | Bool | true/false | N:default is sfalse | mp4 with moov before mdat |
-| \+ extInfo  | Bool | true/false | N:default is false | need cover image |
+| \+ readyShow  | Bool | true/false | N:default is false | need cover image |
+| \+ rawFps  | Float32 | Example:30 | N:default 24 | Fps for play HEVC/AVC stream |
 
 
 <br>
@@ -251,23 +252,41 @@ let config = {
 * Example
 
 	* 1）URI and Config
-	```javascript
-	let videoURL = "h265_test.mp4";
-	let config = {
-	    type: "mp4",
-	    player: "glplayer",
-	    width: 960,
-	    height: 540,
-	    accurateSeek : true,
-	    playIcon : "dist/assets/icon-play@300.png",
-	    loadIcon : "dist/assets/icon-loading.gif",
-	    token : token,
-	    extInfo : {
-	        moovStartFlag : true,
-	        readyShow : true
-	    }
-	};
-	````
+		* Example 1 Create `mp4/hls/ts` Player
+
+		```javascript
+		let videoURL = "h265_test.mp4";
+		let config = {
+		    type: "mp4",
+		    player: "glplayer",
+		    width: 960,
+		    height: 540,
+		    accurateSeek : true,
+		    token : token,
+		    extInfo : {
+		        moovStartFlag : true,
+		        readyShow : true
+		    }
+		};
+		````
+
+		* Example 2 Create `raw265` Player (play hevc raw stream)
+
+		```javascript
+		let videoURL = "demo/res/raw.h265";
+		let config = {
+		    type: "raw265",
+		    player: "glplayer",
+		    width: 960,
+		    height: 540,
+		    accurateSeek : true,
+		    token : token,
+		    extInfo : {
+		        readyShow : true,
+		        rawFps : 30 // frame rate
+		    }
+		};
+		````
 
 	* 2）Player
 		* 1. If `require('./src/h265webjs');`
@@ -283,6 +302,55 @@ let config = {
 		```javascript
 		let h265webjs = H265webjsModule.createPlayer(videoURL, config);
 		```
+
+		* 3. NOTICE! If you want to create `raw265` stream player
+
+			* `raw265` type，feed byte data
+
+			Function
+
+			|  Function | Return | Desc | 
+			|  ----  | ----  | ---- |
+			| append265raw  | bool | Feed data (bytes) |
+
+			Params
+
+			| Param | Type | Default | Require | Desc | 
+			|  ----  | ----  | ---- | ---- | ---- |
+			| chunk  | Uint8Array | - | Y | Bytes |
+
+			Example - I get a hevc file by network, and get bytes data to player.
+
+			```javascript
+			let videoURL = "demo/res/raw.h265";
+		    // fetch 265
+		    let fileStart = 0;
+		    let startFetch = false;
+		    let networkInterval = window.setInterval(() => {
+		        if (!startFetch) {
+		            startFetch = true;
+		            fetch(videoURL).then(function(response) {
+		                let pump = function(reader) {
+		                    return reader.read().then(function(result) {
+		                        if (result.done) {
+		                            window.clearInterval(networkInterval);
+		                            return;
+		                        }
+		                        let chunk = result.value;
+		                        // console.log(chunk);
+		                        h265webjs.append265raw(chunk); // Call feed
+		                        return pump(reader);
+		                    });
+		                }
+		                return pump(response.body.getReader());
+		            })
+		            .catch(function(error) {
+		                console.log(error);
+		            });
+		        }
+		    }, 1);
+		    ```
+	
 
 <br>
 
@@ -324,25 +392,7 @@ player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
 
 <br>
 
-#### 3）Click player's render view event
-
-> Always use it for play/pause 
-
-* Example
-
-```javascript
-player.onMaskClick = () => {
-	if (player.isPlaying()) {
-	    // now is playing
-	} else {
-	    // now is pause
-	}
-};
-```
-
-<br>
-
-#### 4）Media load success
+#### 3）Media load success
 
 > If this event happened, you can start play
 
@@ -356,7 +406,7 @@ player.onLoadFinish = () => {
 
 <br>
 
-#### 5）Player's play timestamp update
+#### 4）Player's play timestamp update
 
 |  Callback param | Type | Default | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -368,6 +418,16 @@ player.onLoadFinish = () => {
 player.onPlayTime = (videoPTS) => {
 	// todo
 	console.log(videoPTS)
+};
+```
+
+#### 5）Player play finished
+
+* Example
+
+```javascript
+player.onPlayFinish = () => {
+    // finished
 };
 ```
 

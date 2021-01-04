@@ -200,8 +200,6 @@
             width: 960,
             height: 540,
             accurateSeek : true,
-            playIcon : "dist/assets/icon-play@300.png",
-            loadIcon : "dist/assets/icon-loading.gif",
             token : token,
             extInfo : {
                 moovStartFlag : true,
@@ -209,6 +207,25 @@
             }
         };
         makeH265webjs(url, config);
+
+        /*
+         * Play raw 265 demo
+         */
+        // var type = "raw265";
+        // var url265raw = "demo/res/raw.h265";
+        // var config = {
+        //     type: type,
+        //     player: "glplayer",
+        //     width: 960,
+        //     height: 540,
+        //     accurateSeek : true,
+        //     token : token,
+        //     extInfo : {
+        //         readyShow : true,
+        //         rawFps : 30
+        //     }
+        // };
+        // var h265Object = makeH265webjsRaw(url265raw, config);
     </script>
 </body>
 </html>

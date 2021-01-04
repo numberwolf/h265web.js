@@ -2,10 +2,15 @@
 
 | 更新 | 内容 |
 | ---- | ---- |
-| 时间 | 2020/12/28 |
-| 内容1 | 1.增加 `import H265webjsModule from './dist/index';` 引入方式 |
-| 内容2 | 2.修复Seek和restart的部分bug |
-| 内容3 | 3.Wasm 文件体积下降 40%，经过nginx压缩后可 < 500kb |
+| 时间 | 2021/01/04 |
+| 内容1 | 1.支持H.265的流式接入，可直接以265的URI进行播放、也可以流式字节填充播放（可应用于直播） |
+| 内容2 | 2.取消了播放器自带的播放view蒙板（用于点击播放画面触发暂停/播放能力），开放给用户自行实现 |
+| 内容3 | 3.支持 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
+| 内容4 | 4.增加`onPlayFinish` 事件回调，播放结束调用 |
+
+| @TODO | 内容 |
+| ---- | ---- |
+| 播放问题 | 部分MP4的SPS PPS VPS并不标准，Check此问题 |
 
 | h265web.js | mpeg.js `(解析ts)` |
 | ---- | ---- |
@@ -67,6 +72,8 @@ __`~^_^~ 作者用爱发电` 如果 <a href="https://github.com/numberwolf/h265w
 | mpeg-ts | 点播 |  是  | ---- |
 | m3u8 | 点播 |  是  | ---- |
 | hls | 直播 |  是  | ---- |
+| H.265 | 点播 |  是  | ---- |
+| H.265 | 直播 |  是  | ---- |
 | http-flv | 直播 |  否  | 待支持 |
 | flv | 点播 |  否  | 待支持 |
 
@@ -210,12 +217,12 @@ var config = {
     width: 960,
     height: 540,
     accurateSeek : true,
-    playIcon : "dist/assets/icon-play@300.png",
-    loadIcon : "dist/assets/icon-loading.gif",
     token : token,
     extInfo : {
         moovStartFlag : true,
-        readyShow : true
+        readyShow : true,
+        rawFps : 30,
+        autoCrop : false
     }
 };
 ```
@@ -224,17 +231,17 @@ var config = {
 
 |  配置项 | 类型 | 可选值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
-| type  | String | mp4/hls/ts | 是 | 播放文件的类型 |
+| type  | String | mp4/hls/ts/raw265 | 是 | 播放文件的类型 |
 | player  | String | - | 是 | 播放窗口的dom的id值 |
 | width  | Int | - | 是 | 播放窗口的宽度 |
 | height  | Int | - | 是 | 播放窗口的高度 |
 | accurateSeek  | Bool | true/false | 是 | 精准Seek（暂时固定为true） |
-| playIcon  | String | - | 是 | 播放器播放Icon图 |
-| loadIcon  | String | - | 是 | 播放器加载Icon图 |
 | token  | String | - | 是 | 播放器token值 |
 | extInfo  | Object | - | 否 | 播放器额外配置 |
 | \+ moovStartFlag  | Bool | true/false | 否:默认false | Mp4的moov box是否前置 关联到动态加载 |
-| \+ extInfo  | Bool | true/false | 否:默认false | 是否需要封面图展示 |
+| \+ readyShow  | Bool | true/false | 否:默认false | 是否需要封面图展示 |
+| \+ rawFps  | Float32 | 例如:30 | 否:默认24 | HEVC/AVC裸流播放时候的帧率设定 |
+| \+ autoCrop  | Bool | - | 否:默认false | 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
 
 
 <br>
@@ -253,23 +260,40 @@ var config = {
 * 创建示例Demo
 
 	* 1）路径 + 配置
-	```javascript
-	let videoURL = "h265_test.mp4";
-	let config = {
-	    type: "mp4",
-	    player: "glplayer",
-	    width: 960,
-	    height: 540,
-	    accurateSeek : true,
-	    playIcon : "dist/assets/icon-play@300.png",
-	    loadIcon : "dist/assets/icon-loading.gif",
-	    token : token,
-	    extInfo : {
-	        moovStartFlag : true,
-	        readyShow : true
-	    }
-	};
-	````
+		* 例子1 创建 `mp4/hls/ts`类型播放器
+
+		```javascript
+		let videoURL = "h265_test.mp4";
+		let config = {
+		    type: "mp4",
+		    player: "glplayer",
+		    width: 960,
+		    height: 540,
+		    accurateSeek : true,
+		    token : token,
+		    extInfo : {
+		        moovStartFlag : true,
+		        readyShow : true
+		    }
+		};
+		````
+
+		* 例子2 创建`raw265`类型 播放h265裸流 播放器（包括直播）
+
+		```javascript
+		let config = {
+		    type: "raw265",
+		    player: "glplayer",
+		    width: 960,
+		    height: 540,
+		    accurateSeek : true,
+		    token : token,
+		    extInfo : {
+		        readyShow : true,
+		        rawFps : 30 // 播放帧率
+		    }
+		};
+		````
 
 	* 2）创建播放器
 		* 1. 以`require('./src/h265webjs');`引入为前提
@@ -285,6 +309,54 @@ var config = {
 		```javascript
 		let h265webjs = H265webjsModule.createPlayer(videoURL, config);
 		```
+
+		* 3. 如果创建的是`raw265`类型的裸流数据播放 请注意
+
+			* `raw265`类型下，喂字节流播放
+
+			调用函数
+
+			|  函数 | 返回 | 说明 | 
+			|  ----  | ----  | ---- |
+			| append265raw  | bool | 喂裸流字节数据 |
+
+			参数
+
+			| 参数 | 类型 | 默认值 | 必填 | 说明 | 
+			|  ----  | ----  | ---- | ---- | ---- |
+			| chunk  | Uint8Array | - | 是 | 字节裸流数据 |
+
+			例子 - 这里直接将265文件通过网络串流传输
+
+			```javascript
+			let videoURL = "demo/res/raw.h265";
+		    // fetch 265
+		    let fileStart = 0;
+		    let startFetch = false;
+		    let networkInterval = window.setInterval(() => {
+		        if (!startFetch) {
+		            startFetch = true;
+		            fetch(videoURL).then(function(response) {
+		                let pump = function(reader) {
+		                    return reader.read().then(function(result) {
+		                        if (result.done) {
+		                            window.clearInterval(networkInterval);
+		                            return;
+		                        }
+		                        let chunk = result.value;
+		                        // console.log(chunk);
+		                        h265webjs.append265raw(chunk); // 调用喂流
+		                        return pump(reader);
+		                    });
+		                }
+		                return pump(response.body.getReader());
+		            })
+		            .catch(function(error) {
+		                console.log(error);
+		            });
+		        }
+		    }, 1);
+			```
 
 <br>
 
@@ -328,25 +400,7 @@ player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
 
 <br>
 
-#### 3）点击播放画面事件
-
-> 主要用于点击播放花面的响应事件，一般用于播放、暂停
-
-* 使用示例Demo
-
-```javascript
-player.onMaskClick = () => {
-	if (player.isPlaying()) {
-	    // 当前正在播放状态
-	} else {
-	    // 当前是暂停状态
-	}
-};
-```
-
-<br>
-
-#### 4）媒体文件加载完成事件
+#### 3）媒体文件加载完成事件
 
 > 媒体文件当前加载成功，可以进行播放
 
@@ -360,7 +414,7 @@ player.onLoadFinish = () => {
 
 <br>
 
-#### 5）播放器当前播放PTS（时刻）更新
+#### 4）播放器当前播放PTS（时刻）更新
 
 |  回调参数 | 类型 | 默认值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -372,6 +426,16 @@ player.onLoadFinish = () => {
 player.onPlayTime = (videoPTS) => {
 	// todo
 	console.log(videoPTS)
+};
+```
+
+#### 5）播放器媒体播放结束事件
+
+* 示例
+
+```javascript
+player.onPlayFinish = () => {
+    // finished
 };
 ```
 
