@@ -2,6 +2,8 @@
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/02/08 |
+| 1 | 1.New player core (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
 | Time | 2021/01/04 |
 | 1 | 1.Player Support Hevc file|
 | 2 | 2.Player Support Hevc stream|
@@ -79,7 +81,7 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | ---- | ---- |  ----  |
 | Video on demand | Y |  ----  | ---- |
 | Live | Y |  ----  | ---- |
-| Seek | Y |  ----  | ---- |
+| Seek | Y | when core equal to 1, do not support  | ---- |
 | AccurateSeek | Y |  ----  | ---- |
 | Cover Image | Y |  ----  | ---- |
 | Playing with download | Y |  ----  | ---- |
@@ -205,6 +207,9 @@ const H265webjs = require('h265web.js');
 * Make player config
 
 ```javascript
+const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器内核
+const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验播放器内核
+
 let config = {
     type: "mp4",
     player: "glplayer",
@@ -215,7 +220,8 @@ let config = {
     extInfo : {
         moovStartFlag : true,
         readyShow : true,
-        rawFps : 30
+        rawFps : 30,
+        core : PLAYER_CORE_TYPE_DEFAULT
     }
 };
 ```
@@ -234,6 +240,7 @@ let config = {
 | \+ moovStartFlag  | Bool | true/false | N:default is sfalse | mp4 with moov before mdat |
 | \+ readyShow  | Bool | true/false | N:default is false | need cover image |
 | \+ rawFps  | Float32 | Example:30 | N:default 24 | Fps for play HEVC/AVC stream |
+| \+ core  | Int | - | N:default 0 | 0:Default player core 1: New player core(beta) |
 
 
 <br>

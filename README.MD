@@ -2,6 +2,8 @@
 
 | 更新 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/02/08 |
+| 内容1 | 1.增加播放内核类型：新播放内核，可兼容多种解码Badcase(测试阶段, 输入媒资Mp4Box需要前置Moov，当前还不支持音频、Seek) |
 | 时间 | 2021/01/04 |
 | 内容1 | 1.支持H.265的流式接入，可直接以265的URI进行播放、也可以流式字节填充播放（可应用于直播） |
 | 内容2 | 2.取消了播放器自带的播放view蒙板（用于点击播放画面触发暂停/播放能力），开放给用户自行实现 |
@@ -10,7 +12,7 @@
 
 | @TODO | 内容 |
 | ---- | ---- |
-| 播放问题 | 部分MP4的SPS PPS VPS并不标准，Check此问题 |
+| 播放问题 | 新内核增加音频、Seek能力 |
 
 | h265web.js | mpeg.js `(解析ts)` |
 | ---- | ---- |
@@ -83,7 +85,7 @@ __`~^_^~ 作者用爱发电` 如果 <a href="https://github.com/numberwolf/h265w
 | ---- | ---- |  ----  |
 | 直播 | 是 |  ----  | ---- |
 | 点播 | 是 |  ----  | ---- |
-| Seek跳转 | 是 |  ----  | ---- |
+| Seek跳转 | 是 | core=1 时的新内核不支持 | ---- |
 | 精准Seek | 是 |  ----  | ---- |
 | 封面图 | 是 |  ----  | ---- |
 | 边下边播 | 是 |  ----  | ---- |
@@ -211,6 +213,9 @@ const H265webjs = require('h265web.js');
 * 创建代码如下
 
 ```javascript
+const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器内核
+const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验播放器内核
+
 var config = {
     type: "mp4",
     player: "glplayer",
@@ -222,7 +227,8 @@ var config = {
         moovStartFlag : true,
         readyShow : true,
         rawFps : 30,
-        autoCrop : false
+        autoCrop : false,
+        core : PLAYER_CORE_TYPE_DEFAULT
     }
 };
 ```
@@ -242,6 +248,7 @@ var config = {
 | \+ readyShow  | Bool | true/false | 否:默认false | 是否需要封面图展示 |
 | \+ rawFps  | Float32 | 例如:30 | 否:默认24 | HEVC/AVC裸流播放时候的帧率设定 |
 | \+ autoCrop  | Bool | - | 否:默认false | 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
+| \+ core  | Int | - | 否:默认0 | 0:默认播放内核 1:测试阶段的高成功率播放内核 |
 
 
 <br>

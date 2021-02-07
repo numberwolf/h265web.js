@@ -188,11 +188,14 @@
         // var url = "demo/res/veilside264.ts";
         // var url = "res/hls/v-000.ts"
 
-        var type = "hls";
+        // var type = "hls";
         // var url = "demo/res/m3u82/cg720phevc.m3u8";
-        var url = "res/m3u8/cg.m3u8";
-        var url = "res/hls/veilside.m3u8";
+        // var url = "res/m3u8/cg.m3u8";
+        // var url = "res/hls/veilside.m3u8";
         // var url = "res/hls1/test.m3u8";
+
+        const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器
+        const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验万能播放器
 
         var config = {
             type: type,
@@ -202,6 +205,8 @@
             accurateSeek : true,
             token : token,
             extInfo : {
+                core : PLAYER_CORE_TYPE_CNATIVE,
+                coreProbePart : 0.1,
                 moovStartFlag : true,
                 readyShow : true
             }
