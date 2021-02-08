@@ -1430,8 +1430,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             p = 8191 & l,
             m = l >>> 13,
             b = 0 | s[2],
-            g = 8191 & b,
-            y = b >>> 13,
+            y = 8191 & b,
+            g = b >>> 13,
             _ = 0 | s[3],
             v = 8191 & _,
             w = _ >>> 13,
@@ -1446,10 +1446,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             U = k >>> 13,
             I = 0 | s[7],
             R = 8191 & I,
-            B = I >>> 13,
-            C = 0 | s[8],
-            D = 8191 & C,
-            L = C >>> 13,
+            C = I >>> 13,
+            B = 0 | s[8],
+            D = 8191 & B,
+            L = B >>> 13,
             F = 0 | s[9],
             N = 8191 & F,
             O = F >>> 13,
@@ -1487,44 +1487,44 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         r.negative = e.negative ^ t.negative, r.length = 19;
         var be = (u + (i = Math.imul(c, j)) | 0) + ((8191 & (n = (n = Math.imul(c, H)) + Math.imul(d, j) | 0)) << 13) | 0;
         u = ((a = Math.imul(d, H)) + (n >>> 13) | 0) + (be >>> 26) | 0, be &= 67108863, i = Math.imul(p, j), n = (n = Math.imul(p, H)) + Math.imul(m, j) | 0, a = Math.imul(m, H);
-        var ge = (u + (i = i + Math.imul(c, Y) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, q) | 0) + Math.imul(d, Y) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, q) | 0) + (n >>> 13) | 0) + (ge >>> 26) | 0, ge &= 67108863, i = Math.imul(g, j), n = (n = Math.imul(g, H)) + Math.imul(y, j) | 0, a = Math.imul(y, H), i = i + Math.imul(p, Y) | 0, n = (n = n + Math.imul(p, q) | 0) + Math.imul(m, Y) | 0, a = a + Math.imul(m, q) | 0;
-        var ye = (u + (i = i + Math.imul(c, W) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, K) | 0) + Math.imul(d, W) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, K) | 0) + (n >>> 13) | 0) + (ye >>> 26) | 0, ye &= 67108863, i = Math.imul(v, j), n = (n = Math.imul(v, H)) + Math.imul(w, j) | 0, a = Math.imul(w, H), i = i + Math.imul(g, Y) | 0, n = (n = n + Math.imul(g, q) | 0) + Math.imul(y, Y) | 0, a = a + Math.imul(y, q) | 0, i = i + Math.imul(p, W) | 0, n = (n = n + Math.imul(p, K) | 0) + Math.imul(m, W) | 0, a = a + Math.imul(m, K) | 0;
+        var ye = (u + (i = i + Math.imul(c, Y) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, q) | 0) + Math.imul(d, Y) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(d, q) | 0) + (n >>> 13) | 0) + (ye >>> 26) | 0, ye &= 67108863, i = Math.imul(y, j), n = (n = Math.imul(y, H)) + Math.imul(g, j) | 0, a = Math.imul(g, H), i = i + Math.imul(p, Y) | 0, n = (n = n + Math.imul(p, q) | 0) + Math.imul(m, Y) | 0, a = a + Math.imul(m, q) | 0;
+        var ge = (u + (i = i + Math.imul(c, W) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, K) | 0) + Math.imul(d, W) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(d, K) | 0) + (n >>> 13) | 0) + (ge >>> 26) | 0, ge &= 67108863, i = Math.imul(v, j), n = (n = Math.imul(v, H)) + Math.imul(w, j) | 0, a = Math.imul(w, H), i = i + Math.imul(y, Y) | 0, n = (n = n + Math.imul(y, q) | 0) + Math.imul(g, Y) | 0, a = a + Math.imul(g, q) | 0, i = i + Math.imul(p, W) | 0, n = (n = n + Math.imul(p, K) | 0) + Math.imul(m, W) | 0, a = a + Math.imul(m, K) | 0;
 
         var _e = (u + (i = i + Math.imul(c, Z) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, J) | 0) + Math.imul(d, Z) | 0)) << 13) | 0;
 
-        u = ((a = a + Math.imul(d, J) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(g, W) | 0, n = (n = n + Math.imul(g, K) | 0) + Math.imul(y, W) | 0, a = a + Math.imul(y, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, J) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, J) | 0;
+        u = ((a = a + Math.imul(d, J) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(y, W) | 0, n = (n = n + Math.imul(y, K) | 0) + Math.imul(g, W) | 0, a = a + Math.imul(g, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, J) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, J) | 0;
         var ve = (u + (i = i + Math.imul(c, $) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ee) | 0) + Math.imul(d, $) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(g, Z) | 0, n = (n = n + Math.imul(g, J) | 0) + Math.imul(y, Z) | 0, a = a + Math.imul(y, J) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
+        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(y, Z) | 0, n = (n = n + Math.imul(y, J) | 0) + Math.imul(g, Z) | 0, a = a + Math.imul(g, J) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
         var we = (u + (i = i + Math.imul(c, re) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ie) | 0) + Math.imul(d, re) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, J) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, J) | 0, i = i + Math.imul(g, $) | 0, n = (n = n + Math.imul(g, ee) | 0) + Math.imul(y, $) | 0, a = a + Math.imul(y, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
+        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, J) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, J) | 0, i = i + Math.imul(y, $) | 0, n = (n = n + Math.imul(y, ee) | 0) + Math.imul(g, $) | 0, a = a + Math.imul(g, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
         var Ee = (u + (i = i + Math.imul(c, ae) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, se) | 0) + Math.imul(d, ae) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(R, j), n = (n = Math.imul(R, H)) + Math.imul(B, j) | 0, a = Math.imul(B, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, J) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, J) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(g, re) | 0, n = (n = n + Math.imul(g, ie) | 0) + Math.imul(y, re) | 0, a = a + Math.imul(y, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
+        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(R, j), n = (n = Math.imul(R, H)) + Math.imul(C, j) | 0, a = Math.imul(C, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, J) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, J) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(y, re) | 0, n = (n = n + Math.imul(y, ie) | 0) + Math.imul(g, re) | 0, a = a + Math.imul(g, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
         var Se = (u + (i = i + Math.imul(c, fe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ue) | 0) + Math.imul(d, fe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(R, Y) | 0, n = (n = n + Math.imul(R, q) | 0) + Math.imul(B, Y) | 0, a = a + Math.imul(B, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, J) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, J) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(g, ae) | 0, n = (n = n + Math.imul(g, se) | 0) + Math.imul(y, ae) | 0, a = a + Math.imul(y, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
+        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(R, Y) | 0, n = (n = n + Math.imul(R, q) | 0) + Math.imul(C, Y) | 0, a = a + Math.imul(C, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, J) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, J) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(y, ae) | 0, n = (n = n + Math.imul(y, se) | 0) + Math.imul(g, ae) | 0, a = a + Math.imul(g, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
         var Ae = (u + (i = i + Math.imul(c, ce) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, de) | 0) + Math.imul(d, ce) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(R, W) | 0, n = (n = n + Math.imul(R, K) | 0) + Math.imul(B, W) | 0, a = a + Math.imul(B, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, J) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, J) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(g, fe) | 0, n = (n = n + Math.imul(g, ue) | 0) + Math.imul(y, fe) | 0, a = a + Math.imul(y, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
+        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(R, W) | 0, n = (n = n + Math.imul(R, K) | 0) + Math.imul(C, W) | 0, a = a + Math.imul(C, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, J) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, J) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(y, fe) | 0, n = (n = n + Math.imul(y, ue) | 0) + Math.imul(g, fe) | 0, a = a + Math.imul(g, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
         var xe = (u + (i = i + Math.imul(c, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, me) | 0) + Math.imul(d, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(R, Z) | 0, n = (n = n + Math.imul(R, J) | 0) + Math.imul(B, Z) | 0, a = a + Math.imul(B, J) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(g, ce) | 0, n = (n = n + Math.imul(g, de) | 0) + Math.imul(y, ce) | 0, a = a + Math.imul(y, de) | 0;
+        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(R, Z) | 0, n = (n = n + Math.imul(R, J) | 0) + Math.imul(C, Z) | 0, a = a + Math.imul(C, J) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(y, ce) | 0, n = (n = n + Math.imul(y, de) | 0) + Math.imul(g, ce) | 0, a = a + Math.imul(g, de) | 0;
         var Me = (u + (i = i + Math.imul(p, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(p, me) | 0) + Math.imul(m, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, J) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, J) | 0, i = i + Math.imul(R, $) | 0, n = (n = n + Math.imul(R, ee) | 0) + Math.imul(B, $) | 0, a = a + Math.imul(B, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
-        var Te = (u + (i = i + Math.imul(g, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(g, me) | 0) + Math.imul(y, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(y, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, J)) + Math.imul(O, Z) | 0, a = Math.imul(O, J), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(R, re) | 0, n = (n = n + Math.imul(R, ie) | 0) + Math.imul(B, re) | 0, a = a + Math.imul(B, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
+        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, J) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, J) | 0, i = i + Math.imul(R, $) | 0, n = (n = n + Math.imul(R, ee) | 0) + Math.imul(C, $) | 0, a = a + Math.imul(C, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
+        var Te = (u + (i = i + Math.imul(y, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(y, me) | 0) + Math.imul(g, pe) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(g, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, J)) + Math.imul(O, Z) | 0, a = Math.imul(O, J), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(R, re) | 0, n = (n = n + Math.imul(R, ie) | 0) + Math.imul(C, re) | 0, a = a + Math.imul(C, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
         var ke = (u + (i = i + Math.imul(v, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(v, me) | 0) + Math.imul(w, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(w, me) | 0) + (n >>> 13) | 0) + (ke >>> 26) | 0, ke &= 67108863, i = Math.imul(N, $), n = (n = Math.imul(N, ee)) + Math.imul(O, $) | 0, a = Math.imul(O, ee), i = i + Math.imul(D, re) | 0, n = (n = n + Math.imul(D, ie) | 0) + Math.imul(L, re) | 0, a = a + Math.imul(L, ie) | 0, i = i + Math.imul(R, ae) | 0, n = (n = n + Math.imul(R, se) | 0) + Math.imul(B, ae) | 0, a = a + Math.imul(B, se) | 0, i = i + Math.imul(P, fe) | 0, n = (n = n + Math.imul(P, ue) | 0) + Math.imul(U, fe) | 0, a = a + Math.imul(U, ue) | 0, i = i + Math.imul(M, ce) | 0, n = (n = n + Math.imul(M, de) | 0) + Math.imul(T, ce) | 0, a = a + Math.imul(T, de) | 0;
+        u = ((a = a + Math.imul(w, me) | 0) + (n >>> 13) | 0) + (ke >>> 26) | 0, ke &= 67108863, i = Math.imul(N, $), n = (n = Math.imul(N, ee)) + Math.imul(O, $) | 0, a = Math.imul(O, ee), i = i + Math.imul(D, re) | 0, n = (n = n + Math.imul(D, ie) | 0) + Math.imul(L, re) | 0, a = a + Math.imul(L, ie) | 0, i = i + Math.imul(R, ae) | 0, n = (n = n + Math.imul(R, se) | 0) + Math.imul(C, ae) | 0, a = a + Math.imul(C, se) | 0, i = i + Math.imul(P, fe) | 0, n = (n = n + Math.imul(P, ue) | 0) + Math.imul(U, fe) | 0, a = a + Math.imul(U, ue) | 0, i = i + Math.imul(M, ce) | 0, n = (n = n + Math.imul(M, de) | 0) + Math.imul(T, ce) | 0, a = a + Math.imul(T, de) | 0;
         var Pe = (u + (i = i + Math.imul(S, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(S, me) | 0) + Math.imul(A, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(A, me) | 0) + (n >>> 13) | 0) + (Pe >>> 26) | 0, Pe &= 67108863, i = Math.imul(N, re), n = (n = Math.imul(N, ie)) + Math.imul(O, re) | 0, a = Math.imul(O, ie), i = i + Math.imul(D, ae) | 0, n = (n = n + Math.imul(D, se) | 0) + Math.imul(L, ae) | 0, a = a + Math.imul(L, se) | 0, i = i + Math.imul(R, fe) | 0, n = (n = n + Math.imul(R, ue) | 0) + Math.imul(B, fe) | 0, a = a + Math.imul(B, ue) | 0, i = i + Math.imul(P, ce) | 0, n = (n = n + Math.imul(P, de) | 0) + Math.imul(U, ce) | 0, a = a + Math.imul(U, de) | 0;
+        u = ((a = a + Math.imul(A, me) | 0) + (n >>> 13) | 0) + (Pe >>> 26) | 0, Pe &= 67108863, i = Math.imul(N, re), n = (n = Math.imul(N, ie)) + Math.imul(O, re) | 0, a = Math.imul(O, ie), i = i + Math.imul(D, ae) | 0, n = (n = n + Math.imul(D, se) | 0) + Math.imul(L, ae) | 0, a = a + Math.imul(L, se) | 0, i = i + Math.imul(R, fe) | 0, n = (n = n + Math.imul(R, ue) | 0) + Math.imul(C, fe) | 0, a = a + Math.imul(C, ue) | 0, i = i + Math.imul(P, ce) | 0, n = (n = n + Math.imul(P, de) | 0) + Math.imul(U, ce) | 0, a = a + Math.imul(U, de) | 0;
         var Ue = (u + (i = i + Math.imul(M, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(M, me) | 0) + Math.imul(T, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(T, me) | 0) + (n >>> 13) | 0) + (Ue >>> 26) | 0, Ue &= 67108863, i = Math.imul(N, ae), n = (n = Math.imul(N, se)) + Math.imul(O, ae) | 0, a = Math.imul(O, se), i = i + Math.imul(D, fe) | 0, n = (n = n + Math.imul(D, ue) | 0) + Math.imul(L, fe) | 0, a = a + Math.imul(L, ue) | 0, i = i + Math.imul(R, ce) | 0, n = (n = n + Math.imul(R, de) | 0) + Math.imul(B, ce) | 0, a = a + Math.imul(B, de) | 0;
+        u = ((a = a + Math.imul(T, me) | 0) + (n >>> 13) | 0) + (Ue >>> 26) | 0, Ue &= 67108863, i = Math.imul(N, ae), n = (n = Math.imul(N, se)) + Math.imul(O, ae) | 0, a = Math.imul(O, se), i = i + Math.imul(D, fe) | 0, n = (n = n + Math.imul(D, ue) | 0) + Math.imul(L, fe) | 0, a = a + Math.imul(L, ue) | 0, i = i + Math.imul(R, ce) | 0, n = (n = n + Math.imul(R, de) | 0) + Math.imul(C, ce) | 0, a = a + Math.imul(C, de) | 0;
         var Ie = (u + (i = i + Math.imul(P, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(P, me) | 0) + Math.imul(U, pe) | 0)) << 13) | 0;
         u = ((a = a + Math.imul(U, me) | 0) + (n >>> 13) | 0) + (Ie >>> 26) | 0, Ie &= 67108863, i = Math.imul(N, fe), n = (n = Math.imul(N, ue)) + Math.imul(O, fe) | 0, a = Math.imul(O, ue), i = i + Math.imul(D, ce) | 0, n = (n = n + Math.imul(D, de) | 0) + Math.imul(L, ce) | 0, a = a + Math.imul(L, de) | 0;
-        var Re = (u + (i = i + Math.imul(R, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(R, me) | 0) + Math.imul(B, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(B, me) | 0) + (n >>> 13) | 0) + (Re >>> 26) | 0, Re &= 67108863, i = Math.imul(N, ce), n = (n = Math.imul(N, de)) + Math.imul(O, ce) | 0, a = Math.imul(O, de);
-        var Be = (u + (i = i + Math.imul(D, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(D, me) | 0) + Math.imul(L, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(L, me) | 0) + (n >>> 13) | 0) + (Be >>> 26) | 0, Be &= 67108863;
-        var Ce = (u + (i = Math.imul(N, pe)) | 0) + ((8191 & (n = (n = Math.imul(N, me)) + Math.imul(O, pe) | 0)) << 13) | 0;
-        return u = ((a = Math.imul(O, me)) + (n >>> 13) | 0) + (Ce >>> 26) | 0, Ce &= 67108863, f[0] = be, f[1] = ge, f[2] = ye, f[3] = _e, f[4] = ve, f[5] = we, f[6] = Ee, f[7] = Se, f[8] = Ae, f[9] = xe, f[10] = Me, f[11] = Te, f[12] = ke, f[13] = Pe, f[14] = Ue, f[15] = Ie, f[16] = Re, f[17] = Be, f[18] = Ce, 0 !== u && (f[19] = u, r.length++), r;
+        var Re = (u + (i = i + Math.imul(R, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(R, me) | 0) + Math.imul(C, pe) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(C, me) | 0) + (n >>> 13) | 0) + (Re >>> 26) | 0, Re &= 67108863, i = Math.imul(N, ce), n = (n = Math.imul(N, de)) + Math.imul(O, ce) | 0, a = Math.imul(O, de);
+        var Ce = (u + (i = i + Math.imul(D, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(D, me) | 0) + Math.imul(L, pe) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(L, me) | 0) + (n >>> 13) | 0) + (Ce >>> 26) | 0, Ce &= 67108863;
+        var Be = (u + (i = Math.imul(N, pe)) | 0) + ((8191 & (n = (n = Math.imul(N, me)) + Math.imul(O, pe) | 0)) << 13) | 0;
+        return u = ((a = Math.imul(O, me)) + (n >>> 13) | 0) + (Be >>> 26) | 0, Be &= 67108863, f[0] = be, f[1] = ye, f[2] = ge, f[3] = _e, f[4] = ve, f[5] = we, f[6] = Ee, f[7] = Se, f[8] = Ae, f[9] = xe, f[10] = Me, f[11] = Te, f[12] = ke, f[13] = Pe, f[14] = Ue, f[15] = Ie, f[16] = Re, f[17] = Ce, f[18] = Be, 0 !== u && (f[19] = u, r.length++), r;
       };
 
       function p(e, t, r) {
@@ -1583,9 +1583,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               var p = r[h + l],
                   m = i[h + l],
                   b = r[h + l + s],
-                  g = i[h + l + s],
-                  y = c * b - d * g;
-              g = c * g + d * b, b = y, r[h + l] = p + b, i[h + l] = m + g, r[h + l + s] = p - b, i[h + l + s] = m - g, l !== o && (y = f * c - u * d, d = f * d + u * c, c = y);
+                  y = i[h + l + s],
+                  g = c * b - d * y;
+              y = c * y + d * b, b = g, r[h + l] = p + b, i[h + l] = m + y, r[h + l + s] = p - b, i[h + l + s] = m - y, l !== o && (g = f * c - u * d, d = f * d + u * c, c = g);
             }
           }
         }
@@ -2137,24 +2137,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         p25519: null
       };
 
-      function g(e, t) {
+      function y(e, t) {
         this.name = e, this.p = new a(t, 16), this.n = this.p.bitLength(), this.k = new a(1).iushln(this.n).isub(this.p), this.tmp = this._tmp();
       }
 
-      function y() {
-        g.call(this, "k256", "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f");
+      function g() {
+        y.call(this, "k256", "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f");
       }
 
       function _() {
-        g.call(this, "p224", "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001");
+        y.call(this, "p224", "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001");
       }
 
       function v() {
-        g.call(this, "p192", "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff");
+        y.call(this, "p192", "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff");
       }
 
       function w() {
-        g.call(this, "25519", "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed");
+        y.call(this, "25519", "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed");
       }
 
       function E(e) {
@@ -2169,10 +2169,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         E.call(this, e), this.shift = this.m.bitLength(), this.shift % 26 != 0 && (this.shift += 26 - this.shift % 26), this.r = new a(1).iushln(this.shift), this.r2 = this.imod(this.r.sqr()), this.rinv = this.r._invmp(this.m), this.minv = this.rinv.mul(this.r).isubn(1).div(this.m), this.minv = this.minv.umod(this.r), this.minv = this.r.sub(this.minv);
       }
 
-      g.prototype._tmp = function () {
+      y.prototype._tmp = function () {
         var e = new a(null);
         return e.words = new Array(Math.ceil(this.n / 13)), e;
-      }, g.prototype.ireduce = function (e) {
+      }, y.prototype.ireduce = function (e) {
         var t,
             r = e;
 
@@ -2182,11 +2182,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         var i = t < this.n ? -1 : r.ucmp(this.p);
         return 0 === i ? (r.words[0] = 0, r.length = 1) : i > 0 ? r.isub(this.p) : void 0 !== r.strip ? r.strip() : r._strip(), r;
-      }, g.prototype.split = function (e, t) {
+      }, y.prototype.split = function (e, t) {
         e.iushrn(this.n, 0, t);
-      }, g.prototype.imulK = function (e) {
+      }, y.prototype.imulK = function (e) {
         return e.imul(this.k);
-      }, n(y, g), y.prototype.split = function (e, t) {
+      }, n(g, y), g.prototype.split = function (e, t) {
         for (var r = Math.min(e.length, 9), i = 0; i < r; i++) {
           t.words[i] = e.words[i];
         }
@@ -2200,7 +2200,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         n >>>= 22, e.words[i - 10] = n, 0 === n && e.length > 10 ? e.length -= 10 : e.length -= 9;
-      }, y.prototype.imulK = function (e) {
+      }, g.prototype.imulK = function (e) {
         e.words[e.length] = 0, e.words[e.length + 1] = 0, e.length += 2;
 
         for (var t = 0, r = 0; r < e.length; r++) {
@@ -2209,7 +2209,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         return 0 === e.words[e.length - 1] && (e.length--, 0 === e.words[e.length - 1] && e.length--), e;
-      }, n(_, g), n(v, g), n(w, g), w.prototype.imulK = function (e) {
+      }, n(_, y), n(v, y), n(w, y), w.prototype.imulK = function (e) {
         for (var t = 0, r = 0; r < e.length; r++) {
           var i = 19 * (0 | e.words[r]) + t,
               n = 67108863 & i;
@@ -2220,7 +2220,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, a._prime = function (e) {
         if (b[e]) return b[e];
         var t;
-        if ("k256" === e) t = new y();else if ("p224" === e) t = new _();else if ("p192" === e) t = new v();else {
+        if ("k256" === e) t = new g();else if ("p224" === e) t = new _();else if ("p192" === e) t = new v();else {
           if ("p25519" !== e) throw new Error("Unknown prime " + e);
           t = new w();
         }
@@ -2292,8 +2292,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           i(b < p);
-          var g = this.pow(c, new a(1).iushln(p - b - 1));
-          d = d.redMul(g), c = g.redSqr(), l = l.redMul(c), p = b;
+          var y = this.pow(c, new a(1).iushln(p - b - 1));
+          d = d.redMul(y), c = y.redSqr(), l = l.redMul(c), p = b;
         }
 
         return d;
@@ -2850,8 +2850,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             p = 8191 & l,
             m = l >>> 13,
             b = 0 | s[2],
-            g = 8191 & b,
-            y = b >>> 13,
+            y = 8191 & b,
+            g = b >>> 13,
             _ = 0 | s[3],
             v = 8191 & _,
             w = _ >>> 13,
@@ -2866,10 +2866,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             U = k >>> 13,
             I = 0 | s[7],
             R = 8191 & I,
-            B = I >>> 13,
-            C = 0 | s[8],
-            D = 8191 & C,
-            L = C >>> 13,
+            C = I >>> 13,
+            B = 0 | s[8],
+            D = 8191 & B,
+            L = B >>> 13,
             F = 0 | s[9],
             N = 8191 & F,
             O = F >>> 13,
@@ -2907,44 +2907,44 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         r.negative = e.negative ^ t.negative, r.length = 19;
         var be = (u + (i = Math.imul(c, j)) | 0) + ((8191 & (n = (n = Math.imul(c, H)) + Math.imul(d, j) | 0)) << 13) | 0;
         u = ((a = Math.imul(d, H)) + (n >>> 13) | 0) + (be >>> 26) | 0, be &= 67108863, i = Math.imul(p, j), n = (n = Math.imul(p, H)) + Math.imul(m, j) | 0, a = Math.imul(m, H);
-        var ge = (u + (i = i + Math.imul(c, Y) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, q) | 0) + Math.imul(d, Y) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, q) | 0) + (n >>> 13) | 0) + (ge >>> 26) | 0, ge &= 67108863, i = Math.imul(g, j), n = (n = Math.imul(g, H)) + Math.imul(y, j) | 0, a = Math.imul(y, H), i = i + Math.imul(p, Y) | 0, n = (n = n + Math.imul(p, q) | 0) + Math.imul(m, Y) | 0, a = a + Math.imul(m, q) | 0;
-        var ye = (u + (i = i + Math.imul(c, W) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, K) | 0) + Math.imul(d, W) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, K) | 0) + (n >>> 13) | 0) + (ye >>> 26) | 0, ye &= 67108863, i = Math.imul(v, j), n = (n = Math.imul(v, H)) + Math.imul(w, j) | 0, a = Math.imul(w, H), i = i + Math.imul(g, Y) | 0, n = (n = n + Math.imul(g, q) | 0) + Math.imul(y, Y) | 0, a = a + Math.imul(y, q) | 0, i = i + Math.imul(p, W) | 0, n = (n = n + Math.imul(p, K) | 0) + Math.imul(m, W) | 0, a = a + Math.imul(m, K) | 0;
+        var ye = (u + (i = i + Math.imul(c, Y) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, q) | 0) + Math.imul(d, Y) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(d, q) | 0) + (n >>> 13) | 0) + (ye >>> 26) | 0, ye &= 67108863, i = Math.imul(y, j), n = (n = Math.imul(y, H)) + Math.imul(g, j) | 0, a = Math.imul(g, H), i = i + Math.imul(p, Y) | 0, n = (n = n + Math.imul(p, q) | 0) + Math.imul(m, Y) | 0, a = a + Math.imul(m, q) | 0;
+        var ge = (u + (i = i + Math.imul(c, W) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, K) | 0) + Math.imul(d, W) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(d, K) | 0) + (n >>> 13) | 0) + (ge >>> 26) | 0, ge &= 67108863, i = Math.imul(v, j), n = (n = Math.imul(v, H)) + Math.imul(w, j) | 0, a = Math.imul(w, H), i = i + Math.imul(y, Y) | 0, n = (n = n + Math.imul(y, q) | 0) + Math.imul(g, Y) | 0, a = a + Math.imul(g, q) | 0, i = i + Math.imul(p, W) | 0, n = (n = n + Math.imul(p, K) | 0) + Math.imul(m, W) | 0, a = a + Math.imul(m, K) | 0;
 
         var _e = (u + (i = i + Math.imul(c, Z) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, J) | 0) + Math.imul(d, Z) | 0)) << 13) | 0;
 
-        u = ((a = a + Math.imul(d, J) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(g, W) | 0, n = (n = n + Math.imul(g, K) | 0) + Math.imul(y, W) | 0, a = a + Math.imul(y, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, J) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, J) | 0;
+        u = ((a = a + Math.imul(d, J) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(y, W) | 0, n = (n = n + Math.imul(y, K) | 0) + Math.imul(g, W) | 0, a = a + Math.imul(g, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, J) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, J) | 0;
         var ve = (u + (i = i + Math.imul(c, $) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ee) | 0) + Math.imul(d, $) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(g, Z) | 0, n = (n = n + Math.imul(g, J) | 0) + Math.imul(y, Z) | 0, a = a + Math.imul(y, J) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
+        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(y, Z) | 0, n = (n = n + Math.imul(y, J) | 0) + Math.imul(g, Z) | 0, a = a + Math.imul(g, J) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
         var we = (u + (i = i + Math.imul(c, re) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ie) | 0) + Math.imul(d, re) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, J) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, J) | 0, i = i + Math.imul(g, $) | 0, n = (n = n + Math.imul(g, ee) | 0) + Math.imul(y, $) | 0, a = a + Math.imul(y, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
+        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, J) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, J) | 0, i = i + Math.imul(y, $) | 0, n = (n = n + Math.imul(y, ee) | 0) + Math.imul(g, $) | 0, a = a + Math.imul(g, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
         var Ee = (u + (i = i + Math.imul(c, ae) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, se) | 0) + Math.imul(d, ae) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(R, j), n = (n = Math.imul(R, H)) + Math.imul(B, j) | 0, a = Math.imul(B, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, J) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, J) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(g, re) | 0, n = (n = n + Math.imul(g, ie) | 0) + Math.imul(y, re) | 0, a = a + Math.imul(y, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
+        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(R, j), n = (n = Math.imul(R, H)) + Math.imul(C, j) | 0, a = Math.imul(C, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, J) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, J) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(y, re) | 0, n = (n = n + Math.imul(y, ie) | 0) + Math.imul(g, re) | 0, a = a + Math.imul(g, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
         var Se = (u + (i = i + Math.imul(c, fe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ue) | 0) + Math.imul(d, fe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(R, Y) | 0, n = (n = n + Math.imul(R, q) | 0) + Math.imul(B, Y) | 0, a = a + Math.imul(B, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, J) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, J) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(g, ae) | 0, n = (n = n + Math.imul(g, se) | 0) + Math.imul(y, ae) | 0, a = a + Math.imul(y, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
+        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(R, Y) | 0, n = (n = n + Math.imul(R, q) | 0) + Math.imul(C, Y) | 0, a = a + Math.imul(C, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, J) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, J) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(y, ae) | 0, n = (n = n + Math.imul(y, se) | 0) + Math.imul(g, ae) | 0, a = a + Math.imul(g, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
         var Ae = (u + (i = i + Math.imul(c, ce) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, de) | 0) + Math.imul(d, ce) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(R, W) | 0, n = (n = n + Math.imul(R, K) | 0) + Math.imul(B, W) | 0, a = a + Math.imul(B, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, J) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, J) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(g, fe) | 0, n = (n = n + Math.imul(g, ue) | 0) + Math.imul(y, fe) | 0, a = a + Math.imul(y, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
+        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(R, W) | 0, n = (n = n + Math.imul(R, K) | 0) + Math.imul(C, W) | 0, a = a + Math.imul(C, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, J) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, J) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(y, fe) | 0, n = (n = n + Math.imul(y, ue) | 0) + Math.imul(g, fe) | 0, a = a + Math.imul(g, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
         var xe = (u + (i = i + Math.imul(c, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, me) | 0) + Math.imul(d, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(R, Z) | 0, n = (n = n + Math.imul(R, J) | 0) + Math.imul(B, Z) | 0, a = a + Math.imul(B, J) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(g, ce) | 0, n = (n = n + Math.imul(g, de) | 0) + Math.imul(y, ce) | 0, a = a + Math.imul(y, de) | 0;
+        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(R, Z) | 0, n = (n = n + Math.imul(R, J) | 0) + Math.imul(C, Z) | 0, a = a + Math.imul(C, J) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(y, ce) | 0, n = (n = n + Math.imul(y, de) | 0) + Math.imul(g, ce) | 0, a = a + Math.imul(g, de) | 0;
         var Me = (u + (i = i + Math.imul(p, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(p, me) | 0) + Math.imul(m, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, J) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, J) | 0, i = i + Math.imul(R, $) | 0, n = (n = n + Math.imul(R, ee) | 0) + Math.imul(B, $) | 0, a = a + Math.imul(B, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
-        var Te = (u + (i = i + Math.imul(g, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(g, me) | 0) + Math.imul(y, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(y, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, J)) + Math.imul(O, Z) | 0, a = Math.imul(O, J), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(R, re) | 0, n = (n = n + Math.imul(R, ie) | 0) + Math.imul(B, re) | 0, a = a + Math.imul(B, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
+        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, J) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, J) | 0, i = i + Math.imul(R, $) | 0, n = (n = n + Math.imul(R, ee) | 0) + Math.imul(C, $) | 0, a = a + Math.imul(C, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
+        var Te = (u + (i = i + Math.imul(y, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(y, me) | 0) + Math.imul(g, pe) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(g, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, J)) + Math.imul(O, Z) | 0, a = Math.imul(O, J), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(R, re) | 0, n = (n = n + Math.imul(R, ie) | 0) + Math.imul(C, re) | 0, a = a + Math.imul(C, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
         var ke = (u + (i = i + Math.imul(v, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(v, me) | 0) + Math.imul(w, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(w, me) | 0) + (n >>> 13) | 0) + (ke >>> 26) | 0, ke &= 67108863, i = Math.imul(N, $), n = (n = Math.imul(N, ee)) + Math.imul(O, $) | 0, a = Math.imul(O, ee), i = i + Math.imul(D, re) | 0, n = (n = n + Math.imul(D, ie) | 0) + Math.imul(L, re) | 0, a = a + Math.imul(L, ie) | 0, i = i + Math.imul(R, ae) | 0, n = (n = n + Math.imul(R, se) | 0) + Math.imul(B, ae) | 0, a = a + Math.imul(B, se) | 0, i = i + Math.imul(P, fe) | 0, n = (n = n + Math.imul(P, ue) | 0) + Math.imul(U, fe) | 0, a = a + Math.imul(U, ue) | 0, i = i + Math.imul(M, ce) | 0, n = (n = n + Math.imul(M, de) | 0) + Math.imul(T, ce) | 0, a = a + Math.imul(T, de) | 0;
+        u = ((a = a + Math.imul(w, me) | 0) + (n >>> 13) | 0) + (ke >>> 26) | 0, ke &= 67108863, i = Math.imul(N, $), n = (n = Math.imul(N, ee)) + Math.imul(O, $) | 0, a = Math.imul(O, ee), i = i + Math.imul(D, re) | 0, n = (n = n + Math.imul(D, ie) | 0) + Math.imul(L, re) | 0, a = a + Math.imul(L, ie) | 0, i = i + Math.imul(R, ae) | 0, n = (n = n + Math.imul(R, se) | 0) + Math.imul(C, ae) | 0, a = a + Math.imul(C, se) | 0, i = i + Math.imul(P, fe) | 0, n = (n = n + Math.imul(P, ue) | 0) + Math.imul(U, fe) | 0, a = a + Math.imul(U, ue) | 0, i = i + Math.imul(M, ce) | 0, n = (n = n + Math.imul(M, de) | 0) + Math.imul(T, ce) | 0, a = a + Math.imul(T, de) | 0;
         var Pe = (u + (i = i + Math.imul(S, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(S, me) | 0) + Math.imul(A, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(A, me) | 0) + (n >>> 13) | 0) + (Pe >>> 26) | 0, Pe &= 67108863, i = Math.imul(N, re), n = (n = Math.imul(N, ie)) + Math.imul(O, re) | 0, a = Math.imul(O, ie), i = i + Math.imul(D, ae) | 0, n = (n = n + Math.imul(D, se) | 0) + Math.imul(L, ae) | 0, a = a + Math.imul(L, se) | 0, i = i + Math.imul(R, fe) | 0, n = (n = n + Math.imul(R, ue) | 0) + Math.imul(B, fe) | 0, a = a + Math.imul(B, ue) | 0, i = i + Math.imul(P, ce) | 0, n = (n = n + Math.imul(P, de) | 0) + Math.imul(U, ce) | 0, a = a + Math.imul(U, de) | 0;
+        u = ((a = a + Math.imul(A, me) | 0) + (n >>> 13) | 0) + (Pe >>> 26) | 0, Pe &= 67108863, i = Math.imul(N, re), n = (n = Math.imul(N, ie)) + Math.imul(O, re) | 0, a = Math.imul(O, ie), i = i + Math.imul(D, ae) | 0, n = (n = n + Math.imul(D, se) | 0) + Math.imul(L, ae) | 0, a = a + Math.imul(L, se) | 0, i = i + Math.imul(R, fe) | 0, n = (n = n + Math.imul(R, ue) | 0) + Math.imul(C, fe) | 0, a = a + Math.imul(C, ue) | 0, i = i + Math.imul(P, ce) | 0, n = (n = n + Math.imul(P, de) | 0) + Math.imul(U, ce) | 0, a = a + Math.imul(U, de) | 0;
         var Ue = (u + (i = i + Math.imul(M, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(M, me) | 0) + Math.imul(T, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(T, me) | 0) + (n >>> 13) | 0) + (Ue >>> 26) | 0, Ue &= 67108863, i = Math.imul(N, ae), n = (n = Math.imul(N, se)) + Math.imul(O, ae) | 0, a = Math.imul(O, se), i = i + Math.imul(D, fe) | 0, n = (n = n + Math.imul(D, ue) | 0) + Math.imul(L, fe) | 0, a = a + Math.imul(L, ue) | 0, i = i + Math.imul(R, ce) | 0, n = (n = n + Math.imul(R, de) | 0) + Math.imul(B, ce) | 0, a = a + Math.imul(B, de) | 0;
+        u = ((a = a + Math.imul(T, me) | 0) + (n >>> 13) | 0) + (Ue >>> 26) | 0, Ue &= 67108863, i = Math.imul(N, ae), n = (n = Math.imul(N, se)) + Math.imul(O, ae) | 0, a = Math.imul(O, se), i = i + Math.imul(D, fe) | 0, n = (n = n + Math.imul(D, ue) | 0) + Math.imul(L, fe) | 0, a = a + Math.imul(L, ue) | 0, i = i + Math.imul(R, ce) | 0, n = (n = n + Math.imul(R, de) | 0) + Math.imul(C, ce) | 0, a = a + Math.imul(C, de) | 0;
         var Ie = (u + (i = i + Math.imul(P, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(P, me) | 0) + Math.imul(U, pe) | 0)) << 13) | 0;
         u = ((a = a + Math.imul(U, me) | 0) + (n >>> 13) | 0) + (Ie >>> 26) | 0, Ie &= 67108863, i = Math.imul(N, fe), n = (n = Math.imul(N, ue)) + Math.imul(O, fe) | 0, a = Math.imul(O, ue), i = i + Math.imul(D, ce) | 0, n = (n = n + Math.imul(D, de) | 0) + Math.imul(L, ce) | 0, a = a + Math.imul(L, de) | 0;
-        var Re = (u + (i = i + Math.imul(R, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(R, me) | 0) + Math.imul(B, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(B, me) | 0) + (n >>> 13) | 0) + (Re >>> 26) | 0, Re &= 67108863, i = Math.imul(N, ce), n = (n = Math.imul(N, de)) + Math.imul(O, ce) | 0, a = Math.imul(O, de);
-        var Be = (u + (i = i + Math.imul(D, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(D, me) | 0) + Math.imul(L, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(L, me) | 0) + (n >>> 13) | 0) + (Be >>> 26) | 0, Be &= 67108863;
-        var Ce = (u + (i = Math.imul(N, pe)) | 0) + ((8191 & (n = (n = Math.imul(N, me)) + Math.imul(O, pe) | 0)) << 13) | 0;
-        return u = ((a = Math.imul(O, me)) + (n >>> 13) | 0) + (Ce >>> 26) | 0, Ce &= 67108863, f[0] = be, f[1] = ge, f[2] = ye, f[3] = _e, f[4] = ve, f[5] = we, f[6] = Ee, f[7] = Se, f[8] = Ae, f[9] = xe, f[10] = Me, f[11] = Te, f[12] = ke, f[13] = Pe, f[14] = Ue, f[15] = Ie, f[16] = Re, f[17] = Be, f[18] = Ce, 0 !== u && (f[19] = u, r.length++), r;
+        var Re = (u + (i = i + Math.imul(R, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(R, me) | 0) + Math.imul(C, pe) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(C, me) | 0) + (n >>> 13) | 0) + (Re >>> 26) | 0, Re &= 67108863, i = Math.imul(N, ce), n = (n = Math.imul(N, de)) + Math.imul(O, ce) | 0, a = Math.imul(O, de);
+        var Ce = (u + (i = i + Math.imul(D, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(D, me) | 0) + Math.imul(L, pe) | 0)) << 13) | 0;
+        u = ((a = a + Math.imul(L, me) | 0) + (n >>> 13) | 0) + (Ce >>> 26) | 0, Ce &= 67108863;
+        var Be = (u + (i = Math.imul(N, pe)) | 0) + ((8191 & (n = (n = Math.imul(N, me)) + Math.imul(O, pe) | 0)) << 13) | 0;
+        return u = ((a = Math.imul(O, me)) + (n >>> 13) | 0) + (Be >>> 26) | 0, Be &= 67108863, f[0] = be, f[1] = ye, f[2] = ge, f[3] = _e, f[4] = ve, f[5] = we, f[6] = Ee, f[7] = Se, f[8] = Ae, f[9] = xe, f[10] = Me, f[11] = Te, f[12] = ke, f[13] = Pe, f[14] = Ue, f[15] = Ie, f[16] = Re, f[17] = Ce, f[18] = Be, 0 !== u && (f[19] = u, r.length++), r;
       };
 
       function b(e, t, r) {
@@ -2967,24 +2967,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return 0 !== i ? r.words[a] = i : r.length--, r._strip();
       }
 
-      function g(e, t, r) {
+      function y(e, t, r) {
         return b(e, t, r);
       }
 
-      function y(e, t) {
+      function g(e, t) {
         this.x = e, this.y = t;
       }
 
       Math.imul || (m = p), a.prototype.mulTo = function (e, t) {
         var r = this.length + e.length;
-        return 10 === this.length && 10 === e.length ? m(this, e, t) : r < 63 ? p(this, e, t) : r < 1024 ? b(this, e, t) : g(this, e, t);
-      }, y.prototype.makeRBT = function (e) {
+        return 10 === this.length && 10 === e.length ? m(this, e, t) : r < 63 ? p(this, e, t) : r < 1024 ? b(this, e, t) : y(this, e, t);
+      }, g.prototype.makeRBT = function (e) {
         for (var t = new Array(e), r = a.prototype._countBits(e) - 1, i = 0; i < e; i++) {
           t[i] = this.revBin(i, r, e);
         }
 
         return t;
-      }, y.prototype.revBin = function (e, t, r) {
+      }, g.prototype.revBin = function (e, t, r) {
         if (0 === e || e === r - 1) return e;
 
         for (var i = 0, n = 0; n < t; n++) {
@@ -2992,11 +2992,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         return i;
-      }, y.prototype.permute = function (e, t, r, i, n, a) {
+      }, g.prototype.permute = function (e, t, r, i, n, a) {
         for (var s = 0; s < a; s++) {
           i[s] = t[e[s]], n[s] = r[e[s]];
         }
-      }, y.prototype.transform = function (e, t, r, i, n, a) {
+      }, g.prototype.transform = function (e, t, r, i, n, a) {
         this.permute(a, e, t, r, i, n);
 
         for (var s = 1; s < n; s <<= 1) {
@@ -3005,13 +3005,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               var p = r[h + l],
                   m = i[h + l],
                   b = r[h + l + s],
-                  g = i[h + l + s],
-                  y = c * b - d * g;
-              g = c * g + d * b, b = y, r[h + l] = p + b, i[h + l] = m + g, r[h + l + s] = p - b, i[h + l + s] = m - g, l !== o && (y = f * c - u * d, d = f * d + u * c, c = y);
+                  y = i[h + l + s],
+                  g = c * b - d * y;
+              y = c * y + d * b, b = g, r[h + l] = p + b, i[h + l] = m + y, r[h + l + s] = p - b, i[h + l + s] = m - y, l !== o && (g = f * c - u * d, d = f * d + u * c, c = g);
             }
           }
         }
-      }, y.prototype.guessLen13b = function (e, t) {
+      }, g.prototype.guessLen13b = function (e, t) {
         var r = 1 | Math.max(t, e),
             i = 1 & r,
             n = 0;
@@ -3021,19 +3021,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         return 1 << n + 1 + i;
-      }, y.prototype.conjugate = function (e, t, r) {
+      }, g.prototype.conjugate = function (e, t, r) {
         if (!(r <= 1)) for (var i = 0; i < r / 2; i++) {
           var n = e[i];
           e[i] = e[r - i - 1], e[r - i - 1] = n, n = t[i], t[i] = -t[r - i - 1], t[r - i - 1] = -n;
         }
-      }, y.prototype.normalize13b = function (e, t) {
+      }, g.prototype.normalize13b = function (e, t) {
         for (var r = 0, i = 0; i < t / 2; i++) {
           var n = 8192 * Math.round(e[2 * i + 1] / t) + Math.round(e[2 * i] / t) + r;
           e[i] = 67108863 & n, r = n < 67108864 ? 0 : n / 67108864 | 0;
         }
 
         return e;
-      }, y.prototype.convert13b = function (e, t, r, n) {
+      }, g.prototype.convert13b = function (e, t, r, n) {
         for (var a = 0, s = 0; s < t; s++) {
           a += 0 | e[s], r[2 * s] = 8191 & a, a >>>= 13, r[2 * s + 1] = 8191 & a, a >>>= 13;
         }
@@ -3043,13 +3043,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         i(0 === a), i(0 == (-8192 & a));
-      }, y.prototype.stub = function (e) {
+      }, g.prototype.stub = function (e) {
         for (var t = new Array(e), r = 0; r < e; r++) {
           t[r] = 0;
         }
 
         return t;
-      }, y.prototype.mulp = function (e, t, r) {
+      }, g.prototype.mulp = function (e, t, r) {
         var i = 2 * this.guessLen13b(e.length, t.length),
             n = this.makeRBT(i),
             a = this.stub(i),
@@ -3073,7 +3073,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return t.words = new Array(this.length + e.length), this.mulTo(e, t);
       }, a.prototype.mulf = function (e) {
         var t = new a(null);
-        return t.words = new Array(this.length + e.length), g(this, e, t);
+        return t.words = new Array(this.length + e.length), y(this, e, t);
       }, a.prototype.imul = function (e) {
         return this.clone().mulTo(e, this);
       }, a.prototype.imuln = function (e) {
@@ -3719,8 +3719,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           i(b < p);
-          var g = this.pow(c, new a(1).iushln(p - b - 1));
-          d = d.redMul(g), c = g.redSqr(), l = l.redMul(c), p = b;
+          var y = this.pow(c, new a(1).iushln(p - b - 1));
+          d = d.redMul(y), c = y.redSqr(), l = l.redMul(c), p = b;
         }
 
         return d;
@@ -3846,11 +3846,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
 
     function s(e, t, r, i, n) {
-      for (var a, s, o, f, u = r[0], h = r[1], c = r[2], d = r[3], l = e[0] ^ t[0], p = e[1] ^ t[1], m = e[2] ^ t[2], b = e[3] ^ t[3], g = 4, y = 1; y < n; y++) {
-        a = u[l >>> 24] ^ h[p >>> 16 & 255] ^ c[m >>> 8 & 255] ^ d[255 & b] ^ t[g++], s = u[p >>> 24] ^ h[m >>> 16 & 255] ^ c[b >>> 8 & 255] ^ d[255 & l] ^ t[g++], o = u[m >>> 24] ^ h[b >>> 16 & 255] ^ c[l >>> 8 & 255] ^ d[255 & p] ^ t[g++], f = u[b >>> 24] ^ h[l >>> 16 & 255] ^ c[p >>> 8 & 255] ^ d[255 & m] ^ t[g++], l = a, p = s, m = o, b = f;
+      for (var a, s, o, f, u = r[0], h = r[1], c = r[2], d = r[3], l = e[0] ^ t[0], p = e[1] ^ t[1], m = e[2] ^ t[2], b = e[3] ^ t[3], y = 4, g = 1; g < n; g++) {
+        a = u[l >>> 24] ^ h[p >>> 16 & 255] ^ c[m >>> 8 & 255] ^ d[255 & b] ^ t[y++], s = u[p >>> 24] ^ h[m >>> 16 & 255] ^ c[b >>> 8 & 255] ^ d[255 & l] ^ t[y++], o = u[m >>> 24] ^ h[b >>> 16 & 255] ^ c[l >>> 8 & 255] ^ d[255 & p] ^ t[y++], f = u[b >>> 24] ^ h[l >>> 16 & 255] ^ c[p >>> 8 & 255] ^ d[255 & m] ^ t[y++], l = a, p = s, m = o, b = f;
       }
 
-      return a = (i[l >>> 24] << 24 | i[p >>> 16 & 255] << 16 | i[m >>> 8 & 255] << 8 | i[255 & b]) ^ t[g++], s = (i[p >>> 24] << 24 | i[m >>> 16 & 255] << 16 | i[b >>> 8 & 255] << 8 | i[255 & l]) ^ t[g++], o = (i[m >>> 24] << 24 | i[b >>> 16 & 255] << 16 | i[l >>> 8 & 255] << 8 | i[255 & p]) ^ t[g++], f = (i[b >>> 24] << 24 | i[l >>> 16 & 255] << 16 | i[p >>> 8 & 255] << 8 | i[255 & m]) ^ t[g++], [a >>>= 0, s >>>= 0, o >>>= 0, f >>>= 0];
+      return a = (i[l >>> 24] << 24 | i[p >>> 16 & 255] << 16 | i[m >>> 8 & 255] << 8 | i[255 & b]) ^ t[y++], s = (i[p >>> 24] << 24 | i[m >>> 16 & 255] << 16 | i[b >>> 8 & 255] << 8 | i[255 & l]) ^ t[y++], o = (i[m >>> 24] << 24 | i[b >>> 16 & 255] << 16 | i[l >>> 8 & 255] << 8 | i[255 & p]) ^ t[y++], f = (i[b >>> 24] << 24 | i[l >>> 16 & 255] << 16 | i[p >>> 8 & 255] << 8 | i[255 & m]) ^ t[y++], [a >>>= 0, s >>>= 0, o >>>= 0, f >>>= 0];
     }
 
     var o = [0, 1, 2, 4, 8, 16, 32, 64, 128, 27, 54],
@@ -5094,10 +5094,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               p = new o(0),
               m = c(e, f).mod(f),
               b = !1,
-              g = h(a, f, e, r);
+              y = h(a, f, e, r);
 
           for (; !1 === b;) {
-            n = d(f, g, r), p = l(u, n, s, f), 0 === (b = n.invm(f).imul(m.add(a.mul(p))).mod(f)).cmpn(0) && (b = !1, p = new o(0));
+            n = d(f, y, r), p = l(u, n, s, f), 0 === (b = n.invm(f).imul(m.add(a.mul(p))).mod(f)).cmpn(0) && (b = !1, p = new o(0));
           }
 
           return function (e, t) {
@@ -5112,17 +5112,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       if ("rsa" !== n && "ecdsa/rsa" !== n) throw new Error("wrong private key type");
       e = i.concat([p, e]);
 
-      for (var b = m.modulus.byteLength(), g = [0, 1]; e.length + g.length + 1 < b;) {
-        g.push(255);
+      for (var b = m.modulus.byteLength(), y = [0, 1]; e.length + y.length + 1 < b;) {
+        y.push(255);
       }
 
-      g.push(0);
+      y.push(0);
 
-      for (var y = -1; ++y < e.length;) {
-        g.push(e[y]);
+      for (var g = -1; ++g < e.length;) {
+        y.push(e[g]);
       }
 
-      return a(g, m);
+      return a(y, m);
     }, t.exports.getKey = h, t.exports.makeKey = d;
   }, {
     "./curves.json": 44,
@@ -5192,13 +5192,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       l = i.from(l);
       var b = n.mont(c.modulus);
       e = (e = new n(e).toRed(b)).redPow(new n(c.publicExponent)), e = i.from(e.fromRed().toArray());
-      var g = p < 8 ? 1 : 0;
+      var y = p < 8 ? 1 : 0;
 
-      for (d = Math.min(e.length, l.length), e.length !== l.length && (g = 1), m = -1; ++m < d;) {
-        g |= e[m] ^ l[m];
+      for (d = Math.min(e.length, l.length), e.length !== l.length && (y = 1), m = -1; ++m < d;) {
+        y |= e[m] ^ l[m];
       }
 
-      return 0 === g;
+      return 0 === y;
     };
   }, {
     "./curves.json": 44,
@@ -5372,11 +5372,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           p = e("./internal/streams/buffer_list"),
           m = e("./internal/streams/destroy"),
           b = e("./internal/streams/state").getHighWaterMark,
-          g = e("../errors").codes,
-          y = g.ERR_INVALID_ARG_TYPE,
-          _ = g.ERR_STREAM_PUSH_AFTER_EOF,
-          v = g.ERR_METHOD_NOT_IMPLEMENTED,
-          w = g.ERR_STREAM_UNSHIFT_AFTER_END_EVENT;
+          y = e("../errors").codes,
+          g = y.ERR_INVALID_ARG_TYPE,
+          _ = y.ERR_STREAM_PUSH_AFTER_EOF,
+          v = y.ERR_METHOD_NOT_IMPLEMENTED,
+          w = y.ERR_STREAM_UNSHIFT_AFTER_END_EVENT;
       e("inherits")(x, s);
       var E = m.errorOrDestroy,
           S = ["error", "close", "destroy", "pause", "resume"];
@@ -5406,7 +5406,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           t.ended = !0, t.sync ? P(e) : (t.needReadable = !1, t.emittedReadable || (t.emittedReadable = !0, U(e)));
         }(e, s);else if (n || (a = function (e, t) {
           var r;
-          i = t, o.isBuffer(i) || i instanceof f || "string" == typeof t || void 0 === t || e.objectMode || (r = new y("chunk", ["string", "Buffer", "Uint8Array"], t));
+          i = t, o.isBuffer(i) || i instanceof f || "string" == typeof t || void 0 === t || e.objectMode || (r = new g("chunk", ["string", "Buffer", "Uint8Array"], t));
           var i;
           return r;
         }(s, t)), a) E(e, a);else if (s.objectMode || t && t.length > 0) {
@@ -5483,12 +5483,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         t.readingMore = !1;
       }
 
-      function B(e) {
+      function C(e) {
         var t = e._readableState;
         t.readableListening = e.listenerCount("readable") > 0, t.resumeScheduled && !t.paused ? t.flowing = !0 : e.listenerCount("data") > 0 && e.resume();
       }
 
-      function C(e) {
+      function B(e) {
         u("readable nexttick read 0"), e.read(0);
       }
 
@@ -5633,13 +5633,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, x.prototype.on = function (e, t) {
         var i = s.prototype.on.call(this, e, t),
             n = this._readableState;
-        return "data" === e ? (n.readableListening = this.listenerCount("readable") > 0, !1 !== n.flowing && this.resume()) : "readable" === e && (n.endEmitted || n.readableListening || (n.readableListening = n.needReadable = !0, n.flowing = !1, n.emittedReadable = !1, u("on readable", n.length, n.reading), n.length ? P(this) : n.reading || r.nextTick(C, this))), i;
+        return "data" === e ? (n.readableListening = this.listenerCount("readable") > 0, !1 !== n.flowing && this.resume()) : "readable" === e && (n.endEmitted || n.readableListening || (n.readableListening = n.needReadable = !0, n.flowing = !1, n.emittedReadable = !1, u("on readable", n.length, n.reading), n.length ? P(this) : n.reading || r.nextTick(B, this))), i;
       }, x.prototype.addListener = x.prototype.on, x.prototype.removeListener = function (e, t) {
         var i = s.prototype.removeListener.call(this, e, t);
-        return "readable" === e && r.nextTick(B, this), i;
+        return "readable" === e && r.nextTick(C, this), i;
       }, x.prototype.removeAllListeners = function (e) {
         var t = s.prototype.removeAllListeners.apply(this, arguments);
-        return "readable" !== e && void 0 !== e || r.nextTick(B, this), t;
+        return "readable" !== e && void 0 !== e || r.nextTick(C, this), t;
       }, x.prototype.resume = function () {
         var e = this._readableState;
         return e.flowing || (u("resume"), e.flowing = !e.readableListening, function (e, t) {
@@ -5830,8 +5830,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           p = l.ERR_INVALID_ARG_TYPE,
           m = l.ERR_METHOD_NOT_IMPLEMENTED,
           b = l.ERR_MULTIPLE_CALLBACK,
-          g = l.ERR_STREAM_CANNOT_PIPE,
-          y = l.ERR_STREAM_DESTROYED,
+          y = l.ERR_STREAM_CANNOT_PIPE,
+          g = l.ERR_STREAM_DESTROYED,
           _ = l.ERR_STREAM_NULL_VALUES,
           v = l.ERR_STREAM_WRITE_AFTER_END,
           w = l.ERR_UNKNOWN_ENCODING,
@@ -5867,7 +5867,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       function M(e, t, r, i, n, a, s) {
-        t.writelen = i, t.writecb = s, t.writing = !0, t.sync = !0, t.destroyed ? t.onwrite(new y("write")) : r ? e._writev(n, t.onwrite) : e._write(n, a, t.onwrite), t.sync = !1;
+        t.writelen = i, t.writecb = s, t.writing = !0, t.sync = !0, t.destroyed ? t.onwrite(new g("write")) : r ? e._writev(n, t.onwrite) : e._write(n, a, t.onwrite), t.sync = !1;
       }
 
       function T(e, t, r, i) {
@@ -5949,7 +5949,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       })) : h = function h(e) {
         return e instanceof this;
       }, x.prototype.pipe = function () {
-        E(this, new g());
+        E(this, new y());
       }, x.prototype.write = function (e, t, i) {
         var n,
             a = this._writableState,
@@ -6090,7 +6090,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var b = Object.getPrototypeOf(function () {}),
-          g = Object.setPrototypeOf((n(i = {
+          y = Object.setPrototypeOf((n(i = {
         get stream() {
           return this[d];
         },
@@ -6133,7 +6133,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       t.exports = function (e) {
         var t,
-            r = Object.create(g, (n(t = {}, d, {
+            r = Object.create(y, (n(t = {}, d, {
           value: e,
           writable: !0
         }), n(t, s, {
@@ -6813,11 +6813,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return s;
       }
 
-      function g(e, t, r, i) {
+      function y(e, t, r, i) {
         return F(D(t, e.length - r), e, r, i);
       }
 
-      function y(e, t, r, i) {
+      function g(e, t, r, i) {
         return F(function (e) {
           for (var t = [], r = 0; r < e.length; ++r) {
             t.push(255 & e.charCodeAt(r));
@@ -6828,7 +6828,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       function _(e, t, r, i) {
-        return y(e, t, r, i);
+        return g(e, t, r, i);
       }
 
       function v(e, t, r, i) {
@@ -7054,10 +7054,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
             case "utf8":
             case "utf-8":
-              return g(this, e, t, r);
+              return y(this, e, t, r);
 
             case "ascii":
-              return y(this, e, t, r);
+              return g(this, e, t, r);
 
             case "latin1":
             case "binary":
@@ -7111,7 +7111,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         (!t || t < 0) && (t = 0), (!r || r < 0 || r > i) && (r = i);
 
         for (var n = "", a = t; a < r; ++a) {
-          n += C(e[a]);
+          n += B(e[a]);
         }
 
         return n;
@@ -7336,9 +7336,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
         return this;
       };
-      var B = /[^+/0-9A-Za-z-_]/g;
+      var C = /[^+/0-9A-Za-z-_]/g;
 
-      function C(e) {
+      function B(e) {
         return e < 16 ? "0" + e.toString(16) : e.toString(16);
       }
 
@@ -7392,7 +7392,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       function L(e) {
         return i.toByteArray(function (e) {
-          if ((e = (e = e.split("=")[0]).trim().replace(B, "")).length < 2) return "";
+          if ((e = (e = e.split("=")[0]).trim().replace(C, "")).length < 2) return "";
 
           for (; e.length % 4 != 0;) {
             e += "=";
@@ -8293,7 +8293,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }],
   83: [function (e, t, r) {
     var i = e("randombytes");
-    t.exports = y, y.simpleSieve = b, y.fermatTest = g;
+    t.exports = g, g.simpleSieve = b, g.fermatTest = y;
     var n = e("bn.js"),
         a = new n(24),
         s = new (e("miller-rabin"))(),
@@ -8330,12 +8330,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return !0;
     }
 
-    function g(e) {
+    function y(e) {
       var t = n.mont(e);
       return 0 === f.toRed(t).redPow(e.subn(1)).fromRed().cmpn(1);
     }
 
-    function y(e, t) {
+    function g(e, t) {
       if (e < 16) return new n(2 === t || 5 === t ? [140, 123] : [140, 39]);
       var r, p;
 
@@ -8352,7 +8352,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           r.iadd(l);
         }
 
-        if (b(p = r.shrn(1)) && b(r) && g(p) && g(r) && s.test(p) && s.test(r)) return r;
+        if (b(p = r.shrn(1)) && b(r) && y(p) && y(r) && s.test(p) && s.test(r)) return r;
       }
     }
   }, {
@@ -8499,14 +8499,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var m = [t[l], null, null, t[p]];
           0 === t[l].y.cmp(t[p].y) ? (m[1] = t[l].add(t[p]), m[2] = t[l].toJ().mixedAdd(t[p].neg())) : 0 === t[l].y.cmp(t[p].y.redNeg()) ? (m[1] = t[l].toJ().mixedAdd(t[p]), m[2] = t[l].add(t[p].neg())) : (m[1] = t[l].toJ().mixedAdd(t[p]), m[2] = t[l].toJ().mixedAdd(t[p].neg()));
           var b = [-3, -1, -5, -7, 0, 7, 5, 1, 3],
-              g = s(r[l], r[p]);
-          h = Math.max(g[0].length, h), u[l] = new Array(h), u[p] = new Array(h);
+              y = s(r[l], r[p]);
+          h = Math.max(y[0].length, h), u[l] = new Array(h), u[p] = new Array(h);
 
-          for (var y = 0; y < h; y++) {
-            var _ = 0 | g[0][y],
-                v = 0 | g[1][y];
+          for (var g = 0; g < h; g++) {
+            var _ = 0 | y[0][g],
+                v = 0 | y[1][g];
 
-            u[l][y] = b[3 * (_ + 1) + (v + 1)], u[p][y] = 0, f[l] = m;
+            u[l][g] = b[3 * (_ + 1) + (v + 1)], u[p][g] = 0, f[l] = m;
           }
         } else u[l] = a(r[l], o[l], this._bitLength), u[p] = a(r[p], o[p], this._bitLength), h = Math.max(u[l].length, h), h = Math.max(u[p].length, h);
       }
@@ -8518,8 +8518,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var S = 0; c >= 0;) {
           var A = !0;
 
-          for (y = 0; y < i; y++) {
-            E[y] = 0 | u[y][c], 0 !== E[y] && (A = !1);
+          for (g = 0; g < i; g++) {
+            E[g] = 0 | u[g][c], 0 !== E[g] && (A = !1);
           }
 
           if (!A) break;
@@ -8528,10 +8528,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         if (c >= 0 && S++, w = w.dblp(S), c < 0) break;
 
-        for (y = 0; y < i; y++) {
+        for (g = 0; g < i; g++) {
           var x,
-              M = E[y];
-          0 !== M && (M > 0 ? x = f[y][M - 1 >> 1] : M < 0 && (x = f[y][-M - 1 >> 1].neg()), w = "affine" === x.type ? w.mixedAdd(x) : w.add(x));
+              M = E[g];
+          0 !== M && (M > 0 ? x = f[g][M - 1 >> 1] : M < 0 && (x = f[g][-M - 1 >> 1].neg()), w = "affine" === x.type ? w.mixedAdd(x) : w.add(x));
         }
       }
 
@@ -8922,13 +8922,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           a = new n(3).toRed(t).redNeg().redSqrt().redMul(r);
       return [i.redAdd(a).fromRed(), i.redSub(a).fromRed()];
     }, f.prototype._getEndoBasis = function (e) {
-      for (var t, r, i, a, s, o, f, u, h, c = this.n.ushrn(Math.floor(this.n.bitLength() / 2)), d = e, l = this.n.clone(), p = new n(1), m = new n(0), b = new n(0), g = new n(1), y = 0; 0 !== d.cmpn(0);) {
+      for (var t, r, i, a, s, o, f, u, h, c = this.n.ushrn(Math.floor(this.n.bitLength() / 2)), d = e, l = this.n.clone(), p = new n(1), m = new n(0), b = new n(0), y = new n(1), g = 0; 0 !== d.cmpn(0);) {
         var _ = l.div(d);
 
         u = l.sub(_.mul(d)), h = b.sub(_.mul(p));
-        var v = g.sub(_.mul(m));
-        if (!i && u.cmp(c) < 0) t = f.neg(), r = p, i = u.neg(), a = h;else if (i && 2 == ++y) break;
-        f = u, l = d, d = u, b = p, p = h, g = m, m = v;
+        var v = y.sub(_.mul(m));
+        if (!i && u.cmp(c) < 0) t = f.neg(), r = p, i = u.neg(), a = h;else if (i && 2 == ++g) break;
+        f = u, l = d, d = u, b = p, p = h, y = m, m = v;
       }
 
       s = u.neg(), o = h;
@@ -9189,10 +9189,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             p = a.redMul(c),
             m = l.redSqr().redISub(p.redAdd(p)),
             b = p.redISub(m),
-            g = l.redMul(b);
-        g = g.redIAdd(g).redISub(d);
-        var y = u.redMul(o);
-        r + 1 < e && (f = f.redMul(d)), a = m, o = y, u = g;
+            y = l.redMul(b);
+        y = y.redIAdd(y).redISub(d);
+        var g = u.redMul(o);
+        r + 1 < e && (f = f.redMul(d)), a = m, o = g, u = y;
       }
 
       return this.curve.jpoint(a, u.redMul(n), o);
@@ -9518,14 +9518,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 b = m.umod(this.n);
 
             if (0 !== b.cmpn(0)) {
-              var g = l.invm(this.n).mul(b.mul(t.getPrivate()).iadd(e));
+              var y = l.invm(this.n).mul(b.mul(t.getPrivate()).iadd(e));
 
-              if (0 !== (g = g.umod(this.n)).cmpn(0)) {
-                var y = (p.getY().isOdd() ? 1 : 0) | (0 !== m.cmp(b) ? 2 : 0);
-                return a.canonical && g.cmp(this.nh) > 0 && (g = this.n.sub(g), y ^= 1), new h({
+              if (0 !== (y = y.umod(this.n)).cmpn(0)) {
+                var g = (p.getY().isOdd() ? 1 : 0) | (0 !== m.cmp(b) ? 2 : 0);
+                return a.canonical && y.cmp(this.nh) > 0 && (y = this.n.sub(y), g ^= 1), new h({
                   r: b,
-                  s: g,
-                  recoveryParam: y
+                  s: y,
+                  recoveryParam: g
                 });
               }
             }
@@ -10122,7 +10122,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return e;
     }
 
-    function g() {
+    function y() {
       if (!this.fired) switch (this.target.removeListener(this.type, this.wrapFn), this.fired = !0, arguments.length) {
         case 0:
           return this.listener.call(this.target);
@@ -10145,7 +10145,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
     }
 
-    function y(e, t, r) {
+    function g(e, t, r) {
       var i = {
         fired: !1,
         wrapFn: void 0,
@@ -10153,7 +10153,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         type: t,
         listener: r
       },
-          n = a.call(g, i);
+          n = a.call(y, i);
       return n.listener = r, i.wrapFn = n, n;
     }
 
@@ -10255,10 +10255,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return b(this, e, t, !0);
     }, s.prototype.once = function (e, t) {
       if ("function" != typeof t) throw new TypeError('"listener" argument must be a function');
-      return this.on(e, y(this, e, t)), this;
+      return this.on(e, g(this, e, t)), this;
     }, s.prototype.prependOnceListener = function (e, t) {
       if ("function" != typeof t) throw new TypeError('"listener" argument must be a function');
-      return this.prependListener(e, y(this, e, t)), this;
+      return this.prependListener(e, g(this, e, t)), this;
     }, s.prototype.removeListener = function (e, t) {
       var r, n, a, s, o;
       if ("function" != typeof t) throw new TypeError('"listener" argument must be a function');
@@ -10670,19 +10670,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
 
     i.inherits(h, u), r.ripemd160 = h, h.blockSize = 512, h.outSize = 160, h.hmacStrength = 192, h.padLength = 64, h.prototype._update = function (e, t) {
-      for (var r = this.h[0], i = this.h[1], n = this.h[2], u = this.h[3], h = this.h[4], y = r, _ = i, v = n, w = u, E = h, S = 0; S < 80; S++) {
+      for (var r = this.h[0], i = this.h[1], n = this.h[2], u = this.h[3], h = this.h[4], g = r, _ = i, v = n, w = u, E = h, S = 0; S < 80; S++) {
         var A = s(a(f(r, c(S, i, n, u), e[p[S] + t], d(S)), b[S]), h);
-        r = h, h = u, u = a(n, 10), n = i, i = A, A = s(a(f(y, c(79 - S, _, v, w), e[m[S] + t], l(S)), g[S]), E), y = E, E = w, w = a(v, 10), v = _, _ = A;
+        r = h, h = u, u = a(n, 10), n = i, i = A, A = s(a(f(g, c(79 - S, _, v, w), e[m[S] + t], l(S)), y[S]), E), g = E, E = w, w = a(v, 10), v = _, _ = A;
       }
 
-      A = o(this.h[1], n, w), this.h[1] = o(this.h[2], u, E), this.h[2] = o(this.h[3], h, y), this.h[3] = o(this.h[4], r, _), this.h[4] = o(this.h[0], i, v), this.h[0] = A;
+      A = o(this.h[1], n, w), this.h[1] = o(this.h[2], u, E), this.h[2] = o(this.h[3], h, g), this.h[3] = o(this.h[4], r, _), this.h[4] = o(this.h[0], i, v), this.h[0] = A;
     }, h.prototype._digest = function (e) {
       return "hex" === e ? i.toHex32(this.h, "little") : i.split32(this.h, "little");
     };
     var p = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8, 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12, 1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2, 4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13],
         m = [5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2, 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13, 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14, 12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11],
         b = [11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8, 7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12, 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5, 11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12, 9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6],
-        g = [8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11];
+        y = [8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11];
   }, {
     "./common": 122,
     "./utils": 132
@@ -10781,14 +10781,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         p = a.g0_256,
         m = a.g1_256,
         b = n.BlockHash,
-        g = [1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298];
+        y = [1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298];
 
-    function y() {
-      if (!(this instanceof y)) return new y();
-      b.call(this), this.h = [1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225], this.k = g, this.W = new Array(64);
+    function g() {
+      if (!(this instanceof g)) return new g();
+      b.call(this), this.h = [1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225], this.k = y, this.W = new Array(64);
     }
 
-    i.inherits(y, b), t.exports = y, y.blockSize = 512, y.outSize = 256, y.hmacStrength = 192, y.padLength = 64, y.prototype._update = function (e, t) {
+    i.inherits(g, b), t.exports = g, g.blockSize = 512, g.outSize = 256, g.hmacStrength = 192, g.padLength = 64, g.prototype._update = function (e, t) {
       for (var r = this.W, i = 0; i < 16; i++) {
         r[i] = e[t + i];
       }
@@ -10800,20 +10800,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var n = this.h[0],
           a = this.h[1],
           b = this.h[2],
-          g = this.h[3],
-          y = this.h[4],
+          y = this.h[3],
+          g = this.h[4],
           _ = this.h[5],
           v = this.h[6],
           w = this.h[7];
 
       for (s(this.k.length === r.length), i = 0; i < r.length; i++) {
-        var E = u(w, l(y), h(y, _, v), this.k[i], r[i]),
+        var E = u(w, l(g), h(g, _, v), this.k[i], r[i]),
             S = o(d(n), c(n, a, b));
-        w = v, v = _, _ = y, y = o(g, E), g = b, b = a, a = n, n = o(E, S);
+        w = v, v = _, _ = g, g = o(y, E), y = b, b = a, a = n, n = o(E, S);
       }
 
-      this.h[0] = o(this.h[0], n), this.h[1] = o(this.h[1], a), this.h[2] = o(this.h[2], b), this.h[3] = o(this.h[3], g), this.h[4] = o(this.h[4], y), this.h[5] = o(this.h[5], _), this.h[6] = o(this.h[6], v), this.h[7] = o(this.h[7], w);
-    }, y.prototype._digest = function (e) {
+      this.h[0] = o(this.h[0], n), this.h[1] = o(this.h[1], a), this.h[2] = o(this.h[2], b), this.h[3] = o(this.h[3], y), this.h[4] = o(this.h[4], g), this.h[5] = o(this.h[5], _), this.h[6] = o(this.h[6], v), this.h[7] = o(this.h[7], w);
+    }, g.prototype._digest = function (e) {
       return "hex" === e ? i.toHex32(this.h, "big") : i.split32(this.h, "big");
     };
   }, {
@@ -10857,12 +10857,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         p = i.sum64_4_lo,
         m = i.sum64_5_hi,
         b = i.sum64_5_lo,
-        g = n.BlockHash,
-        y = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591];
+        y = n.BlockHash,
+        g = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591];
 
     function _() {
       if (!(this instanceof _)) return new _();
-      g.call(this), this.h = [1779033703, 4089235720, 3144134277, 2227873595, 1013904242, 4271175723, 2773480762, 1595750129, 1359893119, 2917565137, 2600822924, 725511199, 528734635, 4215389547, 1541459225, 327033209], this.k = y, this.W = new Array(160);
+      y.call(this), this.h = [1779033703, 4089235720, 3144134277, 2227873595, 1013904242, 4271175723, 2773480762, 1595750129, 1359893119, 2917565137, 2600822924, 725511199, 528734635, 4215389547, 1541459225, 327033209], this.k = g, this.W = new Array(160);
     }
 
     function v(e, t, r, i, n) {
@@ -10925,7 +10925,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return r < 0 && (r += 4294967296), r;
     }
 
-    i.inherits(_, g), t.exports = _, _.blockSize = 1024, _.outSize = 512, _.hmacStrength = 192, _.padLength = 128, _.prototype._prepareBlock = function (e, t) {
+    i.inherits(_, y), t.exports = _, _.blockSize = 1024, _.outSize = 512, _.hmacStrength = 192, _.padLength = 128, _.prototype._prepareBlock = function (e, t) {
       for (var r = this.W, i = 0; i < 32; i++) {
         r[i] = e[t + i];
       }
@@ -10953,8 +10953,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           u = this.h[5],
           l = this.h[6],
           p = this.h[7],
-          g = this.h[8],
-          y = this.h[9],
+          y = this.h[8],
+          g = this.h[9],
           _ = this.h[10],
           k = this.h[11],
           P = this.h[12],
@@ -10963,26 +10963,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           R = this.h[15];
       a(this.k.length === r.length);
 
-      for (var B = 0; B < r.length; B += 2) {
-        var C = I,
+      for (var C = 0; C < r.length; C += 2) {
+        var B = I,
             D = R,
-            L = M(g, y),
-            F = T(g, y),
-            N = v(g, y, _, k, P),
-            O = w(g, y, _, k, P, U),
-            z = this.k[B],
-            j = this.k[B + 1],
-            H = r[B],
-            V = r[B + 1],
-            Y = m(C, D, L, F, N, O, z, j, H, V),
-            q = b(C, D, L, F, N, O, z, j, H, V);
-        C = A(i, n), D = x(i, n), L = E(i, n, s, o, f), F = S(i, n, s, o, f, u);
-        var G = c(C, D, L, F),
-            W = d(C, D, L, F);
-        I = P, R = U, P = _, U = k, _ = g, k = y, g = c(l, p, Y, q), y = d(p, p, Y, q), l = f, p = u, f = s, u = o, s = i, o = n, i = c(Y, q, G, W), n = d(Y, q, G, W);
+            L = M(y, g),
+            F = T(y, g),
+            N = v(y, g, _, k, P),
+            O = w(y, g, _, k, P, U),
+            z = this.k[C],
+            j = this.k[C + 1],
+            H = r[C],
+            V = r[C + 1],
+            Y = m(B, D, L, F, N, O, z, j, H, V),
+            q = b(B, D, L, F, N, O, z, j, H, V);
+        B = A(i, n), D = x(i, n), L = E(i, n, s, o, f), F = S(i, n, s, o, f, u);
+        var G = c(B, D, L, F),
+            W = d(B, D, L, F);
+        I = P, R = U, P = _, U = k, _ = y, k = g, y = c(l, p, Y, q), g = d(p, p, Y, q), l = f, p = u, f = s, u = o, s = i, o = n, i = c(Y, q, G, W), n = d(Y, q, G, W);
       }
 
-      h(this.h, 0, i, n), h(this.h, 2, s, o), h(this.h, 4, f, u), h(this.h, 6, l, p), h(this.h, 8, g, y), h(this.h, 10, _, k), h(this.h, 12, P, U), h(this.h, 14, I, R);
+      h(this.h, 0, i, n), h(this.h, 2, s, o), h(this.h, 4, f, u), h(this.h, 6, l, p), h(this.h, 8, y, g), h(this.h, 10, _, k), h(this.h, 12, P, U), h(this.h, 14, I, R);
     }, _.prototype._digest = function (e) {
       return "hex" === e ? i.toHex32(this.h, "big") : i.split32(this.h, "big");
     };
@@ -14027,12 +14027,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         t = this.moov.traks[e], this.buildTrakSampleLists(t);
       }
     }, m.prototype.buildTrakSampleLists = function (e) {
-      var t, r, i, n, a, s, o, f, u, h, c, d, l, p, b, g, y, _, v, w, E, S, A, x;
+      var t, r, i, n, a, s, o, f, u, h, c, d, l, p, b, y, g, _, v, w, E, S, A, x;
 
       if (e.samples = [], e.samples_duration = 0, e.samples_size = 0, r = e.mdia.minf.stbl.stco || e.mdia.minf.stbl.co64, i = e.mdia.minf.stbl.stsc, n = e.mdia.minf.stbl.stsz || e.mdia.minf.stbl.stz2, a = e.mdia.minf.stbl.stts, s = e.mdia.minf.stbl.ctts, o = e.mdia.minf.stbl.stss, f = e.mdia.minf.stbl.stsd, u = e.mdia.minf.stbl.subs, d = e.mdia.minf.stbl.stdp, h = e.mdia.minf.stbl.sbgps, c = e.mdia.minf.stbl.sgpds, _ = -1, v = -1, w = -1, E = -1, S = 0, A = 0, x = 0, m.initSampleGroups(e, null, h, c), void 0 !== n) {
         for (t = 0; t < n.sample_sizes.length; t++) {
           var M = {};
-          M.number = t, M.track_id = e.tkhd.track_id, M.timescale = e.mdia.mdhd.timescale, M.alreadyRead = 0, e.samples[t] = M, M.size = n.sample_sizes[t], e.samples_size += M.size, 0 === t ? (p = 1, l = 0, M.chunk_index = p, M.chunk_run_index = l, y = i.samples_per_chunk[l], g = 0, b = l + 1 < i.first_chunk.length ? i.first_chunk[l + 1] - 1 : 1 / 0) : t < y ? (M.chunk_index = p, M.chunk_run_index = l) : (p++, M.chunk_index = p, g = 0, p <= b || (b = ++l + 1 < i.first_chunk.length ? i.first_chunk[l + 1] - 1 : 1 / 0), M.chunk_run_index = l, y += i.samples_per_chunk[l]), M.description_index = i.sample_description_index[M.chunk_run_index] - 1, M.description = f.entries[M.description_index], M.offset = r.chunk_offsets[M.chunk_index - 1] + g, g += M.size, t > _ && (v++, _ < 0 && (_ = 0), _ += a.sample_counts[v]), t > 0 ? (e.samples[t - 1].duration = a.sample_deltas[v], e.samples_duration += e.samples[t - 1].duration, M.dts = e.samples[t - 1].dts + e.samples[t - 1].duration) : M.dts = 0, s ? (t >= w && (E++, w < 0 && (w = 0), w += s.sample_counts[E]), M.cts = e.samples[t].dts + s.sample_offsets[E]) : M.cts = M.dts, o ? (t == o.sample_numbers[S] - 1 ? (M.is_sync = !0, S++) : (M.is_sync = !1, M.degradation_priority = 0), u && u.entries[A].sample_delta + x == t + 1 && (M.subsamples = u.entries[A].subsamples, x += u.entries[A].sample_delta, A++)) : M.is_sync = !0, m.process_sdtp(e.mdia.minf.stbl.sdtp, M, M.number), M.degradation_priority = d ? d.priority[t] : 0, u && u.entries[A].sample_delta + x == t && (M.subsamples = u.entries[A].subsamples, x += u.entries[A].sample_delta), (h.length > 0 || c.length > 0) && m.setSampleGroupProperties(e, M, t, e.sample_groups_info);
+          M.number = t, M.track_id = e.tkhd.track_id, M.timescale = e.mdia.mdhd.timescale, M.alreadyRead = 0, e.samples[t] = M, M.size = n.sample_sizes[t], e.samples_size += M.size, 0 === t ? (p = 1, l = 0, M.chunk_index = p, M.chunk_run_index = l, g = i.samples_per_chunk[l], y = 0, b = l + 1 < i.first_chunk.length ? i.first_chunk[l + 1] - 1 : 1 / 0) : t < g ? (M.chunk_index = p, M.chunk_run_index = l) : (p++, M.chunk_index = p, y = 0, p <= b || (b = ++l + 1 < i.first_chunk.length ? i.first_chunk[l + 1] - 1 : 1 / 0), M.chunk_run_index = l, g += i.samples_per_chunk[l]), M.description_index = i.sample_description_index[M.chunk_run_index] - 1, M.description = f.entries[M.description_index], M.offset = r.chunk_offsets[M.chunk_index - 1] + y, y += M.size, t > _ && (v++, _ < 0 && (_ = 0), _ += a.sample_counts[v]), t > 0 ? (e.samples[t - 1].duration = a.sample_deltas[v], e.samples_duration += e.samples[t - 1].duration, M.dts = e.samples[t - 1].dts + e.samples[t - 1].duration) : M.dts = 0, s ? (t >= w && (E++, w < 0 && (w = 0), w += s.sample_counts[E]), M.cts = e.samples[t].dts + s.sample_offsets[E]) : M.cts = M.dts, o ? (t == o.sample_numbers[S] - 1 ? (M.is_sync = !0, S++) : (M.is_sync = !1, M.degradation_priority = 0), u && u.entries[A].sample_delta + x == t + 1 && (M.subsamples = u.entries[A].subsamples, x += u.entries[A].sample_delta, A++)) : M.is_sync = !0, m.process_sdtp(e.mdia.minf.stbl.sdtp, M, M.number), M.degradation_priority = d ? d.priority[t] : 0, u && u.entries[A].sample_delta + x == t && (M.subsamples = u.entries[A].subsamples, x += u.entries[A].sample_delta), (h.length > 0 || c.length > 0) && m.setSampleGroupProperties(e, M, t, e.sample_groups_info);
         }
 
         t > 0 && (e.samples[t - 1].duration = Math.max(e.mdia.mdhd.duration - e.samples[t - 1].dts, 0), e.samples_duration += e.samples[t - 1].duration);
@@ -14042,17 +14042,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       if (void 0 !== this.moov) for (; this.lastMoofIndex < this.moofs.length;) {
         if (f = this.moofs[this.lastMoofIndex], this.lastMoofIndex++, "moof" == f.type) for (u = f, e = 0; e < u.trafs.length; e++) {
           for (h = u.trafs[e], d = this.getTrackById(h.tfhd.track_id), l = this.getTrexById(h.tfhd.track_id), i = h.tfhd.flags & c.TFHD_FLAG_SAMPLE_DESC ? h.tfhd.default_sample_description_index : l ? l.default_sample_description_index : 1, n = h.tfhd.flags & c.TFHD_FLAG_SAMPLE_DUR ? h.tfhd.default_sample_duration : l ? l.default_sample_duration : 0, a = h.tfhd.flags & c.TFHD_FLAG_SAMPLE_SIZE ? h.tfhd.default_sample_size : l ? l.default_sample_size : 0, s = h.tfhd.flags & c.TFHD_FLAG_SAMPLE_FLAGS ? h.tfhd.default_sample_flags : l ? l.default_sample_flags : 0, h.sample_number = 0, h.sbgps.length > 0 && m.initSampleGroups(d, h, h.sbgps, d.mdia.minf.stbl.sgpds, h.sgpds), t = 0; t < h.truns.length; t++) {
-            var g = h.truns[t];
+            var y = h.truns[t];
 
-            for (r = 0; r < g.sample_count; r++) {
-              (p = {}).moof_number = this.lastMoofIndex, p.number_in_traf = h.sample_number, h.sample_number++, p.number = d.samples.length, h.first_sample_index = d.samples.length, d.samples.push(p), p.track_id = d.tkhd.track_id, p.timescale = d.mdia.mdhd.timescale, p.description_index = i - 1, p.description = d.mdia.minf.stbl.stsd.entries[p.description_index], p.size = a, g.flags & c.TRUN_FLAGS_SIZE && (p.size = g.sample_size[r]), d.samples_size += p.size, p.duration = n, g.flags & c.TRUN_FLAGS_DURATION && (p.duration = g.sample_duration[r]), d.samples_duration += p.duration, d.first_traf_merged || r > 0 ? p.dts = d.samples[d.samples.length - 2].dts + d.samples[d.samples.length - 2].duration : (h.tfdt ? p.dts = h.tfdt.baseMediaDecodeTime : p.dts = 0, d.first_traf_merged = !0), p.cts = p.dts, g.flags & c.TRUN_FLAGS_CTS_OFFSET && (p.cts = p.dts + g.sample_composition_time_offset[r]), b = s, g.flags & c.TRUN_FLAGS_FLAGS ? b = g.sample_flags[r] : 0 === r && g.flags & c.TRUN_FLAGS_FIRST_FLAG && (b = g.first_sample_flags), p.is_sync = !(b >> 16 & 1), p.is_leading = b >> 26 & 3, p.depends_on = b >> 24 & 3, p.is_depended_on = b >> 22 & 3, p.has_redundancy = b >> 20 & 3, p.degradation_priority = 65535 & b;
+            for (r = 0; r < y.sample_count; r++) {
+              (p = {}).moof_number = this.lastMoofIndex, p.number_in_traf = h.sample_number, h.sample_number++, p.number = d.samples.length, h.first_sample_index = d.samples.length, d.samples.push(p), p.track_id = d.tkhd.track_id, p.timescale = d.mdia.mdhd.timescale, p.description_index = i - 1, p.description = d.mdia.minf.stbl.stsd.entries[p.description_index], p.size = a, y.flags & c.TRUN_FLAGS_SIZE && (p.size = y.sample_size[r]), d.samples_size += p.size, p.duration = n, y.flags & c.TRUN_FLAGS_DURATION && (p.duration = y.sample_duration[r]), d.samples_duration += p.duration, d.first_traf_merged || r > 0 ? p.dts = d.samples[d.samples.length - 2].dts + d.samples[d.samples.length - 2].duration : (h.tfdt ? p.dts = h.tfdt.baseMediaDecodeTime : p.dts = 0, d.first_traf_merged = !0), p.cts = p.dts, y.flags & c.TRUN_FLAGS_CTS_OFFSET && (p.cts = p.dts + y.sample_composition_time_offset[r]), b = s, y.flags & c.TRUN_FLAGS_FLAGS ? b = y.sample_flags[r] : 0 === r && y.flags & c.TRUN_FLAGS_FIRST_FLAG && (b = y.first_sample_flags), p.is_sync = !(b >> 16 & 1), p.is_leading = b >> 26 & 3, p.depends_on = b >> 24 & 3, p.is_depended_on = b >> 22 & 3, p.has_redundancy = b >> 20 & 3, p.degradation_priority = 65535 & b;
 
-              var y = !!(h.tfhd.flags & c.TFHD_FLAG_BASE_DATA_OFFSET),
+              var g = !!(h.tfhd.flags & c.TFHD_FLAG_BASE_DATA_OFFSET),
                   _ = !!(h.tfhd.flags & c.TFHD_FLAG_DEFAULT_BASE_IS_MOOF),
-                  v = !!(g.flags & c.TRUN_FLAGS_DATA_OFFSET),
+                  v = !!(y.flags & c.TRUN_FLAGS_DATA_OFFSET),
                   w = 0;
 
-              w = y ? h.tfhd.base_data_offset : _ || 0 === t ? u.start : o, p.offset = 0 === t && 0 === r ? v ? w + g.data_offset : w : o, o = p.offset + p.size, (h.sbgps.length > 0 || h.sgpds.length > 0 || d.mdia.minf.stbl.sbgps.length > 0 || d.mdia.minf.stbl.sgpds.length > 0) && m.setSampleGroupProperties(d, p, p.number_in_traf, h.sample_groups_info);
+              w = g ? h.tfhd.base_data_offset : _ || 0 === t ? u.start : o, p.offset = 0 === t && 0 === r ? v ? w + y.data_offset : w : o, o = p.offset + p.size, (h.sbgps.length > 0 || h.sgpds.length > 0 || d.mdia.minf.stbl.sbgps.length > 0 || d.mdia.minf.stbl.sgpds.length > 0) && m.setSampleGroupProperties(d, p, p.number_in_traf, h.sample_groups_info);
             }
           }
 
@@ -14442,8 +14442,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             b = o.createDecipheriv(c, p, d);
         m.push(b.update(l)), m.push(b["final"]()), r = f.concat(m);
       } else {
-        var g = u.match(a);
-        r = f.from(g[2].replace(/[\r\n]/g, ""), "base64");
+        var y = u.match(a);
+        r = f.from(y[2].replace(/[\r\n]/g, ""), "base64");
       }
 
       return {
@@ -14743,21 +14743,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         });
       }
 
-      t.exports = function (e, t, p, m, b, g) {
-        "function" == typeof b && (g = b, b = void 0);
-        var y = c[(b = b || "sha1").toLowerCase()];
-        if (!y || "function" != typeof i.Promise) return r.nextTick(function () {
+      t.exports = function (e, t, p, m, b, y) {
+        "function" == typeof b && (y = b, b = void 0);
+        var g = c[(b = b || "sha1").toLowerCase()];
+        if (!g || "function" != typeof i.Promise) return r.nextTick(function () {
           var r;
 
           try {
             r = f(e, t, p, m, b);
           } catch (e) {
-            return g(e);
+            return y(e);
           }
 
-          g(null, r);
+          y(null, r);
         });
-        if (s(p, m), e = u(e, o, "Password"), t = u(t, o, "Salt"), "function" != typeof g) throw new Error("No callback provided to pbkdf2");
+        if (s(p, m), e = u(e, o, "Password"), t = u(t, o, "Salt"), "function" != typeof y) throw new Error("No callback provided to pbkdf2");
         !function (e, t) {
           e.then(function (e) {
             r.nextTick(function () {
@@ -14778,9 +14778,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return !1;
           });
           return d[e] = t, t;
-        }(y).then(function (r) {
-          return r ? l(e, t, p, m, y) : f(e, t, p, m, b);
-        }), g);
+        }(g).then(function (r) {
+          return r ? l(e, t, p, m, g) : f(e, t, p, m, b);
+        }), y);
       };
     }).call(this, e("_process"), "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {
@@ -14863,18 +14863,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           l = s.allocUnsafe(t.length + 4);
       t.copy(l, 0, 0, t.length);
 
-      for (var p = 0, m = c[n], b = Math.ceil(i / m), g = 1; g <= b; g++) {
-        l.writeUInt32BE(g, t.length);
+      for (var p = 0, m = c[n], b = Math.ceil(i / m), y = 1; y <= b; y++) {
+        l.writeUInt32BE(y, t.length);
 
-        for (var y = a.run(l, a.ipad1), _ = y, v = 1; v < r; v++) {
+        for (var g = a.run(l, a.ipad1), _ = g, v = 1; v < r; v++) {
           _ = a.run(_, a.ipad2);
 
           for (var w = 0; w < m; w++) {
-            y[w] ^= _[w];
+            g[w] ^= _[w];
           }
         }
 
-        y.copy(h, p), p += m;
+        g.copy(h, p), p += m;
       }
 
       return h;
@@ -15196,8 +15196,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             p = r - h - 1,
             m = n(h),
             b = o(c.concat([u, l, c.alloc(1, 1), t], p), s(m, p)),
-            g = o(m, s(b, h));
-        return new f(c.concat([c.alloc(1), g, b], r));
+            y = o(m, s(b, h));
+        return new f(c.concat([c.alloc(1), y, b], r));
       }(p, t);else if (1 === d) l = function (e, t, r) {
         var i,
             a = t.length,
@@ -15431,7 +15431,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       t.exports = _;
       var a,
           s = e("isarray");
-      _.ReadableState = y;
+      _.ReadableState = g;
       e("events").EventEmitter;
 
       var o = function o(e, t) {
@@ -15450,9 +15450,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           m = e("./internal/streams/BufferList"),
           b = e("./internal/streams/destroy");
       c.inherits(_, f);
-      var g = ["error", "close", "destroy", "pause", "resume"];
+      var y = ["error", "close", "destroy", "pause", "resume"];
 
-      function y(t, r) {
+      function g(t, r) {
         t = t || {};
         var i = r instanceof (a = a || e("./_stream_duplex"));
         this.objectMode = !!t.objectMode, i && (this.objectMode = this.objectMode || !!t.readableObjectMode);
@@ -15464,7 +15464,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       function _(t) {
         if (a = a || e("./_stream_duplex"), !(this instanceof _)) return new _(t);
-        this._readableState = new y(t, this), this.readable = !0, t && ("function" == typeof t.read && (this._read = t.read), "function" == typeof t.destroy && (this._destroy = t.destroy)), f.call(this);
+        this._readableState = new g(t, this), this.readable = !0, t && ("function" == typeof t.read && (this._read = t.read), "function" == typeof t.destroy && (this._destroy = t.destroy)), f.call(this);
       }
 
       function v(e, t, r, i, n) {
@@ -15617,7 +15617,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         e.endEmitted || 0 !== e.length || (e.endEmitted = !0, t.readable = !1, t.emit("end"));
       }
 
-      function B(e, t) {
+      function C(e, t) {
         for (var r = 0, i = e.length; r < i; r++) {
           if (e[r] === t) return r;
         }
@@ -15657,7 +15657,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var f = (!t || !1 !== t.end) && e !== r.stdout && e !== r.stderr ? h : _;
 
         function u(t, r) {
-          l("onunpipe"), t === i && r && !1 === r.hasUnpiped && (r.hasUnpiped = !0, l("cleanup"), e.removeListener("close", g), e.removeListener("finish", y), e.removeListener("drain", c), e.removeListener("error", b), e.removeListener("unpipe", u), i.removeListener("end", h), i.removeListener("end", _), i.removeListener("data", m), d = !0, !a.awaitDrain || e._writableState && !e._writableState.needDrain || c());
+          l("onunpipe"), t === i && r && !1 === r.hasUnpiped && (r.hasUnpiped = !0, l("cleanup"), e.removeListener("close", y), e.removeListener("finish", g), e.removeListener("drain", c), e.removeListener("error", b), e.removeListener("unpipe", u), i.removeListener("end", h), i.removeListener("end", _), i.removeListener("data", m), d = !0, !a.awaitDrain || e._writableState && !e._writableState.needDrain || c());
         }
 
         function h() {
@@ -15678,19 +15678,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var p = !1;
 
         function m(t) {
-          l("ondata"), p = !1, !1 !== e.write(t) || p || ((1 === a.pipesCount && a.pipes === e || a.pipesCount > 1 && -1 !== B(a.pipes, e)) && !d && (l("false write response, pause", i._readableState.awaitDrain), i._readableState.awaitDrain++, p = !0), i.pause());
+          l("ondata"), p = !1, !1 !== e.write(t) || p || ((1 === a.pipesCount && a.pipes === e || a.pipesCount > 1 && -1 !== C(a.pipes, e)) && !d && (l("false write response, pause", i._readableState.awaitDrain), i._readableState.awaitDrain++, p = !0), i.pause());
         }
 
         function b(t) {
           l("onerror", t), _(), e.removeListener("error", b), 0 === o(e, "error") && e.emit("error", t);
         }
 
-        function g() {
-          e.removeListener("finish", y), _();
+        function y() {
+          e.removeListener("finish", g), _();
         }
 
-        function y() {
-          l("onfinish"), e.removeListener("close", g), _();
+        function g() {
+          l("onfinish"), e.removeListener("close", y), _();
         }
 
         function _() {
@@ -15700,7 +15700,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return i.on("data", m), function (e, t, r) {
           if ("function" == typeof e.prependListener) return e.prependListener(t, r);
           e._events && e._events[t] ? s(e._events[t]) ? e._events[t].unshift(r) : e._events[t] = [r, e._events[t]] : e.on(t, r);
-        }(e, "error", b), e.once("close", g), e.once("finish", y), e.emit("pipe", i), a.flowing || (l("pipe resume"), i.resume()), e;
+        }(e, "error", b), e.once("close", y), e.once("finish", g), e.emit("pipe", i), a.flowing || (l("pipe resume"), i.resume()), e;
       }, _.prototype.unpipe = function (e) {
         var t = this._readableState,
             r = {
@@ -15721,7 +15721,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return this;
         }
 
-        var s = B(t.pipes, e);
+        var s = C(t.pipes, e);
         return -1 === s || (t.pipes.splice(s, 1), t.pipesCount -= 1, 1 === t.pipesCount && (t.pipes = t.pipes[0]), e.emit("unpipe", this, r)), this;
       }, _.prototype.on = function (e, t) {
         var r = f.prototype.on.call(this, e, t);
@@ -15759,8 +15759,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }(n));
         }
 
-        for (var a = 0; a < g.length; a++) {
-          e.on(g[a], this.emit.bind(this, g[a]));
+        for (var a = 0; a < y.length; a++) {
+          e.on(y[a], this.emit.bind(this, y[a]));
         }
 
         return this._read = function (t) {
@@ -15880,10 +15880,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         };
       }
 
-      t.exports = y;
+      t.exports = g;
       var o,
           f = !r.browser && ["v0.10", "v0.9."].indexOf(r.version.slice(0, 5)) > -1 ? n : a.nextTick;
-      y.WritableState = g;
+      g.WritableState = y;
       var u = Object.create(e("core-util-is"));
       u.inherits = e("inherits");
 
@@ -15899,7 +15899,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       function b() {}
 
-      function g(t, r) {
+      function y(t, r) {
         o = o || e("./_stream_duplex"), t = t || {};
         var i = r instanceof o;
         this.objectMode = !!t.objectMode, i && (this.objectMode = this.objectMode || !!t.writableObjectMode);
@@ -15925,9 +15925,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, this.writecb = null, this.writelen = 0, this.bufferedRequest = null, this.lastBufferedRequest = null, this.pendingcb = 0, this.prefinished = !1, this.errorEmitted = !1, this.bufferedRequestCount = 0, this.corkedRequestsFree = new s(this);
       }
 
-      function y(t) {
-        if (o = o || e("./_stream_duplex"), !(p.call(y, this) || this instanceof o)) return new y(t);
-        this._writableState = new g(t, this), this.writable = !0, t && ("function" == typeof t.write && (this._write = t.write), "function" == typeof t.writev && (this._writev = t.writev), "function" == typeof t.destroy && (this._destroy = t.destroy), "function" == typeof t["final"] && (this._final = t["final"])), c.call(this);
+      function g(t) {
+        if (o = o || e("./_stream_duplex"), !(p.call(g, this) || this instanceof o)) return new g(t);
+        this._writableState = new y(t, this), this.writable = !0, t && ("function" == typeof t.write && (this._write = t.write), "function" == typeof t.writev && (this._writev = t.writev), "function" == typeof t.destroy && (this._destroy = t.destroy), "function" == typeof t["final"] && (this._final = t["final"])), c.call(this);
       }
 
       function _(e, t, r, i, n, a, s) {
@@ -15986,7 +15986,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }(e, t), 0 === t.pendingcb && (t.finished = !0, e.emit("finish"))), r;
       }
 
-      u.inherits(y, c), g.prototype.getBuffer = function () {
+      u.inherits(g, c), y.prototype.getBuffer = function () {
         for (var e = this.bufferedRequest, t = []; e;) {
           t.push(e), e = e.next;
         }
@@ -15994,21 +15994,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return t;
       }, function () {
         try {
-          Object.defineProperty(g.prototype, "buffer", {
+          Object.defineProperty(y.prototype, "buffer", {
             get: h.deprecate(function () {
               return this.getBuffer();
             }, "_writableState.buffer is deprecated. Use _writableState.getBuffer instead.", "DEP0003")
           });
         } catch (e) {}
-      }(), "function" == typeof Symbol && Symbol.hasInstance && "function" == typeof Function.prototype[Symbol.hasInstance] ? (p = Function.prototype[Symbol.hasInstance], Object.defineProperty(y, Symbol.hasInstance, {
+      }(), "function" == typeof Symbol && Symbol.hasInstance && "function" == typeof Function.prototype[Symbol.hasInstance] ? (p = Function.prototype[Symbol.hasInstance], Object.defineProperty(g, Symbol.hasInstance, {
         value: function value(e) {
-          return !!p.call(this, e) || this === y && e && e._writableState instanceof g;
+          return !!p.call(this, e) || this === g && e && e._writableState instanceof y;
         }
       })) : p = function p(e) {
         return e instanceof this;
-      }, y.prototype.pipe = function () {
+      }, g.prototype.pipe = function () {
         this.emit("error", new Error("Cannot pipe, not readable"));
-      }, y.prototype.write = function (e, t, r) {
+      }, g.prototype.write = function (e, t, r) {
         var i,
             n = this._writableState,
             s = !1,
@@ -16050,35 +16050,35 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           return f;
         }(this, n, o, e, t, r)), s;
-      }, y.prototype.cork = function () {
+      }, g.prototype.cork = function () {
         this._writableState.corked++;
-      }, y.prototype.uncork = function () {
+      }, g.prototype.uncork = function () {
         var e = this._writableState;
         e.corked && (e.corked--, e.writing || e.corked || e.finished || e.bufferProcessing || !e.bufferedRequest || w(this, e));
-      }, y.prototype.setDefaultEncoding = function (e) {
+      }, g.prototype.setDefaultEncoding = function (e) {
         if ("string" == typeof e && (e = e.toLowerCase()), !(["hex", "utf8", "utf-8", "ascii", "binary", "base64", "ucs2", "ucs-2", "utf16le", "utf-16le", "raw"].indexOf((e + "").toLowerCase()) > -1)) throw new TypeError("Unknown encoding: " + e);
         return this._writableState.defaultEncoding = e, this;
-      }, Object.defineProperty(y.prototype, "writableHighWaterMark", {
+      }, Object.defineProperty(g.prototype, "writableHighWaterMark", {
         enumerable: !1,
         get: function get() {
           return this._writableState.highWaterMark;
         }
-      }), y.prototype._write = function (e, t, r) {
+      }), g.prototype._write = function (e, t, r) {
         r(new Error("_write() is not implemented"));
-      }, y.prototype._writev = null, y.prototype.end = function (e, t, r) {
+      }, g.prototype._writev = null, g.prototype.end = function (e, t, r) {
         var i = this._writableState;
         "function" == typeof e ? (r = e, e = null, t = null) : "function" == typeof t && (r = t, t = null), null != e && this.write(e, t), i.corked && (i.corked = 1, this.uncork()), i.ending || i.finished || function (e, t, r) {
           t.ending = !0, A(e, t), r && (t.finished ? a.nextTick(r) : e.once("finish", r));
           t.ended = !0, e.writable = !1;
         }(this, i, r);
-      }, Object.defineProperty(y.prototype, "destroyed", {
+      }, Object.defineProperty(g.prototype, "destroyed", {
         get: function get() {
           return void 0 !== this._writableState && this._writableState.destroyed;
         },
         set: function set(e) {
           this._writableState && (this._writableState.destroyed = e);
         }
-      }), y.prototype.destroy = m.destroy, y.prototype._undestroy = m.undestroy, y.prototype._destroy = function (e, t) {
+      }), g.prototype.destroy = m.destroy, g.prototype._undestroy = m.undestroy, g.prototype._destroy = function (e, t) {
         this.end(), t(e);
       };
     }).call(this, e("_process"), "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {}, e("timers").setImmediate);
@@ -16449,11 +16449,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return p(e + (t & r | ~t & i) + a + s | 0, o) + n | 0;
     }
 
-    function g(e, t, r, i, n, a, s, o) {
+    function y(e, t, r, i, n, a, s, o) {
       return p(e + ((t | ~r) ^ i) + a + s | 0, o) + n | 0;
     }
 
-    function y(e, t, r, i, n, a, s, o) {
+    function g(e, t, r, i, n, a, s, o) {
       return p(e + (t & i | r & ~i) + a + s | 0, o) + n | 0;
     }
 
@@ -16468,7 +16468,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       for (var r = 0 | this._a, i = 0 | this._b, n = 0 | this._c, a = 0 | this._d, l = 0 | this._e, v = 0 | this._a, w = 0 | this._b, E = 0 | this._c, S = 0 | this._d, A = 0 | this._e, x = 0; x < 80; x += 1) {
         var M, T;
-        x < 16 ? (M = m(r, i, n, a, l, e[o[x]], c[0], u[x]), T = _(v, w, E, S, A, e[f[x]], d[0], h[x])) : x < 32 ? (M = b(r, i, n, a, l, e[o[x]], c[1], u[x]), T = y(v, w, E, S, A, e[f[x]], d[1], h[x])) : x < 48 ? (M = g(r, i, n, a, l, e[o[x]], c[2], u[x]), T = g(v, w, E, S, A, e[f[x]], d[2], h[x])) : x < 64 ? (M = y(r, i, n, a, l, e[o[x]], c[3], u[x]), T = b(v, w, E, S, A, e[f[x]], d[3], h[x])) : (M = _(r, i, n, a, l, e[o[x]], c[4], u[x]), T = m(v, w, E, S, A, e[f[x]], d[4], h[x])), r = l, l = a, a = p(n, 10), n = i, i = M, v = A, A = S, S = p(E, 10), E = w, w = T;
+        x < 16 ? (M = m(r, i, n, a, l, e[o[x]], c[0], u[x]), T = _(v, w, E, S, A, e[f[x]], d[0], h[x])) : x < 32 ? (M = b(r, i, n, a, l, e[o[x]], c[1], u[x]), T = g(v, w, E, S, A, e[f[x]], d[1], h[x])) : x < 48 ? (M = y(r, i, n, a, l, e[o[x]], c[2], u[x]), T = y(v, w, E, S, A, e[f[x]], d[2], h[x])) : x < 64 ? (M = g(r, i, n, a, l, e[o[x]], c[3], u[x]), T = b(v, w, E, S, A, e[f[x]], d[3], h[x])) : (M = _(r, i, n, a, l, e[o[x]], c[4], u[x]), T = m(v, w, E, S, A, e[f[x]], d[4], h[x])), r = l, l = a, a = p(n, 10), n = i, i = M, v = A, A = S, S = p(E, 10), E = w, w = T;
       }
 
       var k = this._b + n + S | 0;
@@ -16762,16 +16762,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     i(f, n), f.prototype.init = function () {
       return this._a = 1779033703, this._b = 3144134277, this._c = 1013904242, this._d = 2773480762, this._e = 1359893119, this._f = 2600822924, this._g = 528734635, this._h = 1541459225, this;
     }, f.prototype._update = function (e) {
-      for (var t, r = this._w, i = 0 | this._a, n = 0 | this._b, a = 0 | this._c, o = 0 | this._d, f = 0 | this._e, p = 0 | this._f, m = 0 | this._g, b = 0 | this._h, g = 0; g < 16; ++g) {
-        r[g] = e.readInt32BE(4 * g);
+      for (var t, r = this._w, i = 0 | this._a, n = 0 | this._b, a = 0 | this._c, o = 0 | this._d, f = 0 | this._e, p = 0 | this._f, m = 0 | this._g, b = 0 | this._h, y = 0; y < 16; ++y) {
+        r[y] = e.readInt32BE(4 * y);
       }
 
-      for (; g < 64; ++g) {
-        r[g] = 0 | (((t = r[g - 2]) >>> 17 | t << 15) ^ (t >>> 19 | t << 13) ^ t >>> 10) + r[g - 7] + l(r[g - 15]) + r[g - 16];
+      for (; y < 64; ++y) {
+        r[y] = 0 | (((t = r[y - 2]) >>> 17 | t << 15) ^ (t >>> 19 | t << 13) ^ t >>> 10) + r[y - 7] + l(r[y - 15]) + r[y - 16];
       }
 
-      for (var y = 0; y < 64; ++y) {
-        var _ = b + d(f) + u(f, p, m) + s[y] + r[y] | 0,
+      for (var g = 0; g < 64; ++g) {
+        var _ = b + d(f) + u(f, p, m) + s[g] + r[g] | 0,
             v = c(i) + h(i, n, a) | 0;
 
         b = m, m = p, p = f, f = o + _ | 0, o = a, a = n, n = i, i = _ + v | 0;
@@ -16858,14 +16858,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return (e >>> 19 | t << 13) ^ (t >>> 29 | e << 3) ^ (e >>> 6 | t << 26);
     }
 
-    function g(e, t) {
+    function y(e, t) {
       return e >>> 0 < t >>> 0 ? 1 : 0;
     }
 
     i(f, n), f.prototype.init = function () {
       return this._ah = 1779033703, this._bh = 3144134277, this._ch = 1013904242, this._dh = 2773480762, this._eh = 1359893119, this._fh = 2600822924, this._gh = 528734635, this._hh = 1541459225, this._al = 4089235720, this._bl = 2227873595, this._cl = 4271175723, this._dl = 1595750129, this._el = 2917565137, this._fl = 725511199, this._gl = 4215389547, this._hl = 327033209, this;
     }, f.prototype._update = function (e) {
-      for (var t = this._w, r = 0 | this._ah, i = 0 | this._bh, n = 0 | this._ch, a = 0 | this._dh, o = 0 | this._eh, f = 0 | this._fh, y = 0 | this._gh, _ = 0 | this._hh, v = 0 | this._al, w = 0 | this._bl, E = 0 | this._cl, S = 0 | this._dl, A = 0 | this._el, x = 0 | this._fl, M = 0 | this._gl, T = 0 | this._hl, k = 0; k < 32; k += 2) {
+      for (var t = this._w, r = 0 | this._ah, i = 0 | this._bh, n = 0 | this._ch, a = 0 | this._dh, o = 0 | this._eh, f = 0 | this._fh, g = 0 | this._gh, _ = 0 | this._hh, v = 0 | this._al, w = 0 | this._bl, E = 0 | this._cl, S = 0 | this._dl, A = 0 | this._el, x = 0 | this._fl, M = 0 | this._gl, T = 0 | this._hl, k = 0; k < 32; k += 2) {
         t[k] = e.readInt32BE(4 * k), t[k + 1] = e.readInt32BE(4 * k + 4);
       }
 
@@ -16874,15 +16874,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             U = t[k - 30 + 1],
             I = l(P, U),
             R = p(U, P),
-            B = m(P = t[k - 4], U = t[k - 4 + 1]),
-            C = b(U, P),
+            C = m(P = t[k - 4], U = t[k - 4 + 1]),
+            B = b(U, P),
             D = t[k - 14],
             L = t[k - 14 + 1],
             F = t[k - 32],
             N = t[k - 32 + 1],
             O = R + L | 0,
-            z = I + D + g(O, R) | 0;
-        z = (z = z + B + g(O = O + C | 0, C) | 0) + F + g(O = O + N | 0, N) | 0, t[k] = z, t[k + 1] = O;
+            z = I + D + y(O, R) | 0;
+        z = (z = z + C + y(O = O + B | 0, B) | 0) + F + y(O = O + N | 0, N) | 0, t[k] = z, t[k + 1] = O;
       }
 
       for (var j = 0; j < 160; j += 2) {
@@ -16895,17 +16895,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             W = d(A, o),
             K = s[j],
             X = s[j + 1],
-            Z = u(o, f, y),
+            Z = u(o, f, g),
             J = u(A, x, M),
             Q = T + W | 0,
-            $ = _ + G + g(Q, T) | 0;
-        $ = ($ = ($ = $ + Z + g(Q = Q + J | 0, J) | 0) + K + g(Q = Q + X | 0, X) | 0) + z + g(Q = Q + O | 0, O) | 0;
+            $ = _ + G + y(Q, T) | 0;
+        $ = ($ = ($ = $ + Z + y(Q = Q + J | 0, J) | 0) + K + y(Q = Q + X | 0, X) | 0) + z + y(Q = Q + O | 0, O) | 0;
         var ee = q + V | 0,
-            te = Y + H + g(ee, q) | 0;
-        _ = y, T = M, y = f, M = x, f = o, x = A, o = a + $ + g(A = S + Q | 0, S) | 0, a = n, S = E, n = i, E = w, i = r, w = v, r = $ + te + g(v = Q + ee | 0, Q) | 0;
+            te = Y + H + y(ee, q) | 0;
+        _ = g, T = M, g = f, M = x, f = o, x = A, o = a + $ + y(A = S + Q | 0, S) | 0, a = n, S = E, n = i, E = w, i = r, w = v, r = $ + te + y(v = Q + ee | 0, Q) | 0;
       }
 
-      this._al = this._al + v | 0, this._bl = this._bl + w | 0, this._cl = this._cl + E | 0, this._dl = this._dl + S | 0, this._el = this._el + A | 0, this._fl = this._fl + x | 0, this._gl = this._gl + M | 0, this._hl = this._hl + T | 0, this._ah = this._ah + r + g(this._al, v) | 0, this._bh = this._bh + i + g(this._bl, w) | 0, this._ch = this._ch + n + g(this._cl, E) | 0, this._dh = this._dh + a + g(this._dl, S) | 0, this._eh = this._eh + o + g(this._el, A) | 0, this._fh = this._fh + f + g(this._fl, x) | 0, this._gh = this._gh + y + g(this._gl, M) | 0, this._hh = this._hh + _ + g(this._hl, T) | 0;
+      this._al = this._al + v | 0, this._bl = this._bl + w | 0, this._cl = this._cl + E | 0, this._dl = this._dl + S | 0, this._el = this._el + A | 0, this._fl = this._fl + x | 0, this._gl = this._gl + M | 0, this._hl = this._hl + T | 0, this._ah = this._ah + r + y(this._al, v) | 0, this._bh = this._bh + i + y(this._bl, w) | 0, this._ch = this._ch + n + y(this._cl, E) | 0, this._dh = this._dh + a + y(this._dl, S) | 0, this._eh = this._eh + o + y(this._el, A) | 0, this._fh = this._fh + f + y(this._fl, x) | 0, this._gh = this._gh + g + y(this._gl, M) | 0, this._hh = this._hh + _ + y(this._hl, T) | 0;
     }, f.prototype._hash = function () {
       var e = a.allocUnsafe(64);
 
@@ -17224,8 +17224,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             p,
             m,
             b,
-            g,
-            y = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+            y,
+            g = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
             _ = {},
             v = {},
             w = {};
@@ -17263,7 +17263,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var o = _[e + "_temp"];
           s.activeTexture(s.TEXTURE1), s.bindTexture(s.TEXTURE_2D, o), s.uniform1i(l, 1);
           var p = _[e + "_stripe"];
-          s.activeTexture(s.TEXTURE2), s.bindTexture(s.TEXTURE_2D, p), s.uniform1i(d, 2), s.bindBuffer(s.ARRAY_BUFFER, f), s.enableVertexAttribArray(u), s.vertexAttribPointer(u, 2, s.FLOAT, !1, 0, 0), s.bindBuffer(s.ARRAY_BUFFER, h), s.enableVertexAttribArray(c), s.vertexAttribPointer(c, 2, s.FLOAT, !1, 0, 0), s.viewport(0, 0, t, i), s.drawArrays(s.TRIANGLES, 0, y.length / 2), s.bindFramebuffer(s.FRAMEBUFFER, null);
+          s.activeTexture(s.TEXTURE2), s.bindTexture(s.TEXTURE_2D, p), s.uniform1i(d, 2), s.bindBuffer(s.ARRAY_BUFFER, f), s.enableVertexAttribArray(u), s.vertexAttribPointer(u, 2, s.FLOAT, !1, 0, 0), s.bindBuffer(s.ARRAY_BUFFER, h), s.enableVertexAttribArray(c), s.vertexAttribPointer(c, 2, s.FLOAT, !1, 0, 0), s.viewport(0, 0, t, i), s.drawArrays(s.TRIANGLES, 0, g.length / 2), s.bindFramebuffer(s.FRAMEBUFFER, null);
         }
 
         function x(e, r, i) {
@@ -17294,7 +17294,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               s.bindBuffer(s.ARRAY_BUFFER, h), s.bufferData(s.ARRAY_BUFFER, e, s.STATIC_DRAW), c = s.getAttribLocation(r, "aTexturePosition"), d = s.getUniformLocation(r, "uStripe"), l = s.getUniformLocation(r, "uTexture");
             }
 
-            t = M(i.vertex, i.fragment), f = s.createBuffer(), s.bindBuffer(s.ARRAY_BUFFER, f), s.bufferData(s.ARRAY_BUFFER, y, s.STATIC_DRAW), u = s.getAttribLocation(t, "aPosition"), p = s.createBuffer(), m = s.getAttribLocation(t, "aLumaPosition"), b = s.createBuffer(), g = s.getAttribLocation(t, "aChromaPosition");
+            t = M(i.vertex, i.fragment), f = s.createBuffer(), s.bindBuffer(s.ARRAY_BUFFER, f), s.bufferData(s.ARRAY_BUFFER, g, s.STATIC_DRAW), u = s.getAttribLocation(t, "aPosition"), p = s.createBuffer(), m = s.getAttribLocation(t, "aLumaPosition"), b = s.createBuffer(), y = s.getAttribLocation(t, "aChromaPosition");
           }(), v) {
             var w = function w(e, t, r) {
               var i = _.cropLeft / r,
@@ -17308,7 +17308,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             w(p, 0, o.y.stride), w(b, 0, o.u.stride * _.width / _.chromaWidth);
           }
 
-          S("uTextureY", o.y.stride, _.height, o.y.bytes), S("uTextureCb", o.u.stride, _.chromaHeight, o.u.bytes), S("uTextureCr", o.v.stride, _.chromaHeight, o.v.bytes), n.stripe && (A("uTextureY", o.y.stride, _.height), A("uTextureCb", o.u.stride, _.chromaHeight), A("uTextureCr", o.v.stride, _.chromaHeight)), s.useProgram(t), s.viewport(0, 0, e.width, e.height), x("uTextureY", s.TEXTURE0, 0), x("uTextureCb", s.TEXTURE1, 1), x("uTextureCr", s.TEXTURE2, 2), s.bindBuffer(s.ARRAY_BUFFER, f), s.enableVertexAttribArray(u), s.vertexAttribPointer(u, 2, s.FLOAT, !1, 0, 0), s.bindBuffer(s.ARRAY_BUFFER, p), s.enableVertexAttribArray(m), s.vertexAttribPointer(m, 2, s.FLOAT, !1, 0, 0), s.bindBuffer(s.ARRAY_BUFFER, b), s.enableVertexAttribArray(g), s.vertexAttribPointer(g, 2, s.FLOAT, !1, 0, 0), s.drawArrays(s.TRIANGLES, 0, y.length / 2);
+          S("uTextureY", o.y.stride, _.height, o.y.bytes), S("uTextureCb", o.u.stride, _.chromaHeight, o.u.bytes), S("uTextureCr", o.v.stride, _.chromaHeight, o.v.bytes), n.stripe && (A("uTextureY", o.y.stride, _.height), A("uTextureCb", o.u.stride, _.chromaHeight), A("uTextureCr", o.v.stride, _.chromaHeight)), s.useProgram(t), s.viewport(0, 0, e.width, e.height), x("uTextureY", s.TEXTURE0, 0), x("uTextureCb", s.TEXTURE1, 1), x("uTextureCr", s.TEXTURE2, 2), s.bindBuffer(s.ARRAY_BUFFER, f), s.enableVertexAttribArray(u), s.vertexAttribPointer(u, 2, s.FLOAT, !1, 0, 0), s.bindBuffer(s.ARRAY_BUFFER, p), s.enableVertexAttribArray(m), s.vertexAttribPointer(m, 2, s.FLOAT, !1, 0, 0), s.bindBuffer(s.ARRAY_BUFFER, b), s.enableVertexAttribArray(y), s.vertexAttribPointer(y, 2, s.FLOAT, !1, 0, 0), s.drawArrays(s.TRIANGLES, 0, g.length / 2);
         }, a.clear = function () {
           s.viewport(0, 0, e.width, e.height), s.clearColor(0, 0, 0, 0), s.clear(s.COLOR_BUFFER_BIT);
         }, a.clear(), a;
@@ -17383,8 +17383,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               p = 0,
               m = 0,
               b = 0,
-              g = 0,
               y = 0,
+              g = 0,
               _ = 0,
               v = 0,
               w = 0,
@@ -17399,14 +17399,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               U = 0,
               I = 0;
           if (1 == a && 1 == s) for (v = 0, w = l, I = 0, P = 0; P < n; P += 2) {
-            for (b = (m = P * h | 0) + h | 0, g = I * c | 0, y = I * d | 0, k = 0; k < i; k += 2) {
-              E = 0 | f[g++], x = (409 * (S = 0 | u[y++]) | 0) - 57088 | 0, M = (100 * E | 0) + (208 * S | 0) - 34816 | 0, T = (516 * E | 0) - 70912 | 0, A = 298 * o[m++] | 0, t[v] = A + x >> 8, t[v + 1] = A - M >> 8, t[v + 2] = A + T >> 8, v += 4, A = 298 * o[m++] | 0, t[v] = A + x >> 8, t[v + 1] = A - M >> 8, t[v + 2] = A + T >> 8, v += 4, A = 298 * o[b++] | 0, t[w] = A + x >> 8, t[w + 1] = A - M >> 8, t[w + 2] = A + T >> 8, w += 4, A = 298 * o[b++] | 0, t[w] = A + x >> 8, t[w + 1] = A - M >> 8, t[w + 2] = A + T >> 8, w += 4;
+            for (b = (m = P * h | 0) + h | 0, y = I * c | 0, g = I * d | 0, k = 0; k < i; k += 2) {
+              E = 0 | f[y++], x = (409 * (S = 0 | u[g++]) | 0) - 57088 | 0, M = (100 * E | 0) + (208 * S | 0) - 34816 | 0, T = (516 * E | 0) - 70912 | 0, A = 298 * o[m++] | 0, t[v] = A + x >> 8, t[v + 1] = A - M >> 8, t[v + 2] = A + T >> 8, v += 4, A = 298 * o[m++] | 0, t[v] = A + x >> 8, t[v + 1] = A - M >> 8, t[v + 2] = A + T >> 8, v += 4, A = 298 * o[b++] | 0, t[w] = A + x >> 8, t[w + 1] = A - M >> 8, t[w + 2] = A + T >> 8, w += 4, A = 298 * o[b++] | 0, t[w] = A + x >> 8, t[w + 1] = A - M >> 8, t[w + 2] = A + T >> 8, w += 4;
             }
 
             v += l, w += l, I++;
           } else for (_ = 0, P = 0; P < n; P++) {
-            for (U = 0, p = P * h | 0, g = (I = P >> s) * c | 0, y = I * d | 0, k = 0; k < i; k++) {
-              E = 0 | f[g + (U = k >> a)], x = (409 * (S = 0 | u[y + U]) | 0) - 57088 | 0, M = (100 * E | 0) + (208 * S | 0) - 34816 | 0, T = (516 * E | 0) - 70912 | 0, A = 298 * o[p++] | 0, t[_] = A + x >> 8, t[_ + 1] = A - M >> 8, t[_ + 2] = A + T >> 8, _ += 4;
+            for (U = 0, p = P * h | 0, y = (I = P >> s) * c | 0, g = I * d | 0, k = 0; k < i; k++) {
+              E = 0 | f[y + (U = k >> a)], x = (409 * (S = 0 | u[g + U]) | 0) - 57088 | 0, M = (100 * E | 0) + (208 * S | 0) - 34816 | 0, T = (516 * E | 0) - 70912 | 0, A = 298 * o[p++] | 0, t[_] = A + x >> 8, t[_ + 1] = A - M >> 8, t[_ + 2] = A + T >> 8, _ += 4;
             }
           }
         }
@@ -17493,7 +17493,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       CODEC_H265: 0,
       CODEC_H264: 1,
       PLAYER_CORE_TYPE_DEFAULT: 0,
-      PLAYER_CORE_TYPE_CNATIVE: 1
+      PLAYER_CORE_TYPE_CNATIVE: 1,
+      V_CODEC_NAME_HEVC: 265,
+      V_CODEC_NAME_AVC: 264,
+      V_CODEC_NAME_UNKN: 500,
+      A_CODEC_NAME_AAC: 112,
+      A_CODEC_NAME_MP3: 113,
+      A_CODEC_NAME_UNKN: 500
     };
   }, {}],
   206: [function (e, t, r) {
@@ -17532,7 +17538,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         setVoice: function setVoice() {
           var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
-          console.log("playFunc ==> setVoic ", e), t.voice = e, t.gainNode.gain.value = e;
+          t.voice = e, t.gainNode.gain.value = e;
         },
         getAlignVPTS: function getAlignVPTS() {
           return t.playTimestamp + (a() - t.playStartTime) / 1e3;
@@ -17546,12 +17552,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           try {
             t.sourceList[e].disconnect(t.gainNode), t.sourceList[e] = null;
-          } catch (t) {
-            console.log("[DEFINE ERROR]disconnect source Index:" + e + " error happened!");
-          }
+          } catch (e) {}
 
           var i = t.decodeSample(r, e);
-          console.log("decodeSample ret", i), -2 == i && t.pause();
+          -2 == i && t.pause();
         },
         addSample: function addSample() {
           var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
@@ -17581,13 +17585,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         decodeSample: function decodeSample() {
           var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : -1,
               r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : -1;
-          if (console.log("start audioModule.decodeSample"), t.sourceChannel = e, e < 0 || e >= t.sourceList.length) return -1;
+          if (t.sourceChannel = e, e < 0 || e >= t.sourceList.length) return -1;
           if (null != t.sourceList[e] && null != t.sourceList[e] && t.sourceList[e] || (t.sourceList[e] = t.audioCtx.createBufferSource(), t.sourceList[e].onended = function () {
             t.swapSource(e, r);
           }), 0 == t.sampleQueue.length) return -2;
           if (null == t.nextBuffer || t.nextBuffer.data.length < 1) return t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].stop(), 1;
           var i = t.nextBuffer.data.buffer;
-          t.playTimestamp = t.nextBuffer.pts, t.playStartTime = a(), console.log("audioModule inputArrayBuffer.pts ", t.playTimestamp);
+          t.playTimestamp = t.nextBuffer.pts, t.playStartTime = a(), t.playTimestamp;
 
           try {
             t.audioCtx.decodeAudioData(i, function (r) {
@@ -17634,18 +17638,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return 0;
         },
         play: function play() {
-          if (console.log("audioModule.play"), 0 == t.startStatus) {
+          if (0 == t.startStatus) {
             t.startStatus = !0;
-            var e = 0;
-            t.options.playMode == n.AUDIO_MODE_ONCE ? e = t.decodeWholeSamples(0) : (e = t.swapSource(0, 1), console.log("decodeSample ret (play)", e)), -2 == e && t.pause();
+            -2 == (t.options.playMode == n.AUDIO_MODE_ONCE ? t.decodeWholeSamples(0) : t.swapSource(0, 1)) && t.pause();
           }
         },
         pause: function pause() {
           if (t.startStatus = !1, null != t.sourceList[t.sourceChannel]) try {
             t.sourceList[t.sourceChannel].stop(), t.sourceList[t.sourceChannel].disconnect(t.gainNode), t.sourceList[t.sourceChannel] = null;
-          } catch (e) {
-            console.log(e);
-          }
+          } catch (e) {}
         },
         stop: function stop() {
           t.pause(), t.cleanQueue(), t.sourceChannel = -1;
@@ -17656,17 +17657,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           for (var e = 0; e < t.sourceList.length; e++) {
             try {
               t.sourceList[e].stop(), t.sourceList[e].disconnect(t.gainNode), t.sourceList[e] = null;
-            } catch (e) {
-              console.log("[SAVE cleanQueue]===>", e);
-            }
+            } catch (e) {}
           }
         }
       };
       return t.sourceList.push(t.audioCtx.createBufferSource()), t.sourceList.push(t.audioCtx.createBufferSource()), t.sourceList[0].onended = function () {
-        console.log("sourceList onended 0"), t.swapSource(0, 1);
+        t.swapSource(0, 1);
       }, t.sourceList[1].onended = function () {
-        console.log("sourceList onended 1"), t.swapSource(1, 0);
-      }, t.gainNode = t.audioCtx.createGain(), t.gainNode.gain.value = t.voice, t.gainNode.connect(t.audioCtx.destination), console.log("AUDIO OPTIONS:", t.options), t.runNextBuffer(), t;
+        t.swapSource(1, 0);
+      }, t.gainNode = t.audioCtx.createGain(), t.gainNode.gain.value = t.voice, t.gainNode.connect(t.audioCtx.destination), t.options, t.runNextBuffer(), t;
     };
   }, {
     "../consts": 205
@@ -17707,14 +17706,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           playerId: t.playerId || o.DEFAILT_WEBGL_PLAY_ID,
           token: t.token || null,
           readyShow: t.readyShow || !1
-        }, this.probeSize = 4524611, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.decPktInterval = null, this.playFrameInterval = null, this.canvasBox = document.querySelector("div#" + this.config.playerId), this.canvas = document.createElement("canvas"), this.canvas.style.width = this.canvasBox.clientWidth + "px", this.canvas.style.height = this.canvasBox.clientHeight + "px", this.canvas.style.top = "0px", this.canvas.style.left = "0px", this.canvasBox.appendChild(this.canvas), this.yuv = s.setupCanvas(this.canvas, {
-          preserveDrawingBuffer: !1
-        }), this._videoQueue = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, f.PLAYER_VERSION);
+        }, this.probeSize = 4524611, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = o.V_CODEC_NAME_UNKN, this.decPktInterval = null, this.playFrameInterval = null, this._videoQueue = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, f.PLAYER_VERSION);
         var r = a.addFunction(this._probeFinCallback.bind(this)),
             i = a.addFunction(this._frameCallback.bind(this)),
-            u = a.addFunction(this._samplesCallback.bind(this)),
-            h = a.cwrap("initializeSniffStreamModule", "number", ["number", "number", "number", "number"])(this.corePtr, r, i, u);
-        console.log("initRet : ", h);
+            s = a.addFunction(this._samplesCallback.bind(this));
+        a.cwrap("initializeSniffStreamModule", "number", ["number", "number", "number", "number"])(this.corePtr, r, i, s);
       }
 
       var t, r, c;
@@ -17749,7 +17745,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
                 var n = e._videoQueue.shift();
 
-                if (s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), e.onPlayingTime && e.onPlayingTime(n.pts), e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v), console.log("pts: ", n.pts, " duration:", e.duration), n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.pause();else if (console.log(e.readEOF, e.pushEOF), !0 === e.readEOF && !0 === e.pushEOF) return e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.decPktInterval && window.clearInterval(e.decPktInterval), e.decPktInterval = null, e.pause(), void (e.onPlayingTime && e.onPlayingTime(e.duration));
+                if (s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), e.onPlayingTime && e.onPlayingTime(n.pts), e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v), n.pts, e.duration, n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.pause();else if (e.readEOF, e.pushEOF, !0 === e.readEOF && !0 === e.pushEOF) return e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.decPktInterval && window.clearInterval(e.decPktInterval), e.decPktInterval = null, e.pause(), void (e.onPlayingTime && e.onPlayingTime(e.duration));
                 i = u() - r;
               }
             }, 2);
@@ -17786,23 +17782,30 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return this.isCheckDisplay = !0, [o, f];
         }
       }, {
+        key: "_createYUVCanvas",
+        value: function value() {
+          this.canvasBox = document.querySelector("div#" + this.config.playerId), this.canvas = document.createElement("canvas"), this.canvas.style.width = this.canvasBox.clientWidth + "px", this.canvas.style.height = this.canvasBox.clientHeight + "px", this.canvas.style.top = "0px", this.canvas.style.left = "0px", this.canvasBox.appendChild(this.canvas), this.yuv = s.setupCanvas(this.canvas, {
+            preserveDrawingBuffer: !1
+          });
+        }
+      }, {
         key: "_probeFinCallback",
-        value: function value(e, t, r, i, n, s, o) {
-          var f = this;
-          this.config.fps = 1 * i, this.frameTime = 1e3 / this.config.fps, this.width = t, this.height = r, this.duration = e, this.config.sampleRate = n, this.channels = s;
+        value: function value(e, t, r, i, n, s, f, u) {
+          var h = this;
+          this._createYUVCanvas(), o.V_CODEC_NAME_HEVC, this.config.fps = 1 * i, this.frameTime = 1e3 / this.config.fps, this.width = t, this.height = r, this.duration = e, this.vCodecID = f, this.config.sampleRate = n, this.channels = s;
 
-          for (var u = a.HEAPU8.subarray(o, o + 10), h = 0; h < u.length; h++) {
-            String.fromCharCode(u[h]);
+          for (var c = a.HEAPU8.subarray(u, u + 10), d = 0; d < c.length; d++) {
+            String.fromCharCode(c[d]);
           }
 
-          null == this.decPktInterval && (this.decPktInterval = window.setInterval(function () {
-            f._decPktIntervalFunc();
+          o.V_CODEC_NAME_HEVC === this.vCodecID && null == this.decPktInterval && (this.decPktInterval = window.setInterval(function () {
+            h._decPktIntervalFunc();
           }, 10)), this.onProbeFinish && this.onProbeFinish();
         }
       }, {
         key: "_decPktIntervalFunc",
         value: function value() {
-          this._videoQueue.length < 5 && this.onLoadCache && this.onLoadCache(), this._videoQueue.length < 30 ? (-404 == a.cwrap("getSniffStreamPkg", "number", ["number"])(this.corePtr) && (this.readEOF = !0), console.log(this._videoQueue.length)) : this.onLoadCacheFinshed && this.onLoadCacheFinshed();
+          this._videoQueue.length < 5 && this.onLoadCache && this.onLoadCache(), this._videoQueue.length < 30 ? (-404 == a.cwrap("getSniffStreamPkg", "number", ["number"])(this.corePtr) && (this.readEOF = !0), this._videoQueue.length) : this.onLoadCacheFinshed && this.onLoadCacheFinshed();
         }
       }, {
         key: "_frameCallback",
@@ -17813,8 +17816,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               p = a.HEAPU8.subarray(r, r + o * u / 2),
               m = new Uint8Array(d),
               b = new Uint8Array(l),
-              g = new Uint8Array(p);
-          this.config.readyShow && (s.renderFrame(this.yuv, m, b, g, i, u), this.config.readyShow = !1), this._videoQueue.push(new h(m, b, g, i, n, o, f, u, c));
+              y = new Uint8Array(p);
+          this.config.readyShow && (s.renderFrame(this.yuv, m, b, y, i, u), this.config.readyShow = !1), this._videoQueue.push(new h(m, b, y, i, n, o, f, u, c));
         }
       }, {
         key: "_samplesCallback",
@@ -18042,8 +18045,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       c = "object" === ("undefined" == typeof window ? "undefined" : a(window)), d = "function" == typeof importScripts, p = "object" === (void 0 === r ? "undefined" : a(r)) && "object" === a(r.versions) && "string" == typeof r.versions.node, l = p && !c && !d, m = !c && !l && !d;
 
       var b,
-          g,
           y,
+          g,
           _,
           v = "";
 
@@ -18053,8 +18056,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       l ? (v = n + "/", b = function b(t, r) {
         var i;
-        return y || (y = e("fs")), _ || (_ = e("path")), t = _.normalize(t), i = y.readFileSync(t), r ? i : i.toString();
-      }, g = function g(e) {
+        return g || (g = e("fs")), _ || (_ = e("path")), t = _.normalize(t), i = g.readFileSync(t), r ? i : i.toString();
+      }, y = function y(e) {
         var t = b(e, !0);
         return t.buffer || (t = new Uint8Array(t)), N(t.buffer), t;
       }, r.argv.length > 1 && (h = r.argv[1].replace(/\\/g, "/")), u = r.argv.slice(2), void 0 !== t && (t.exports = o), r.on("uncaughtException", function (e) {
@@ -18063,7 +18066,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return "[Emscripten Module object]";
       }) : m ? ("undefined" != typeof read && (b = function b(e) {
         return read(e);
-      }), g = function g(e) {
+      }), y = function y(e) {
         var t;
         return "function" == typeof readbuffer ? new Uint8Array(readbuffer(e)) : (N("object" === a(t = read(e, "binary"))), t);
       }, "undefined" != typeof scriptArgs ? u = scriptArgs : void 0 !== arguments && (u = arguments), "function" == typeof quit && function (e) {
@@ -18071,7 +18074,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, "undefined" != typeof print && ("undefined" == typeof console && (console = {}), console.log = print, console.warn = console.error = "undefined" != typeof printErr ? printErr : print)) : (c || d) && (d ? v = self.location.href : document.currentScript && (v = document.currentScript.src), v = 0 !== v.indexOf("blob:") ? v.substr(0, v.lastIndexOf("/") + 1) : "", b = function b(e) {
         var t = new XMLHttpRequest();
         return t.open("GET", e, !1), t.send(null), t.responseText;
-      }, d && (g = function g(e) {
+      }, d && (y = function y(e) {
         var t = new XMLHttpRequest();
         return t.open("GET", e, !1), t.responseType = "arraybuffer", t.send(null), new Uint8Array(t.response);
       }), function (e, t, r) {
@@ -18147,9 +18150,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var U,
           I,
           R,
-          B = 0,
-          C = function C() {
-        return B;
+          C = 0,
+          B = function B() {
+        return C;
       };
 
       function D(e, t, r, i) {
@@ -18186,8 +18189,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       o.wasmBinary && (U = o.wasmBinary), o.noExitRuntime && (I = o.noExitRuntime), "object" !== ("undefined" == typeof WebAssembly ? "undefined" : a(WebAssembly)) && S("no native wasm support detected");
       var L = new WebAssembly.Table({
-        initial: 2496,
-        maximum: 2496,
+        initial: 2944,
+        maximum: 2944,
         element: "anyfunc"
       }),
           F = !1;
@@ -18386,8 +18389,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         te = e, o.HEAP8 = re = new Int8Array(e), o.HEAP16 = ne = new Int16Array(e), o.HEAP32 = se = new Int32Array(e), o.HEAPU8 = ie = new Uint8Array(e), o.HEAPU16 = ae = new Uint16Array(e), o.HEAPU32 = oe = new Uint32Array(e), o.HEAPF32 = fe = new Float32Array(e), o.HEAPF64 = ue = new Float64Array(e);
       }
 
-      var le = 6375168,
-          pe = 1132064,
+      var le = 6378848,
+          pe = 1135744,
           me = o.TOTAL_MEMORY || 536870912;
 
       function be(e) {
@@ -18404,8 +18407,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       (R = o.wasmMemory ? o.wasmMemory : new WebAssembly.Memory({
         initial: me / he
       })) && (te = R.buffer), me = te.byteLength, de(te), se[pe >> 2] = le;
-      var ge = [],
-          ye = [],
+      var ye = [],
+          ge = [],
           _e = [],
           ve = [],
           we = !1;
@@ -18414,11 +18417,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         if (o.preRun) for ("function" == typeof o.preRun && (o.preRun = [o.preRun]); o.preRun.length;) {
           Me(o.preRun.shift());
         }
-        be(ge);
+        be(ye);
       }
 
       function Se() {
-        we = !0, o.noFSInit || ot.init.initialized || ot.init(), tt.init(), be(ye);
+        we = !0, o.noFSInit || ot.init.initialized || ot.init(), tt.init(), be(ge);
       }
 
       function Ae() {
@@ -18433,7 +18436,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       function Me(e) {
-        ge.unshift(e);
+        ye.unshift(e);
       }
 
       function Te(e) {
@@ -18445,16 +18448,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           Ue = Math.floor,
           Ie = Math.min,
           Re = Math.trunc,
-          Be = 0,
-          Ce = null,
+          Ce = 0,
+          Be = null,
           De = null;
 
       function Le(e) {
-        Be++, o.monitorRunDependencies && o.monitorRunDependencies(Be);
+        Ce++, o.monitorRunDependencies && o.monitorRunDependencies(Ce);
       }
 
       function Fe(e) {
-        if (Be--, o.monitorRunDependencies && o.monitorRunDependencies(Be), 0 == Be && (null !== Ce && (clearInterval(Ce), Ce = null), De)) {
+        if (Ce--, o.monitorRunDependencies && o.monitorRunDependencies(Ce), 0 == Ce && (null !== Be && (clearInterval(Be), Be = null), De)) {
           var t = De;
           De = null, t();
         }
@@ -18478,7 +18481,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       function Ye() {
         try {
           if (U) return new Uint8Array(U);
-          if (g) return g(Ve);
+          if (y) return y(Ve);
           throw "both async and sync fetching of the wasm failed";
         } catch (e) {
           Ne(e);
@@ -18571,7 +18574,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return o.extraStackTrace && (e += "\n" + o.extraStackTrace()), We(e);
       }
 
-      ze(Ve) || (Ve = w(Ve)), o.asm = Ge, ye.push({
+      ze(Ve) || (Ve = w(Ve)), o.asm = Ge, ge.push({
         func: function func() {
           ti();
         }
@@ -20004,7 +20007,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return t;
         },
         syncfs: function syncfs(e, t) {
-          "function" == typeof e && (t = e, e = !1), ot.syncFSRequests++, ot.syncFSRequests > 1 && console.log("warning: " + ot.syncFSRequests + " FS.syncfs operations in flight at once, probably just doing extra work");
+          "function" == typeof e && (t = e, e = !1), ot.syncFSRequests++, ot.syncFSRequests > 1 && ot.syncFSRequests;
           var r = ot.getMounts(ot.root.mount),
               i = 0;
 
@@ -20151,8 +20154,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
             try {
               ot.trackingDelegate.willMovePath && ot.trackingDelegate.willMovePath(e, t);
-            } catch (r) {
-              console.log("FS.trackingDelegate['willMovePath']('" + e + "', '" + t + "') threw an exception: " + r.message);
+            } catch (e) {
+              e.message;
             }
 
             ot.hashRemoveNode(u);
@@ -20167,8 +20170,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
             try {
               ot.trackingDelegate.onMovePath && ot.trackingDelegate.onMovePath(e, t);
-            } catch (r) {
-              console.log("FS.trackingDelegate['onMovePath']('" + e + "', '" + t + "') threw an exception: " + r.message);
+            } catch (e) {
+              e.message;
             }
           }
         },
@@ -20185,16 +20188,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           try {
             ot.trackingDelegate.willDeletePath && ot.trackingDelegate.willDeletePath(e);
-          } catch (t) {
-            console.log("FS.trackingDelegate['willDeletePath']('" + e + "') threw an exception: " + t.message);
+          } catch (e) {
+            e.message;
           }
 
           t.node_ops.rmdir(t, r), ot.destroyNode(i);
 
           try {
             ot.trackingDelegate.onDeletePath && ot.trackingDelegate.onDeletePath(e);
-          } catch (t) {
-            console.log("FS.trackingDelegate['onDeletePath']('" + e + "') threw an exception: " + t.message);
+          } catch (e) {
+            e.message;
           }
         },
         readdir: function readdir(e) {
@@ -20217,16 +20220,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           try {
             ot.trackingDelegate.willDeletePath && ot.trackingDelegate.willDeletePath(e);
-          } catch (t) {
-            console.log("FS.trackingDelegate['willDeletePath']('" + e + "') threw an exception: " + t.message);
+          } catch (e) {
+            e.message;
           }
 
           t.node_ops.unlink(t, r), ot.destroyNode(i);
 
           try {
             ot.trackingDelegate.onDeletePath && ot.trackingDelegate.onDeletePath(e);
-          } catch (t) {
-            console.log("FS.trackingDelegate['onDeletePath']('" + e + "') threw an exception: " + t.message);
+          } catch (e) {
+            e.message;
           }
         },
         readlink: function readlink(e) {
@@ -20348,15 +20351,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             ungotten: [],
             error: !1
           }, i, n);
-          h.stream_ops.open && h.stream_ops.open(h), !o.logReadFiles || 1 & t || (ot.readFiles || (ot.readFiles = {}), e in ot.readFiles || (ot.readFiles[e] = 1, console.log("FS.trackingDelegate error on read file: " + e)));
+          h.stream_ops.open && h.stream_ops.open(h), !o.logReadFiles || 1 & t || (ot.readFiles || (ot.readFiles = {}), e in ot.readFiles || (ot.readFiles[e] = 1));
 
           try {
             if (ot.trackingDelegate.onOpenFile) {
               var c = 0;
               1 != (2097155 & t) && (c |= ot.tracking.openFlags.READ), 0 != (2097155 & t) && (c |= ot.tracking.openFlags.WRITE), ot.trackingDelegate.onOpenFile(e, c);
             }
-          } catch (t) {
-            console.log("FS.trackingDelegate['onOpenFile']('" + e + "', flags) threw an exception: " + t.message);
+          } catch (e) {
+            e.message;
           }
 
           return h;
@@ -20418,7 +20421,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           try {
             e.path && ot.trackingDelegate.onWriteToFile && ot.trackingDelegate.onWriteToFile(e.path);
           } catch (t) {
-            console.log("FS.trackingDelegate['onWriteToFile']('" + e.path + "') threw an exception: " + t.message);
+            e.path, t.message;
           }
 
           return o;
@@ -20768,7 +20771,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 return void 0 !== n.response ? new Uint8Array(n.response || []) : or(n.responseText || "", !0);
               }(t, n)), void 0 === o.chunks[e]) throw new Error("doXHR failed!");
               return o.chunks[e];
-            }), !a && i || (s = i = 1, i = this.getter(0).length, s = i, console.log("LazyFiles on gzip forces download of the whole file when length is accessed")), this._length = i, this._chunkSize = s, this.lengthKnown = !0;
+            }), !a && i || (s = i = 1, i = this.getter(0).length, s = i), this._length = i, this._chunkSize = s, this.lengthKnown = !0;
           }, "undefined" != typeof XMLHttpRequest) {
             if (!d) throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
             var s = new a();
@@ -20862,7 +20865,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           n.onupgradeneeded = function () {
-            console.log("creating db"), n.result.createObjectStore(ot.DB_STORE_NAME);
+            n.result.createObjectStore(ot.DB_STORE_NAME);
           }, n.onsuccess = function () {
             var i = n.result.transaction([ot.DB_STORE_NAME], "readwrite"),
                 a = i.objectStore(ot.DB_STORE_NAME),
@@ -21144,11 +21147,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }
 
-      function gt() {
+      function yt() {
         return bt.apply(null, arguments);
       }
 
-      function yt(e, t, r, i) {
+      function gt(e, t, r, i) {
         try {
           var n = ft.getStreamFromFD(e),
               a = ft.doWritev(n, t, r);
@@ -21159,7 +21162,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       function _t() {
-        return yt.apply(null, arguments);
+        return gt.apply(null, arguments);
       }
 
       function vt(e) {
@@ -21265,8 +21268,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               p = oe[o + 76 >> 2],
               m = oe[o + 80 >> 2],
               b = oe[o + 84 >> 2],
-              g = oe[o + 88 >> 2],
-              y = !!(1 & u),
+              y = oe[o + 88 >> 2],
+              g = !!(1 & u),
               _ = !!(2 & u),
               v = !!(64 & u),
               w = d ? K(d) : void 0,
@@ -21287,21 +21290,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           Ut.xhrs.push(A);
           var P = Ut.xhrs.length;
           oe[e + 0 >> 2] = P;
-          var U = b && g ? ie.slice(b, b + g) : null;
+          var U = b && y ? ie.slice(b, b + y) : null;
           A.onload = function (i) {
             var n = A.response ? A.response.byteLength : 0,
                 a = 0,
                 s = 0;
-            y && !_ && (a = si(s = n), ie.set(new Uint8Array(A.response), a)), oe[e + 12 >> 2] = a, Ut.setu64(e + 16, s), Ut.setu64(e + 24, 0), n && Ut.setu64(e + 32, n), ae[e + 40 >> 1] = A.readyState, 4 === A.readyState && 0 === A.status && (A.status = n > 0 ? 200 : 404), ae[e + 42 >> 1] = A.status, A.statusText && Z(A.statusText, e + 44, 64), A.status >= 200 && A.status < 300 ? t && t(e, A, i) : r && r(e, A, i);
+            g && !_ && (a = si(s = n), ie.set(new Uint8Array(A.response), a)), oe[e + 12 >> 2] = a, Ut.setu64(e + 16, s), Ut.setu64(e + 24, 0), n && Ut.setu64(e + 32, n), ae[e + 40 >> 1] = A.readyState, 4 === A.readyState && 0 === A.status && (A.status = n > 0 ? 200 : 404), ae[e + 42 >> 1] = A.status, A.statusText && Z(A.statusText, e + 44, 64), A.status >= 200 && A.status < 300 ? t && t(e, A, i) : r && r(e, A, i);
           }, A.onerror = function (t) {
             var i = A.status;
             4 === A.readyState && 0 === i && (i = 404), oe[e + 12 >> 2] = 0, Ut.setu64(e + 16, 0), Ut.setu64(e + 24, 0), Ut.setu64(e + 32, 0), ae[e + 40 >> 1] = A.readyState, ae[e + 42 >> 1] = i, r && r(e, A, t);
           }, A.ontimeout = function (t) {
             r && r(e, A, t);
           }, A.onprogress = function (t) {
-            var r = y && _ && A.response ? A.response.byteLength : 0,
+            var r = g && _ && A.response ? A.response.byteLength : 0,
                 n = 0;
-            y && _ && (n = si(r), ie.set(new Uint8Array(A.response), n)), oe[e + 12 >> 2] = n, Ut.setu64(e + 16, r), Ut.setu64(e + 24, t.loaded - r), Ut.setu64(e + 32, t.total), ae[e + 40 >> 1] = A.readyState, A.readyState >= 3 && 0 === A.status && t.loaded > 0 && (A.status = 200), ae[e + 42 >> 1] = A.status, A.statusText && Z(A.statusText, e + 44, 64), i && i(e, A, t);
+            g && _ && (n = si(r), ie.set(new Uint8Array(A.response), n)), oe[e + 12 >> 2] = n, Ut.setu64(e + 16, r), Ut.setu64(e + 24, t.loaded - r), Ut.setu64(e + 32, t.total), ae[e + 40 >> 1] = A.readyState, A.readyState >= 3 && 0 === A.status && t.loaded > 0 && (A.status = 200), ae[e + 42 >> 1] = A.status, A.statusText && Z(A.statusText, e + 44, 64), i && i(e, A, t);
           }, A.onreadystatechange = function (t) {
             ae[e + 40 >> 1] = A.readyState, A.readyState >= 2 && (ae[e + 42 >> 1] = A.status), n && n(e, A, t);
           };
@@ -21333,7 +21336,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else n(t, 0, "IndexedDB not available!");
       }
 
-      function Bt(e, t, r, i) {
+      function Ct(e, t, r, i) {
         if (e) {
           var n = oe[t + 112 + 64 >> 2];
           n || (n = oe[t + 8 >> 2]);
@@ -21357,7 +21360,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else i(t, 0, "IndexedDB not available!");
       }
 
-      function Ct(e, t, r, i) {
+      function Bt(e, t, r, i) {
         if (e) {
           var n = oe[t + 112 + 64 >> 2];
           n || (n = oe[t + 8 >> 2]);
@@ -21396,10 +21399,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             b = function b(e, t, r) {
           u ? hi(u, e) : i && i(e);
         },
-            g = function g(e, t, i) {
+            y = function y(e, t, i) {
           f ? hi(f, e) : r && r(e);
         },
-            y = function y(e, t, r) {
+            g = function g(e, t, r) {
           h ? hi(h, e) : n && n(e);
         },
             _ = function _(e, r, i) {
@@ -21412,14 +21415,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         if ("EM_IDB_STORE" === s) {
           var v = oe[a + 84 >> 2];
-          Rt(Ut.dbInstance, e, ie.slice(v, v + oe[a + 88 >> 2]), m, g);
-        } else if ("EM_IDB_DELETE" === s) Ct(Ut.dbInstance, e, m, g);else if (p) {
+          Rt(Ut.dbInstance, e, ie.slice(v, v + oe[a + 88 >> 2]), m, y);
+        } else if ("EM_IDB_DELETE" === s) Bt(Ut.dbInstance, e, m, y);else if (p) {
           if (l) return 0;
-          It(e, d ? _ : m, g, b, y);
-        } else Bt(Ut.dbInstance, e, m, l ? g : d ? function (e, t, r) {
-          It(e, _, g, b, y);
+          It(e, d ? _ : m, y, b, g);
+        } else Ct(Ut.dbInstance, e, m, l ? y : d ? function (e, t, r) {
+          It(e, _, y, b, g);
         } : function (e, t, r) {
-          It(e, m, g, b, y);
+          It(e, m, y, b, g);
         });
 
         return e;
@@ -21436,7 +21439,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return se[e >> 2] = t / 1e3 | 0, se[e + 4 >> 2] = t % 1e3 * 1e3 | 0, 0;
       }
 
-      var Ot = (Z("GMT", 1132160, 4), 1132160);
+      var Ot = (Z("GMT", 1135840, 4), 1135840);
 
       function zt(e, t) {
         var r = new Date(1e3 * se[e >> 2]);
@@ -21783,8 +21786,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           s.indexOf(f) >= 0 && (s = s.replace(new RegExp(f, "g"), b[f](a)));
         }
 
-        var g = or(s, !1);
-        return g.length > t ? 0 : ($(g, e), g.length - 1);
+        var y = or(s, !1);
+        return y.length > t ? 0 : ($(y, e), y.length - 1);
       }
 
       function nr(e) {
@@ -21841,11 +21844,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return k[e](t, r, i);
       }
 
-      function gr(e, t, r, i, n) {
+      function yr(e, t, r, i, n) {
         return k[e](t, r, i, n);
       }
 
-      function yr(e, t, r, i, n, a) {
+      function gr(e, t, r, i, n, a) {
         return k[e](t, r, i, n, a);
       }
 
@@ -21893,8 +21896,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         k[e]();
       }
 
-      function Ur(e, t, r, i, n, a, s, o) {
-        k[e](t, r, i, n, a, s, o);
+      function Ur(e, t, r, i, n, a, s, o, f) {
+        k[e](t, r, i, n, a, s, o, f);
       }
 
       function Ir(e, t) {
@@ -21905,11 +21908,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         k[e](t, r);
       }
 
-      function Br(e, t, r, i, n) {
+      function Cr(e, t, r, i, n) {
         k[e](t, r, i, n);
       }
 
-      function Cr(e, t, r, i, n) {
+      function Br(e, t, r, i, n) {
         k[e](t, r, i, n);
       }
 
@@ -21991,7 +21994,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         sa: ct,
         S: lt,
         ra: mt,
-        U: gt,
+        U: yt,
         qa: _t,
         pa: vt,
         __memory_base: 1024,
@@ -22018,7 +22021,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         O: ir,
         ba: nr,
         b: Ne,
-        L: C,
+        L: B,
         K: fr,
         z: ur,
         o: hr,
@@ -22028,8 +22031,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         e: pr,
         d: mr,
         c: br,
-        J: gr,
-        I: yr,
+        J: yr,
+        I: gr,
         H: _r,
         G: vr,
         F: wr,
@@ -22044,8 +22047,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         D: Ur,
         C: Ir,
         B: Rr,
-        A: Br,
-        y: Cr,
+        A: Cr,
+        y: Br,
         x: Dr,
         w: Lr,
         v: Fr,
@@ -22179,7 +22182,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           ei || (ei = !0, F || (Se(), Ae(), o.onRuntimeInitialized && o.onRuntimeInitialized(), xe()));
         }
 
-        e = e || u, Be > 0 || (Ee(), Be > 0 || (o.setStatus ? (o.setStatus("Running..."), setTimeout(function () {
+        e = e || u, Ce > 0 || (Ee(), Ce > 0 || (o.setStatus ? (o.setStatus("Running..."), setTimeout(function () {
           setTimeout(function () {
             o.setStatus("");
           }, 1), t();
@@ -22423,7 +22426,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         play: function play(e) {
           t.playParams = e, t.calcuteStartTime = c(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, t.playParams.mode == u.PLAYER_MODE_NOTIME_LIVE || t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
             var e = c();
-            t.playFunc(), t.preCostTime = c() - e, console.log("playFunc loop usage :", t.preCostTime);
+            t.playFunc(), t.preCostTime = c() - e, t.preCostTime;
           }, 1)) : (t.loop = window.setInterval(function () {
             t.playFrameYUV(!1, t.playParams.accurateSeek), t.checkFinished(t.playParams.mode) ? (window.clearInterval(t.loop), t.loop = null) : t.videoPTS >= t.playParams.seekPos && (window.clearInterval(t.loop), t.loop = null, t.play(t.playParams));
           }, 1), t.isNewSeek = !1);
@@ -22523,16 +22526,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           if (null != t.config.token) {
             t.vcodecerPtr = n.cwrap("registerPlayer", "number", ["string", "string"])(t.config.token, h.PLAYER_VERSION);
             var e = n.addFunction(function (e, r, i, a, s, f, u, h, c) {
-              console.log("In video callback, size = %d * %d, pts = %f", u, h, c);
-
               var d = n.HEAPU8.subarray(e, e + a * h),
                   l = n.HEAPU8.subarray(r, r + s * h / 2),
                   p = n.HEAPU8.subarray(i, i + f * h / 2),
                   m = new Uint8Array(d),
                   b = new Uint8Array(l),
-                  g = new Uint8Array(p),
-                  y = 1 * c / 1e3,
-                  _ = new o.CacheYuvStruct(y, a, h, m, b, g);
+                  y = new Uint8Array(p),
+                  g = 1 * c / 1e3,
+                  _ = new o.CacheYuvStruct(g, a, h, m, b, y);
 
               t.cacheYuvBuf.appendCacheByCacheYuv(_);
             });
@@ -22705,7 +22706,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         seekIDR: function seekIDR() {
           var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : -1;
-          if (console.log("IDR Buffer:", e.idrIdxBuffer), t < 0) return null;
+          if (e.idrIdxBuffer, t < 0) return null;
           if (e.idrIdxBuffer.includes(t)) return t;
 
           for (var r = 0; r < e.idrIdxBuffer.length; r++) {
@@ -22797,7 +22798,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, this.hls.onFinished = function (e) {
             e.type == u.PLAYER_IN_TYPE_M3U8_VOD ? t.durationMs = 1e3 * e.duration : t.durationMs = -1, null != t.onFinished && t.onFinished(t.onReadyOBJ, e);
           }, this.mpegTsObj.onDemuxed = function () {
-            null == t.mediaInfo && (t.mediaInfo = t.mpegTsObj.readMediaInfo(), console.log("mediaInfo: ", t.mediaInfo), t.aCodec = t.mediaInfo.aCodec, t.fps = t.mediaInfo.vFps, t.sampleRate = t.mediaInfo.sampleRate), null == t.extensionInfo && (t.extensionInfo = t.mpegTsObj.readExtensionInfo(), t.extensionInfo.vWidth > 0 && t.extensionInfo.vHeight > 0 && (t.size.width = t.extensionInfo.vWidth, t.size.height = t.extensionInfo.vHeight)), console.log("DURATION===>" + t.mediaInfo.duration), null != t.onDemuxed && t.onDemuxed(t.onReadyOBJ);
+            null == t.mediaInfo && (t.mediaInfo = t.mpegTsObj.readMediaInfo(), t.mediaInfo, t.aCodec = t.mediaInfo.aCodec, t.fps = t.mediaInfo.vFps, t.sampleRate = t.mediaInfo.sampleRate), null == t.extensionInfo && (t.extensionInfo = t.mpegTsObj.readExtensionInfo(), t.extensionInfo.vWidth > 0 && t.extensionInfo.vHeight > 0 && (t.size.width = t.extensionInfo.vWidth, t.size.height = t.extensionInfo.vHeight)), t.mediaInfo.duration, null != t.onDemuxed && t.onDemuxed(t.onReadyOBJ);
 
             for (var e = !1;;) {
               var r = t.mpegTsObj.readPacket();
@@ -22822,23 +22823,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               }
             }
 
-            t.vStartTime += parseFloat(t.lockWait.lockMember.dur), t.aStartTime += parseFloat(t.lockWait.lockMember.dur), console.log("vStartTime:" + t.vStartTime), t.lockWait.state = !1;
+            t.vStartTime += parseFloat(t.lockWait.lockMember.dur), t.aStartTime += parseFloat(t.lockWait.lockMember.dur), t.vStartTime, t.lockWait.state = !1;
           }, this.mpegTsObj.onReady = function () {
             t._onTsReady(e);
           }, t.mpegTsObj.initDemuxer(), this.timerTsWasm = window.setInterval(function () {
-            t.mpegTsWasmState ? (window.clearInterval(t.timerTsWasm), t.timerTsWasm = null) : t.mpegTsWasmRetryLoadTimes >= 3 ? (t._onTsReady(e), window.clearInterval(t.timerTsWasm), t.timerTsWasm = null) : (console.log("retry request wasm"), t.mpegTsWasmRetryLoadTimes += 1, t.mpegTsObj.initDemuxer());
+            t.mpegTsWasmState ? (window.clearInterval(t.timerTsWasm), t.timerTsWasm = null) : t.mpegTsWasmRetryLoadTimes >= 3 ? (t._onTsReady(e), window.clearInterval(t.timerTsWasm), t.timerTsWasm = null) : (t.mpegTsWasmRetryLoadTimes += 1, t.mpegTsObj.initDemuxer());
           }, 3e3);
         }
       }, {
         key: "_onTsReady",
         value: function value(e) {
           var t = this;
-          console.log("mpegts onReady"), t.hls.fetchM3u8(e), t.mpegTsWasmState = !0, t.timerFeed = window.setInterval(function () {
+          t.hls.fetchM3u8(e), t.mpegTsWasmState = !0, t.timerFeed = window.setInterval(function () {
             if (t.tsList.length > 0 && 0 == t.lockWait.state) {
               var e = t.tsList.shift(),
                   r = e.streamURI,
                   i = e.streamDur;
-              console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + r), t.lockWait.state = !0, t.lockWait.lockMember.dur = i, t.mpegTsObj.demuxURL(r), console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+              t.lockWait.state = !0, t.lockWait.lockMember.dur = i, t.mpegTsObj.demuxURL(r);
             }
           }, 50);
         }
@@ -22953,7 +22954,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           fetch(e).then(function (e) {
             return e.text();
           }).then(function (t) {
-            return 1 == r._uriParse(e) ? r._m3u8Parse(t) : (console.log("Parse URL ERROR : " + e), null);
+            return 1 == r._uriParse(e) ? r._m3u8Parse(t) : null;
           }).then(function (i) {
             null != i && t._type == n.PLAYER_IN_TYPE_M3U8_LIVE && setTimeout(function () {
               r.fetchM3u8(e);
@@ -22967,7 +22968,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var t = e.split("//"),
               r = null,
               i = null;
-          if (t.length < 1) return console.log("HLS URI ERROR : " + e), !1;
+          if (t.length < 1) return !1;
           t.length > 1 ? (r = t[0], i = t[1].split("/"), this._preURI = r + "//") : i = t[0].split("/");
 
           for (var n = 0; n < i.length - 1; n++) {
@@ -23007,7 +23008,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   return !0;
 
                 default:
-                  console.log("unknow tag" + o.key);
+                  o.key;
               }
               var u = a.segmentParse.exec(s);
 
@@ -23091,9 +23092,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       e.seekPos = -1, e.mp4boxfile = i.createFile(), e.movieInfo = null, e.videoCodec = null, e.durationMs = -1, e.fps = -1, e.sampleRate = -1, e.aacProfile = 2, e.size = {
         width: -1,
         height: -1
-      }, e.bufObject = s(), e.audioNone = !1, e.mp4boxfile.onError = function (e) {
-        console.log(e);
-      }, this.mp4boxfile.onReady = function (t) {
+      }, e.bufObject = s(), e.audioNone = !1, e.mp4boxfile.onError = function (e) {}, this.mp4boxfile.onReady = function (t) {
         for (var r in e.movieInfo = t, t.tracks) {
           "VideoHandler" === t.tracks[r].name && (t.tracks[r].codec.indexOf("hev") >= 0 || t.tracks[r].codec.indexOf("hvc") >= 0 ? e.videoCodec = o.CODEC_H265 : t.tracks[r].codec.indexOf("avc") >= 0 && (e.videoCodec = o.CODEC_H264));
         }
@@ -23126,14 +23125,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   var p = null,
                       m = null,
                       b = null,
-                      g = null;
+                      y = null;
 
                   if (e.videoCodec == o.CODEC_H265) {
-                    var y = d.nalu_arrays;
-                    p = e.setStartCode(y[0][0].data, !1), m = e.setStartCode(y[1][0].data, !1), b = e.setStartCode(y[2][0].data, !1), g = y.length > 3 ? e.setStartCode(y[3][0].data, !1) : new Uint8Array();
-                  } else e.videoCodec == o.CODEC_H264 && (p = new Uint8Array(), m = e.setStartCode(d.SPS[0].nalu, !1), b = e.setStartCode(d.PPS[0].nalu, !1), g = new Uint8Array());
+                    var g = d.nalu_arrays;
+                    p = e.setStartCode(g[0][0].data, !1), m = e.setStartCode(g[1][0].data, !1), b = e.setStartCode(g[2][0].data, !1), y = g.length > 3 ? e.setStartCode(g[3][0].data, !1) : new Uint8Array();
+                  } else e.videoCodec == o.CODEC_H264 && (p = new Uint8Array(), m = e.setStartCode(d.SPS[0].nalu, !1), b = e.setStartCode(d.PPS[0].nalu, !1), y = new Uint8Array());
 
-                  (h = new Uint8Array(p.length + m.length + b.length + g.length + u.length)).set(p, 0), h.set(m, p.length), h.set(b, p.length + m.length), h.set(g, p.length + m.length + b.length), h.set(e.setStartCode(u, !0), p.length + m.length + b.length + g.length);
+                  (h = new Uint8Array(p.length + m.length + b.length + y.length + u.length)).set(p, 0), h.set(m, p.length), h.set(b, p.length + m.length), h.set(y, p.length + m.length + b.length), h.set(e.setStartCode(u, !0), p.length + m.length + b.length + y.length);
                 } else h = e.setStartCode(u, !0);
 
                 e.bufObject.appendFrame(c, h, !0, l);
@@ -23303,10 +23302,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         key: "initDemuxer",
         value: function value() {
           var e = this;
-          if (window.WebAssembly) console.log("TSDemuxer to onRuntimeInitialized"), n.run(), console.log("run"), n.onRuntimeInitialized = function () {
-            console.log("TSDemuxer WASM initialized"), null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, console.log("TSDemuxer onready!"), e.onReady());
+          if (window.WebAssembly) n.run(), n.onRuntimeInitialized = function () {
+            null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, e.onReady());
           }, n.postRun = function () {
-            console.log("TSDemuxer postRun WASM initialized"), null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, console.log("TSDemuxer postRun onready!"), e.onReady());
+            null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, e.onReady());
           };else {
             var t = "unsupport WASM!";
             /iPhone|iPad/.test(window.navigator.userAgent) && (t += " ios:min-version 11"), alert(t), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
@@ -23345,7 +23344,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           n.HEAP8.set(e, t);
           var r = n.cwrap("demuxBox", "number", ["number", "number"])(t, e.length);
-          console.log("Run demux box result : " + r), r >= 0 && (this._setMediaInfo(), this._setExtensionInfo(), null != this.onDemuxed && this.onDemuxed());
+          r >= 0 && (this._setMediaInfo(), this._setExtensionInfo(), null != this.onDemuxed && this.onDemuxed());
         }
       }, {
         key: "_setMediaInfo",
@@ -23449,7 +23448,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "_initDemuxer",
         value: function value() {
-          n.cwrap("initTsMissile", "number", [])(), console.log("Initialized initTsMissile"), n.cwrap("initializeDemuxer", "number", [])(), console.log("Initialized initializeDemuxer");
+          n.cwrap("initTsMissile", "number", [])(), n.cwrap("initializeDemuxer", "number", [])();
         }
       }, {
         key: "_releaseDemuxer",
@@ -23494,7 +23493,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         value: function value() {
           var e = this;
           this.mpegTsObj = new n.MPEG_JS({}), this.mpegTsObj.onDemuxed = function () {
-            e.mediaInfo = e.mpegTsObj.readMediaInfo(), console.log(e.mediaInfo), e.extensionInfo = e.mpegTsObj.readExtensionInfo(), console.log(e.extensionInfo), e.aCodec = e.mediaInfo.aCodec, e.durationMs = 1e3 * e.mediaInfo.duration, e.fps = e.mediaInfo.vFps, e.sampleRate = e.mediaInfo.sampleRate, e.extensionInfo.vWidth > 0 && e.extensionInfo.vHeight > 0 && (e.size.width = e.extensionInfo.vWidth, e.size.height = e.extensionInfo.vHeight);
+            e.mediaInfo = e.mpegTsObj.readMediaInfo(), e.mediaInfo, e.extensionInfo = e.mpegTsObj.readExtensionInfo(), e.extensionInfo, e.aCodec = e.mediaInfo.aCodec, e.durationMs = 1e3 * e.mediaInfo.duration, e.fps = e.mediaInfo.vFps, e.sampleRate = e.mediaInfo.sampleRate, e.extensionInfo.vWidth > 0 && e.extensionInfo.vHeight > 0 && (e.size.width = e.extensionInfo.vWidth, e.size.height = e.extensionInfo.vHeight);
 
             for (var t = null; !((t = e.mpegTsObj.readPacket()).size <= 0);) {
               var r = t.dtime;
@@ -23509,7 +23508,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               } else e.bufObject.appendFrame(r, t.data, !1, !0);
             }
 
-            console.log(e.bufObject.videoBuffer), console.log(e.bufObject.audioBuffer), null != e.onDemuxed && e.onDemuxed(e.onReadyOBJ);
+            e.bufObject.videoBuffer, e.bufObject.audioBuffer, null != e.onDemuxed && e.onDemuxed(e.onReadyOBJ);
           }, this.mpegTsObj.onReady = function () {
             null != e.onReady && e.onReady(e.onReadyOBJ);
           }, this.mpegTsObj.initDemuxer();
@@ -23637,9 +23636,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               },
               audioNone: r,
               videoCodec: h.CODEC_H265
-            }, c.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH), window.WebAssembly) console.log("to onRuntimeInitialized " + t.STATIC_MEM_wasmDecoderState), 1 == t.STATIC_MEM_wasmDecoderState ? (console.log("wasm already inited!"), e.configFormat.type == h.PLAYER_IN_TYPE_MP4 && e._makeMP4Player()) : (console.log("to onRuntimeInitialized"), d.onRuntimeInitialized = function () {
-              t.STATIC_MEM_wasmDecoderState = 1, console.log("WASM initialized " + t.STATIC_MEM_wasmDecoderState), e._makeMP4Player();
-            });else {
+            }, c.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH), window.WebAssembly) t.STATIC_MEM_wasmDecoderState, 1 == t.STATIC_MEM_wasmDecoderState ? e.configFormat.type == h.PLAYER_IN_TYPE_MP4 && e._makeMP4Player() : d.onRuntimeInitialized = function () {
+              t.STATIC_MEM_wasmDecoderState = 1, t.STATIC_MEM_wasmDecoderState, e._makeMP4Player();
+            };else {
               var i = "unsupport WASM!";
               /iPhone|iPad/.test(window.navigator.userAgent) && (i += " ios:min-version 11"), alert(i), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
             }
@@ -23674,7 +23673,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "pause",
           value: function value() {
-            return console.log("=====================PAUSE===================="), this.player.pause(), !0;
+            return this.player.pause(), !0;
           }
         }, {
           key: "isPlaying",
@@ -23684,7 +23683,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "setVoice",
           value: function value(e) {
-            if (e < 0) return console.log("voice must larger than 0.0!"), !1;
+            if (e < 0) return !1;
             this.player.setVoice(e);
           }
         }, {
@@ -23698,7 +23697,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "seek",
           value: function value(e) {
-            console.log("============DEBUG===========> SEEK TO:", e);
             var t = this;
             this.seekTarget = e, this.onSeekStart && this.onSeekStart(e), this.timerFeed && (window.clearInterval(this.timerFeed), this.timerFeed = null);
 
@@ -23745,9 +23743,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var e = this,
                 t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0,
                 r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
-                i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
-            console.log("SEEK feedMP4Data:", t, r);
-            var n = parseInt(this.playParam.durationMs / 1e3);
+                i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
+                n = parseInt(this.playParam.durationMs / 1e3);
             this.timerFeed = window.setInterval(function () {
               var a = null,
                   s = null;
@@ -23757,13 +23754,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (null != s) for (var f = 0; f < s.length; f++) {
                 e.player.appendAACFrame(s[f]);
               }
-              if (null != a && (e.configFormat.extInfo.readyShow && (console.log("============== readyShow"), e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1)), t++), null != s && r++, t > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, void (null != i && i());
+              if (null != a && (e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1), t++), null != s && r++, t > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, void (null != i && i());
             }, 0);
           }
         }, {
           key: "_makeMP4Player",
           value: function value() {
-            console.log("type: " + this.configFormat.type), null != this.configFormat.extInfo.core && null !== this.configFormat.extInfo.core && this.configFormat.extInfo.core === h.PLAYER_CORE_TYPE_CNATIVE ? this._cDemuxDecoderEntry() : this.configFormat.type == h.PLAYER_IN_TYPE_MP4 ? this.configFormat.extInfo.moovStartFlag ? this._mp4EntryVodStream() : this._mp4Entry() : this.configFormat.type == h.PLAYER_IN_TYPE_TS || this.configFormat.type == h.PLAYER_IN_TYPE_MPEGTS ? (console.log("go ts"), this._mpegTsEntry()) : this.configFormat.type == h.PLAYER_IN_TYPE_M3U8 ? (console.log("go m3u8"), this._m3u8Entry()) : this.configFormat.type === h.PLAYER_IN_TYPE_RAW_265 && (console.log("go raw265"), this._raw265Entry());
+            this.configFormat.type, null != this.configFormat.extInfo.core && null !== this.configFormat.extInfo.core && this.configFormat.extInfo.core === h.PLAYER_CORE_TYPE_CNATIVE ? this._cDemuxDecoderEntry() : this.configFormat.type == h.PLAYER_IN_TYPE_MP4 ? this.configFormat.extInfo.moovStartFlag ? this._mp4EntryVodStream() : this._mp4Entry() : this.configFormat.type == h.PLAYER_IN_TYPE_TS || this.configFormat.type == h.PLAYER_IN_TYPE_MPEGTS ? this._mpegTsEntry() : this.configFormat.type == h.PLAYER_IN_TYPE_M3U8 ? this._m3u8Entry() : this.configFormat.type === h.PLAYER_IN_TYPE_RAW_265 && this._raw265Entry();
           }
         }, {
           key: "_makeMP4PlayerViewEvent",
@@ -23794,7 +23791,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             }), this.player.onPlayingTime = function (t) {
               f._durationText(t), f._durationText(e / 1e3), null != f.onPlayTime && f.onPlayTime(t);
             }, this.player.onPlayingFinish = function () {
-              a.pause(), console.log("================> DEBUG this.seek(0)"), a.seek(0), null != a.onPlayFinish && a.onPlayFinish();
+              a.pause(), a.seek(0), null != a.onPlayFinish && a.onPlayFinish();
             }, this.player.onSeekFinish = function () {
               null != f.onSeekFinish && f.onSeekFinish();
             }, this.player.onRender = function (e, t, r, i, n) {
@@ -23843,21 +23840,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "_mp4Entry",
           value: function value() {
-            var e = this;
-            console.log("==================== _mp4Entry ====================");
-            var t = this;
+            var e = this,
+                t = this;
             fetch(this.videoURL).then(function (e) {
               return e.arrayBuffer();
             }).then(function (r) {
-              console.log("============= V DEBUG V =============="), console.log(r), t._initMp4BoxObject(), e.mp4Obj.demux(), e.mp4Obj.appendBufferData(r, 0), e.mp4Obj.finishBuffer(), e.mp4Obj.seek(-1);
+              t._initMp4BoxObject(), e.mp4Obj.demux(), e.mp4Obj.appendBufferData(r, 0), e.mp4Obj.finishBuffer(), e.mp4Obj.seek(-1);
             });
           }
         }, {
           key: "_mp4EntryVodStream",
           value: function value() {
-            var e = this;
-            console.log("==================== _mp4EntryVodStream ====================");
-            var t = this;
+            var e = this,
+                t = this;
             this.timerFeed = null, this.mp4Obj = new o(), this._initMp4BoxObject(), this.mp4Obj.demux();
             var r = 0,
                 i = !1,
@@ -23865,14 +23860,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               i || (i = !0, fetch(e.videoURL).then(function (e) {
                 return function e(i) {
                   return i.read().then(function (a) {
-                    if (a.done) return console.log("========== RESULT DONE ==========="), t.mp4Obj.finishBuffer(), t.mp4Obj.seek(-1), void window.clearInterval(n);
+                    if (a.done) return t.mp4Obj.finishBuffer(), t.mp4Obj.seek(-1), void window.clearInterval(n);
                     var s = a.value;
                     return t.mp4Obj.appendBufferData(s.buffer, r), r += s.byteLength, e(i);
                   });
                 }(e.body.getReader());
-              })["catch"](function (e) {
-                console.log(e);
-              }));
+              })["catch"](function (e) {}));
             }, 1);
           }
         }, {
@@ -23890,13 +23883,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               t.playParam.durationMs = 1e3 * t.player.duration, t.playParam.fps = t.player.config.fps, t.playParam.sampleRate = t.player.config.sampleRate, t.playParam.size = {
                 width: t.player.width,
                 height: t.player.height
-              }, t.playParam.audioNone = !0, t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish();
+              }, t.playParam.audioNone = !0, t.player.vCodecID === h.V_CODEC_NAME_HEVC ? (t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = h.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
             }, this.player.onPlayingTime = function (e) {
               t._durationText(e), t._durationText(t.player.duration), null != t.onPlayTime && t.onPlayTime(e);
             }, this.player.onPlayingFinish = function () {
-              t.pause(), t.onPlayFinish && t.onPlayFinish();
-              var r = t.player.release();
-              console.log("releaseRet ===> ", r), e.player = null, e._cDemuxDecoderEntry();
+              t.pause(), t.onPlayFinish && t.onPlayFinish(), t.player.release(), e.player = null, e._cDemuxDecoderEntry();
             }, this.player.onLoadCache = function () {
               null != e.onLoadCache && e.onLoadCache();
             }, this.player.onLoadCacheFinshed = function () {
@@ -23906,25 +23897,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             };
             var r = 0;
             fetch(this.videoURL).then(function (e) {
-              return e.headers.has("Content-Length") && (r = e.headers.get("Content-Length"), t.player.setProbeSize(r * t.configFormat.extInfo.coreProbePart)), console.log("start fetch", e.headers.get("Content-Length")), function e(r) {
-                return console.log("start pump", r), r.read().then(function (i) {
-                  if (i.done) return console.log("========== RESULT DONE ==========="), void t.player.pushDone();
-                  i.value.buffer;
-                  var n = new Uint8Array(i.value.buffer);
-                  return t.player.pushBuffer(n), e(r);
+              return e.headers.has("Content-Length") && (r = e.headers.get("Content-Length"), t.player && t.player.setProbeSize(r * t.configFormat.extInfo.coreProbePart)), e.headers.get("Content-Length"), function e(r) {
+                return r.read().then(function (i) {
+                  if (!i.done) {
+                    i.value.buffer;
+                    var n = new Uint8Array(i.value.buffer);
+                    return t.player && t.player.pushBuffer(n) < 0 ? (t.player.release(), t.player = null, t._mp4EntryVodStream(), !1) : e(r);
+                  }
+
+                  t.player && t.player.pushDone();
                 });
               }(e.body.getReader());
-            })["catch"](function (e) {
-              console.log(e);
-            });
+            })["catch"](function (e) {});
           }
         }, {
           key: "_mpegTsEntry",
           value: function value() {
-            console.log("entry ts");
             var e = this;
             this.timerFeed = null, this.mpegTsObj = new f.MpegTs(), this.mpegTsObj.bindReady(e), this.mpegTsObj.onDemuxed = this._mpegTsEntryReady, this.mpegTsObj.onReady = function () {
-              console.log("onReady"), fetch(e.videoURL).then(function (e) {
+              fetch(e.videoURL).then(function (e) {
                 return e.arrayBuffer();
               }).then(function (t) {
                 t.fileStart = 0;
@@ -23985,7 +23976,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   data: i,
                   pts: r
                 };
-                r += t, e.player.appendHevcFrame(n), e.configFormat.extInfo.readyShow && (console.log("============== readyShow"), e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1));
+                r += t, e.player.appendHevcFrame(n), e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1);
               }
             }, 1);
           }
@@ -24053,9 +24044,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var t = this,
               r = document.querySelector("div#" + this.configFormat.playerId);
           this.video = document.createElement("video"), this.video.src = e, this.video.style.width = "100%", this.video.style.height = "100%", r.appendChild(this.video), this.video.ontimeupdate = function () {
-            console.log("ontimeupdate"), t.onPlayingTime && t.onPlayingTime(t.video.currentTime);
+            t.onPlayingTime && t.onPlayingTime(t.video.currentTime);
           }, this.video.onended = function () {
-            console.log("onended"), t.onPlayingFinish && t.onPlayingFinish();
+            t.onPlayingFinish && t.onPlayingFinish();
           };
         }
       }, {
@@ -24066,7 +24057,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "seek",
         value: function value(e) {
-          console.log("SEEK:", e), this.video.currentTime = e;
+          this.video.currentTime = e;
         }
       }, {
         key: "pause",
@@ -24116,7 +24107,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         r.shaderSource(s, a), r.compileShader(s);
         var o = ["precision highp float;", "varying lowp vec2 vTextureCoord;", "uniform sampler2D YTexture;", "uniform sampler2D UTexture;", "uniform sampler2D VTexture;", "const mat4 YUV2RGB = mat4", "(", " 1.1643828125, 0, 1.59602734375, -.87078515625,", " 1.1643828125, -.39176171875, -.81296875, .52959375,", " 1.1643828125, 2.017234375, 0, -1.081390625,", " 0, 0, 0, 1", ");", "void main(void) {", " gl_FragColor = vec4( texture2D(YTexture, vTextureCoord).x, texture2D(UTexture, vTextureCoord).x, texture2D(VTexture, vTextureCoord).x, 1) * YUV2RGB;", "}"].join("\n"),
             f = r.createShader(r.FRAGMENT_SHADER);
-        r.shaderSource(f, o), r.compileShader(f), r.attachShader(n, s), r.attachShader(n, f), r.linkProgram(n), r.useProgram(n), r.getProgramParameter(n, r.LINK_STATUS) || console.log("Shader link failed.");
+        r.shaderSource(f, o), r.compileShader(f), r.attachShader(n, s), r.attachShader(n, f), r.linkProgram(n), r.useProgram(n), r.getProgramParameter(n, r.LINK_STATUS);
         var u = r.getAttribLocation(n, "aVertexPosition");
         r.enableVertexAttribArray(u);
         var h = r.getAttribLocation(n, "aTextureCoord");
