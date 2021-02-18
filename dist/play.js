@@ -17484,6 +17484,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       DEFAULT_FRAME_DUR: 40,
       DEFAULT_FIXED: !1,
       DEFAULT_SAMPLERATE: 44100,
+      DEFAULT_CHANNELS: 2,
       DEFAULT_CONSU_SAMPLE_LEN: 20,
       PLAYER_MODE_VOD: "vod",
       PLAYER_MODE_NOTIME_LIVE: "live",
@@ -17680,6 +17681,87 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
     }
 
+    var n = window.AudioContext || window.webkitAudioContext,
+        a = e("../consts"),
+        s = function s() {
+      return new Date().getTime();
+    },
+        o = function () {
+      function e(t) {
+        !function (e, t) {
+          if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
+        }(this, e), this._sample_rate = t.sampleRate || a.DEFAULT_SAMPLERATE, this._seg_dur = t.segDur || 2, this._channels = t.channels || a.DEFAULT_CHANNELS, this._swapStartPlay = !0, this._start_time = -1, this._now_seg_dur = -1, this._push_start_idx = 0, this._pcm_array_buf = null, this._once_pop_len = this._sample_rate * this._seg_dur, this._active_node = null, this._ctx = new n(), this._gain = this._ctx.createGain(), this._gain.gain.value = 1, this._gain.connect(this._ctx.destination);
+      }
+
+      var t, r, o;
+      return t = e, (r = [{
+        key: "setVoice",
+        value: function value(e) {
+          this._gain.gain.value = e;
+        }
+      }, {
+        key: "pushBuffer",
+        value: function value(e) {
+          var t = e.buffer,
+              r = null,
+              i = t.byteLength % 4;
+
+          if (0 !== i) {
+            var n = new Uint8Array(t.byteLength + i);
+            n.set(new Uint8Array(t), 0), r = new Float32Array(n.buffer);
+          } else r = new Float32Array(t);
+
+          var a = null;
+
+          if (this._channels >= 2) {
+            var s = r.length / 2;
+            a = new Float32Array(s);
+
+            for (var o = 0, f = 0; f < r.length; f += 2) {
+              a[o] = r[f], o++;
+            }
+          } else a = new Float32Array(r);
+
+          if (null === this._pcm_array_buf) this._pcm_array_buf = new Float32Array(a);else {
+            var u = new Float32Array(this._pcm_array_buf.length + a.length);
+            u.set(this._pcm_array_buf, 0), u.set(a, this._pcm_array_buf.length), this._pcm_array_buf = u;
+          }
+          this._pcm_array_buf.length;
+        }
+      }, {
+        key: "readingLoopWithF32",
+        value: function value() {
+          if (this._start_time > 0 && s() - this._start_time >= this._now_seg_dur && (s(), this._start_time, this._now_seg_dur, this._start_time = -1, this._now_seg_dur = -1), s(), this._start_time < 0) if (new Date(), null !== this._pcm_array_buf && this._pcm_array_buf.length > this._push_start_idx) {
+            this._swapStartPlay = !1;
+            var e = this._push_start_idx + this._once_pop_len;
+            e > this._pcm_array_buf.length && (e = this._pcm_array_buf.length);
+
+            var t = this._pcm_array_buf.slice(this._push_start_idx, e);
+
+            this._push_start_idx += t.length, this._now_seg_dur = 1 * t.length / this._sample_rate * 1e3, t.length, this._sample_rate, this._now_seg_dur;
+
+            var r = this._ctx.createBuffer(1, t.length, this._sample_rate);
+
+            t.length, new Date(), r.copyToChannel(t, 0), this._active_node = this._ctx.createBufferSource(), this._active_node.buffer = r, this._active_node.connect(this._gain), this._start_time = s(), this._active_node.start(0);
+          } else setTimeout(this.readingLoopWithF32, 1);
+        }
+      }]) && i(t.prototype, r), o && i(t, o), e;
+    }();
+
+    r.AudioPcmPlayer = o;
+  }, {
+    "../consts": 205
+  }],
+  208: [function (e, t, r) {
+    "use strict";
+
+    function i(e, t) {
+      for (var r = 0; r < t.length; r++) {
+        var i = t[r];
+        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(e, i.key, i);
+      }
+    }
+
     function n(e, t) {
       if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
     }
@@ -17688,32 +17770,33 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     var a = e("./missile.js"),
         s = (e("./cache"), e("./cacheYuv"), e("../render-engine/webgl-420p")),
-        o = e("../consts"),
-        f = e("../version"),
-        u = function u() {
+        o = e("./audio-native-core"),
+        f = e("../consts"),
+        u = e("../version"),
+        h = function h() {
       return new Date().getTime();
     },
-        h = function e(t, r, i, a, s, o, f, u, h) {
+        c = function e(t, r, i, a, s, o, f, u, h) {
       n(this, e), this.data_y = t, this.data_u = r, this.data_v = i, this.line1 = a, this.line2 = s, this.line3 = o, this.width = f, this.height = u, this.pts = h;
     },
-        c = function () {
+        d = function () {
       function e(t) {
         n(this, e), this.config = {
-          width: t.width || o.DEFAULT_WIDTH,
-          height: t.height || o.DEFAULT_HEIGHT,
-          fps: t.fps || o.DEFAULT_FPS,
-          sampleRate: t.sampleRate || o.DEFAULT_SAMPLERATE,
-          playerId: t.playerId || o.DEFAILT_WEBGL_PLAY_ID,
+          width: t.width || f.DEFAULT_WIDTH,
+          height: t.height || f.DEFAULT_HEIGHT,
+          fps: t.fps || f.DEFAULT_FPS,
+          sampleRate: t.sampleRate || f.DEFAULT_SAMPLERATE,
+          playerId: t.playerId || f.DEFAILT_WEBGL_PLAY_ID,
           token: t.token || null,
           readyShow: t.readyShow || !1
-        }, this.probeSize = 4524611, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = o.V_CODEC_NAME_UNKN, this.decPktInterval = null, this.playFrameInterval = null, this._videoQueue = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, f.PLAYER_VERSION);
+        }, this.probeSize = 4524611, this.audioPlayer = null, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = f.V_CODEC_NAME_UNKN, this.audioIdx = -1, this.decPktInterval = null, this.playFrameInterval = null, this._videoQueue = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, u.PLAYER_VERSION);
         var r = a.addFunction(this._probeFinCallback.bind(this)),
             i = a.addFunction(this._frameCallback.bind(this)),
             s = a.addFunction(this._samplesCallback.bind(this));
         a.cwrap("initializeSniffStreamModule", "number", ["number", "number", "number", "number"])(this.corePtr, r, i, s);
       }
 
-      var t, r, c;
+      var t, r, d;
       return t = e, (r = [{
         key: "release",
         value: function value() {
@@ -17740,14 +17823,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 r = 0,
                 i = 0;
             this.playFrameInterval = window.setInterval(function () {
-              if (r = u(), e._videoQueue.length > 0 && r - t >= e.frameTime - i) {
+              if (r = h(), e._videoQueue.length > 0 && r - t >= e.frameTime - i) {
                 t = r;
 
                 var n = e._videoQueue.shift();
 
                 if (s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), e.onPlayingTime && e.onPlayingTime(n.pts), e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v), n.pts, e.duration, n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.pause();else if (e.readEOF, e.pushEOF, !0 === e.readEOF && !0 === e.pushEOF) return e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.decPktInterval && window.clearInterval(e.decPktInterval), e.decPktInterval = null, e.pause(), void (e.onPlayingTime && e.onPlayingTime(e.duration));
-                i = u() - r;
+                i = h() - r;
               }
+
+              e.audioPlayer && e.audioPlayer.readingLoopWithF32();
             }, 2);
           }
         }
@@ -17761,7 +17846,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         value: function value(e) {}
       }, {
         key: "setVoice",
-        value: function value(e) {}
+        value: function value(e) {
+          this.audioPlayer && this.audioPlayer.setVoice(e);
+        }
       }, {
         key: "_checkDisplaySize",
         value: function value(e, t) {
@@ -17790,17 +17877,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }, {
         key: "_probeFinCallback",
-        value: function value(e, t, r, i, n, s, f, u) {
-          var h = this;
-          this._createYUVCanvas(), o.V_CODEC_NAME_HEVC, this.config.fps = 1 * i, this.frameTime = 1e3 / this.config.fps, this.width = t, this.height = r, this.duration = e, this.vCodecID = f, this.config.sampleRate = n, this.channels = s;
+        value: function value(e, t, r, i, n, s, u, h, c) {
+          var d = this;
+          this._createYUVCanvas(), f.V_CODEC_NAME_HEVC, this.config.fps = 1 * i, this.frameTime = 1e3 / this.config.fps, this.width = t, this.height = r, this.duration = e, this.vCodecID = h, this.config.sampleRate = s, this.channels = u, this.audioIdx = n;
 
-          for (var c = a.HEAPU8.subarray(u, u + 10), d = 0; d < c.length; d++) {
-            String.fromCharCode(c[d]);
+          for (var l = a.HEAPU8.subarray(c, c + 10), p = 0; p < l.length; p++) {
+            String.fromCharCode(l[p]);
           }
 
-          o.V_CODEC_NAME_HEVC === this.vCodecID && null == this.decPktInterval && (this.decPktInterval = window.setInterval(function () {
-            h._decPktIntervalFunc();
-          }, 10)), this.onProbeFinish && this.onProbeFinish();
+          if (f.V_CODEC_NAME_HEVC === this.vCodecID && (null == this.decPktInterval && (this.decPktInterval = window.setInterval(function () {
+            d._decPktIntervalFunc();
+          }, 10)), n >= 0)) {
+            var m = {
+              sampleRate: this.config.sampleRate,
+              channels: this.channels,
+              segDur: 1
+            };
+            this.audioPlayer = new o.AudioPcmPlayer(m);
+          }
+
+          this.onProbeFinish && this.onProbeFinish();
         }
       }, {
         key: "_decPktIntervalFunc",
@@ -17809,7 +17905,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }, {
         key: "_frameCallback",
-        value: function value(e, t, r, i, n, o, f, u, c) {
+        value: function value(e, t, r, i, n, o, f, u, h) {
           this.canvas.line1 === i && this.canvas.height == u || (this.canvas.width = i, this.canvas.height = u, this.isCheckDisplay) || this._checkDisplaySize(i, u);
           var d = a.HEAPU8.subarray(e, e + i * u),
               l = a.HEAPU8.subarray(t, t + n * u / 2),
@@ -17817,11 +17913,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               m = new Uint8Array(d),
               b = new Uint8Array(l),
               y = new Uint8Array(p);
-          this.config.readyShow && (s.renderFrame(this.yuv, m, b, y, i, u), this.config.readyShow = !1), this._videoQueue.push(new h(m, b, y, i, n, o, f, u, c));
+          this.config.readyShow && (s.renderFrame(this.yuv, m, b, y, i, u), this.config.readyShow = !1), this._videoQueue.push(new c(m, b, y, i, n, o, f, u, h));
         }
       }, {
         key: "_samplesCallback",
-        value: function value(e, t, r, i) {}
+        value: function value(e, t, r, i) {
+          var n = a.HEAPU8.subarray(e, e + t),
+              s = new Uint8Array(n);
+          this.audioPlayer.pushBuffer(s);
+        }
       }, {
         key: "setProbeSize",
         value: function value(e) {
@@ -17834,21 +17934,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           return a.HEAP8.set(e, t), a.cwrap("pushSniffStreamData", "number", ["number", "number", "number", "number"])(this.corePtr, t, e.length, this.probeSize);
         }
-      }]) && i(t.prototype, r), c && i(t, c), e;
+      }]) && i(t.prototype, r), d && i(t, d), e;
     }();
 
-    r.CNativeCore = c;
+    r.CNativeCore = d;
   }, {
     "../consts": 205,
-    "../render-engine/webgl-420p": 226,
-    "../version": 229,
-    "./cache": 208,
-    "./cacheYuv": 209,
-    "./missile.js": 212,
+    "../render-engine/webgl-420p": 227,
+    "../version": 230,
+    "./audio-native-core": 207,
+    "./cache": 209,
+    "./cacheYuv": 210,
+    "./missile.js": 213,
     "yuv-buffer": 197,
     "yuv-canvas": 204
   }],
-  208: [function (e, t, r) {
+  209: [function (e, t, r) {
     (function (r) {
       "use strict";
 
@@ -17883,9 +17984,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {
-    "./cacheYuv": 209
+    "./cacheYuv": 210
   }],
-  209: [function (e, t, r) {
+  210: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -17913,7 +18014,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.CacheYuvStruct = n;
   }, {}],
-  210: [function (e, t, r) {
+  211: [function (e, t, r) {
     "use strict";
 
     t.exports = {
@@ -17987,7 +18088,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       DEFINE_OTHERS_FRAME: 153
     };
   }, {}],
-  211: [function (e, t, r) {
+  212: [function (e, t, r) {
     "use strict";
 
     var i = e("./hevc-header"),
@@ -18013,9 +18114,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
     };
   }, {
-    "./hevc-header": 210
+    "./hevc-header": 211
   }],
-  212: [function (e, t, r) {
+  213: [function (e, t, r) {
     (function (r, i, n) {
       "use strict";
 
@@ -21896,8 +21997,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         k[e]();
       }
 
-      function Ur(e, t, r, i, n, a, s, o, f) {
-        k[e](t, r, i, n, a, s, o, f);
+      function Ur(e, t, r, i, n, a, s, o, f, u) {
+        k[e](t, r, i, n, a, s, o, f, u);
       }
 
       function Ir(e, t) {
@@ -22203,7 +22304,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     fs: 63,
     path: 149
   }],
-  213: [function (e, t, r) {
+  214: [function (e, t, r) {
     "use strict";
 
     function i(e) {
@@ -22557,16 +22658,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     };
   }, {
     "../consts": 205,
-    "../render-engine/webgl-420p": 226,
-    "../version": 229,
+    "../render-engine/webgl-420p": 227,
+    "../version": 230,
     "./audio-core": 206,
-    "./cache": 208,
-    "./cacheYuv": 209,
-    "./missile.js": 212,
+    "./cache": 209,
+    "./cacheYuv": 210,
+    "./missile.js": 213,
     "yuv-buffer": 197,
     "yuv-canvas": 204
   }],
-  214: [function (e, t, r) {
+  215: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -22671,7 +22772,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.RawParser = n;
   }, {}],
-  215: [function (e, t, r) {
+  216: [function (e, t, r) {
     "use strict";
 
     var i = e("./bufferFrame");
@@ -22724,9 +22825,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return e;
     };
   }, {
-    "./bufferFrame": 216
+    "./bufferFrame": 217
   }],
-  216: [function (e, t, r) {
+  217: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -22754,7 +22855,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.BufferFrame = n;
   }, {}],
-  217: [function (e, t, r) {
+  218: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -22894,13 +22995,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     r.M3u8 = h;
   }, {
     "../consts": 205,
-    "../decoder/hevc-imp": 211,
-    "./buffer": 215,
-    "./bufferFrame": 216,
-    "./m3u8base": 218,
-    "./mpegts/mpeg.js": 222
+    "../decoder/hevc-imp": 212,
+    "./buffer": 216,
+    "./bufferFrame": 217,
+    "./m3u8base": 219,
+    "./mpegts/mpeg.js": 223
   }],
-  218: [function (e, t, r) {
+  219: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23048,7 +23149,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }, {
     "../consts": 205
   }],
-  219: [function (e, t, r) {
+  220: [function (e, t, r) {
     "use strict";
 
     var i = e("mp4box"),
@@ -23190,12 +23291,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }, t.exports = u;
   }, {
     "../consts": 205,
-    "../decoder/hevc-header": 210,
-    "../decoder/hevc-imp": 211,
-    "./buffer": 215,
+    "../decoder/hevc-header": 211,
+    "../decoder/hevc-imp": 212,
+    "./buffer": 216,
     mp4box: 143
   }],
-  220: [function (e, t, r) {
+  221: [function (e, t, r) {
     "use strict";
 
     t.exports = {
@@ -23212,7 +23313,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       CODEC_OFFSET_TABLE: ["hevc", "h265", "avc", "h264", "aac", "mp3"]
     };
   }, {}],
-  221: [function (e, t, r) {
+  222: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23264,7 +23365,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.AACDecoder = n;
   }, {}],
-  222: [function (e, t, r) {
+  223: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23460,11 +23561,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.MPEG_JS = o;
   }, {
-    "../../decoder/missile.js": 212,
-    "./consts": 220,
-    "./decoder/aac": 221
+    "../../decoder/missile.js": 213,
+    "./consts": 221,
+    "./decoder/aac": 222
   }],
-  223: [function (e, t, r) {
+  224: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23568,11 +23669,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.MpegTs = o;
   }, {
-    "../decoder/hevc-imp": 211,
-    "./buffer": 215,
-    "./mpegts/mpeg.js": 222
+    "../decoder/hevc-imp": 212,
+    "./buffer": 216,
+    "./mpegts/mpeg.js": 223
   }],
-  224: [function (e, t, r) {
+  225: [function (e, t, r) {
     (function (t) {
       "use strict";
 
@@ -23883,7 +23984,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               t.playParam.durationMs = 1e3 * t.player.duration, t.playParam.fps = t.player.config.fps, t.playParam.sampleRate = t.player.config.sampleRate, t.playParam.size = {
                 width: t.player.width,
                 height: t.player.height
-              }, t.playParam.audioNone = !0, t.player.vCodecID === h.V_CODEC_NAME_HEVC ? (t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = h.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
+              }, t.playParam.audioNone = !1, t.player.vCodecID === h.V_CODEC_NAME_HEVC ? (t.playParam.audioIdx < 0 && (t.playParam.audioNone = !0), t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = h.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
             }, this.player.onPlayingTime = function (e) {
               t._durationText(e), t._durationText(t.player.duration), null != t.onPlayTime && t.onPlayTime(e);
             }, this.player.onPlayingFinish = function () {
@@ -23994,20 +24095,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {
     "./consts": 205,
-    "./decoder/c-native-core": 207,
-    "./decoder/cache": 208,
-    "./decoder/missile.js": 212,
-    "./decoder/player-core": 213,
-    "./decoder/raw-parser": 214,
-    "./demuxer/m3u8": 217,
-    "./demuxer/mp4": 219,
-    "./demuxer/mpegts/mpeg.js": 222,
-    "./demuxer/ts": 223,
-    "./native/mp4-player": 225,
-    "./utils/static-mem": 227,
-    "./utils/ui/ui": 228
+    "./decoder/c-native-core": 208,
+    "./decoder/cache": 209,
+    "./decoder/missile.js": 213,
+    "./decoder/player-core": 214,
+    "./decoder/raw-parser": 215,
+    "./demuxer/m3u8": 218,
+    "./demuxer/mp4": 220,
+    "./demuxer/mpegts/mpeg.js": 223,
+    "./demuxer/ts": 224,
+    "./native/mp4-player": 226,
+    "./utils/static-mem": 228,
+    "./utils/ui/ui": 229
   }],
-  225: [function (e, t, r) {
+  226: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -24081,7 +24182,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }, {
     "../consts": 205
   }],
-  226: [function (e, t, r) {
+  227: [function (e, t, r) {
     "use strict";
 
     function i(e) {
@@ -24119,14 +24220,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
     };
   }, {}],
-  227: [function (e, t, r) {
+  228: [function (e, t, r) {
     (function (e) {
       "use strict";
 
       e.STATIC_MEM_wasmDecoderState = -1;
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {}],
-  228: [function (e, t, r) {
+  229: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -24155,14 +24256,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.UI = n;
   }, {}],
-  229: [function (e, t, r) {
+  230: [function (e, t, r) {
     "use strict";
 
     t.exports = {
       PLAYER_VERSION: "2.3.0"
     };
   }, {}]
-}, {}, [224]);
+}, {}, [225]);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){

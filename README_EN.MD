@@ -2,6 +2,8 @@
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/02/18 |
+| 1 | 1.New player core support play with audio |
 | Time | 2021/02/08 |
 | 1 | 1.New player core (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
 | Time | 2021/01/04 |
