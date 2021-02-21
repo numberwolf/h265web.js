@@ -243,7 +243,7 @@ let config = {
 | \+ readyShow  | Bool | true/false | N:default is false | need cover image |
 | \+ rawFps  | Float32 | Example:30 | N:default 24 | Fps for play HEVC/AVC stream |
 | \+ core  | Int | - | N:default 0 | 0:Default player core 1: New player core(beta) |
-| \+ coreProbePart  | Float32 | - | 否:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov in the mp4 head, use 0.1(10%) （only with New player core(beta)) |
+| \+ coreProbePart  | Float32 | - | 否:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with New player core(beta)) |
 
 
 <br>
