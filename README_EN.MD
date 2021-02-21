@@ -2,6 +2,8 @@
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/02/21 |
+| 1 | 1.New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
 | Time | 2021/02/18 |
 | 1 | 1.New player core support play with audio |
 | Time | 2021/02/08 |
@@ -12,9 +14,9 @@
 | 3 | 3.Remove Play/Pause Mask |
 | 4 | 4.Add Event:`onPlayFinish`, called when play video finished |
 
-| h265web.js | mpeg.js `(ts demuxer)` |
-| ---- | ---- |
-| [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) |
+| h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder |
+| ---- | ---- | ---- |
+| [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) | New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
 
 <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
 
@@ -141,6 +143,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 ## 2、SdkAndApiDocument ##
 
 ———————— __API/Events__
+
+#### New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder)
 
 ### Install ###
 

@@ -2,6 +2,8 @@
 
 | 更新 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/02/21 |
+| 内容1 | 1.更新底层265解码器SDK项目 - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
 | 时间 | 2021/02/18 |
 | 内容1 | 1.新播放内核，增加音频播放能力 |
 | 时间 | 2021/02/08 |
@@ -16,9 +18,9 @@
 | ---- | ---- |
 | 播放问题 | 新内核增加Seek能力 |
 
-| h265web.js | mpeg.js `(解析ts)` |
-| ---- | ---- |
-| [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) |
+| h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK |
+| ---- | ---- | ---- |
+| [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) | [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
 
 <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
 
@@ -145,6 +147,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 ## 2、播放器SDK使用文档 ##
 
 ———————— __API以及事件能力__
+
+#### 如果想使用底层的265解码器能力 可以看 [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder)
 
 ### 安装 ###
 
