@@ -1,40 +1,24 @@
 # h265web.js
 
-| 更新 | 内容 |
-| ---- | ---- |
-| 时间 | 2021/02/21 |
-| 内容1 | 1.更新底层265解码器SDK项目 - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
-| 时间 | 2021/02/18 |
-| 内容1 | 1.新播放内核，增加音频播放能力 |
-| 时间 | 2021/02/08 |
-| 内容1 | 1.增加播放内核类型：新播放内核，可兼容多种解码Badcase(测试阶段, 输入媒资Mp4Box需要前置Moov，当前还不支持音频、Seek) |
-| 时间 | 2021/01/04 |
-| 内容1 | 1.支持H.265的流式接入，可直接以265的URI进行播放、也可以流式字节填充播放（可应用于直播） |
-| 内容2 | 2.取消了播放器自带的播放view蒙板（用于点击播放画面触发暂停/播放能力），开放给用户自行实现 |
-| 内容3 | 3.支持 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
-| 内容4 | 4.增加`onPlayFinish` 事件回调，播放结束调用 |
-
-| @TODO | 内容 |
-| ---- | ---- |
-| 播放问题 | 新内核增加Seek能力 |
-
-| h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK |
-| ---- | ---- | ---- |
-| [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) | [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
-
-<a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
-
-README.md：<a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
+<a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
 <img src="./resource/logo@300x300.png" width="300px" />
 
-————————— __`一个可支持HEVC/H.265编码播放720P、1080P的播放器。`__
+一个可支持HEVC/H.265编码播放720P、1080P的播放器
+`~^_^~` 作者用爱发电 如果 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> 帮助到了你，请点击右上角的star!
 
-__`~^_^~ 作者用爱发电` 如果 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> 帮助到了你，请点击右上角的star~__
+| h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK |
+| ---- | ---- | ---- |
+| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
+
+<a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
+
 
 ## 目录
 
 - [0、说明](#0说明)
+
+	- [更新日志](#更新日志)
 
 	- [当前能力](#当前能力)
 
@@ -60,13 +44,42 @@ __`~^_^~ 作者用爱发电` 如果 <a href="https://github.com/numberwolf/h265w
 
 	- [播放器API能力](#播放器api能力)
 
-- [3、其它帮助](#3其它帮助)
+- [3、其它](#3其它)
+
+	- [捐赠 - 让作者更加拼命](#捐赠)
 	
 	- [FFmpeg转码265编码的视频](#ffmpeg转码265编码的视频)
 
 <hr>
 
 ### 0、说明 ###
+
+#### 更新日志 ####
+
+| 更新日志 | 内容 |
+| ---- | ---- |
+| 时间 | 2021/02/28 |
+| - | 1.开放给H.265解码器喂完整的265nalu帧函数 `append265NaluFrame(nalBuf);` |
+| - | 2.开放新库，解析h265流为帧数据的工具 [raw-parser.js](./dist/raw-parser.js) |
+| 时间 | 2021/02/21 |
+| - | 1.更新底层265解码器SDK项目 - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
+| 时间 | 2021/02/18 |
+| - | 1.新播放内核，增加音频播放能力 |
+| 时间 | 2021/02/08 |
+| - | 1.增加播放内核类型：新播放内核，可兼容多种解码Badcase(测试阶段, 输入媒资Mp4Box需要前置Moov，当前还不支持音频、Seek) |
+| 时间 | 2021/01/04 |
+| - | 1.支持H.265的流式接入，可直接以265的URI进行播放、也可以流式字节填充播放（可应用于直播） |
+| - | 2.取消了播放器自带的播放view蒙板（用于点击播放画面触发暂停/播放能力），开放给用户自行实现 |
+| - | 3.支持 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
+| - | 4.增加`onPlayFinish` 事件回调，播放结束调用 |
+
+
+| @TODO | 内容 |
+| ---- | ---- |
+| 播放问题 | 新内核增加Seek能力 |
+| 播放能力 | 增加http-flv直播能力 |
+
+<br>
 
 #### 当前能力 ####
 
@@ -311,6 +324,7 @@ var config = {
 		````
 
 	* 2）创建播放器
+
 		* 1. 以`require('./src/h265webjs');`引入为前提
 
 		示例：
@@ -326,41 +340,51 @@ var config = {
 		```
 
 		* 3. 如果创建的是`raw265`类型的裸流数据播放 请注意
+			> 这部分fetch请求网络数据以及异步喂数据的过程 请自行改写,下面给出的仅仅是一个demo,网络IO和解析265流为帧数据会非常耗时。
+			>   
+			> 如果你可以通过websocket直接一帧一帧传输的话，那么只需要调用喂265数据的函数即可。
 
-			* `raw265`类型下，喂字节流播放
+			* `raw265`类型下，喂一帧一帧H.265播放
 
 			调用函数
 
 			|  函数 | 返回 | 说明 | 
 			|  ----  | ----  | ---- |
-			| append265raw  | bool | 喂裸流字节数据 |
+			| append265NaluFrame  | NULL | 喂一帧265数据 |
 
 			参数
 
 			| 参数 | 类型 | 默认值 | 必填 | 说明 | 
 			|  ----  | ----  | ---- | ---- | ---- |
-			| chunk  | Uint8Array | - | 是 | 字节裸流数据 |
+			| frame  | Uint8Array | - | 是 | 一帧265数据 |
 
 			例子 - 这里直接将265文件通过网络串流传输
 
 			```javascript
-			let videoURL = "demo/res/raw.h265";
+			//
 		    // fetch 265
-		    let fileStart = 0;
+		    // you can use your code to fetch vod stream
+		    // only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+		    //
+		    let rawParser = new RawParserModule();
+
+		    let fetchFinished = false;
 		    let startFetch = false;
 		    let networkInterval = window.setInterval(() => {
 		        if (!startFetch) {
 		            startFetch = true;
-		            fetch(videoURL).then(function(response) {
+		            fetch(url265).then(function(response) {
 		                let pump = function(reader) {
 		                    return reader.read().then(function(result) {
 		                        if (result.done) {
+		                            // console.log("========== RESULT DONE ===========");
+		                            fetchFinished = true;
 		                            window.clearInterval(networkInterval);
+		                            networkInterval = null;
 		                            return;
 		                        }
 		                        let chunk = result.value;
-		                        // console.log(chunk);
-		                        h265webjs.append265raw(chunk); // 调用喂流
+		                        rawParser.appendStreamRet(chunk);
 		                        return pump(reader);
 		                    });
 		                }
@@ -369,6 +393,17 @@ var config = {
 		            .catch(function(error) {
 		                console.log(error);
 		            });
+		        }
+		    }, 1);
+
+		    // fps>=30 play else cache
+		    let naluParseInterval = window.setInterval(() => {
+		        if (nalBuf != false) {
+		            // require
+		            h265webjs.append265NaluFrame(nalBuf);
+		        } else if (fetchFinished) {
+		            window.clearInterval(naluParseInterval);
+		            naluParseInterval = null;
 		        }
 		    }, 1);
 			```
@@ -616,7 +651,15 @@ let mediaInfo = player.mediaInfo();
 
 <br>
 
-## 3、其它帮助 ##
+## 3、其它 ##
+
+### 捐赠 ###
+
+|  微信 | 支付宝 | PayPal |
+|  ---- | ----  | ---- |
+| <img src="dist/assets/donate/wechat.JPG" height="500"> | <img src="dist/assets/donate/alipay.JPG" height="500"> | TODO |
+
+<br>
 
 ### FFmpeg转码265编码的视频 ###
 

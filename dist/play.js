@@ -17891,7 +17891,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var m = {
               sampleRate: this.config.sampleRate,
               channels: this.channels,
-              segDur: 1
+              segDur: 3
             };
             this.audioPlayer = new o.AudioPcmPlayer(m);
           }
@@ -17901,7 +17901,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "_decPktIntervalFunc",
         value: function value() {
-          this._videoQueue.length < 5 && this.onLoadCache && this.onLoadCache(), this._videoQueue.length < 30 ? (-404 == a.cwrap("getSniffStreamPkg", "number", ["number"])(this.corePtr) && (this.readEOF = !0), this._videoQueue.length) : this.onLoadCacheFinshed && this.onLoadCacheFinshed();
+          this._videoQueue.length < 30 && this.onLoadCache && this.onLoadCache(), this._videoQueue.length < 100 ? (-404 == a.cwrap("getSniffStreamPkg", "number", ["number"])(this.corePtr) && (this.readEOF = !0), this._videoQueue.length) : this.onLoadCacheFinshed && this.onLoadCacheFinshed();
         }
       }, {
         key: "_frameCallback",
@@ -17940,8 +17940,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     r.CNativeCore = d;
   }, {
     "../consts": 205,
-    "../render-engine/webgl-420p": 227,
-    "../version": 230,
+    "../render-engine/webgl-420p": 226,
+    "../version": 229,
     "./audio-native-core": 207,
     "./cache": 209,
     "./cacheYuv": 210,
@@ -22525,7 +22525,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           t.playParams.seekEvent && (t.playParams.seekEvent = !1, t.onSeekFinish(), t.isPlaying || (t.playFrameYUV(!0, t.playParams.accurateSeek), t.pause()), t.config.audioNone || t.audio.setVoice(t.realVolume)), t.onPlayingTime && t.onPlayingTime(t.videoPTS), t.checkFinished(t.playParams.mode);
         },
         play: function play(e) {
-          t.playParams = e, t.calcuteStartTime = c(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, t.playParams.mode == u.PLAYER_MODE_NOTIME_LIVE || t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
+          t.playParams = e, t.calcuteStartTime = c(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, t.playParams.mode == u.PLAYER_MODE_NOTIME_LIVE ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, t.loop = window.setInterval(function () {
+            var e = c();
+            t.playFrameYUV(!0, t.playParams.accurateSeek), t.preCostTime = c() - e, t.preCostTime;
+          }, t.frameTime)) : t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
             var e = c();
             t.playFunc(), t.preCostTime = c() - e, t.preCostTime;
           }, 1)) : (t.loop = window.setInterval(function () {
@@ -22658,8 +22661,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     };
   }, {
     "../consts": 205,
-    "../render-engine/webgl-420p": 227,
-    "../version": 230,
+    "../render-engine/webgl-420p": 226,
+    "../version": 229,
     "./audio-core": 206,
     "./cache": 209,
     "./cacheYuv": 210,
@@ -22668,111 +22671,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     "yuv-canvas": 204
   }],
   215: [function (e, t, r) {
-    "use strict";
-
-    function i(e, t) {
-      for (var r = 0; r < t.length; r++) {
-        var i = t[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(e, i.key, i);
-      }
-    }
-
-    var n = function () {
-      function e() {
-        !function (e, t) {
-          if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-        }(this, e), this.frameList = null, this.stream = null;
-      }
-
-      var t, r, n;
-      return t = e, (r = [{
-        key: "pushFrameRet",
-        value: function value(e) {
-          return !(!e || null == e || null == e || (this.frameList && null != this.frameList && null != this.frameList || (this.frameList = []), this.frameList.push(e), 0));
-        }
-      }, {
-        key: "nextFrame",
-        value: function value() {
-          return !this.frameList && null == this.frameList || null == this.frameList && this.frameList.length < 1 ? null : this.frameList.shift();
-        }
-      }, {
-        key: "clearFrameRet",
-        value: function value() {
-          this.frameList = null;
-        }
-      }, {
-        key: "setStreamRet",
-        value: function value(e) {
-          this.stream = e;
-        }
-      }, {
-        key: "getStreamRet",
-        value: function value() {
-          return this.stream;
-        }
-      }, {
-        key: "appendStreamRet",
-        value: function value(e) {
-          if (!e || void 0 === e || null == e) return !1;
-          if (!this.stream || void 0 === this.stream || null == this.stream) return this.stream = e, !0;
-          var t = this.stream.length,
-              r = e.length,
-              i = new Uint8Array(t + r);
-          return i.set(this.stream, 0), i.set(e, t), this.stream = i, !0;
-        }
-      }, {
-        key: "subBuf",
-        value: function value(e, t) {
-          var r = new Uint8Array(this.stream.subarray(e, t + 1));
-          return this.stream = new Uint8Array(this.stream.subarray(t + 1)), r;
-        }
-      }, {
-        key: "nextNalu",
-        value: function value() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
-          if (null == this.stream || this.stream.length <= 4) return !1;
-
-          for (var t = -1, r = 0; r < this.stream.length; r++) {
-            if (r + 5 >= this.stream.length) return -1 != t && this.subBuf(t, this.stream.length - 1);
-
-            if (0 == this.stream[r] && 0 == this.stream[r + 1] && 1 == this.stream[r + 2] || 0 == this.stream[r] && 0 == this.stream[r + 1] && 0 == this.stream[r + 2] && 1 == this.stream[r + 3]) {
-              var i = r;
-              if (r += 3, -1 == t) t = i;else {
-                if (e <= 1) return this.subBuf(t, i - 1);
-                e -= 1;
-              }
-            }
-          }
-
-          return !1;
-        }
-      }, {
-        key: "parseYUVFrameStruct",
-        value: function value() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
-          if (null == e || !e || null == e) return null;
-          var t = Module.HEAPU32[e / 4],
-              r = Module.HEAPU32[e / 4 + 1],
-              i = t * r,
-              n = Module.HEAPU32[e / 4 + 1 + 1],
-              a = Module.HEAPU8.subarray(n, n + i),
-              s = Module.HEAPU8.subarray(n + i + 8, n + i + 8 + i / 4),
-              o = Module.HEAPU8.subarray(n + i + 8 + i / 4 + 8, n + i + 8 + i / 2 + 8);
-          return {
-            width: t,
-            height: r,
-            sizeWH: i,
-            imageBufferY: a,
-            imageBufferB: s,
-            imageBufferR: o
-          };
-        }
-      }]) && i(t.prototype, r), n && i(t, n), e;
-    }();
-
-    r.RawParser = n;
-  }, {}],
-  216: [function (e, t, r) {
     "use strict";
 
     var i = e("./bufferFrame");
@@ -22825,9 +22723,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return e;
     };
   }, {
-    "./bufferFrame": 217
+    "./bufferFrame": 216
   }],
-  217: [function (e, t, r) {
+  216: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -22855,7 +22753,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.BufferFrame = n;
   }, {}],
-  218: [function (e, t, r) {
+  217: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -22996,12 +22894,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }, {
     "../consts": 205,
     "../decoder/hevc-imp": 212,
-    "./buffer": 216,
-    "./bufferFrame": 217,
-    "./m3u8base": 219,
-    "./mpegts/mpeg.js": 223
+    "./buffer": 215,
+    "./bufferFrame": 216,
+    "./m3u8base": 218,
+    "./mpegts/mpeg.js": 222
   }],
-  219: [function (e, t, r) {
+  218: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23149,7 +23047,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }, {
     "../consts": 205
   }],
-  220: [function (e, t, r) {
+  219: [function (e, t, r) {
     "use strict";
 
     var i = e("mp4box"),
@@ -23293,10 +23191,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     "../consts": 205,
     "../decoder/hevc-header": 211,
     "../decoder/hevc-imp": 212,
-    "./buffer": 216,
+    "./buffer": 215,
     mp4box: 143
   }],
-  221: [function (e, t, r) {
+  220: [function (e, t, r) {
     "use strict";
 
     t.exports = {
@@ -23313,7 +23211,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       CODEC_OFFSET_TABLE: ["hevc", "h265", "avc", "h264", "aac", "mp3"]
     };
   }, {}],
-  222: [function (e, t, r) {
+  221: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23365,7 +23263,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.AACDecoder = n;
   }, {}],
-  223: [function (e, t, r) {
+  222: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23562,10 +23460,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     r.MPEG_JS = o;
   }, {
     "../../decoder/missile.js": 213,
-    "./consts": 221,
-    "./decoder/aac": 222
+    "./consts": 220,
+    "./decoder/aac": 221
   }],
-  224: [function (e, t, r) {
+  223: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -23670,10 +23568,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     r.MpegTs = o;
   }, {
     "../decoder/hevc-imp": 212,
-    "./buffer": 216,
-    "./mpegts/mpeg.js": 223
+    "./buffer": 215,
+    "./mpegts/mpeg.js": 222
   }],
-  225: [function (e, t, r) {
+  224: [function (e, t, r) {
     (function (t) {
       "use strict";
 
@@ -23693,8 +23591,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           h = e("./consts"),
           c = (e("./utils/static-mem"), e("./utils/ui/ui")),
           d = (e("./decoder/cache"), e("./decoder/missile.js")),
-          l = e("./decoder/raw-parser"),
-          p = {
+          l = {
         moovStartFlag: !1,
         readyShow: !1,
         rawFps: 24,
@@ -23702,11 +23599,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         core: h.PLAYER_CORE_TYPE_DEFAULT,
         coreProbePart: 1
       },
-          m = function () {
+          p = function () {
         function e(t, r) {
           !function (e, t) {
             if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-          }(this, e), this.rawParserObj = null, this.mp4Obj = null, this.mpegTsObj = null, this.hlsObj = null, this.hlsConf = {
+          }(this, e), this.mp4Obj = null, this.mpegTsObj = null, this.hlsObj = null, this.hlsConf = {
             hlsType: h.PLAYER_IN_TYPE_M3U8_VOD
           }, this.videoURL = t, this.configFormat = {
             playerId: r.player || h.DEFAILT_WEBGL_PLAY_ID,
@@ -23717,12 +23614,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             playIcon: r.playIcon || "assets/icon-play@300.png",
             loadIcon: r.loadIcon || "assets/icon-loading.gif",
             token: r.token || null,
-            extInfo: r.extInfo || p
-          }, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null) : alert("请输入TOKEN！Please set token param!");
+            extInfo: r.extInfo || l
+          }, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null) : alert("请输入TOKEN！Please set token param!");
         }
 
-        var r, m, b;
-        return r = e, (m = [{
+        var r, p, m;
+        return r = e, (p = [{
           key: "do",
           value: function value() {
             var e = this,
@@ -24062,35 +23959,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "_raw265Entry",
           value: function value() {
-            var e = this;
-            this.rawParserObj = new l.RawParser(), this._makeMP4PlayerViewEvent(-1, this.configFormat.extInfo.rawFps, -1, {
+            this._makeMP4PlayerViewEvent(-1, this.configFormat.extInfo.rawFps, -1, {
               width: this.configFormat.playerW,
               height: this.configFormat.playerH
             }, !0, h.CODEC_H265), this.timerFeed && (window.clearInterval(this.timerFeed), this.timerFeed = null);
-            var t = 1 / this.configFormat.extInfo.rawFps,
-                r = 0;
-            this.timerFeed = window.setInterval(function () {
-              var i = e.rawParserObj.nextNalu();
-
-              if (0 != i) {
-                var n = {
-                  data: i,
-                  pts: r
-                };
-                r += t, e.player.appendHevcFrame(n), e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1);
-              }
-            }, 1);
           }
         }, {
-          key: "append265raw",
+          key: "append265NaluFrame",
           value: function value(e) {
-            return !(!this.rawParserObj || !e) && this.rawParserObj.appendStreamRet(e);
+            var t = {
+              data: e,
+              pts: this.rawModePts
+            };
+            this.player.appendHevcFrame(t), this.configFormat.extInfo.readyShow && this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (this.player.playFrameYUV(!0, !0), this.configFormat.extInfo.readyShow = !1), this.rawModePts += 1 / this.configFormat.extInfo.rawFps;
           }
-        }]) && i(r.prototype, m), b && i(r, b), e;
+        }]) && i(r.prototype, p), m && i(r, m), e;
       }();
 
-      r.H265webjs = m, t.new265webjs = function (e, t) {
-        return new m(e, t);
+      r.H265webjs = p, t.new265webjs = function (e, t) {
+        return new p(e, t);
       };
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {
@@ -24099,16 +23986,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     "./decoder/cache": 209,
     "./decoder/missile.js": 213,
     "./decoder/player-core": 214,
-    "./decoder/raw-parser": 215,
-    "./demuxer/m3u8": 218,
-    "./demuxer/mp4": 220,
-    "./demuxer/mpegts/mpeg.js": 223,
-    "./demuxer/ts": 224,
-    "./native/mp4-player": 226,
-    "./utils/static-mem": 228,
-    "./utils/ui/ui": 229
+    "./demuxer/m3u8": 217,
+    "./demuxer/mp4": 219,
+    "./demuxer/mpegts/mpeg.js": 222,
+    "./demuxer/ts": 223,
+    "./native/mp4-player": 225,
+    "./utils/static-mem": 227,
+    "./utils/ui/ui": 228
   }],
-  226: [function (e, t, r) {
+  225: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -24182,7 +24068,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }, {
     "../consts": 205
   }],
-  227: [function (e, t, r) {
+  226: [function (e, t, r) {
     "use strict";
 
     function i(e) {
@@ -24220,14 +24106,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
     };
   }, {}],
-  228: [function (e, t, r) {
+  227: [function (e, t, r) {
     (function (e) {
       "use strict";
 
       e.STATIC_MEM_wasmDecoderState = -1;
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {}],
-  229: [function (e, t, r) {
+  228: [function (e, t, r) {
     "use strict";
 
     function i(e, t) {
@@ -24256,14 +24142,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     r.UI = n;
   }, {}],
-  230: [function (e, t, r) {
+  229: [function (e, t, r) {
     "use strict";
 
     t.exports = {
       PLAYER_VERSION: "2.3.0"
     };
   }, {}]
-}, {}, [225]);
+}, {}, [224]);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
@@ -24302,280 +24188,12 @@ function () {
 exports["default"] = h265webjs;
 
 },{"./h265webjs":1}],3:[function(require,module,exports){
-(function (global){
 "use strict";
 
-var _index = _interopRequireDefault(require("./dist/index"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var ScreenModule = require('./screen');
-
-var SHOW_LOADING = "LOADING...!";
-var SHOW_DONE = "done.";
-
-function durationText(duration) {
-  if (duration < 0) {
-    return "Play";
-  }
-
-  var durationSecInt = Math.round(duration);
-  return Math.floor(durationSecInt / 3600) + ":" + Math.floor(durationSecInt % 3600 / 60) + ":" + Math.floor(durationSecInt % 60);
-}
-
-global.makeH265webjs = function (videoURL, config) {
-  var screenView = new ScreenModule.Screen();
-
-  var h265webjs = _index["default"].createPlayer(videoURL, config);
-
-  var progressPts = document.querySelector('#progressPts');
-  var progressVoice = document.querySelector('#progressVoice');
-  var playBar = document.querySelector('#playBtn');
-  var showLabel = document.querySelector('#showLabel');
-  var ptsLabel = document.querySelector('#ptsLabel');
-  var fullScreenBtn = document.querySelector('#fullScreenBtn');
-  var mediaInfo = null;
-  playBar.disabled = true;
-  playBar.textContent = '>';
-  showLabel.textContent = SHOW_LOADING;
-
-  playBar.onclick = function () {
-    if (h265webjs.isPlaying()) {
-      console.log("bar pause============>");
-      playBar.textContent = '>';
-      h265webjs.pause();
-    } else {
-      playBar.textContent = '||';
-      h265webjs.play();
-    }
-  };
-
-  fullScreenBtn.onclick = function () {
-    screenView.open();
-    h265webjs.setRenderScreen(true);
-  };
-
-  screenView.onClose = function () {
-    h265webjs.setRenderScreen(false);
-  };
-
-  progressPts.addEventListener('click', function (e) {
-    showLabel.textContent = SHOW_LOADING;
-    var x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
-
-    var y = e.pageY - progressPts.offsetTop; // or e.offsetY
-
-    var clickedValue = x * progressPts.max / progressPts.offsetWidth;
-    h265webjs.seek(clickedValue);
-  });
-  progressVoice.addEventListener('click', function (e) {
-    var x = e.pageX - progressVoice.offsetLeft; // or e.offsetX (less support, though)
-
-    var y = e.pageY - progressVoice.offsetTop; // or e.offsetY
-
-    var clickedValue = x * progressVoice.max / progressVoice.offsetWidth;
-    progressVoice.value = clickedValue;
-    var volume = clickedValue / 100;
-    h265webjs.setVoice(volume);
-  });
-
-  h265webjs.onSeekStart = function (pts) {
-    showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
-  };
-
-  h265webjs.onSeekFinish = function () {
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs.onPlayFinish = function () {
-    playBar.textContent = '>';
-  };
-
-  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
-    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
-    console.log("on render");
-  };
-
-  h265webjs.onLoadCache = function () {
-    showLabel.textContent = "Caching...";
-  };
-
-  h265webjs.onLoadCacheFinshed = function () {
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs.onLoadFinish = function () {
-    h265webjs.setVoice(1.0);
-    mediaInfo = h265webjs.mediaInfo();
-    console.log("mediaInfo===========>", mediaInfo);
-    /*
-    meta:
-        durationMs: 144400
-        fps: 25
-        sampleRate: 44100
-        size: {
-            width: 864,
-            height: 480
-        },
-        audioNone : false
-    videoType: "vod"
-    */
-
-    playBar.disabled = false;
-
-    if (mediaInfo.meta.audioNone) {
-      progressVoice.value = 0;
-      progressVoice.style.display = 'none';
-    }
-
-    if (mediaInfo.videoType == "vod") {
-      progressPts.max = mediaInfo.meta.durationMs / 1000;
-      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
-    } else {
-      progressPts.hidden = true;
-      ptsLabel.textContent = '0:0:0/LIVE';
-    }
-
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs.onPlayTime = function (videoPTS) {
-    if (mediaInfo.videoType == "vod") {
-      progressPts.value = videoPTS;
-      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
-    } else {
-      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
-    }
-  };
-
-  h265webjs["do"]();
-  return h265webjs;
-};
-/*
- * 创建265流播放器
- */
-
-
-global.makeH265webjsRaw = function (url265, config) {
-  var screenView = new ScreenModule.Screen();
-
-  var h265webjs = _index["default"].createPlayer(null, config);
-
-  var progressPts = document.querySelector('#progressPts');
-  var progressVoice = document.querySelector('#progressVoice');
-  var playBar = document.querySelector('#playBtn');
-  var fullScreenBtn = document.querySelector('#fullScreenBtn');
-  var mediaInfo = null;
-  playBar.disabled = true;
-  playBar.textContent = '>';
-
-  playBar.onclick = function () {
-    if (h265webjs.isPlaying()) {
-      console.log("bar pause============>");
-      playBar.textContent = '>';
-      h265webjs.pause();
-    } else {
-      playBar.textContent = '||';
-      h265webjs.play();
-    }
-  };
-
-  fullScreenBtn.onclick = function () {
-    screenView.open();
-    h265webjs.setRenderScreen(true);
-  };
-
-  screenView.onClose = function () {
-    h265webjs.setRenderScreen(false);
-  };
-
-  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
-    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
-    console.log("on render");
-  };
-
-  h265webjs.onPlayTime = function (videoPTS) {
-    if (mediaInfo.videoType == "vod") {
-      progressPts.value = videoPTS;
-      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
-    } else {
-      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
-    }
-  };
-
-  h265webjs.onLoadFinish = function () {
-    h265webjs.setVoice(1.0);
-    mediaInfo = h265webjs.mediaInfo();
-    console.log("mediaInfo===========>", mediaInfo);
-    /*
-    meta:
-        durationMs: 144400
-        fps: 25
-        sampleRate: 44100
-        size: {
-            width: 864,
-            height: 480
-        },
-        audioNone : false
-    videoType: "vod"
-    */
-
-    playBar.disabled = false;
-
-    if (mediaInfo.meta.audioNone) {
-      progressVoice.value = 0;
-      progressVoice.style.display = 'none';
-    }
-
-    if (mediaInfo.videoType == "vod") {
-      progressPts.max = mediaInfo.meta.durationMs / 1000;
-      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
-    } else {
-      progressPts.hidden = true;
-      ptsLabel.textContent = '0:0:0/LIVE';
-    }
-
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs["do"]();
-  /*
-   * fetch 265
-   */
-
-  var fileStart = 0;
-  var startFetch = false;
-  var networkInterval = window.setInterval(function () {
-    if (!startFetch) {
-      startFetch = true;
-      fetch(url265).then(function (response) {
-        var pump = function pump(reader) {
-          return reader.read().then(function (result) {
-            if (result.done) {
-              // console.log("========== RESULT DONE ===========");
-              window.clearInterval(networkInterval);
-              return;
-            }
-
-            var chunk = result.value; // console.log(chunk);
-
-            h265webjs.append265raw(chunk);
-            return pump(reader);
-          });
-        };
-
-        return pump(response.body.getReader());
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }, 1);
-  return h265webjs;
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./dist/index":2,"./screen":4}],4:[function(require,module,exports){
-"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24583,149 +24201,302 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var YUVBuffer = require('yuv-buffer');
+/**
+ * codecImp Obj
+ * Video Raw 265 264 Parser
+ */
+var AfterGetNalThenMvLen = 3;
 
-var YUVCanvas = require('yuv-canvas');
-
-var ScreenModule =
+var RawParserModule =
 /*#__PURE__*/
 function () {
-  function ScreenModule() {
-    _classCallCheck(this, ScreenModule);
+  function RawParserModule() {
+    _classCallCheck(this, RawParserModule);
 
-    this.screenW = window.screen.width;
-    this.screenH = window.screen.height;
-    this.fixed = false;
-    this.screenCanvasBox = null;
-    this.screenCanvas = null;
-    this.screenYuv = null;
-
-    this._makeScreenGL(); // Event
-
-
-    this.onClose = null;
+    this.frameList = null;
+    this.stream = null;
   }
+  /*
+   *****************************************************
+   *                                                   *
+   *                                                   *
+   *                     HEVC Frames                   *
+   *                                                   *
+   *                                                   *
+   *****************************************************
+   */
 
-  _createClass(ScreenModule, [{
-    key: "render",
-    value: function render(width, height, imageBufferY, imageBufferB, imageBufferR) {
-      this.screenYuv.clear();
 
-      var displayWH = this._checkScreenDisplaySize(width, height);
+  _createClass(RawParserModule, [{
+    key: "pushFrameRet",
+    value: function pushFrameRet(streamPushInput) {
+      if (!streamPushInput || streamPushInput == undefined || streamPushInput == null) {
+        return false;
+      }
 
-      var format = YUVBuffer.format({
-        width: width,
-        height: height,
-        chromaWidth: width / 2,
-        chromaHeight: height / 2,
-        displayWidth: this.screenCanvas.offsetWidth,
-        displayHeight: this.screenCanvas.offsetHeight
-      });
-      var frame = YUVBuffer.frame(format);
-      frame.y.bytes = imageBufferY;
-      frame.y.stride = width;
-      frame.u.bytes = imageBufferB;
-      frame.u.stride = width / 2;
-      frame.v.bytes = imageBufferR;
-      frame.v.stride = width / 2;
-      this.screenYuv.drawFrame(frame);
+      if (!this.frameList || this.frameList == undefined || this.frameList == null) {
+        this.frameList = [];
+        this.frameList.push(streamPushInput);
+      } else {
+        this.frameList.push(streamPushInput);
+      }
+
+      return true;
     }
   }, {
-    key: "open",
-    value: function open() {
-      this.screenCanvasBox.style.display = 'block';
+    key: "nextFrame",
+    value: function nextFrame() {
+      if (!this.frameList && this.frameList == undefined || this.frameList == null && this.frameList.length < 1) {
+        return null;
+      }
+
+      return this.frameList.shift();
     }
   }, {
-    key: "close",
-    value: function close() {
-      this.screenCanvasBox.style.display = 'none';
-      if (this.onClose != null) this.onClose();
+    key: "clearFrameRet",
+    value: function clearFrameRet() {
+      this.frameList = null;
     }
     /*
-     * full screen
+     *****************************************************
+     *                                                   *
+     *                                                   *
+     *                     HEVC stream                   *
+     *                                                   *
+     *                                                   *
+     *****************************************************
      */
 
   }, {
-    key: "_checkScreenDisplaySize",
-    value: function _checkScreenDisplaySize(widthIn, heightIn) {
-      var biggerWidth = widthIn / this.screenW > heightIn / this.screenH;
-      var fixedWidth = (this.screenW / widthIn).toFixed(2);
-      var fixedHeight = (this.screenH / heightIn).toFixed(2);
-      var scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
-      var width = this.fixed ? this.screenW : parseInt(widthIn * scaleRatio);
-      var height = this.fixed ? this.screenH : parseInt(heightIn * scaleRatio);
+    key: "setStreamRet",
+    value: function setStreamRet(streamBufInput) {
+      this.stream = streamBufInput;
+    }
+  }, {
+    key: "getStreamRet",
+    value: function getStreamRet() {
+      return this.stream;
+    }
+    /**
+     * push stream nalu, for live, not vod
+     * @param Uint8Array
+     * @return bool
+     */
 
-      if (this.screenCanvas.offsetWidth != width || this.screenCanvas.offsetHeight != height) {
-        var topMargin = parseInt((this.screenCanvasBox.offsetHeight - height) / 2);
-        var leftMargin = parseInt((this.screenCanvasBox.offsetWidth - width) / 2);
-        this.screenCanvas.style.marginTop = topMargin + 'px';
-        this.screenCanvas.style.marginLeft = leftMargin + 'px';
-        this.screenCanvas.style.width = width + 'px';
-        this.screenCanvas.style.height = height + 'px';
+  }, {
+    key: "appendStreamRet",
+    value: function appendStreamRet(input) {
+      if (!input || input === undefined || input == null) {
+        return false;
       }
 
-      return [width, height];
+      if (!this.stream || this.stream === undefined || this.stream == null) {
+        this.stream = input;
+        return true;
+      }
+
+      var lenOld = this.stream.length;
+      var lenPush = input.length;
+      var mergeStream = new Uint8Array(lenOld + lenPush);
+      mergeStream.set(this.stream, 0);
+      mergeStream.set(input, lenOld);
+      this.stream = mergeStream;
+      return true;
+    }
+    /**
+     * sub nalu stream, and get Nalu unit
+     */
+
+  }, {
+    key: "subBuf",
+    value: function subBuf(startOpen, endOpen) {
+      // sub block [m,n]
+      // nal
+      var returnBuf = new Uint8Array(this.stream.subarray(startOpen, endOpen + 1)); // streamBuf sub
+
+      this.stream = new Uint8Array(this.stream.subarray(endOpen + 1));
+      return returnBuf;
+    }
+    /**
+     * @param onceGetNalCount: once use get nal count, defult 1
+     * @return uint8array OR false
+     */
+
+  }, {
+    key: "nextNalu",
+    value: function nextNalu() {
+      var onceGetNalCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+      // check params
+      if (this.stream == null || this.stream.length <= 4) {
+        return false;
+      } // start nal pos
+
+
+      var startTag = -1; // return nalBuf
+
+      var returnNalBuf = null;
+
+      for (var i = 0; i < this.stream.length; i++) {
+        if (i + 5 >= this.stream.length) {
+          if (startTag == -1) {
+            return false;
+          } else {
+            // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
+            returnNalBuf = this.subBuf(startTag, this.stream.length - 1);
+            return returnNalBuf;
+          }
+        } // find nal
+
+
+        if ( // 0x00 00 01
+        this.stream[i] == 0 && this.stream[i + 1] == 0 && this.stream[i + 2] == 1 || // 0x00 00 00 01
+        this.stream[i] == 0 && this.stream[i + 1] == 0 && this.stream[i + 2] == 0 && this.stream[i + 3] == 1) {
+          // console.log(
+          //     "enter find nal , now startTag:" + startTag 
+          //     + ", now pos:" + i
+          // );
+          var nowPos = i;
+          i += AfterGetNalThenMvLen; // 移出去
+          // begin pos
+
+          if (startTag == -1) {
+            startTag = nowPos;
+          } else {
+            if (onceGetNalCount <= 1) {
+              // startCode - End
+              // [startTag,nowPos)
+              // console.log("[===>] last code hex is :" + this.stream[nowPos-1].toString(16))
+              returnNalBuf = this.subBuf(startTag, nowPos - 1);
+              return returnNalBuf;
+            } else {
+              onceGetNalCount -= 1;
+            }
+          }
+        }
+      } // end for
+
+
+      return false;
     }
   }, {
-    key: "_makeScreenGL",
-    value: function _makeScreenGL() {
-      var canvasBox = document.createElement('div'); // canvasBox.style.position = 'relative';
+    key: "nextNalu2",
+    value: function nextNalu2() {
+      var onceGetNalCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
-      canvasBox.style.backgroundColor = 'black';
-      canvasBox.style.width = this.screenW + 'px';
-      canvasBox.style.height = this.screenH + 'px';
-      canvasBox.style.display = 'none'; // canvasBox.style.display = 'block';
+      // check params
+      if (this.stream == null || this.stream.length <= 4) {
+        return false;
+      } // start nal pos
 
-      canvasBox.style.position = 'absolute';
-      canvasBox.style.zIndex = '2001';
-      canvasBox.style.overflow = 'auto';
-      canvasBox.style.top = "0px";
-      canvasBox.style.left = "0px";
-      var canvas = document.createElement('canvas');
-      canvas.style.width = canvasBox.clientWidth + 'px';
-      canvas.style.height = canvasBox.clientHeight + 'px';
-      canvas.style.top = '0px';
-      canvas.style.left = '0px';
-      canvasBox.appendChild(canvas);
-      this.screenCanvasBox = canvasBox;
-      this.screenCanvas = canvas;
-      this.screenYuv = YUVCanvas.attach(canvas); // this.screenYuv.clear() //clearing the canvas?
 
-      document.body.appendChild(canvasBox);
+      var startTag = -1; // return nalBuf
 
-      this._addCloseBtn();
+      var returnNalBuf = null;
+
+      for (var i = 0; i < this.stream.length; i++) {
+        if (i + 5 >= this.stream.length) {
+          if (startTag == -1) {
+            return false;
+          } else {
+            // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
+            returnNalBuf = this.subBuf(startTag, this.stream.length - 1);
+            return returnNalBuf;
+          }
+        } // find nal
+
+
+        var is3BitHeader = this.stream.slice(i, i + 3).join(' ') == '0 0 1';
+        var is4BitHeader = this.stream.slice(i, i + 4).join(' ') == '0 0 0 1';
+
+        if (is3BitHeader || is4BitHeader) {
+          var nowPos = i;
+          i += AfterGetNalThenMvLen; // 移出去
+          // begin pos
+
+          if (startTag == -1) {
+            startTag = nowPos;
+          } else {
+            if (onceGetNalCount <= 1) {
+              // startCode - End
+              // [startTag,nowPos)
+              // console.log("[===>] last code hex is :" + this.stream[nowPos-1].toString(16))
+              returnNalBuf = this.subBuf(startTag, nowPos - 1);
+              return returnNalBuf;
+            } else {
+              onceGetNalCount -= 1;
+            }
+          }
+        }
+      } // end for
+
+
+      return false;
     }
+    /**
+     * @brief sub nalu stream, and get Nalu unit
+     *          to parse: 
+     *           typedef struct {
+     *               uint32_t width;
+     *               uint32_t height;
+     *               uint8_t *dataY;
+     *               uint8_t *dataChromaB;
+     *               uint8_t *dataChromaR;
+     *           } ImageData;
+     * @params struct_ptr: Module.cwrap('getFrame', 'number', [])
+     * @return Dict
+     */
+
   }, {
-    key: "_addCloseBtn",
-    value: function _addCloseBtn() {
-      var _this = this;
+    key: "parseYUVFrameStruct",
+    value: function parseYUVFrameStruct() {
+      var struct_ptr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-      var closeBtn = document.createElement('button');
-      closeBtn.style.backgroundColor = 'white';
-      closeBtn.style.width = '100px';
-      closeBtn.style.height = '100px';
-      closeBtn.style.display = 'block';
-      closeBtn.style.position = 'absolute';
-      closeBtn.style.zIndex = '2002';
-      closeBtn.style.overflow = 'auto';
-      closeBtn.style.top = "5px";
-      closeBtn.style.left = "5px";
-      closeBtn.textContent = "X";
+      // sub block [m,n]
+      if (struct_ptr == null || !struct_ptr || struct_ptr == undefined) {
+        return null;
+      }
 
-      closeBtn.onclick = function () {
-        _this.close();
+      var width = Module.HEAPU32[struct_ptr / 4];
+      var height = Module.HEAPU32[struct_ptr / 4 + 1]; // let imgBufferPtr    = Module.HEAPU32[ptr / 4 + 2];
+      // let imageBuffer     = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + width * height * 3);
+      // console.log("width:",width," height:",height);
+
+      var sizeWH = width * height; // let imgBufferYPtr   = Module.HEAPU32[ptr / 4 + 2];
+      // let imageBufferY    = Module.HEAPU8.subarray(imgBufferYPtr, imgBufferYPtr + sizeWH);
+      // let imgBufferBPtr   = Module.HEAPU32[ptr/4+ 2 + sizeWH/4 + 1];
+      // let imageBufferB    = Module.HEAPU8.subarray(
+      //     imgBufferBPtr, 
+      //     imgBufferBPtr + sizeWH/4
+      // );
+      // console.log(imageBufferB);
+      // let imgBufferRPtr   = Module.HEAPU32[imgBufferBPtr + sizeWH/16 + 1];
+      // let imageBufferR    = Module.HEAPU8.subarray(
+      //     imgBufferRPtr, 
+      //     imgBufferRPtr + sizeWH/4
+      // );
+
+      var imgBufferPtr = Module.HEAPU32[struct_ptr / 4 + 1 + 1];
+      var imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
+      var imageBufferB = Module.HEAPU8.subarray(imgBufferPtr + sizeWH + 8, imgBufferPtr + sizeWH + 8 + sizeWH / 4);
+      var imageBufferR = Module.HEAPU8.subarray(imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8, imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8);
+      return {
+        width: width,
+        height: height,
+        sizeWH: sizeWH,
+        imageBufferY: imageBufferY,
+        imageBufferB: imageBufferB,
+        imageBufferR: imageBufferR
       };
-
-      this.screenCanvasBox.appendChild(closeBtn);
     }
   }]);
 
-  return ScreenModule;
+  return RawParserModule;
 }();
 
-exports.Screen = ScreenModule;
+exports["default"] = RawParserModule;
 
-},{"yuv-buffer":5,"yuv-canvas":12}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25019,7 +24790,7 @@ var YUVBuffer = {
 
 module.exports = YUVBuffer;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = {
   vertex: "precision lowp float;\n\nattribute vec2 aPosition;\nattribute vec2 aLumaPosition;\nattribute vec2 aChromaPosition;\nvarying vec2 vLumaPosition;\nvarying vec2 vChromaPosition;\nvoid main() {\n    gl_Position = vec4(aPosition, 0, 1);\n    vLumaPosition = aLumaPosition;\n    vChromaPosition = aChromaPosition;\n}\n",
   fragment: "// inspired by https://github.com/mbebenita/Broadway/blob/master/Player/canvas.js\n\nprecision lowp float;\n\nuniform sampler2D uTextureY;\nuniform sampler2D uTextureCb;\nuniform sampler2D uTextureCr;\nvarying vec2 vLumaPosition;\nvarying vec2 vChromaPosition;\nvoid main() {\n   // Y, Cb, and Cr planes are uploaded as LUMINANCE textures.\n   float fY = texture2D(uTextureY, vLumaPosition).x;\n   float fCb = texture2D(uTextureCb, vChromaPosition).x;\n   float fCr = texture2D(uTextureCr, vChromaPosition).x;\n\n   // Premultipy the Y...\n   float fYmul = fY * 1.1643828125;\n\n   // And convert that to RGB!\n   gl_FragColor = vec4(\n     fYmul + 1.59602734375 * fCr - 0.87078515625,\n     fYmul - 0.39176171875 * fCb - 0.81296875 * fCr + 0.52959375,\n     fYmul + 2.017234375   * fCb - 1.081390625,\n     1\n   );\n}\n",
@@ -25027,7 +24798,7 @@ module.exports = {
   fragmentStripe: "// extra 'stripe' texture fiddling to work around IE 11's poor performance on gl.LUMINANCE and gl.ALPHA textures\n\nprecision lowp float;\n\nuniform sampler2D uStripe;\nuniform sampler2D uTexture;\nvarying vec2 vTexturePosition;\nvoid main() {\n   // Y, Cb, and Cr planes are mapped into a pseudo-RGBA texture\n   // so we can upload them without expanding the bytes on IE 11\n   // which doesn't allow LUMINANCE or ALPHA textures\n   // The stripe textures mark which channel to keep for each pixel.\n   // Each texture extraction will contain the relevant value in one\n   // channel only.\n\n   float fLuminance = dot(\n      texture2D(uStripe, vTexturePosition),\n      texture2D(uTexture, vTexturePosition)\n   );\n\n   gl_FragColor = vec4(fLuminance, fLuminance, fLuminance, 1);\n}\n"
 };
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function() {
   "use strict";
 
@@ -25071,7 +24842,7 @@ module.exports = {
 
 })();
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25187,7 +24958,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	module.exports = SoftwareFrameSink;
 })();
 
-},{"./FrameSink.js":7,"./YCbCr.js":10}],9:[function(require,module,exports){
+},{"./FrameSink.js":6,"./YCbCr.js":9}],8:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25696,7 +25467,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	module.exports = WebGLFrameSink;
 })();
 
-},{"../build/shaders.js":6,"./FrameSink.js":7}],10:[function(require,module,exports){
+},{"../build/shaders.js":5,"./FrameSink.js":6}],9:[function(require,module,exports){
 /*
 Copyright (c) 2014-2019 Brion Vibber <brion@pobox.com>
 
@@ -25837,7 +25608,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	};
 })();
 
-},{"./depower.js":11}],11:[function(require,module,exports){
+},{"./depower.js":10}],10:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25889,7 +25660,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   module.exports = depower;
 })();
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25954,4 +25725,467 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   module.exports = YUVCanvas;
 })();
 
-},{"./FrameSink.js":7,"./SoftwareFrameSink.js":8,"./WebGLFrameSink.js":9}]},{},[3]);
+},{"./FrameSink.js":6,"./SoftwareFrameSink.js":7,"./WebGLFrameSink.js":8}],12:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _index = _interopRequireDefault(require("./dist/index"));
+
+var _rawParser = _interopRequireDefault(require("./dist/raw-parser.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+// const H265webjs = require('./src/h265webjs');
+var ScreenModule = require('./screen');
+
+var SHOW_LOADING = "LOADING...!";
+var SHOW_DONE = "done.";
+
+function durationText(duration) {
+  if (duration < 0) {
+    return "Play";
+  }
+
+  var durationSecInt = Math.round(duration);
+  return Math.floor(durationSecInt / 3600) + ":" + Math.floor(durationSecInt % 3600 / 60) + ":" + Math.floor(durationSecInt % 60);
+}
+
+var getMsTime = function getMsTime() {
+  return new Date().getTime();
+};
+
+global.makeH265webjs = function (videoURL, config) {
+  var screenView = new ScreenModule.Screen();
+
+  var h265webjs = _index["default"].createPlayer(videoURL, config);
+
+  var progressPts = document.querySelector('#progressPts');
+  var progressVoice = document.querySelector('#progressVoice');
+  var playBar = document.querySelector('#playBtn');
+  var showLabel = document.querySelector('#showLabel');
+  var ptsLabel = document.querySelector('#ptsLabel');
+  var debugYUVBtn = document.querySelector('#debugYUVBtn');
+  var debugYUVATag = document.querySelector('#debugYUVUrl');
+  var fullScreenBtn = document.querySelector('#fullScreenBtn');
+  var mediaInfo = null;
+  playBar.disabled = true;
+  playBar.textContent = '>';
+  showLabel.textContent = SHOW_LOADING;
+
+  playBar.onclick = function () {
+    if (h265webjs.isPlaying()) {
+      console.log("bar pause============>");
+      playBar.textContent = '>';
+      h265webjs.pause();
+    } else {
+      playBar.textContent = '||';
+      h265webjs.play();
+    }
+  };
+
+  debugYUVBtn.onclick = function () {
+    h265webjs.debugYUV('#debugYUVUrl');
+  };
+
+  fullScreenBtn.onclick = function () {
+    screenView.open();
+    h265webjs.setRenderScreen(true);
+  };
+
+  screenView.onClose = function () {
+    h265webjs.setRenderScreen(false);
+  };
+
+  progressPts.addEventListener('click', function (e) {
+    showLabel.textContent = SHOW_LOADING;
+    var x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
+
+    var y = e.pageY - progressPts.offsetTop; // or e.offsetY
+
+    var clickedValue = x * progressPts.max / progressPts.offsetWidth;
+    h265webjs.seek(clickedValue);
+  });
+  progressVoice.addEventListener('click', function (e) {
+    var x = e.pageX - progressVoice.offsetLeft; // or e.offsetX (less support, though)
+
+    var y = e.pageY - progressVoice.offsetTop; // or e.offsetY
+
+    var clickedValue = x * progressVoice.max / progressVoice.offsetWidth;
+    progressVoice.value = clickedValue;
+    var volume = clickedValue / 100;
+    h265webjs.setVoice(volume);
+  });
+
+  h265webjs.onSeekStart = function (pts) {
+    showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
+  };
+
+  h265webjs.onSeekFinish = function () {
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onPlayFinish = function () {
+    console.log("============= FINISHED ===============");
+    playBar.textContent = '>';
+  };
+
+  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
+    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR); // console.log("on render");
+  };
+
+  h265webjs.onLoadCache = function () {
+    showLabel.textContent = "Caching...";
+  };
+
+  h265webjs.onLoadCacheFinshed = function () {
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onLoadFinish = function () {
+    h265webjs.setVoice(1.0);
+    mediaInfo = h265webjs.mediaInfo();
+    console.log("mediaInfo===========>", mediaInfo);
+    /*
+    meta:
+        durationMs: 144400
+        fps: 25
+        sampleRate: 44100
+        size: {
+            width: 864,
+            height: 480
+        },
+        audioNone : false
+    videoType: "vod"
+    */
+
+    playBar.disabled = false;
+
+    if (mediaInfo.meta.audioNone) {
+      progressVoice.value = 0;
+      progressVoice.style.display = 'none';
+    }
+
+    if (mediaInfo.videoType == "vod") {
+      progressPts.max = mediaInfo.meta.durationMs / 1000;
+      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
+    } else {
+      progressPts.hidden = true;
+      ptsLabel.textContent = '0:0:0/LIVE';
+    }
+
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onPlayTime = function (videoPTS) {
+    if (mediaInfo.videoType == "vod") {
+      progressPts.value = videoPTS;
+      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
+    } else {
+      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+    }
+  };
+
+  h265webjs["do"]();
+  return h265webjs;
+};
+/*
+ * 创建265流播放器
+ */
+
+
+global.makeH265webjsRaw = function (url265, config) {
+  var screenView = new ScreenModule.Screen();
+
+  var h265webjs = _index["default"].createPlayer(null, config);
+
+  var progressPts = document.querySelector('#progressPts');
+  var progressVoice = document.querySelector('#progressVoice');
+  var playBar = document.querySelector('#playBtn');
+  var debugYUVBtn = document.querySelector('#debugYUVBtn');
+  var debugYUVATag = document.querySelector('#debugYUVUrl');
+  var fullScreenBtn = document.querySelector('#fullScreenBtn');
+  var mediaInfo = null;
+  playBar.disabled = true;
+  playBar.textContent = '>';
+
+  playBar.onclick = function () {
+    if (h265webjs.isPlaying()) {
+      console.log("bar pause============>");
+      playBar.textContent = '>';
+      h265webjs.pause();
+    } else {
+      playBar.textContent = '||';
+      h265webjs.play();
+    }
+  };
+
+  debugYUVBtn.onclick = function () {
+    h265webjs.debugYUV('#debugYUVUrl');
+  };
+
+  fullScreenBtn.onclick = function () {
+    screenView.open();
+    h265webjs.setRenderScreen(true);
+  };
+
+  screenView.onClose = function () {
+    h265webjs.setRenderScreen(false);
+  };
+
+  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
+    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+    console.log("on render");
+  };
+
+  h265webjs.onPlayTime = function (videoPTS) {
+    if (mediaInfo.videoType == "vod") {
+      progressPts.value = videoPTS;
+      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
+    } else {
+      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+    }
+  };
+
+  h265webjs.onLoadFinish = function () {
+    h265webjs.setVoice(1.0);
+    mediaInfo = h265webjs.mediaInfo();
+    console.log("mediaInfo===========>", mediaInfo);
+    /*
+        meta:
+            durationMs: 144400
+            fps: 25
+            sampleRate: 44100
+            size: {
+                width: 864,
+                height: 480
+            },
+            audioNone : false
+        videoType: "vod"
+    */
+
+    playBar.disabled = false;
+
+    if (mediaInfo.meta.audioNone) {
+      progressVoice.value = 0;
+      progressVoice.style.display = 'none';
+    }
+
+    if (mediaInfo.videoType == "vod") {
+      progressPts.max = mediaInfo.meta.durationMs / 1000;
+      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
+    } else {
+      progressPts.hidden = true;
+      ptsLabel.textContent = '0:0:0/LIVE';
+    }
+
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs["do"]();
+  /*
+   * fetch 265
+   * you can use your code to fetch vod stream
+   * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+   */
+
+  var rawParser = new _rawParser["default"]();
+  var fetchFinished = false;
+  var startFetch = false;
+  var networkInterval = window.setInterval(function () {
+    if (!startFetch) {
+      startFetch = true;
+      fetch(url265).then(function (response) {
+        var pump = function pump(reader) {
+          return reader.read().then(function (result) {
+            if (result.done) {
+              // console.log("========== RESULT DONE ===========");
+              fetchFinished = true;
+              window.clearInterval(networkInterval);
+              networkInterval = null;
+              return;
+            }
+
+            var chunk = result.value;
+            rawParser.appendStreamRet(chunk);
+            return pump(reader);
+          });
+        };
+
+        return pump(response.body.getReader());
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }, 1); // fps>=30 play else cache
+
+  var naluParseInterval = window.setInterval(function () {
+    var test1time = getMsTime();
+    var nalBuf = rawParser.nextNalu(); // nal
+
+    var preCostTime = getMsTime() - test1time;
+    console.log("rawParser.nextNalu() => ", nalBuf, " usage => ", preCostTime);
+
+    if (nalBuf != false) {
+      // require
+      h265webjs.append265NaluFrame(nalBuf);
+    } else if (fetchFinished) {
+      window.clearInterval(naluParseInterval);
+      naluParseInterval = null;
+    }
+  }, 1);
+  return h265webjs;
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./dist/index":2,"./dist/raw-parser.js":3,"./screen":13}],13:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var YUVBuffer = require('yuv-buffer');
+
+var YUVCanvas = require('yuv-canvas');
+
+var ScreenModule =
+/*#__PURE__*/
+function () {
+  function ScreenModule() {
+    _classCallCheck(this, ScreenModule);
+
+    this.screenW = window.screen.width;
+    this.screenH = window.screen.height;
+    this.fixed = false;
+    this.screenCanvasBox = null;
+    this.screenCanvas = null;
+    this.screenYuv = null;
+
+    this._makeScreenGL(); // Event
+
+
+    this.onClose = null;
+  }
+
+  _createClass(ScreenModule, [{
+    key: "render",
+    value: function render(width, height, imageBufferY, imageBufferB, imageBufferR) {
+      this.screenYuv.clear();
+
+      var displayWH = this._checkScreenDisplaySize(width, height);
+
+      var format = YUVBuffer.format({
+        width: width,
+        height: height,
+        chromaWidth: width / 2,
+        chromaHeight: height / 2,
+        displayWidth: this.screenCanvas.offsetWidth,
+        displayHeight: this.screenCanvas.offsetHeight
+      });
+      var frame = YUVBuffer.frame(format);
+      frame.y.bytes = imageBufferY;
+      frame.y.stride = width;
+      frame.u.bytes = imageBufferB;
+      frame.u.stride = width / 2;
+      frame.v.bytes = imageBufferR;
+      frame.v.stride = width / 2;
+      this.screenYuv.drawFrame(frame);
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      this.screenCanvasBox.style.display = 'block';
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.screenCanvasBox.style.display = 'none';
+      if (this.onClose != null) this.onClose();
+    }
+    /*
+     * full screen
+     */
+
+  }, {
+    key: "_checkScreenDisplaySize",
+    value: function _checkScreenDisplaySize(widthIn, heightIn) {
+      var biggerWidth = widthIn / this.screenW > heightIn / this.screenH;
+      var fixedWidth = (this.screenW / widthIn).toFixed(2);
+      var fixedHeight = (this.screenH / heightIn).toFixed(2);
+      var scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
+      var width = this.fixed ? this.screenW : parseInt(widthIn * scaleRatio);
+      var height = this.fixed ? this.screenH : parseInt(heightIn * scaleRatio);
+
+      if (this.screenCanvas.offsetWidth != width || this.screenCanvas.offsetHeight != height) {
+        var topMargin = parseInt((this.screenCanvasBox.offsetHeight - height) / 2);
+        var leftMargin = parseInt((this.screenCanvasBox.offsetWidth - width) / 2);
+        this.screenCanvas.style.marginTop = topMargin + 'px';
+        this.screenCanvas.style.marginLeft = leftMargin + 'px';
+        this.screenCanvas.style.width = width + 'px';
+        this.screenCanvas.style.height = height + 'px';
+      }
+
+      return [width, height];
+    }
+  }, {
+    key: "_makeScreenGL",
+    value: function _makeScreenGL() {
+      var canvasBox = document.createElement('div'); // canvasBox.style.position = 'relative';
+
+      canvasBox.style.backgroundColor = 'black';
+      canvasBox.style.width = this.screenW + 'px';
+      canvasBox.style.height = this.screenH + 'px';
+      canvasBox.style.display = 'none'; // canvasBox.style.display = 'block';
+
+      canvasBox.style.position = 'absolute';
+      canvasBox.style.zIndex = '2001';
+      canvasBox.style.overflow = 'auto';
+      canvasBox.style.top = "0px";
+      canvasBox.style.left = "0px";
+      var canvas = document.createElement('canvas');
+      canvas.style.width = canvasBox.clientWidth + 'px';
+      canvas.style.height = canvasBox.clientHeight + 'px';
+      canvas.style.top = '0px';
+      canvas.style.left = '0px';
+      canvasBox.appendChild(canvas);
+      this.screenCanvasBox = canvasBox;
+      this.screenCanvas = canvas;
+      this.screenYuv = YUVCanvas.attach(canvas); // this.screenYuv.clear() //clearing the canvas?
+
+      document.body.appendChild(canvasBox);
+
+      this._addCloseBtn();
+    }
+  }, {
+    key: "_addCloseBtn",
+    value: function _addCloseBtn() {
+      var _this = this;
+
+      var closeBtn = document.createElement('button');
+      closeBtn.style.backgroundColor = 'white';
+      closeBtn.style.width = '100px';
+      closeBtn.style.height = '100px';
+      closeBtn.style.display = 'block';
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.zIndex = '2002';
+      closeBtn.style.overflow = 'auto';
+      closeBtn.style.top = "5px";
+      closeBtn.style.left = "5px";
+      closeBtn.textContent = "X";
+
+      closeBtn.onclick = function () {
+        _this.close();
+      };
+
+      this.screenCanvasBox.appendChild(closeBtn);
+    }
+  }]);
+
+  return ScreenModule;
+}();
+
+exports.Screen = ScreenModule;
+
+},{"yuv-buffer":4,"yuv-canvas":11}]},{},[12]);

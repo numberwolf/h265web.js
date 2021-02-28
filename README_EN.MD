@@ -1,36 +1,25 @@
 # h265web.js
 
-| Update | Content |
-| ---- | ---- |
-| Time | 2021/02/21 |
-| 1 | 1.New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
-| Time | 2021/02/18 |
-| 1 | 1.New player core support play with audio |
-| Time | 2021/02/08 |
-| 1 | 1.New player core (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
-| Time | 2021/01/04 |
-| 1 | 1.Player Support Hevc file|
-| 2 | 2.Player Support Hevc stream|
-| 3 | 3.Remove Play/Pause Mask |
-| 4 | 4.Add Event:`onPlayFinish`, called when play video finished |
-
-| h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder |
-| ---- | ---- | ---- |
-| [![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | [![npm version](https://badge.fury.io/js/mpeg.js.svg)](https://www.npmjs.com/package/mpeg.js) | New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
-
-<a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
-
-README.md：<a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
+<a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
 <img src="./resource/logo@300x300.png" width="300px" />
 
-————————— __`A hevc/h.265 web player, easy to play 1080P.`__
+__`A hevc/h.265 web player, easy to play 1080P.`__
 
 __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> help you, please `star` it~__
+
+| h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder |
+| ---- | ---- | ---- |
+| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
+
+<a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
+
 
 ## Index
 
 - [0、README](#0readme)
+	
+	- [Update Log](upldatelog)
 
 	- [Support what?](#supported)
 
@@ -56,13 +45,40 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 	- [Player API Document](#playerapidocument)
 
-- [3、Others help](#3others)
+- [3、Others](#3others)
+
+	- [Donate - Give me power Give me love](#donate)
 	
 	- [Transcode and get hevc media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
 
 <hr>
 
 ### 0、README ###
+
+#### UpldateLog ####
+
+| Update | Content |
+| ---- | ---- |
+| Time | 2021/02/28 |
+| - | 1.Add function to feed 265 nalu-frame `append265NaluFrame(nalBuf);` |
+| - | 2.Add new library to parse 265 stream [raw-parser.js](./dist/raw-parser.js) |
+| Time | 2021/02/21 |
+| - | 1.New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
+| Time | 2021/02/18 |
+| - | 1.New player core support play with audio |
+| Time | 2021/02/08 |
+| - | 1.New player core (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
+| Time | 2021/01/04 |
+| - | 1.Player Support Hevc file|
+| - | 2.Player Support Hevc stream|
+| - | 3.Remove Play/Pause Mask |
+| - | 4.Add Event:`onPlayFinish`, called when play video finished |
+
+| TODO | Content |
+| ---- | ---- |
+| 1 | Support Http-flv |
+| 2 | New Play Core Support seek |
+
 
 #### Supported ####
 
@@ -325,34 +341,41 @@ let config = {
 
 			|  Function | Return | Desc | 
 			|  ----  | ----  | ---- |
-			| append265raw  | bool | Feed data (bytes) |
+			| append265NaluFrame  | NULL | Feed H.265 nalu-frame (bytes) |
 
 			Params
 
 			| Param | Type | Default | Require | Desc | 
 			|  ----  | ----  | ---- | ---- | ---- |
-			| chunk  | Uint8Array | - | Y | Bytes |
+			| frame  | Uint8Array | - | Y | Bytes |
 
 			Example - I get a hevc file by network, and get bytes data to player.
 
 			```javascript
-			let videoURL = "demo/res/raw.h265";
+			//
 		    // fetch 265
-		    let fileStart = 0;
+		    // you can use your code to fetch vod stream
+		    // only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+		    //
+		    let rawParser = new RawParserModule();
+
+		    let fetchFinished = false;
 		    let startFetch = false;
 		    let networkInterval = window.setInterval(() => {
 		        if (!startFetch) {
 		            startFetch = true;
-		            fetch(videoURL).then(function(response) {
+		            fetch(url265).then(function(response) {
 		                let pump = function(reader) {
 		                    return reader.read().then(function(result) {
 		                        if (result.done) {
+		                            // console.log("========== RESULT DONE ===========");
+		                            fetchFinished = true;
 		                            window.clearInterval(networkInterval);
+		                            networkInterval = null;
 		                            return;
 		                        }
 		                        let chunk = result.value;
-		                        // console.log(chunk);
-		                        h265webjs.append265raw(chunk); // Call feed
+		                        rawParser.appendStreamRet(chunk);
 		                        return pump(reader);
 		                    });
 		                }
@@ -363,7 +386,18 @@ let config = {
 		            });
 		        }
 		    }, 1);
-		    ```
+
+		    // fps>=30 play else cache
+		    let naluParseInterval = window.setInterval(() => {
+		        if (nalBuf != false) {
+		            // require
+		            h265webjs.append265NaluFrame(nalBuf);
+		        } else if (fetchFinished) {
+		            window.clearInterval(naluParseInterval);
+		            naluParseInterval = null;
+		        }
+		    }, 1);
+			```
 	
 
 <br>
@@ -603,6 +637,14 @@ let mediaInfo = player.mediaInfo();
 <br>
 
 ## 3、Others ##
+
+### Donate ###
+
+|  Wechat | Alipay | PayPal |
+|  ---- | ----  | ---- |
+| <img src="dist/assets/donate/wechat.JPG" height="500"> | <img src="dist/assets/donate/alipay.JPG" height="500"> | TODO |
+
+<br>
 
 ### TranscodeAndGet265CodecFileByFFmpeg ###
 
