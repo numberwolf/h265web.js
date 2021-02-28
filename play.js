@@ -1,4 +1,5 @@
 import H265webjsModule from './dist/index';
+import RawParserModule from './dist/raw-parser.js';
 
 const ScreenModule = require('./screen');
 const SHOW_LOADING = "LOADING...!";
@@ -230,7 +231,15 @@ global.makeH265webjsRaw = (url265, config) => {
     /*
      * fetch 265
      */
-    let fileStart = 0;
+
+    /*
+     * fetch 265
+     * you can use your code to fetch vod stream
+     * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+     */
+    let rawParser = new RawParserModule();
+
+    let fetchFinished = false;
     let startFetch = false;
     let networkInterval = window.setInterval(() => {
         if (!startFetch) {
@@ -240,13 +249,14 @@ global.makeH265webjsRaw = (url265, config) => {
                     return reader.read().then(function(result) {
                         if (result.done) {
                             // console.log("========== RESULT DONE ===========");
+                            fetchFinished = true;
                             window.clearInterval(networkInterval);
+                            networkInterval = null;
                             return;
                         }
 
                         let chunk = result.value;
-                        // console.log(chunk);
-                        h265webjs.append265raw(chunk);
+                        rawParser.appendStreamRet(chunk);
                         return pump(reader);
                     });
                 }
@@ -256,6 +266,23 @@ global.makeH265webjsRaw = (url265, config) => {
                 console.log(error);
             });
         }
+    }, 1);
+
+    // fps>=30 play else cache
+    let naluParseInterval = window.setInterval(() => {
+        let test1time = getMsTime();
+        let nalBuf = rawParser.nextNalu(); // nal
+        let preCostTime = getMsTime() - test1time;
+        console.log("rawParser.nextNalu() => ", nalBuf, " usage => ",preCostTime);
+
+        if (nalBuf != false) {
+            // require
+            h265webjs.append265NaluFrame(nalBuf);
+        } else if (fetchFinished) {
+            window.clearInterval(naluParseInterval);
+            naluParseInterval = null;
+        }
+
     }, 1);
 
     return h265webjs;
