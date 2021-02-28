@@ -47,7 +47,7 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 - [3、Others](#3others)
 
-	- [Donate - Give me power Give me love](#donate)
+	- [Donate - Give me power Give me love - I will make list of donaters](#donate)
 	
 	- [Transcode and get hevc media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
 
