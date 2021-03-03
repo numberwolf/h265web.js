@@ -18490,8 +18490,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         te = e, o.HEAP8 = re = new Int8Array(e), o.HEAP16 = ne = new Int16Array(e), o.HEAP32 = se = new Int32Array(e), o.HEAPU8 = ie = new Uint8Array(e), o.HEAPU16 = ae = new Uint16Array(e), o.HEAPU32 = oe = new Uint32Array(e), o.HEAPF32 = fe = new Float32Array(e), o.HEAPF64 = ue = new Float64Array(e);
       }
 
-      var le = 6378848,
-          pe = 1135744,
+      var le = 6378832,
+          pe = 1135728,
           me = o.TOTAL_MEMORY || 536870912;
 
       function be(e) {
@@ -21540,7 +21540,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return se[e >> 2] = t / 1e3 | 0, se[e + 4 >> 2] = t % 1e3 * 1e3 | 0, 0;
       }
 
-      var Ot = (Z("GMT", 1135840, 4), 1135840);
+      var Ot = (Z("GMT", 1135824, 4), 1135824);
 
       function zt(e, t) {
         var r = new Date(1e3 * se[e >> 2]);
@@ -24497,6 +24497,456 @@ function () {
 exports["default"] = RawParserModule;
 
 },{}],4:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _index = _interopRequireDefault(require("./dist/index"));
+
+var _rawParser = _interopRequireDefault(require("./dist/raw-parser.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var ScreenModule = require('./screen');
+
+var SHOW_LOADING = "LOADING...!";
+var SHOW_DONE = "done.";
+
+function durationText(duration) {
+  if (duration < 0) {
+    return "Play";
+  }
+
+  var durationSecInt = Math.round(duration);
+  return Math.floor(durationSecInt / 3600) + ":" + Math.floor(durationSecInt % 3600 / 60) + ":" + Math.floor(durationSecInt % 60);
+}
+
+global.makeH265webjs = function (videoURL, config) {
+  var screenView = new ScreenModule.Screen();
+
+  var h265webjs = _index["default"].createPlayer(videoURL, config);
+
+  var progressPts = document.querySelector('#progressPts');
+  var progressVoice = document.querySelector('#progressVoice');
+  var playBar = document.querySelector('#playBtn');
+  var showLabel = document.querySelector('#showLabel');
+  var ptsLabel = document.querySelector('#ptsLabel');
+  var fullScreenBtn = document.querySelector('#fullScreenBtn');
+  var mediaInfo = null;
+  playBar.disabled = true;
+  playBar.textContent = '>';
+  showLabel.textContent = SHOW_LOADING;
+
+  playBar.onclick = function () {
+    if (h265webjs.isPlaying()) {
+      console.log("bar pause============>");
+      playBar.textContent = '>';
+      h265webjs.pause();
+    } else {
+      playBar.textContent = '||';
+      h265webjs.play();
+    }
+  };
+
+  fullScreenBtn.onclick = function () {
+    screenView.open();
+    h265webjs.setRenderScreen(true);
+  };
+
+  screenView.onClose = function () {
+    h265webjs.setRenderScreen(false);
+  };
+
+  progressPts.addEventListener('click', function (e) {
+    showLabel.textContent = SHOW_LOADING;
+    var x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
+
+    var y = e.pageY - progressPts.offsetTop; // or e.offsetY
+
+    var clickedValue = x * progressPts.max / progressPts.offsetWidth;
+    h265webjs.seek(clickedValue);
+  });
+  progressVoice.addEventListener('click', function (e) {
+    var x = e.pageX - progressVoice.offsetLeft; // or e.offsetX (less support, though)
+
+    var y = e.pageY - progressVoice.offsetTop; // or e.offsetY
+
+    var clickedValue = x * progressVoice.max / progressVoice.offsetWidth;
+    progressVoice.value = clickedValue;
+    var volume = clickedValue / 100;
+    h265webjs.setVoice(volume);
+  });
+
+  h265webjs.onSeekStart = function (pts) {
+    showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
+  };
+
+  h265webjs.onSeekFinish = function () {
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onPlayFinish = function () {
+    playBar.textContent = '>';
+  };
+
+  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
+    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+    console.log("on render");
+  };
+
+  h265webjs.onLoadCache = function () {
+    showLabel.textContent = "Caching...";
+  };
+
+  h265webjs.onLoadCacheFinshed = function () {
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onLoadFinish = function () {
+    h265webjs.setVoice(1.0);
+    mediaInfo = h265webjs.mediaInfo();
+    console.log("mediaInfo===========>", mediaInfo);
+    /*
+    meta:
+        durationMs: 144400
+        fps: 25
+        sampleRate: 44100
+        size: {
+            width: 864,
+            height: 480
+        },
+        audioNone : false
+    videoType: "vod"
+    */
+
+    playBar.disabled = false;
+
+    if (mediaInfo.meta.audioNone) {
+      progressVoice.value = 0;
+      progressVoice.style.display = 'none';
+    }
+
+    if (mediaInfo.videoType == "vod") {
+      progressPts.max = mediaInfo.meta.durationMs / 1000;
+      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
+    } else {
+      progressPts.hidden = true;
+      ptsLabel.textContent = '0:0:0/LIVE';
+    }
+
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onPlayTime = function (videoPTS) {
+    if (mediaInfo.videoType == "vod") {
+      progressPts.value = videoPTS;
+      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
+    } else {
+      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+    }
+  };
+
+  h265webjs["do"]();
+  return h265webjs;
+};
+/*
+ * 创建265流播放器
+ */
+
+
+global.makeH265webjsRaw = function (url265, config) {
+  var screenView = new ScreenModule.Screen();
+
+  var h265webjs = _index["default"].createPlayer(null, config);
+
+  var progressPts = document.querySelector('#progressPts');
+  var progressVoice = document.querySelector('#progressVoice');
+  var playBar = document.querySelector('#playBtn');
+  var fullScreenBtn = document.querySelector('#fullScreenBtn');
+  var mediaInfo = null;
+  playBar.disabled = true;
+  playBar.textContent = '>';
+
+  playBar.onclick = function () {
+    if (h265webjs.isPlaying()) {
+      console.log("bar pause============>");
+      playBar.textContent = '>';
+      h265webjs.pause();
+    } else {
+      playBar.textContent = '||';
+      h265webjs.play();
+    }
+  };
+
+  fullScreenBtn.onclick = function () {
+    screenView.open();
+    h265webjs.setRenderScreen(true);
+  };
+
+  screenView.onClose = function () {
+    h265webjs.setRenderScreen(false);
+  };
+
+  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
+    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+    console.log("on render");
+  };
+
+  h265webjs.onPlayTime = function (videoPTS) {
+    if (mediaInfo.videoType == "vod") {
+      progressPts.value = videoPTS;
+      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
+    } else {
+      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+    }
+  };
+
+  h265webjs.onLoadFinish = function () {
+    h265webjs.setVoice(1.0);
+    mediaInfo = h265webjs.mediaInfo();
+    console.log("mediaInfo===========>", mediaInfo);
+    /*
+    meta:
+        durationMs: 144400
+        fps: 25
+        sampleRate: 44100
+        size: {
+            width: 864,
+            height: 480
+        },
+        audioNone : false
+    videoType: "vod"
+    */
+
+    playBar.disabled = false;
+
+    if (mediaInfo.meta.audioNone) {
+      progressVoice.value = 0;
+      progressVoice.style.display = 'none';
+    }
+
+    if (mediaInfo.videoType == "vod") {
+      progressPts.max = mediaInfo.meta.durationMs / 1000;
+      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
+    } else {
+      progressPts.hidden = true;
+      ptsLabel.textContent = '0:0:0/LIVE';
+    }
+
+    showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs["do"]();
+  /*
+   * fetch 265
+   */
+
+  /*
+   * fetch 265
+   * you can use your code to fetch vod stream
+   * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+   */
+
+  var rawParser = new _rawParser["default"]();
+  var fetchFinished = false;
+  var startFetch = false;
+  var networkInterval = window.setInterval(function () {
+    if (!startFetch) {
+      startFetch = true;
+      fetch(url265).then(function (response) {
+        var pump = function pump(reader) {
+          return reader.read().then(function (result) {
+            if (result.done) {
+              // console.log("========== RESULT DONE ===========");
+              fetchFinished = true;
+              window.clearInterval(networkInterval);
+              networkInterval = null;
+              return;
+            }
+
+            var chunk = result.value;
+            rawParser.appendStreamRet(chunk);
+            return pump(reader);
+          });
+        };
+
+        return pump(response.body.getReader());
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }, 1); // fps>=30 play else cache
+
+  var naluParseInterval = window.setInterval(function () {
+    var test1time = getMsTime();
+    var nalBuf = rawParser.nextNalu(); // nal
+
+    var preCostTime = getMsTime() - test1time;
+    console.log("rawParser.nextNalu() => ", nalBuf, " usage => ", preCostTime);
+
+    if (nalBuf != false) {
+      // require
+      h265webjs.append265NaluFrame(nalBuf);
+    } else if (fetchFinished) {
+      window.clearInterval(naluParseInterval);
+      naluParseInterval = null;
+    }
+  }, 1);
+  return h265webjs;
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./dist/index":2,"./dist/raw-parser.js":3,"./screen":5}],5:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var YUVBuffer = require('yuv-buffer');
+
+var YUVCanvas = require('yuv-canvas');
+
+var ScreenModule =
+/*#__PURE__*/
+function () {
+  function ScreenModule() {
+    _classCallCheck(this, ScreenModule);
+
+    this.screenW = window.screen.width;
+    this.screenH = window.screen.height;
+    this.fixed = false;
+    this.screenCanvasBox = null;
+    this.screenCanvas = null;
+    this.screenYuv = null;
+
+    this._makeScreenGL(); // Event
+
+
+    this.onClose = null;
+  }
+
+  _createClass(ScreenModule, [{
+    key: "render",
+    value: function render(width, height, imageBufferY, imageBufferB, imageBufferR) {
+      this.screenYuv.clear();
+
+      var displayWH = this._checkScreenDisplaySize(width, height);
+
+      var format = YUVBuffer.format({
+        width: width,
+        height: height,
+        chromaWidth: width / 2,
+        chromaHeight: height / 2,
+        displayWidth: this.screenCanvas.offsetWidth,
+        displayHeight: this.screenCanvas.offsetHeight
+      });
+      var frame = YUVBuffer.frame(format);
+      frame.y.bytes = imageBufferY;
+      frame.y.stride = width;
+      frame.u.bytes = imageBufferB;
+      frame.u.stride = width / 2;
+      frame.v.bytes = imageBufferR;
+      frame.v.stride = width / 2;
+      this.screenYuv.drawFrame(frame);
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      this.screenCanvasBox.style.display = 'block';
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.screenCanvasBox.style.display = 'none';
+      if (this.onClose != null) this.onClose();
+    }
+    /*
+     * full screen
+     */
+
+  }, {
+    key: "_checkScreenDisplaySize",
+    value: function _checkScreenDisplaySize(widthIn, heightIn) {
+      var biggerWidth = widthIn / this.screenW > heightIn / this.screenH;
+      var fixedWidth = (this.screenW / widthIn).toFixed(2);
+      var fixedHeight = (this.screenH / heightIn).toFixed(2);
+      var scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
+      var width = this.fixed ? this.screenW : parseInt(widthIn * scaleRatio);
+      var height = this.fixed ? this.screenH : parseInt(heightIn * scaleRatio);
+
+      if (this.screenCanvas.offsetWidth != width || this.screenCanvas.offsetHeight != height) {
+        var topMargin = parseInt((this.screenCanvasBox.offsetHeight - height) / 2);
+        var leftMargin = parseInt((this.screenCanvasBox.offsetWidth - width) / 2);
+        this.screenCanvas.style.marginTop = topMargin + 'px';
+        this.screenCanvas.style.marginLeft = leftMargin + 'px';
+        this.screenCanvas.style.width = width + 'px';
+        this.screenCanvas.style.height = height + 'px';
+      }
+
+      return [width, height];
+    }
+  }, {
+    key: "_makeScreenGL",
+    value: function _makeScreenGL() {
+      var canvasBox = document.createElement('div'); // canvasBox.style.position = 'relative';
+
+      canvasBox.style.backgroundColor = 'black';
+      canvasBox.style.width = this.screenW + 'px';
+      canvasBox.style.height = this.screenH + 'px';
+      canvasBox.style.display = 'none'; // canvasBox.style.display = 'block';
+
+      canvasBox.style.position = 'absolute';
+      canvasBox.style.zIndex = '2001';
+      canvasBox.style.overflow = 'auto';
+      canvasBox.style.top = "0px";
+      canvasBox.style.left = "0px";
+      var canvas = document.createElement('canvas');
+      canvas.style.width = canvasBox.clientWidth + 'px';
+      canvas.style.height = canvasBox.clientHeight + 'px';
+      canvas.style.top = '0px';
+      canvas.style.left = '0px';
+      canvasBox.appendChild(canvas);
+      this.screenCanvasBox = canvasBox;
+      this.screenCanvas = canvas;
+      this.screenYuv = YUVCanvas.attach(canvas); // this.screenYuv.clear() //clearing the canvas?
+
+      document.body.appendChild(canvasBox);
+
+      this._addCloseBtn();
+    }
+  }, {
+    key: "_addCloseBtn",
+    value: function _addCloseBtn() {
+      var _this = this;
+
+      var closeBtn = document.createElement('button');
+      closeBtn.style.backgroundColor = 'white';
+      closeBtn.style.width = '100px';
+      closeBtn.style.height = '100px';
+      closeBtn.style.display = 'block';
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.zIndex = '2002';
+      closeBtn.style.overflow = 'auto';
+      closeBtn.style.top = "5px";
+      closeBtn.style.left = "5px";
+      closeBtn.textContent = "X";
+
+      closeBtn.onclick = function () {
+        _this.close();
+      };
+
+      this.screenCanvasBox.appendChild(closeBtn);
+    }
+  }]);
+
+  return ScreenModule;
+}();
+
+exports.Screen = ScreenModule;
+
+},{"yuv-buffer":6,"yuv-canvas":13}],6:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -24790,7 +25240,7 @@ var YUVBuffer = {
 
 module.exports = YUVBuffer;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = {
   vertex: "precision lowp float;\n\nattribute vec2 aPosition;\nattribute vec2 aLumaPosition;\nattribute vec2 aChromaPosition;\nvarying vec2 vLumaPosition;\nvarying vec2 vChromaPosition;\nvoid main() {\n    gl_Position = vec4(aPosition, 0, 1);\n    vLumaPosition = aLumaPosition;\n    vChromaPosition = aChromaPosition;\n}\n",
   fragment: "// inspired by https://github.com/mbebenita/Broadway/blob/master/Player/canvas.js\n\nprecision lowp float;\n\nuniform sampler2D uTextureY;\nuniform sampler2D uTextureCb;\nuniform sampler2D uTextureCr;\nvarying vec2 vLumaPosition;\nvarying vec2 vChromaPosition;\nvoid main() {\n   // Y, Cb, and Cr planes are uploaded as LUMINANCE textures.\n   float fY = texture2D(uTextureY, vLumaPosition).x;\n   float fCb = texture2D(uTextureCb, vChromaPosition).x;\n   float fCr = texture2D(uTextureCr, vChromaPosition).x;\n\n   // Premultipy the Y...\n   float fYmul = fY * 1.1643828125;\n\n   // And convert that to RGB!\n   gl_FragColor = vec4(\n     fYmul + 1.59602734375 * fCr - 0.87078515625,\n     fYmul - 0.39176171875 * fCb - 0.81296875 * fCr + 0.52959375,\n     fYmul + 2.017234375   * fCb - 1.081390625,\n     1\n   );\n}\n",
@@ -24798,7 +25248,7 @@ module.exports = {
   fragmentStripe: "// extra 'stripe' texture fiddling to work around IE 11's poor performance on gl.LUMINANCE and gl.ALPHA textures\n\nprecision lowp float;\n\nuniform sampler2D uStripe;\nuniform sampler2D uTexture;\nvarying vec2 vTexturePosition;\nvoid main() {\n   // Y, Cb, and Cr planes are mapped into a pseudo-RGBA texture\n   // so we can upload them without expanding the bytes on IE 11\n   // which doesn't allow LUMINANCE or ALPHA textures\n   // The stripe textures mark which channel to keep for each pixel.\n   // Each texture extraction will contain the relevant value in one\n   // channel only.\n\n   float fLuminance = dot(\n      texture2D(uStripe, vTexturePosition),\n      texture2D(uTexture, vTexturePosition)\n   );\n\n   gl_FragColor = vec4(fLuminance, fLuminance, fLuminance, 1);\n}\n"
 };
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function() {
   "use strict";
 
@@ -24842,7 +25292,7 @@ module.exports = {
 
 })();
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -24958,7 +25408,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	module.exports = SoftwareFrameSink;
 })();
 
-},{"./FrameSink.js":6,"./YCbCr.js":9}],8:[function(require,module,exports){
+},{"./FrameSink.js":8,"./YCbCr.js":11}],10:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25467,7 +25917,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	module.exports = WebGLFrameSink;
 })();
 
-},{"../build/shaders.js":5,"./FrameSink.js":6}],9:[function(require,module,exports){
+},{"../build/shaders.js":7,"./FrameSink.js":8}],11:[function(require,module,exports){
 /*
 Copyright (c) 2014-2019 Brion Vibber <brion@pobox.com>
 
@@ -25608,7 +26058,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	};
 })();
 
-},{"./depower.js":10}],10:[function(require,module,exports){
+},{"./depower.js":12}],12:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25660,7 +26110,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   module.exports = depower;
 })();
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*
 Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
 
@@ -25725,467 +26175,4 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   module.exports = YUVCanvas;
 })();
 
-},{"./FrameSink.js":6,"./SoftwareFrameSink.js":7,"./WebGLFrameSink.js":8}],12:[function(require,module,exports){
-(function (global){
-"use strict";
-
-var _index = _interopRequireDefault(require("./dist/index"));
-
-var _rawParser = _interopRequireDefault(require("./dist/raw-parser.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-// const H265webjs = require('./src/h265webjs');
-var ScreenModule = require('./screen');
-
-var SHOW_LOADING = "LOADING...!";
-var SHOW_DONE = "done.";
-
-function durationText(duration) {
-  if (duration < 0) {
-    return "Play";
-  }
-
-  var durationSecInt = Math.round(duration);
-  return Math.floor(durationSecInt / 3600) + ":" + Math.floor(durationSecInt % 3600 / 60) + ":" + Math.floor(durationSecInt % 60);
-}
-
-var getMsTime = function getMsTime() {
-  return new Date().getTime();
-};
-
-global.makeH265webjs = function (videoURL, config) {
-  var screenView = new ScreenModule.Screen();
-
-  var h265webjs = _index["default"].createPlayer(videoURL, config);
-
-  var progressPts = document.querySelector('#progressPts');
-  var progressVoice = document.querySelector('#progressVoice');
-  var playBar = document.querySelector('#playBtn');
-  var showLabel = document.querySelector('#showLabel');
-  var ptsLabel = document.querySelector('#ptsLabel');
-  var debugYUVBtn = document.querySelector('#debugYUVBtn');
-  var debugYUVATag = document.querySelector('#debugYUVUrl');
-  var fullScreenBtn = document.querySelector('#fullScreenBtn');
-  var mediaInfo = null;
-  playBar.disabled = true;
-  playBar.textContent = '>';
-  showLabel.textContent = SHOW_LOADING;
-
-  playBar.onclick = function () {
-    if (h265webjs.isPlaying()) {
-      console.log("bar pause============>");
-      playBar.textContent = '>';
-      h265webjs.pause();
-    } else {
-      playBar.textContent = '||';
-      h265webjs.play();
-    }
-  };
-
-  debugYUVBtn.onclick = function () {
-    h265webjs.debugYUV('#debugYUVUrl');
-  };
-
-  fullScreenBtn.onclick = function () {
-    screenView.open();
-    h265webjs.setRenderScreen(true);
-  };
-
-  screenView.onClose = function () {
-    h265webjs.setRenderScreen(false);
-  };
-
-  progressPts.addEventListener('click', function (e) {
-    showLabel.textContent = SHOW_LOADING;
-    var x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
-
-    var y = e.pageY - progressPts.offsetTop; // or e.offsetY
-
-    var clickedValue = x * progressPts.max / progressPts.offsetWidth;
-    h265webjs.seek(clickedValue);
-  });
-  progressVoice.addEventListener('click', function (e) {
-    var x = e.pageX - progressVoice.offsetLeft; // or e.offsetX (less support, though)
-
-    var y = e.pageY - progressVoice.offsetTop; // or e.offsetY
-
-    var clickedValue = x * progressVoice.max / progressVoice.offsetWidth;
-    progressVoice.value = clickedValue;
-    var volume = clickedValue / 100;
-    h265webjs.setVoice(volume);
-  });
-
-  h265webjs.onSeekStart = function (pts) {
-    showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
-  };
-
-  h265webjs.onSeekFinish = function () {
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs.onPlayFinish = function () {
-    console.log("============= FINISHED ===============");
-    playBar.textContent = '>';
-  };
-
-  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
-    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR); // console.log("on render");
-  };
-
-  h265webjs.onLoadCache = function () {
-    showLabel.textContent = "Caching...";
-  };
-
-  h265webjs.onLoadCacheFinshed = function () {
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs.onLoadFinish = function () {
-    h265webjs.setVoice(1.0);
-    mediaInfo = h265webjs.mediaInfo();
-    console.log("mediaInfo===========>", mediaInfo);
-    /*
-    meta:
-        durationMs: 144400
-        fps: 25
-        sampleRate: 44100
-        size: {
-            width: 864,
-            height: 480
-        },
-        audioNone : false
-    videoType: "vod"
-    */
-
-    playBar.disabled = false;
-
-    if (mediaInfo.meta.audioNone) {
-      progressVoice.value = 0;
-      progressVoice.style.display = 'none';
-    }
-
-    if (mediaInfo.videoType == "vod") {
-      progressPts.max = mediaInfo.meta.durationMs / 1000;
-      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
-    } else {
-      progressPts.hidden = true;
-      ptsLabel.textContent = '0:0:0/LIVE';
-    }
-
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs.onPlayTime = function (videoPTS) {
-    if (mediaInfo.videoType == "vod") {
-      progressPts.value = videoPTS;
-      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
-    } else {
-      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
-    }
-  };
-
-  h265webjs["do"]();
-  return h265webjs;
-};
-/*
- * 创建265流播放器
- */
-
-
-global.makeH265webjsRaw = function (url265, config) {
-  var screenView = new ScreenModule.Screen();
-
-  var h265webjs = _index["default"].createPlayer(null, config);
-
-  var progressPts = document.querySelector('#progressPts');
-  var progressVoice = document.querySelector('#progressVoice');
-  var playBar = document.querySelector('#playBtn');
-  var debugYUVBtn = document.querySelector('#debugYUVBtn');
-  var debugYUVATag = document.querySelector('#debugYUVUrl');
-  var fullScreenBtn = document.querySelector('#fullScreenBtn');
-  var mediaInfo = null;
-  playBar.disabled = true;
-  playBar.textContent = '>';
-
-  playBar.onclick = function () {
-    if (h265webjs.isPlaying()) {
-      console.log("bar pause============>");
-      playBar.textContent = '>';
-      h265webjs.pause();
-    } else {
-      playBar.textContent = '||';
-      h265webjs.play();
-    }
-  };
-
-  debugYUVBtn.onclick = function () {
-    h265webjs.debugYUV('#debugYUVUrl');
-  };
-
-  fullScreenBtn.onclick = function () {
-    screenView.open();
-    h265webjs.setRenderScreen(true);
-  };
-
-  screenView.onClose = function () {
-    h265webjs.setRenderScreen(false);
-  };
-
-  h265webjs.onRender = function (width, height, imageBufferY, imageBufferB, imageBufferR) {
-    screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
-    console.log("on render");
-  };
-
-  h265webjs.onPlayTime = function (videoPTS) {
-    if (mediaInfo.videoType == "vod") {
-      progressPts.value = videoPTS;
-      ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
-    } else {
-      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
-    }
-  };
-
-  h265webjs.onLoadFinish = function () {
-    h265webjs.setVoice(1.0);
-    mediaInfo = h265webjs.mediaInfo();
-    console.log("mediaInfo===========>", mediaInfo);
-    /*
-        meta:
-            durationMs: 144400
-            fps: 25
-            sampleRate: 44100
-            size: {
-                width: 864,
-                height: 480
-            },
-            audioNone : false
-        videoType: "vod"
-    */
-
-    playBar.disabled = false;
-
-    if (mediaInfo.meta.audioNone) {
-      progressVoice.value = 0;
-      progressVoice.style.display = 'none';
-    }
-
-    if (mediaInfo.videoType == "vod") {
-      progressPts.max = mediaInfo.meta.durationMs / 1000;
-      ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
-    } else {
-      progressPts.hidden = true;
-      ptsLabel.textContent = '0:0:0/LIVE';
-    }
-
-    showLabel.textContent = SHOW_DONE;
-  };
-
-  h265webjs["do"]();
-  /*
-   * fetch 265
-   * you can use your code to fetch vod stream
-   * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
-   */
-
-  var rawParser = new _rawParser["default"]();
-  var fetchFinished = false;
-  var startFetch = false;
-  var networkInterval = window.setInterval(function () {
-    if (!startFetch) {
-      startFetch = true;
-      fetch(url265).then(function (response) {
-        var pump = function pump(reader) {
-          return reader.read().then(function (result) {
-            if (result.done) {
-              // console.log("========== RESULT DONE ===========");
-              fetchFinished = true;
-              window.clearInterval(networkInterval);
-              networkInterval = null;
-              return;
-            }
-
-            var chunk = result.value;
-            rawParser.appendStreamRet(chunk);
-            return pump(reader);
-          });
-        };
-
-        return pump(response.body.getReader());
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }, 1); // fps>=30 play else cache
-
-  var naluParseInterval = window.setInterval(function () {
-    var test1time = getMsTime();
-    var nalBuf = rawParser.nextNalu(); // nal
-
-    var preCostTime = getMsTime() - test1time;
-    console.log("rawParser.nextNalu() => ", nalBuf, " usage => ", preCostTime);
-
-    if (nalBuf != false) {
-      // require
-      h265webjs.append265NaluFrame(nalBuf);
-    } else if (fetchFinished) {
-      window.clearInterval(naluParseInterval);
-      naluParseInterval = null;
-    }
-  }, 1);
-  return h265webjs;
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./dist/index":2,"./dist/raw-parser.js":3,"./screen":13}],13:[function(require,module,exports){
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var YUVBuffer = require('yuv-buffer');
-
-var YUVCanvas = require('yuv-canvas');
-
-var ScreenModule =
-/*#__PURE__*/
-function () {
-  function ScreenModule() {
-    _classCallCheck(this, ScreenModule);
-
-    this.screenW = window.screen.width;
-    this.screenH = window.screen.height;
-    this.fixed = false;
-    this.screenCanvasBox = null;
-    this.screenCanvas = null;
-    this.screenYuv = null;
-
-    this._makeScreenGL(); // Event
-
-
-    this.onClose = null;
-  }
-
-  _createClass(ScreenModule, [{
-    key: "render",
-    value: function render(width, height, imageBufferY, imageBufferB, imageBufferR) {
-      this.screenYuv.clear();
-
-      var displayWH = this._checkScreenDisplaySize(width, height);
-
-      var format = YUVBuffer.format({
-        width: width,
-        height: height,
-        chromaWidth: width / 2,
-        chromaHeight: height / 2,
-        displayWidth: this.screenCanvas.offsetWidth,
-        displayHeight: this.screenCanvas.offsetHeight
-      });
-      var frame = YUVBuffer.frame(format);
-      frame.y.bytes = imageBufferY;
-      frame.y.stride = width;
-      frame.u.bytes = imageBufferB;
-      frame.u.stride = width / 2;
-      frame.v.bytes = imageBufferR;
-      frame.v.stride = width / 2;
-      this.screenYuv.drawFrame(frame);
-    }
-  }, {
-    key: "open",
-    value: function open() {
-      this.screenCanvasBox.style.display = 'block';
-    }
-  }, {
-    key: "close",
-    value: function close() {
-      this.screenCanvasBox.style.display = 'none';
-      if (this.onClose != null) this.onClose();
-    }
-    /*
-     * full screen
-     */
-
-  }, {
-    key: "_checkScreenDisplaySize",
-    value: function _checkScreenDisplaySize(widthIn, heightIn) {
-      var biggerWidth = widthIn / this.screenW > heightIn / this.screenH;
-      var fixedWidth = (this.screenW / widthIn).toFixed(2);
-      var fixedHeight = (this.screenH / heightIn).toFixed(2);
-      var scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
-      var width = this.fixed ? this.screenW : parseInt(widthIn * scaleRatio);
-      var height = this.fixed ? this.screenH : parseInt(heightIn * scaleRatio);
-
-      if (this.screenCanvas.offsetWidth != width || this.screenCanvas.offsetHeight != height) {
-        var topMargin = parseInt((this.screenCanvasBox.offsetHeight - height) / 2);
-        var leftMargin = parseInt((this.screenCanvasBox.offsetWidth - width) / 2);
-        this.screenCanvas.style.marginTop = topMargin + 'px';
-        this.screenCanvas.style.marginLeft = leftMargin + 'px';
-        this.screenCanvas.style.width = width + 'px';
-        this.screenCanvas.style.height = height + 'px';
-      }
-
-      return [width, height];
-    }
-  }, {
-    key: "_makeScreenGL",
-    value: function _makeScreenGL() {
-      var canvasBox = document.createElement('div'); // canvasBox.style.position = 'relative';
-
-      canvasBox.style.backgroundColor = 'black';
-      canvasBox.style.width = this.screenW + 'px';
-      canvasBox.style.height = this.screenH + 'px';
-      canvasBox.style.display = 'none'; // canvasBox.style.display = 'block';
-
-      canvasBox.style.position = 'absolute';
-      canvasBox.style.zIndex = '2001';
-      canvasBox.style.overflow = 'auto';
-      canvasBox.style.top = "0px";
-      canvasBox.style.left = "0px";
-      var canvas = document.createElement('canvas');
-      canvas.style.width = canvasBox.clientWidth + 'px';
-      canvas.style.height = canvasBox.clientHeight + 'px';
-      canvas.style.top = '0px';
-      canvas.style.left = '0px';
-      canvasBox.appendChild(canvas);
-      this.screenCanvasBox = canvasBox;
-      this.screenCanvas = canvas;
-      this.screenYuv = YUVCanvas.attach(canvas); // this.screenYuv.clear() //clearing the canvas?
-
-      document.body.appendChild(canvasBox);
-
-      this._addCloseBtn();
-    }
-  }, {
-    key: "_addCloseBtn",
-    value: function _addCloseBtn() {
-      var _this = this;
-
-      var closeBtn = document.createElement('button');
-      closeBtn.style.backgroundColor = 'white';
-      closeBtn.style.width = '100px';
-      closeBtn.style.height = '100px';
-      closeBtn.style.display = 'block';
-      closeBtn.style.position = 'absolute';
-      closeBtn.style.zIndex = '2002';
-      closeBtn.style.overflow = 'auto';
-      closeBtn.style.top = "5px";
-      closeBtn.style.left = "5px";
-      closeBtn.textContent = "X";
-
-      closeBtn.onclick = function () {
-        _this.close();
-      };
-
-      this.screenCanvasBox.appendChild(closeBtn);
-    }
-  }]);
-
-  return ScreenModule;
-}();
-
-exports.Screen = ScreenModule;
-
-},{"yuv-buffer":4,"yuv-canvas":11}]},{},[12]);
+},{"./FrameSink.js":8,"./SoftwareFrameSink.js":9,"./WebGLFrameSink.js":10}]},{},[4]);
