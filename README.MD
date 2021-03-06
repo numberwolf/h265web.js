@@ -132,6 +132,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 * Github: https://github.com/numberwolf/h265web.js
 * Email(porschegt23@foxmail.com)
 * QQ: 531365872
+* QQ技术支持群: 925466059
 * Discord:numberwolf#8694
 * 微信:numberwolf11
 
