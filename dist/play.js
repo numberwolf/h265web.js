@@ -23598,33 +23598,38 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         autoCrop: !1,
         core: h.PLAYER_CORE_TYPE_DEFAULT,
         coreProbePart: 1
-      },
-          p = function () {
-        function e(t, r) {
+      };
+
+      d.onRuntimeInitialized = function () {
+        t.STATIC_MEM_wasmDecoderState = 1, t.STATIC_MEM_wasmDecoderState;
+      };
+
+      var p = function () {
+        function e(r, i) {
           !function (e, t) {
             if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-          }(this, e), this.mp4Obj = null, this.mpegTsObj = null, this.hlsObj = null, this.hlsConf = {
+          }(this, e), t.STATICE_MEM_playerCount += 1, this.playerIndex = t.STATICE_MEM_playerCount, this.mp4Obj = null, this.mpegTsObj = null, this.hlsObj = null, this.hlsConf = {
             hlsType: h.PLAYER_IN_TYPE_M3U8_VOD
-          }, this.videoURL = t, this.configFormat = {
-            playerId: r.player || h.DEFAILT_WEBGL_PLAY_ID,
-            playerW: r.width || h.DEFAULT_WIDTH,
-            playerH: r.height || h.DEFAULT_HEIGHT,
-            type: r.type || h.PLAYER_IN_TYPE_MP4,
-            accurateSeek: r.accurateSeek || !1,
-            playIcon: r.playIcon || "assets/icon-play@300.png",
-            loadIcon: r.loadIcon || "assets/icon-loading.gif",
-            token: r.token || null,
-            extInfo: r.extInfo || l
+          }, this.videoURL = r, this.configFormat = {
+            playerId: i.player || h.DEFAILT_WEBGL_PLAY_ID,
+            playerW: i.width || h.DEFAULT_WIDTH,
+            playerH: i.height || h.DEFAULT_HEIGHT,
+            type: i.type || h.PLAYER_IN_TYPE_MP4,
+            accurateSeek: i.accurateSeek || !1,
+            playIcon: i.playIcon || "assets/icon-play@300.png",
+            loadIcon: i.loadIcon || "assets/icon-loading.gif",
+            token: i.token || null,
+            extInfo: i.extInfo || l
           }, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null) : alert("请输入TOKEN！Please set token param!");
         }
 
-        var r, p, m;
-        return r = e, (p = [{
+        var r, d, p;
+        return r = e, (d = [{
           key: "do",
           value: function value() {
             var e = this,
                 r = !1;
-            if (this.configFormat.type === h.PLAYER_IN_TYPE_RAW_265 && (r = !0, this.playMode = h.PLAYER_MODE_NOTIME_LIVE), this.playParam = {
+            this.configFormat.type === h.PLAYER_IN_TYPE_RAW_265 && (r = !0, this.playMode = h.PLAYER_MODE_NOTIME_LIVE), this.playParam = {
               durationMs: 0,
               fps: 0,
               sampleRate: 0,
@@ -23634,12 +23639,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               },
               audioNone: r,
               videoCodec: h.CODEC_H265
-            }, c.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH), window.WebAssembly) t.STATIC_MEM_wasmDecoderState, 1 == t.STATIC_MEM_wasmDecoderState ? e.configFormat.type == h.PLAYER_IN_TYPE_MP4 && e._makeMP4Player() : d.onRuntimeInitialized = function () {
-              t.STATIC_MEM_wasmDecoderState = 1, t.STATIC_MEM_wasmDecoderState, e._makeMP4Player();
-            };else {
-              var i = "unsupport WASM!";
-              /iPhone|iPad/.test(window.navigator.userAgent) && (i += " ios:min-version 11"), alert(i), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
-            }
+            }, c.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
+            var i = window.setInterval(function () {
+              if (t.STATICE_MEM_playerIndexPtr === e.playerIndex) if (t.STATICE_MEM_playerIndexPtr, e.playerIndex, window.WebAssembly) t.STATIC_MEM_wasmDecoderState, 1 == t.STATIC_MEM_wasmDecoderState && (e.configFormat.type == h.PLAYER_IN_TYPE_MP4 && e._makeMP4Player(), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(i), i = null);else {
+                var r = "unsupport WASM!";
+                /iPhone|iPad/.test(window.navigator.userAgent) && (r += " ios:min-version 11"), alert(r), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm"), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(i), i = null;
+              }
+            }, 500);
           }
         }, {
           key: "debugYUV",
@@ -23973,7 +23979,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             };
             this.player.appendHevcFrame(t), this.configFormat.extInfo.readyShow && this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (this.player.playFrameYUV(!0, !0), this.configFormat.extInfo.readyShow = !1), this.rawModePts += 1 / this.configFormat.extInfo.rawFps;
           }
-        }]) && i(r.prototype, p), m && i(r, m), e;
+        }]) && i(r.prototype, d), p && i(r, p), e;
       }();
 
       r.H265webjs = p, t.new265webjs = function (e, t) {
@@ -24110,7 +24116,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     (function (e) {
       "use strict";
 
-      e.STATIC_MEM_wasmDecoderState = -1;
+      e.STATIC_MEM_wasmDecoderState = -1, e.STATICE_MEM_playerCount = -1, e.STATICE_MEM_playerIndexPtr = 0;
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {}],
   228: [function (e, t, r) {
@@ -24153,6 +24159,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
+(function (global){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24180,6 +24187,12 @@ function () {
     value: function createPlayer(videoURL, config) {
       return window.new265webjs(videoURL, config);
     }
+  }, {
+    key: "clear",
+    value: function clear() {
+      global.STATICE_MEM_playerCount = -1;
+      global.STATICE_MEM_playerIndexPtr = 0;
+    }
   }]);
 
   return h265webjs;
@@ -24187,6 +24200,7 @@ function () {
 
 exports["default"] = h265webjs;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./h265webjs":1}],3:[function(require,module,exports){
 "use strict";
 

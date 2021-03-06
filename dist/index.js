@@ -5,6 +5,7 @@ export default class h265webjs {
 	}
 
 	static clear() {
-        global.STATICE_MEM_playerCount = -1;
+		global.STATICE_MEM_playerCount = -1;
+		global.STATICE_MEM_playerIndexPtr = 0;
     }
 }

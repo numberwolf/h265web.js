@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/03/06 |
+| - | 1.New Core Type, Fixed: multi-stream play badcase |
 | Time | 2021/02/28 |
 | - | 1.Add function to feed 265 nalu-frame `append265NaluFrame(nalBuf);` |
 | - | 2.Add new library to parse 265 stream [raw-parser.js](./dist/raw-parser.js) |
