@@ -23264,200 +23264,202 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     r.AACDecoder = n;
   }, {}],
   222: [function (e, t, r) {
-    "use strict";
+    (function (t) {
+      "use strict";
 
-    function i(e, t) {
-      for (var r = 0; r < t.length; r++) {
-        var i = t[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(e, i.key, i);
-      }
-    }
-
-    var n = e("../../decoder/missile.js"),
-        a = e("./decoder/aac"),
-        s = e("./consts"),
-        o = function () {
-      function e(t) {
-        !function (e, t) {
-          if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-        }(this, e), this.configFormat = {}, this.mediaAttr = {
-          sampleRate: 0,
-          sampleChannel: 0,
-          vFps: 0,
-          vGop: 0,
-          vDuration: 0,
-          aDuration: 0,
-          duration: 0,
-          aCodec: "",
-          vCodec: ""
-        }, this.extensionInfo = {
-          vWidth: 0,
-          vHeight: 0
-        }, this.wasmState = 0, this.onReady = null, this.onDemuxed = null, this.aacDec = null;
+      function i(e, t) {
+        for (var r = 0; r < t.length; r++) {
+          var i = t[r];
+          i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(e, i.key, i);
+        }
       }
 
-      var t, r, o;
-      return t = e, (r = [{
-        key: "initDemuxer",
-        value: function value() {
-          var e = this;
-          if (window.WebAssembly) n.run(), n.onRuntimeInitialized = function () {
-            null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, e.onReady());
-          }, n.postRun = function () {
-            null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, e.onReady());
-          };else {
-            var t = "unsupport WASM!";
-            /iPhone|iPad/.test(window.navigator.userAgent) && (t += " ios:min-version 11"), alert(t), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
+      var n = e("../../decoder/missile.js"),
+          a = e("./decoder/aac"),
+          s = e("./consts"),
+          o = function () {
+        function e(t) {
+          !function (e, t) {
+            if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
+          }(this, e), this.configFormat = {}, this.mediaAttr = {
+            sampleRate: 0,
+            sampleChannel: 0,
+            vFps: 0,
+            vGop: 0,
+            vDuration: 0,
+            aDuration: 0,
+            duration: 0,
+            aCodec: "",
+            vCodec: ""
+          }, this.extensionInfo = {
+            vWidth: 0,
+            vHeight: 0
+          }, this.wasmState = 0, this.onReady = null, this.onDemuxed = null, this.aacDec = null;
+        }
+
+        var r, o, f;
+        return r = e, (o = [{
+          key: "initDemuxer",
+          value: function value() {
+            var e = this;
+            if (window.WebAssembly) n.run(), 1 === t.STATIC_MEM_wasmDecoderState ? (e.wasmState = 1, e.onReady()) : (n.onRuntimeInitialized = function () {
+              null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, e.onReady());
+            }, n.postRun = function () {
+              null != e.onReady && 0 == e.wasmState && (e.wasmState = 1, e.onReady());
+            });else {
+              var r = "unsupport WASM!";
+              /iPhone|iPad/.test(window.navigator.userAgent) && (r += " ios:min-version 11"), alert(r), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm");
+            }
+            return !0;
           }
-          return !0;
-        }
-      }, {
-        key: "demuxURL",
-        value: function value(e) {
-          this._demuxerTsInit(e);
-        }
-      }, {
-        key: "demuxUint8Buf",
-        value: function value(e) {
-          this._demuxCore(e);
-        }
-      }, {
-        key: "_demuxerTsInit",
-        value: function value(e) {
-          var t = this;
-          fetch(e).then(function (e) {
-            return e.arrayBuffer();
-          }).then(function (e) {
-            e.fileStart = 0;
-            var r = new Uint8Array(e);
+        }, {
+          key: "demuxURL",
+          value: function value(e) {
+            this._demuxerTsInit(e);
+          }
+        }, {
+          key: "demuxUint8Buf",
+          value: function value(e) {
+            this._demuxCore(e);
+          }
+        }, {
+          key: "_demuxerTsInit",
+          value: function value(e) {
+            var t = this;
+            fetch(e).then(function (e) {
+              return e.arrayBuffer();
+            }).then(function (e) {
+              e.fileStart = 0;
+              var r = new Uint8Array(e);
 
-            t._demuxCore(r);
-          });
-        }
-      }, {
-        key: "_demuxCore",
-        value: function value(e) {
-          this._refreshDemuxer();
+              t._demuxCore(r);
+            });
+          }
+        }, {
+          key: "_demuxCore",
+          value: function value(e) {
+            this._refreshDemuxer();
 
-          var t = n._malloc(e.length);
+            var t = n._malloc(e.length);
 
-          n.HEAP8.set(e, t);
-          var r = n.cwrap("demuxBox", "number", ["number", "number"])(t, e.length);
-          r >= 0 && (this._setMediaInfo(), this._setExtensionInfo(), null != this.onDemuxed && this.onDemuxed());
-        }
-      }, {
-        key: "_setMediaInfo",
-        value: function value() {
-          var e = n.cwrap("getMediaInfo", "number", [])(),
-              t = n.HEAPU32[e / 4],
-              r = n.HEAPU32[e / 4 + 1],
-              i = n.HEAPF64[e / 8 + 1],
-              o = n.HEAPF64[e / 8 + 1 + 1],
-              f = n.HEAPF64[e / 8 + 1 + 1 + 1],
-              u = n.HEAPF64[e / 8 + 1 + 1 + 1 + 1],
-              h = n.HEAPU32[e / 4 + 2 + 2 + 2 + 2 + 2];
-          this.mediaAttr.vFps = i, this.mediaAttr.vGop = h, this.mediaAttr.vDuration = o, this.mediaAttr.aDuration = f, this.mediaAttr.duration = u;
-          var c = n.cwrap("getAudioCodecID", "number", [])();
-          c >= 0 ? (this.mediaAttr.aCodec = s.CODEC_OFFSET_TABLE[c], this.mediaAttr.sampleRate = t > 0 ? t : s.DEFAULT_SAMPLERATE, this.mediaAttr.sampleChannel = r > 0 ? r : s.DEFAULT_CHANNEL) : (this.mediaAttr.sampleRate = 0, this.mediaAttr.sampleChannel = 0);
-          var d = n.cwrap("getVideoCodecID", "number", [])();
-          d >= 0 && (this.mediaAttr.vCodec = s.CODEC_OFFSET_TABLE[d]), null == this.aacDec ? this.aacDec = new a.AACDecoder(this.mediaAttr) : this.aacDec.updateConfig(this.mediaAttr);
-        }
-      }, {
-        key: "_setExtensionInfo",
-        value: function value() {
-          var e = n.cwrap("getExtensionInfo", "number", [])(),
-              t = n.HEAPU32[e / 4],
-              r = n.HEAPU32[e / 4 + 1];
-          this.extensionInfo.vWidth = t, this.extensionInfo.vHeight = r;
-        }
-      }, {
-        key: "readMediaInfo",
-        value: function value() {
-          return this.mediaAttr;
-        }
-      }, {
-        key: "readExtensionInfo",
-        value: function value() {
-          return this.extensionInfo;
-        }
-      }, {
-        key: "_readLayer",
-        value: function value() {
-          var e = {
-            vps: null,
-            sps: null,
-            pps: null,
-            sei: null
-          },
-              t = {
-            vlc: null
-          },
-              r = n.cwrap("getSPSLen", "number", [])(),
-              i = n.cwrap("getSPS", "number", [])();
-          e.sps = new Uint8Array(r), e.sps.set(n.HEAPU8.subarray(i, i + r), 0);
-          var a = n.cwrap("getPPSLen", "number", [])(),
-              o = n.cwrap("getPPS", "number", [])();
-          e.pps = new Uint8Array(a), e.pps.set(n.HEAPU8.subarray(o, o + a), 0);
-          var f = n.cwrap("getSEILen", "number", [])(),
-              u = n.cwrap("getSEI", "number", [])();
-          e.sei = new Uint8Array(f), e.sei.set(n.HEAPU8.subarray(u, u + f), 0);
-          var h = n.cwrap("getVLCLen", "number", [])(),
-              c = n.cwrap("getVLC", "number", [])();
+            n.HEAP8.set(e, t);
+            var r = n.cwrap("demuxBox", "number", ["number", "number"])(t, e.length);
+            r >= 0 && (this._setMediaInfo(), this._setExtensionInfo(), null != this.onDemuxed && this.onDemuxed());
+          }
+        }, {
+          key: "_setMediaInfo",
+          value: function value() {
+            var e = n.cwrap("getMediaInfo", "number", [])(),
+                t = n.HEAPU32[e / 4],
+                r = n.HEAPU32[e / 4 + 1],
+                i = n.HEAPF64[e / 8 + 1],
+                o = n.HEAPF64[e / 8 + 1 + 1],
+                f = n.HEAPF64[e / 8 + 1 + 1 + 1],
+                u = n.HEAPF64[e / 8 + 1 + 1 + 1 + 1],
+                h = n.HEAPU32[e / 4 + 2 + 2 + 2 + 2 + 2];
+            this.mediaAttr.vFps = i, this.mediaAttr.vGop = h, this.mediaAttr.vDuration = o, this.mediaAttr.aDuration = f, this.mediaAttr.duration = u;
+            var c = n.cwrap("getAudioCodecID", "number", [])();
+            c >= 0 ? (this.mediaAttr.aCodec = s.CODEC_OFFSET_TABLE[c], this.mediaAttr.sampleRate = t > 0 ? t : s.DEFAULT_SAMPLERATE, this.mediaAttr.sampleChannel = r > 0 ? r : s.DEFAULT_CHANNEL) : (this.mediaAttr.sampleRate = 0, this.mediaAttr.sampleChannel = 0);
+            var d = n.cwrap("getVideoCodecID", "number", [])();
+            d >= 0 && (this.mediaAttr.vCodec = s.CODEC_OFFSET_TABLE[d]), null == this.aacDec ? this.aacDec = new a.AACDecoder(this.mediaAttr) : this.aacDec.updateConfig(this.mediaAttr);
+          }
+        }, {
+          key: "_setExtensionInfo",
+          value: function value() {
+            var e = n.cwrap("getExtensionInfo", "number", [])(),
+                t = n.HEAPU32[e / 4],
+                r = n.HEAPU32[e / 4 + 1];
+            this.extensionInfo.vWidth = t, this.extensionInfo.vHeight = r;
+          }
+        }, {
+          key: "readMediaInfo",
+          value: function value() {
+            return this.mediaAttr;
+          }
+        }, {
+          key: "readExtensionInfo",
+          value: function value() {
+            return this.extensionInfo;
+          }
+        }, {
+          key: "_readLayer",
+          value: function value() {
+            var e = {
+              vps: null,
+              sps: null,
+              pps: null,
+              sei: null
+            },
+                t = {
+              vlc: null
+            },
+                r = n.cwrap("getSPSLen", "number", [])(),
+                i = n.cwrap("getSPS", "number", [])();
+            e.sps = new Uint8Array(r), e.sps.set(n.HEAPU8.subarray(i, i + r), 0);
+            var a = n.cwrap("getPPSLen", "number", [])(),
+                o = n.cwrap("getPPS", "number", [])();
+            e.pps = new Uint8Array(a), e.pps.set(n.HEAPU8.subarray(o, o + a), 0);
+            var f = n.cwrap("getSEILen", "number", [])(),
+                u = n.cwrap("getSEI", "number", [])();
+            e.sei = new Uint8Array(f), e.sei.set(n.HEAPU8.subarray(u, u + f), 0);
+            var h = n.cwrap("getVLCLen", "number", [])(),
+                c = n.cwrap("getVLC", "number", [])();
 
-          if (t.vlc = new Uint8Array(h), t.vlc.set(n.HEAPU8.subarray(c, c + h), 0), this.mediaAttr.vCodec == s.DEF_HEVC || this.mediaAttr.vCodec == s.DEF_H265) {
-            var d = n.cwrap("getVPSLen", "number", [])(),
-                l = n.cwrap("getVPS", "number", [])();
-            e.vps = new Uint8Array(d), e.vps.set(n.HEAPU8.subarray(l, l + d), 0);
-          } else this.mediaAttr.vCodec == s.DEF_AVC || (this.mediaAttr.vCodec, s.DEF_H264);
+            if (t.vlc = new Uint8Array(h), t.vlc.set(n.HEAPU8.subarray(c, c + h), 0), this.mediaAttr.vCodec == s.DEF_HEVC || this.mediaAttr.vCodec == s.DEF_H265) {
+              var d = n.cwrap("getVPSLen", "number", [])(),
+                  l = n.cwrap("getVPS", "number", [])();
+              e.vps = new Uint8Array(d), e.vps.set(n.HEAPU8.subarray(l, l + d), 0);
+            } else this.mediaAttr.vCodec == s.DEF_AVC || (this.mediaAttr.vCodec, s.DEF_H264);
 
-          return {
-            nalu: e,
-            vlc: t
-          };
-        }
-      }, {
-        key: "readPacket",
-        value: function value() {
-          var e = n.cwrap("getPacket", "number", [])(),
-              t = n.HEAPU32[e / 4],
-              r = n.HEAPU32[e / 4 + 1],
-              i = n.HEAPF64[e / 8 + 1],
-              a = n.HEAPF64[e / 8 + 1 + 1],
-              o = n.HEAPU32[e / 4 + 1 + 1 + 2 + 2],
-              f = n.HEAPU32[e / 4 + 1 + 1 + 2 + 2 + 1],
-              u = n.HEAPU8.subarray(f, f + r),
-              h = this._readLayer();
+            return {
+              nalu: e,
+              vlc: t
+            };
+          }
+        }, {
+          key: "readPacket",
+          value: function value() {
+            var e = n.cwrap("getPacket", "number", [])(),
+                t = n.HEAPU32[e / 4],
+                r = n.HEAPU32[e / 4 + 1],
+                i = n.HEAPF64[e / 8 + 1],
+                a = n.HEAPF64[e / 8 + 1 + 1],
+                o = n.HEAPU32[e / 4 + 1 + 1 + 2 + 2],
+                f = n.HEAPU32[e / 4 + 1 + 1 + 2 + 2 + 1],
+                u = n.HEAPU8.subarray(f, f + r),
+                h = this._readLayer();
 
-          return {
-            type: t,
-            size: r,
-            ptime: i,
-            dtime: a,
-            keyframe: o,
-            src: u,
-            data: 1 == t && this.mediaAttr.aCodec == s.DEF_AAC ? this.aacDec.sliceAACFrames(i, u) : u,
-            layer: h
-          };
-        }
-      }, {
-        key: "_refreshDemuxer",
-        value: function value() {
-          this._releaseDemuxer(), this._initDemuxer();
-        }
-      }, {
-        key: "_initDemuxer",
-        value: function value() {
-          n.cwrap("initTsMissile", "number", [])(), n.cwrap("initializeDemuxer", "number", [])();
-        }
-      }, {
-        key: "_releaseDemuxer",
-        value: function value() {
-          n.cwrap("exitTsMissile", "number", [])();
-        }
-      }]) && i(t.prototype, r), o && i(t, o), e;
-    }();
+            return {
+              type: t,
+              size: r,
+              ptime: i,
+              dtime: a,
+              keyframe: o,
+              src: u,
+              data: 1 == t && this.mediaAttr.aCodec == s.DEF_AAC ? this.aacDec.sliceAACFrames(i, u) : u,
+              layer: h
+            };
+          }
+        }, {
+          key: "_refreshDemuxer",
+          value: function value() {
+            this._releaseDemuxer(), this._initDemuxer();
+          }
+        }, {
+          key: "_initDemuxer",
+          value: function value() {
+            n.cwrap("initTsMissile", "number", [])(), n.cwrap("initializeDemuxer", "number", [])();
+          }
+        }, {
+          key: "_releaseDemuxer",
+          value: function value() {
+            n.cwrap("exitTsMissile", "number", [])();
+          }
+        }]) && i(r.prototype, o), f && i(r, f), e;
+      }();
 
-    r.MPEG_JS = o;
+      r.MPEG_JS = o;
+    }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {
     "../../decoder/missile.js": 213,
     "./consts": 220,
@@ -23641,7 +23643,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               videoCodec: h.CODEC_H265
             }, c.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
             var i = window.setInterval(function () {
-              if (t.STATICE_MEM_playerIndexPtr === e.playerIndex) if (t.STATICE_MEM_playerIndexPtr, e.playerIndex, window.WebAssembly) t.STATIC_MEM_wasmDecoderState, 1 == t.STATIC_MEM_wasmDecoderState && (e.configFormat.type == h.PLAYER_IN_TYPE_MP4 && e._makeMP4Player(), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(i), i = null);else {
+              if (t.STATICE_MEM_playerIndexPtr === e.playerIndex) if (t.STATICE_MEM_playerIndexPtr, e.playerIndex, window.WebAssembly) t.STATIC_MEM_wasmDecoderState, 1 == t.STATIC_MEM_wasmDecoderState && (e._makeMP4Player(), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(i), i = null);else {
                 var r = "unsupport WASM!";
                 /iPhone|iPad/.test(window.navigator.userAgent) && (r += " ios:min-version 11"), alert(r), alert("Please check your browers, it not support wasm! See:https://www.caniuse.com/#search=wasm"), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(i), i = null;
               }
