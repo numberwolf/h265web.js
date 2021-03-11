@@ -31,14 +31,20 @@ server.createServer({
                 close: () => {}
             }
         },
-        {url: '/dist/missile.wasm', get: ctx => {
-            ctx.res.writeHead(200, { accept: '*', 'content-type': 'application/wasm'})
-            ctx.res.end(fs.readFileSync('./dist/missile.wasm'))
-        }},
-        {url: '/dist/missilets.wasm', get: ctx => {
-            ctx.res.writeHead(200, { accept: '*', 'content-type': 'application/wasm'})
-            ctx.res.end(fs.readFileSync('./dist/missilets.wasm'))
-        }},
-        {url: '/*', get: server.staticFileServer('.')}
+        {
+            url: '/dist/missile.wasm', get: ctx => {
+                ctx.res.writeHead(200, { accept: '*', 'content-type': 'application/wasm'})
+                ctx.res.end(fs.readFileSync('./dist/missile.wasm'))
+            }
+        },
+        {
+            url: '/dist/missilets.wasm', get: ctx => {
+                ctx.res.writeHead(200, { accept: '*', 'content-type': 'application/wasm'})
+                ctx.res.end(fs.readFileSync('./dist/missilets.wasm'))
+            }
+        },
+        {
+            url: '/*', get: server.staticFileServer('.')
+        }
     ]
 })
