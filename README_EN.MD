@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/03/14 |
+| - | 1.New Core: Fixed: render of bytes align |
 | Time | 2021/03/12 |
 | - | 1.Sorry my friends, I was too tired to make a mistake with hls feature... Now I have fixed it. ~_~! |
 | Time | 2021/03/06 |

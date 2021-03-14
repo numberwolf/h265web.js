@@ -164,6 +164,7 @@
         var token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
         var type = "mp4";
         var url = "res/video40_265_moov.mp4";
+        // var url = "res/badcase_green_byte_align265.mp4";
         // var url = "demo/res/p1_265_5s.mp4";
         // var url = "demo/res/p1_265.mp4";
         // var url = "demo/res/p2.mp4";
@@ -195,7 +196,7 @@
         // var url = "res/hls1/test.m3u8";
 
         const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器 recommand!!!!!!
-        const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验万能播放器
+        const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验万能播放器 can not seek
 
         var config = {
             type: type,
