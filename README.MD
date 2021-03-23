@@ -336,14 +336,14 @@ var config = {
 
 		示例：
 		```javascript
-		let h265webjs = new265webjs(videoURL, config); // 全局方法
+		let player = new265webjs(videoURL, config); // 全局方法
 		```
 
 		* 2. 以`import H265webjsModule from './dist/index';`引入为前提 （推荐）
 
 		示例：
 		```javascript
-		let h265webjs = H265webjsModule.createPlayer(videoURL, config);
+		let player = H265webjsModule.createPlayer(videoURL, config);
 		```
 
 		* 3. 如果创建的是`raw265`类型的裸流数据播放 请注意

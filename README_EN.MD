@@ -329,14 +329,14 @@ let config = {
 
 		Example:
 		```javascript
-		let h265webjs = new265webjs(videoURL, config); // Global Function
+		let player = new265webjs(videoURL, config); // Global Function
 		```
 
 		* 2. If `import H265webjsModule from './dist/index';`（recommend）
 
 		Example:
 		```javascript
-		let h265webjs = H265webjsModule.createPlayer(videoURL, config);
+		let player = H265webjsModule.createPlayer(videoURL, config);
 		```
 
 		* 3. NOTICE! If you want to create `raw265` stream player
