@@ -20,6 +20,7 @@ global.makeH265webjs = (videoURL, config) => {
 
     let h265webjs       = H265webjsModule.createPlayer(videoURL, config);
 
+    let cachePts        = document.querySelector('#cachePts');
     let progressPts     = document.querySelector('#progressPts');
     let progressVoice   = document.querySelector('#progressVoice');
     let playBar         = document.querySelector('#playBtn');
@@ -120,13 +121,20 @@ global.makeH265webjs = (videoURL, config) => {
 
         if (mediaInfo.videoType == "vod") {
             progressPts.max = mediaInfo.meta.durationMs / 1000;
+            cachePts.max = mediaInfo.meta.durationMs / 1000;
             ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
         } else {
             progressPts.hidden = true;
+            cachePts.hidden = true;
             ptsLabel.textContent = '0:0:0/LIVE';
         }
 
         showLabel.textContent = SHOW_DONE;
+    };
+
+    h265webjs.onCacheProcess = (cPts) => {
+        // console.log("onCacheProcess => ", cPts);
+        cachePts.value = cPts;
     };
 
     h265webjs.onPlayTime = (videoPTS) => {

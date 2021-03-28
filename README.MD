@@ -58,6 +58,11 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 事件 | 2021/03/28 |
+| - | 1.增加缓冲进度条 |
+| - | 2.解决了一些Bug，优化了一些性能 |
+| - | 3.移出HLS播放的无用日志 |
+| - | 4.增加去音频播放选项(新内核) |
 | 时间 | 2021/03/14 |
 | - | 1.新播放内核：字节对齐渲染问题解决 |
 | 时间 | 2021/03/12 |
@@ -120,6 +125,8 @@
 | 1080p播放 | 是 |  ----  | ---- |
 | 720p播放 | 是 |  ----  | ---- |
 | 多路播放 | 是 |  ----  | ---- |
+| 去音频播放 | 是 |  ----  | ---- |
+| 缓冲进度 | 是 |  ----  | ---- |
 
 <br>
 
@@ -188,24 +195,12 @@ require('./dist/h265webjs');
 import H265webjsModule from './dist/index';
 ```
 
-* 方式2：从npm商店引入
-
-[![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | <a href="https://www.npmjs.com/package/h265web.js">npm:h265web.js</a>
 
 <br>
 
 #### 2）安装Wasm
 
-* 如果使用了直接从Github下载dist的话这一步可以跳过。
-
-* 如果用`npm`方式进行安装，则需要将`./node_modules/h265web.js/dist/*.wasm`拷贝到你的`h265webjs.js`同级目录下才可以。
-
-	* 示例Cmd
-
-	```bash
-	npm i h265web.js
-	cp ./node_modules/h265web.js/dist/*.wasm ./dist/
-	```
+* 从Github下载dist。
 
 <br>
 
@@ -223,14 +218,6 @@ import H265webjsModule from './dist/index';
 	// 引入Github的本地文件
 	import H265webjsModule from './dist/index';
 	```
-
-* npm形式引入
-
-[![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js)
-
-```javascript
-const H265webjs = require('h265web.js');
-```
 
 <br>
 
@@ -274,8 +261,9 @@ var config = {
 | \+ readyShow  | Bool | true/false | 否:默认false | 是否需要封面图展示 |
 | \+ rawFps  | Float32 | 例如:30 | 否:默认24 | HEVC/AVC裸流播放时候的帧率设定 |
 | \+ autoCrop  | Bool | - | 否:默认false | 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
-| \+ core  | Int | - | 否:默认0 | 0:默认播放内核 1:测试阶段的高成功率播放内核 |
+| \+ core  | Int | - | 否:默认0 | 0:默认播放内核 <br>1:测试阶段的高成功率播放内核 |
 | \+ coreProbePart  | Float32 | - | 否:默认1.0 | 探测Mp4媒体的属性，百分比 `0.0~1.0`,正常moov前置的文件都用0.1(10%)可以（只适用于测试阶段的高成功率播放内核) |
+| \+ ignoreAudio | Int | - | 否:默认0 | 0:带音频播放 <br>1:忽略音频播放 |
 
 
 
@@ -496,6 +484,20 @@ player.onPlayFinish = () => {
 };
 ```
 
+#### 6）播放器缓冲进度回调
+
+|  回调参数 | 类型 | 默认值 | 必填 | 说明 | 
+|  ----  | ----  | ---- | ---- | ---- |
+| cPts  | float64 | - | - | 当前缓冲进度时间 |
+
+* 示例
+
+```javascript
+player.onCacheProcess = (cPts) => {
+    // console.log("onCacheProcess => ", cPts);
+};
+````
+
 <br>
 
 ### 播放器API能力 ###
@@ -709,6 +711,12 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 -f mpegts -y ./res/veilside2.ts
 ```
 
+
+<hr>
+
+## Stargazers over time
+
+[![Stargazers over time](https://starcharts.herokuapp.com/numberwolf/h265web.js.svg)](https://starcharts.herokuapp.com/numberwolf/h265web.js)
 
 
 

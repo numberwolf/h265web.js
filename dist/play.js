@@ -1464,10 +1464,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             K = G >>> 13,
             X = 0 | o[3],
             Z = 8191 & X,
-            J = X >>> 13,
-            Q = 0 | o[4],
-            $ = 8191 & Q,
-            ee = Q >>> 13,
+            Q = X >>> 13,
+            J = 0 | o[4],
+            $ = 8191 & J,
+            ee = J >>> 13,
             te = 0 | o[5],
             re = 8191 & te,
             ie = te >>> 13,
@@ -1492,25 +1492,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var ge = (u + (i = i + Math.imul(c, W) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, K) | 0) + Math.imul(d, W) | 0)) << 13) | 0;
         u = ((a = a + Math.imul(d, K) | 0) + (n >>> 13) | 0) + (ge >>> 26) | 0, ge &= 67108863, i = Math.imul(v, j), n = (n = Math.imul(v, H)) + Math.imul(w, j) | 0, a = Math.imul(w, H), i = i + Math.imul(y, Y) | 0, n = (n = n + Math.imul(y, q) | 0) + Math.imul(g, Y) | 0, a = a + Math.imul(g, q) | 0, i = i + Math.imul(p, W) | 0, n = (n = n + Math.imul(p, K) | 0) + Math.imul(m, W) | 0, a = a + Math.imul(m, K) | 0;
 
-        var _e = (u + (i = i + Math.imul(c, Z) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, J) | 0) + Math.imul(d, Z) | 0)) << 13) | 0;
+        var _e = (u + (i = i + Math.imul(c, Z) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, Q) | 0) + Math.imul(d, Z) | 0)) << 13) | 0;
 
-        u = ((a = a + Math.imul(d, J) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(y, W) | 0, n = (n = n + Math.imul(y, K) | 0) + Math.imul(g, W) | 0, a = a + Math.imul(g, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, J) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, J) | 0;
+        u = ((a = a + Math.imul(d, Q) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(y, W) | 0, n = (n = n + Math.imul(y, K) | 0) + Math.imul(g, W) | 0, a = a + Math.imul(g, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, Q) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, Q) | 0;
         var ve = (u + (i = i + Math.imul(c, $) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ee) | 0) + Math.imul(d, $) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(y, Z) | 0, n = (n = n + Math.imul(y, J) | 0) + Math.imul(g, Z) | 0, a = a + Math.imul(g, J) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
+        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(y, Z) | 0, n = (n = n + Math.imul(y, Q) | 0) + Math.imul(g, Z) | 0, a = a + Math.imul(g, Q) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
         var we = (u + (i = i + Math.imul(c, re) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ie) | 0) + Math.imul(d, re) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, J) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, J) | 0, i = i + Math.imul(y, $) | 0, n = (n = n + Math.imul(y, ee) | 0) + Math.imul(g, $) | 0, a = a + Math.imul(g, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
+        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, Q) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, Q) | 0, i = i + Math.imul(y, $) | 0, n = (n = n + Math.imul(y, ee) | 0) + Math.imul(g, $) | 0, a = a + Math.imul(g, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
         var Ee = (u + (i = i + Math.imul(c, ae) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, se) | 0) + Math.imul(d, ae) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(C, j), n = (n = Math.imul(C, H)) + Math.imul(R, j) | 0, a = Math.imul(R, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, J) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, J) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(y, re) | 0, n = (n = n + Math.imul(y, ie) | 0) + Math.imul(g, re) | 0, a = a + Math.imul(g, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
+        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(C, j), n = (n = Math.imul(C, H)) + Math.imul(R, j) | 0, a = Math.imul(R, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, Q) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, Q) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(y, re) | 0, n = (n = n + Math.imul(y, ie) | 0) + Math.imul(g, re) | 0, a = a + Math.imul(g, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
         var Se = (u + (i = i + Math.imul(c, fe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ue) | 0) + Math.imul(d, fe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(C, Y) | 0, n = (n = n + Math.imul(C, q) | 0) + Math.imul(R, Y) | 0, a = a + Math.imul(R, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, J) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, J) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(y, ae) | 0, n = (n = n + Math.imul(y, se) | 0) + Math.imul(g, ae) | 0, a = a + Math.imul(g, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
+        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(C, Y) | 0, n = (n = n + Math.imul(C, q) | 0) + Math.imul(R, Y) | 0, a = a + Math.imul(R, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, Q) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, Q) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(y, ae) | 0, n = (n = n + Math.imul(y, se) | 0) + Math.imul(g, ae) | 0, a = a + Math.imul(g, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
         var Ae = (u + (i = i + Math.imul(c, ce) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, de) | 0) + Math.imul(d, ce) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(C, W) | 0, n = (n = n + Math.imul(C, K) | 0) + Math.imul(R, W) | 0, a = a + Math.imul(R, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, J) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, J) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(y, fe) | 0, n = (n = n + Math.imul(y, ue) | 0) + Math.imul(g, fe) | 0, a = a + Math.imul(g, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
+        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(C, W) | 0, n = (n = n + Math.imul(C, K) | 0) + Math.imul(R, W) | 0, a = a + Math.imul(R, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, Q) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, Q) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(y, fe) | 0, n = (n = n + Math.imul(y, ue) | 0) + Math.imul(g, fe) | 0, a = a + Math.imul(g, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
         var xe = (u + (i = i + Math.imul(c, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, me) | 0) + Math.imul(d, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(C, Z) | 0, n = (n = n + Math.imul(C, J) | 0) + Math.imul(R, Z) | 0, a = a + Math.imul(R, J) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(y, ce) | 0, n = (n = n + Math.imul(y, de) | 0) + Math.imul(g, ce) | 0, a = a + Math.imul(g, de) | 0;
+        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(C, Z) | 0, n = (n = n + Math.imul(C, Q) | 0) + Math.imul(R, Z) | 0, a = a + Math.imul(R, Q) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(y, ce) | 0, n = (n = n + Math.imul(y, de) | 0) + Math.imul(g, ce) | 0, a = a + Math.imul(g, de) | 0;
         var Me = (u + (i = i + Math.imul(p, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(p, me) | 0) + Math.imul(m, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, J) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, J) | 0, i = i + Math.imul(C, $) | 0, n = (n = n + Math.imul(C, ee) | 0) + Math.imul(R, $) | 0, a = a + Math.imul(R, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
+        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, Q) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, Q) | 0, i = i + Math.imul(C, $) | 0, n = (n = n + Math.imul(C, ee) | 0) + Math.imul(R, $) | 0, a = a + Math.imul(R, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
         var Te = (u + (i = i + Math.imul(y, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(y, me) | 0) + Math.imul(g, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(g, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, J)) + Math.imul(O, Z) | 0, a = Math.imul(O, J), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(C, re) | 0, n = (n = n + Math.imul(C, ie) | 0) + Math.imul(R, re) | 0, a = a + Math.imul(R, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
+        u = ((a = a + Math.imul(g, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, Q)) + Math.imul(O, Z) | 0, a = Math.imul(O, Q), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(C, re) | 0, n = (n = n + Math.imul(C, ie) | 0) + Math.imul(R, re) | 0, a = a + Math.imul(R, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
         var ke = (u + (i = i + Math.imul(v, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(v, me) | 0) + Math.imul(w, pe) | 0)) << 13) | 0;
         u = ((a = a + Math.imul(w, me) | 0) + (n >>> 13) | 0) + (ke >>> 26) | 0, ke &= 67108863, i = Math.imul(N, $), n = (n = Math.imul(N, ee)) + Math.imul(O, $) | 0, a = Math.imul(O, ee), i = i + Math.imul(D, re) | 0, n = (n = n + Math.imul(D, ie) | 0) + Math.imul(L, re) | 0, a = a + Math.imul(L, ie) | 0, i = i + Math.imul(C, ae) | 0, n = (n = n + Math.imul(C, se) | 0) + Math.imul(R, ae) | 0, a = a + Math.imul(R, se) | 0, i = i + Math.imul(P, fe) | 0, n = (n = n + Math.imul(P, ue) | 0) + Math.imul(U, fe) | 0, a = a + Math.imul(U, ue) | 0, i = i + Math.imul(M, ce) | 0, n = (n = n + Math.imul(M, de) | 0) + Math.imul(T, ce) | 0, a = a + Math.imul(T, de) | 0;
         var Pe = (u + (i = i + Math.imul(S, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(S, me) | 0) + Math.imul(A, pe) | 0)) << 13) | 0;
@@ -2884,10 +2884,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             K = G >>> 13,
             X = 0 | o[3],
             Z = 8191 & X,
-            J = X >>> 13,
-            Q = 0 | o[4],
-            $ = 8191 & Q,
-            ee = Q >>> 13,
+            Q = X >>> 13,
+            J = 0 | o[4],
+            $ = 8191 & J,
+            ee = J >>> 13,
             te = 0 | o[5],
             re = 8191 & te,
             ie = te >>> 13,
@@ -2912,25 +2912,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var ge = (u + (i = i + Math.imul(c, W) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, K) | 0) + Math.imul(d, W) | 0)) << 13) | 0;
         u = ((a = a + Math.imul(d, K) | 0) + (n >>> 13) | 0) + (ge >>> 26) | 0, ge &= 67108863, i = Math.imul(v, j), n = (n = Math.imul(v, H)) + Math.imul(w, j) | 0, a = Math.imul(w, H), i = i + Math.imul(y, Y) | 0, n = (n = n + Math.imul(y, q) | 0) + Math.imul(g, Y) | 0, a = a + Math.imul(g, q) | 0, i = i + Math.imul(p, W) | 0, n = (n = n + Math.imul(p, K) | 0) + Math.imul(m, W) | 0, a = a + Math.imul(m, K) | 0;
 
-        var _e = (u + (i = i + Math.imul(c, Z) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, J) | 0) + Math.imul(d, Z) | 0)) << 13) | 0;
+        var _e = (u + (i = i + Math.imul(c, Z) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, Q) | 0) + Math.imul(d, Z) | 0)) << 13) | 0;
 
-        u = ((a = a + Math.imul(d, J) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(y, W) | 0, n = (n = n + Math.imul(y, K) | 0) + Math.imul(g, W) | 0, a = a + Math.imul(g, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, J) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, J) | 0;
+        u = ((a = a + Math.imul(d, Q) | 0) + (n >>> 13) | 0) + (_e >>> 26) | 0, _e &= 67108863, i = Math.imul(S, j), n = (n = Math.imul(S, H)) + Math.imul(A, j) | 0, a = Math.imul(A, H), i = i + Math.imul(v, Y) | 0, n = (n = n + Math.imul(v, q) | 0) + Math.imul(w, Y) | 0, a = a + Math.imul(w, q) | 0, i = i + Math.imul(y, W) | 0, n = (n = n + Math.imul(y, K) | 0) + Math.imul(g, W) | 0, a = a + Math.imul(g, K) | 0, i = i + Math.imul(p, Z) | 0, n = (n = n + Math.imul(p, Q) | 0) + Math.imul(m, Z) | 0, a = a + Math.imul(m, Q) | 0;
         var ve = (u + (i = i + Math.imul(c, $) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ee) | 0) + Math.imul(d, $) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(y, Z) | 0, n = (n = n + Math.imul(y, J) | 0) + Math.imul(g, Z) | 0, a = a + Math.imul(g, J) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
+        u = ((a = a + Math.imul(d, ee) | 0) + (n >>> 13) | 0) + (ve >>> 26) | 0, ve &= 67108863, i = Math.imul(M, j), n = (n = Math.imul(M, H)) + Math.imul(T, j) | 0, a = Math.imul(T, H), i = i + Math.imul(S, Y) | 0, n = (n = n + Math.imul(S, q) | 0) + Math.imul(A, Y) | 0, a = a + Math.imul(A, q) | 0, i = i + Math.imul(v, W) | 0, n = (n = n + Math.imul(v, K) | 0) + Math.imul(w, W) | 0, a = a + Math.imul(w, K) | 0, i = i + Math.imul(y, Z) | 0, n = (n = n + Math.imul(y, Q) | 0) + Math.imul(g, Z) | 0, a = a + Math.imul(g, Q) | 0, i = i + Math.imul(p, $) | 0, n = (n = n + Math.imul(p, ee) | 0) + Math.imul(m, $) | 0, a = a + Math.imul(m, ee) | 0;
         var we = (u + (i = i + Math.imul(c, re) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ie) | 0) + Math.imul(d, re) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, J) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, J) | 0, i = i + Math.imul(y, $) | 0, n = (n = n + Math.imul(y, ee) | 0) + Math.imul(g, $) | 0, a = a + Math.imul(g, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
+        u = ((a = a + Math.imul(d, ie) | 0) + (n >>> 13) | 0) + (we >>> 26) | 0, we &= 67108863, i = Math.imul(P, j), n = (n = Math.imul(P, H)) + Math.imul(U, j) | 0, a = Math.imul(U, H), i = i + Math.imul(M, Y) | 0, n = (n = n + Math.imul(M, q) | 0) + Math.imul(T, Y) | 0, a = a + Math.imul(T, q) | 0, i = i + Math.imul(S, W) | 0, n = (n = n + Math.imul(S, K) | 0) + Math.imul(A, W) | 0, a = a + Math.imul(A, K) | 0, i = i + Math.imul(v, Z) | 0, n = (n = n + Math.imul(v, Q) | 0) + Math.imul(w, Z) | 0, a = a + Math.imul(w, Q) | 0, i = i + Math.imul(y, $) | 0, n = (n = n + Math.imul(y, ee) | 0) + Math.imul(g, $) | 0, a = a + Math.imul(g, ee) | 0, i = i + Math.imul(p, re) | 0, n = (n = n + Math.imul(p, ie) | 0) + Math.imul(m, re) | 0, a = a + Math.imul(m, ie) | 0;
         var Ee = (u + (i = i + Math.imul(c, ae) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, se) | 0) + Math.imul(d, ae) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(C, j), n = (n = Math.imul(C, H)) + Math.imul(R, j) | 0, a = Math.imul(R, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, J) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, J) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(y, re) | 0, n = (n = n + Math.imul(y, ie) | 0) + Math.imul(g, re) | 0, a = a + Math.imul(g, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
+        u = ((a = a + Math.imul(d, se) | 0) + (n >>> 13) | 0) + (Ee >>> 26) | 0, Ee &= 67108863, i = Math.imul(C, j), n = (n = Math.imul(C, H)) + Math.imul(R, j) | 0, a = Math.imul(R, H), i = i + Math.imul(P, Y) | 0, n = (n = n + Math.imul(P, q) | 0) + Math.imul(U, Y) | 0, a = a + Math.imul(U, q) | 0, i = i + Math.imul(M, W) | 0, n = (n = n + Math.imul(M, K) | 0) + Math.imul(T, W) | 0, a = a + Math.imul(T, K) | 0, i = i + Math.imul(S, Z) | 0, n = (n = n + Math.imul(S, Q) | 0) + Math.imul(A, Z) | 0, a = a + Math.imul(A, Q) | 0, i = i + Math.imul(v, $) | 0, n = (n = n + Math.imul(v, ee) | 0) + Math.imul(w, $) | 0, a = a + Math.imul(w, ee) | 0, i = i + Math.imul(y, re) | 0, n = (n = n + Math.imul(y, ie) | 0) + Math.imul(g, re) | 0, a = a + Math.imul(g, ie) | 0, i = i + Math.imul(p, ae) | 0, n = (n = n + Math.imul(p, se) | 0) + Math.imul(m, ae) | 0, a = a + Math.imul(m, se) | 0;
         var Se = (u + (i = i + Math.imul(c, fe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, ue) | 0) + Math.imul(d, fe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(C, Y) | 0, n = (n = n + Math.imul(C, q) | 0) + Math.imul(R, Y) | 0, a = a + Math.imul(R, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, J) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, J) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(y, ae) | 0, n = (n = n + Math.imul(y, se) | 0) + Math.imul(g, ae) | 0, a = a + Math.imul(g, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
+        u = ((a = a + Math.imul(d, ue) | 0) + (n >>> 13) | 0) + (Se >>> 26) | 0, Se &= 67108863, i = Math.imul(D, j), n = (n = Math.imul(D, H)) + Math.imul(L, j) | 0, a = Math.imul(L, H), i = i + Math.imul(C, Y) | 0, n = (n = n + Math.imul(C, q) | 0) + Math.imul(R, Y) | 0, a = a + Math.imul(R, q) | 0, i = i + Math.imul(P, W) | 0, n = (n = n + Math.imul(P, K) | 0) + Math.imul(U, W) | 0, a = a + Math.imul(U, K) | 0, i = i + Math.imul(M, Z) | 0, n = (n = n + Math.imul(M, Q) | 0) + Math.imul(T, Z) | 0, a = a + Math.imul(T, Q) | 0, i = i + Math.imul(S, $) | 0, n = (n = n + Math.imul(S, ee) | 0) + Math.imul(A, $) | 0, a = a + Math.imul(A, ee) | 0, i = i + Math.imul(v, re) | 0, n = (n = n + Math.imul(v, ie) | 0) + Math.imul(w, re) | 0, a = a + Math.imul(w, ie) | 0, i = i + Math.imul(y, ae) | 0, n = (n = n + Math.imul(y, se) | 0) + Math.imul(g, ae) | 0, a = a + Math.imul(g, se) | 0, i = i + Math.imul(p, fe) | 0, n = (n = n + Math.imul(p, ue) | 0) + Math.imul(m, fe) | 0, a = a + Math.imul(m, ue) | 0;
         var Ae = (u + (i = i + Math.imul(c, ce) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, de) | 0) + Math.imul(d, ce) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(C, W) | 0, n = (n = n + Math.imul(C, K) | 0) + Math.imul(R, W) | 0, a = a + Math.imul(R, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, J) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, J) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(y, fe) | 0, n = (n = n + Math.imul(y, ue) | 0) + Math.imul(g, fe) | 0, a = a + Math.imul(g, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
+        u = ((a = a + Math.imul(d, de) | 0) + (n >>> 13) | 0) + (Ae >>> 26) | 0, Ae &= 67108863, i = Math.imul(N, j), n = (n = Math.imul(N, H)) + Math.imul(O, j) | 0, a = Math.imul(O, H), i = i + Math.imul(D, Y) | 0, n = (n = n + Math.imul(D, q) | 0) + Math.imul(L, Y) | 0, a = a + Math.imul(L, q) | 0, i = i + Math.imul(C, W) | 0, n = (n = n + Math.imul(C, K) | 0) + Math.imul(R, W) | 0, a = a + Math.imul(R, K) | 0, i = i + Math.imul(P, Z) | 0, n = (n = n + Math.imul(P, Q) | 0) + Math.imul(U, Z) | 0, a = a + Math.imul(U, Q) | 0, i = i + Math.imul(M, $) | 0, n = (n = n + Math.imul(M, ee) | 0) + Math.imul(T, $) | 0, a = a + Math.imul(T, ee) | 0, i = i + Math.imul(S, re) | 0, n = (n = n + Math.imul(S, ie) | 0) + Math.imul(A, re) | 0, a = a + Math.imul(A, ie) | 0, i = i + Math.imul(v, ae) | 0, n = (n = n + Math.imul(v, se) | 0) + Math.imul(w, ae) | 0, a = a + Math.imul(w, se) | 0, i = i + Math.imul(y, fe) | 0, n = (n = n + Math.imul(y, ue) | 0) + Math.imul(g, fe) | 0, a = a + Math.imul(g, ue) | 0, i = i + Math.imul(p, ce) | 0, n = (n = n + Math.imul(p, de) | 0) + Math.imul(m, ce) | 0, a = a + Math.imul(m, de) | 0;
         var xe = (u + (i = i + Math.imul(c, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(c, me) | 0) + Math.imul(d, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(C, Z) | 0, n = (n = n + Math.imul(C, J) | 0) + Math.imul(R, Z) | 0, a = a + Math.imul(R, J) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(y, ce) | 0, n = (n = n + Math.imul(y, de) | 0) + Math.imul(g, ce) | 0, a = a + Math.imul(g, de) | 0;
+        u = ((a = a + Math.imul(d, me) | 0) + (n >>> 13) | 0) + (xe >>> 26) | 0, xe &= 67108863, i = Math.imul(N, Y), n = (n = Math.imul(N, q)) + Math.imul(O, Y) | 0, a = Math.imul(O, q), i = i + Math.imul(D, W) | 0, n = (n = n + Math.imul(D, K) | 0) + Math.imul(L, W) | 0, a = a + Math.imul(L, K) | 0, i = i + Math.imul(C, Z) | 0, n = (n = n + Math.imul(C, Q) | 0) + Math.imul(R, Z) | 0, a = a + Math.imul(R, Q) | 0, i = i + Math.imul(P, $) | 0, n = (n = n + Math.imul(P, ee) | 0) + Math.imul(U, $) | 0, a = a + Math.imul(U, ee) | 0, i = i + Math.imul(M, re) | 0, n = (n = n + Math.imul(M, ie) | 0) + Math.imul(T, re) | 0, a = a + Math.imul(T, ie) | 0, i = i + Math.imul(S, ae) | 0, n = (n = n + Math.imul(S, se) | 0) + Math.imul(A, ae) | 0, a = a + Math.imul(A, se) | 0, i = i + Math.imul(v, fe) | 0, n = (n = n + Math.imul(v, ue) | 0) + Math.imul(w, fe) | 0, a = a + Math.imul(w, ue) | 0, i = i + Math.imul(y, ce) | 0, n = (n = n + Math.imul(y, de) | 0) + Math.imul(g, ce) | 0, a = a + Math.imul(g, de) | 0;
         var Me = (u + (i = i + Math.imul(p, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(p, me) | 0) + Math.imul(m, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, J) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, J) | 0, i = i + Math.imul(C, $) | 0, n = (n = n + Math.imul(C, ee) | 0) + Math.imul(R, $) | 0, a = a + Math.imul(R, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
+        u = ((a = a + Math.imul(m, me) | 0) + (n >>> 13) | 0) + (Me >>> 26) | 0, Me &= 67108863, i = Math.imul(N, W), n = (n = Math.imul(N, K)) + Math.imul(O, W) | 0, a = Math.imul(O, K), i = i + Math.imul(D, Z) | 0, n = (n = n + Math.imul(D, Q) | 0) + Math.imul(L, Z) | 0, a = a + Math.imul(L, Q) | 0, i = i + Math.imul(C, $) | 0, n = (n = n + Math.imul(C, ee) | 0) + Math.imul(R, $) | 0, a = a + Math.imul(R, ee) | 0, i = i + Math.imul(P, re) | 0, n = (n = n + Math.imul(P, ie) | 0) + Math.imul(U, re) | 0, a = a + Math.imul(U, ie) | 0, i = i + Math.imul(M, ae) | 0, n = (n = n + Math.imul(M, se) | 0) + Math.imul(T, ae) | 0, a = a + Math.imul(T, se) | 0, i = i + Math.imul(S, fe) | 0, n = (n = n + Math.imul(S, ue) | 0) + Math.imul(A, fe) | 0, a = a + Math.imul(A, ue) | 0, i = i + Math.imul(v, ce) | 0, n = (n = n + Math.imul(v, de) | 0) + Math.imul(w, ce) | 0, a = a + Math.imul(w, de) | 0;
         var Te = (u + (i = i + Math.imul(y, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(y, me) | 0) + Math.imul(g, pe) | 0)) << 13) | 0;
-        u = ((a = a + Math.imul(g, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, J)) + Math.imul(O, Z) | 0, a = Math.imul(O, J), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(C, re) | 0, n = (n = n + Math.imul(C, ie) | 0) + Math.imul(R, re) | 0, a = a + Math.imul(R, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
+        u = ((a = a + Math.imul(g, me) | 0) + (n >>> 13) | 0) + (Te >>> 26) | 0, Te &= 67108863, i = Math.imul(N, Z), n = (n = Math.imul(N, Q)) + Math.imul(O, Z) | 0, a = Math.imul(O, Q), i = i + Math.imul(D, $) | 0, n = (n = n + Math.imul(D, ee) | 0) + Math.imul(L, $) | 0, a = a + Math.imul(L, ee) | 0, i = i + Math.imul(C, re) | 0, n = (n = n + Math.imul(C, ie) | 0) + Math.imul(R, re) | 0, a = a + Math.imul(R, ie) | 0, i = i + Math.imul(P, ae) | 0, n = (n = n + Math.imul(P, se) | 0) + Math.imul(U, ae) | 0, a = a + Math.imul(U, se) | 0, i = i + Math.imul(M, fe) | 0, n = (n = n + Math.imul(M, ue) | 0) + Math.imul(T, fe) | 0, a = a + Math.imul(T, ue) | 0, i = i + Math.imul(S, ce) | 0, n = (n = n + Math.imul(S, de) | 0) + Math.imul(A, ce) | 0, a = a + Math.imul(A, de) | 0;
         var ke = (u + (i = i + Math.imul(v, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(v, me) | 0) + Math.imul(w, pe) | 0)) << 13) | 0;
         u = ((a = a + Math.imul(w, me) | 0) + (n >>> 13) | 0) + (ke >>> 26) | 0, ke &= 67108863, i = Math.imul(N, $), n = (n = Math.imul(N, ee)) + Math.imul(O, $) | 0, a = Math.imul(O, ee), i = i + Math.imul(D, re) | 0, n = (n = n + Math.imul(D, ie) | 0) + Math.imul(L, re) | 0, a = a + Math.imul(L, ie) | 0, i = i + Math.imul(C, ae) | 0, n = (n = n + Math.imul(C, se) | 0) + Math.imul(R, ae) | 0, a = a + Math.imul(R, se) | 0, i = i + Math.imul(P, fe) | 0, n = (n = n + Math.imul(P, ue) | 0) + Math.imul(U, fe) | 0, a = a + Math.imul(U, ue) | 0, i = i + Math.imul(M, ce) | 0, n = (n = n + Math.imul(M, de) | 0) + Math.imul(T, ce) | 0, a = a + Math.imul(T, de) | 0;
         var Pe = (u + (i = i + Math.imul(S, pe) | 0) | 0) + ((8191 & (n = (n = n + Math.imul(S, me) | 0) + Math.imul(A, pe) | 0)) << 13) | 0;
@@ -16896,13 +16896,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             K = s[j],
             X = s[j + 1],
             Z = u(o, f, g),
-            J = u(A, x, M),
-            Q = T + W | 0,
-            $ = _ + G + y(Q, T) | 0;
-        $ = ($ = ($ = $ + Z + y(Q = Q + J | 0, J) | 0) + K + y(Q = Q + X | 0, X) | 0) + z + y(Q = Q + O | 0, O) | 0;
+            Q = u(A, x, M),
+            J = T + W | 0,
+            $ = _ + G + y(J, T) | 0;
+        $ = ($ = ($ = $ + Z + y(J = J + Q | 0, Q) | 0) + K + y(J = J + X | 0, X) | 0) + z + y(J = J + O | 0, O) | 0;
         var ee = q + V | 0,
             te = Y + H + y(ee, q) | 0;
-        _ = g, T = M, g = f, M = x, f = o, x = A, o = a + $ + y(A = S + Q | 0, S) | 0, a = n, S = E, n = i, E = w, i = r, w = v, r = $ + te + y(v = Q + ee | 0, Q) | 0;
+        _ = g, T = M, g = f, M = x, f = o, x = A, o = a + $ + y(A = S + J | 0, S) | 0, a = n, S = E, n = i, E = w, i = r, w = v, r = $ + te + y(v = J + ee | 0, J) | 0;
       }
 
       this._al = this._al + v | 0, this._bl = this._bl + w | 0, this._cl = this._cl + E | 0, this._dl = this._dl + S | 0, this._el = this._el + A | 0, this._fl = this._fl + x | 0, this._gl = this._gl + M | 0, this._hl = this._hl + T | 0, this._ah = this._ah + r + y(this._al, v) | 0, this._bh = this._bh + i + y(this._bl, w) | 0, this._ch = this._ch + n + y(this._cl, E) | 0, this._dh = this._dh + a + y(this._dl, S) | 0, this._eh = this._eh + o + y(this._el, A) | 0, this._fh = this._fh + f + y(this._fl, x) | 0, this._gh = this._gh + g + y(this._gl, M) | 0, this._hh = this._hh + _ + y(this._hl, T) | 0;
@@ -17556,9 +17556,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           if (r < 0 || r >= t.sourceList.length) return null;
 
           try {
-            t.sourceList[e].disconnect(t.gainNode), t.sourceList[e] = null;
+            t.sourceChannel === e && null !== t.sourceList[e] && (t.sourceList[e].disconnect(t.gainNode), t.sourceList[e] = null);
           } catch (e) {}
 
+          t.sourceChannel = r;
           var i = t.decodeSample(r, e);
           -2 == i && (t.getAlignVPTS() >= t.durationMs / 1e3 - .04 ? t.pause() : null !== t.onLoadCache && (t.onLoadCache, t.onLoadCache()));
         },
@@ -17590,22 +17591,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         decodeSample: function decodeSample() {
           var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : -1,
               r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : -1;
-          if (t.sourceChannel = e, e < 0 || e >= t.sourceList.length) return -1;
+          if (e < 0 || e >= t.sourceList.length) return -1;
           if (null != t.sourceList[e] && null != t.sourceList[e] && t.sourceList[e] || (t.sourceList[e] = t.audioCtx.createBufferSource(), t.sourceList[e].onended = function () {
             t.swapSource(e, r);
           }), 0 == t.sampleQueue.length) return -2;
-          if (null == t.nextBuffer || t.nextBuffer.data.length < 1) return t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].stop(), 1;
+          if (t.sourceList[e].buffer) return t.sourceList[e], t.sourceList[r], t.gainNode, t.swapSource(e, r), 0;
+          if (null == t.nextBuffer || t.nextBuffer.data.length < 1) return t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].startState = !0, t.sourceList[e].stop(), 1;
           var i = t.nextBuffer.data.buffer;
           t.playTimestamp = t.nextBuffer.pts, t.playStartTime = a(), t.playTimestamp;
 
           try {
             t.audioCtx.decodeAudioData(i, function (r) {
-              t.sourceList[e].buffer = r, t.sourceList[e].connect(t.gainNode), t.sourceList[e].start();
-            }, function (e) {
-              e.err;
-            });
+              t.sourceList[e].buffer = r, t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].startState = !0, t.sourceList[e];
+            }, function (e) {});
           } catch (e) {
-            return t.nextBuffer = null, alert("Crash[brower]! Please refresh your page"), -3;
+            return t.nextBuffer = null, -3;
           }
 
           return t.nextBuffer = null, 0;
@@ -17632,7 +17632,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           try {
             t.audioCtx.decodeAudioData(u, function (r) {
-              t.sourceList[e].buffer = r, t.sourceList[e].connect(t.gainNode), t.sourceList[e].start();
+              t.sourceList[e].buffer = r, t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].startState = !0;
             }, function (e) {
               e.err;
             });
@@ -17649,9 +17649,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         },
         pause: function pause() {
-          if (t.startStatus = !1, null != t.sourceList[t.sourceChannel]) try {
-            t.sourceList[t.sourceChannel].stop(), t.sourceList[t.sourceChannel].disconnect(t.gainNode), t.sourceList[t.sourceChannel] = null;
-          } catch (e) {}
+          t.startStatus = !1;
+
+          for (var e = 0; e < t.sourceList.length; e++) {
+            if (null != t.sourceList[e]) try {
+              t.sourceList[e].stop(), t.sourceList[e].disconnect(t.gainNode), t.sourceList[e] = null;
+            } catch (e) {}
+          }
         },
         stop: function stop() {
           t.pause(), t.cleanQueue(), t.sourceChannel = -1;
@@ -17804,7 +17808,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return new Date().getTime();
     },
         c = function e(t, r, i, a, s, o, f, u, h) {
-      n(this, e), this.data_y = t, this.data_u = r, this.data_v = i, this.line1 = a, this.line2 = s, this.line3 = o, this.width = f, this.height = u, this.pts = h, this.byteAlignIncr = this.line1 - this.width, this.line1, this.width, this.byteAlignIncr;
+      n(this, e), this.pts = h, this.data_y = t, this.data_u = r, this.data_v = i, this.line1 = a, this.line2 = s, this.line3 = o, this.width = f, this.height = u, this.byteAlignIncr = this.line1 - this.width;
     },
         d = function () {
       function e(t) {
@@ -17815,13 +17819,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           sampleRate: t.sampleRate || f.DEFAULT_SAMPLERATE,
           playerId: t.playerId || f.DEFAILT_WEBGL_PLAY_ID,
           token: t.token || null,
-          readyShow: t.readyShow || !1
-        }, this.probeSize = 4524611, this.audioWAudio = null, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = f.V_CODEC_NAME_UNKN, this.audioIdx = -1, this.retryAuSampleNo = 0, this.decPktInterval = null, this.playFrameInterval = null, this._videoQueue = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, u.PLAYER_VERSION), this.corePtr;
+          readyShow: t.readyShow || !1,
+          checkProbe: t.checkProbe,
+          ignoreAudio: t.ignoreAudio
+        }, this.config, this.probeSize = 4524611, this.audioWAudio = null, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = f.V_CODEC_NAME_UNKN, this.audioIdx = -1, this.audioNone = !1, this.retryAuSampleNo = 0, this.cacheStatus = !1, this.vCachePTS = 0, this.aCachePTS = 0, this.decPktInterval = null, this.decVFrameInterval = null, this.playFrameInterval = null, this._videoQueue = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.onCacheProcess = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, u.PLAYER_VERSION), this.corePtr;
         var r = a.addFunction(this._probeFinCallback.bind(this)),
             i = a.addFunction(this._frameCallback.bind(this)),
             s = a.addFunction(this._samplesCallback.bind(this)),
             o = a.addFunction(this._aacFrameCallback.bind(this));
-        a.cwrap("initializeSniffStreamModule", "number", ["number", "number", "number", "number"])(this.corePtr, r, i, s, o);
+        this.config.ignoreAudio;
+        a.cwrap("initializeSniffStreamModuleWithAOpt", "number", ["number", "number", "number", "number", "number"])(this.corePtr, r, i, s, o, this.config.ignoreAudio);
       }
 
       var t, r, d;
@@ -17829,7 +17836,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         key: "release",
         value: function value() {
           var e = a.cwrap("releaseSniffStream", "number", ["number"])(this.corePtr);
-          return this.audioWAudio && this.audioWAudio.stop(), this.audioWAudio = null, e;
+          return this.audioWAudio && this.audioWAudio.stop(), this.audioWAudio = null, this._clearDecInterval(), e;
+        }
+      }, {
+        key: "getCachePTS",
+        value: function value() {
+          return Math.min(this.vCachePTS, this.aCachePTS);
         }
       }, {
         key: "isPlayingState",
@@ -17840,6 +17852,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         key: "pushDone",
         value: function value() {
           this.pushEOF = !0;
+        }
+      }, {
+        key: "_clearDecInterval",
+        value: function value() {
+          this.decPktInterval && window.clearInterval(this.decPktInterval), this.decVFrameInterval && window.clearInterval(this.decVFrameInterval), this.decPktInterval = null, this.decVFrameInterval = null;
         }
       }, {
         key: "play",
@@ -17853,15 +17870,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 i = 0;
             this.playFrameInterval = window.setInterval(function () {
               if (r = h(), e._videoQueue.length > 0 && r - t >= e.frameTime - i) {
-                t = r;
-
                 var n = e._videoQueue.shift(),
-                    a = 1e3 * (n.pts - e.audioWAudio.getAlignVPTS());
+                    a = 0;
 
-                if (n.pts, e.audioWAudio.getAlignVPTS(), e.frameTime, s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), a < 0 && -1 * a <= e.frameTime || a >= 0) {
-                  if (e.onPlayingTime && e.onPlayingTime(n.pts), e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v), n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.pause();else if (e.readEOF, e.pushEOF, !0 === e.readEOF && !0 === e.pushEOF) return e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e.decPktInterval && window.clearInterval(e.decPktInterval), e.decPktInterval = null, e.pause(), void (e.onPlayingTime && e.onPlayingTime(e.duration));
+                if (e.audioWAudio && (a = 1e3 * (n.pts - e.audioWAudio.getAlignVPTS()), n.pts, e.audioWAudio.getAlignVPTS()), t = r, h(), s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), h(), e.onPlayingTime && e.onPlayingTime(n.pts), e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v), a < 0 && -1 * a <= e.frameTime || a >= 0) {
+                  if (n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e._clearDecInterval(), e.pause();else if (e.readEOF, e.pushEOF, !0 === e.readEOF && !0 === e.pushEOF) return e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e._clearDecInterval(), e.pause(), void (e.onPlayingTime && e.onPlayingTime(e.duration));
                   i = h() - r;
-                } else i = e.frameTime;
+                } else a < 0 && e.frameTime, i = e.frameTime, e.frameTime;
               }
             }, 2);
           }
@@ -17871,7 +17886,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "pause",
         value: function value() {
-          this.playFrameInterval && window.clearInterval(this.playFrameInterval), this.playFrameInterval = null, this.isPlaying = !1, this.audioWAudio && this.audioWAudio.pause();
+          this.isPlaying = !1, this._pause();
+        }
+      }, {
+        key: "_pause",
+        value: function value() {
+          this.playFrameInterval && window.clearInterval(this.playFrameInterval), this.playFrameInterval = null, this.audioWAudio && this.audioWAudio.pause();
         }
       }, {
         key: "seek",
@@ -17926,7 +17946,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           f.V_CODEC_NAME_HEVC === this.vCodecID && (null == this.decPktInterval && (this.decPktInterval = window.setInterval(function () {
             d._decPktIntervalFunc();
-          }, 10)), n >= 0 && (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.audioWAudio = o({
+          }, 10)), null == this.decVFrameInterval && (this.decVFrameInterval = window.setInterval(function () {
+            d._decVFrameIntervalFunc();
+          }, 10)), n >= 0 ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.audioWAudio = o({
             sampleRate: s,
             appendType: f.APPEND_TYPE_FRAME
           }), this.audioWAudio.setDurationMs(1e3 * e), this.onLoadCache && this.audioWAudio.setOnLoadCache(function () {
@@ -17936,12 +17958,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 return l.retryAuSampleNo, l.audioWAudio.sampleQueue.length, l.audioWAudio.sampleQueue.length > 2 ? (l.onLoadCacheFinshed && l.onLoadCacheFinshed(), l.play(), l.retryAuSampleNo = 0, window.clearInterval(e), void (e = null)) : (l.retryAuSampleNo += 1, l.retryAuSampleNo > 5 ? (l.play(), l.onLoadCacheFinshed && l.onLoadCacheFinshed(), window.clearInterval(e), void (e = null)) : void 0);
               }, 1e3);
             }
-          }))), this.onProbeFinish && this.onProbeFinish();
+          })) : this.audioNone = !0), this.onProbeFinish && this.onProbeFinish();
         }
       }, {
         key: "_decPktIntervalFunc",
         value: function value() {
-          this._videoQueue.length < 30 && this.onLoadCache && this.onLoadCache(), this._videoQueue.length < 50 || this.audioWAudio.sampleQueue.length < 20 ? (-404 == a.cwrap("getSniffStreamPkg", "number", ["number"])(this.corePtr) && (this.readEOF = !0), this._videoQueue.length, this.audioWAudio.sampleQueue.length) : this.onLoadCacheFinshed && this.onLoadCacheFinshed();
+          (this._videoQueue.length < 15 || this.audioWAudio && this.audioWAudio.sampleQueue.length < 50) && (!1 === this.cacheStatus && (this.cacheStatus = !0, this._pause(), this.audioWAudio && this.audioWAudio.sampleQueue.length), this.onLoadCache && this.onLoadCache()), !0 === this.config.checkProbe ? -404 == a.cwrap("getSniffStreamPkg", "number", ["number"])(this.corePtr) && (this.readEOF = !0) : -404 == a.cwrap("getSniffStreamPkgNoCheckProbe", "number", ["number"])(this.corePtr) && (this.readEOF = !0), !0 === this.cacheStatus && this._videoQueue.length >= 50 && (null === this.audioWAudio || void 0 === this.audioWAudio || this.audioWAudio && this.audioWAudio.sampleQueue.length >= 200) && (this.cacheStatus = !1, this.onLoadCacheFinshed && this.onLoadCacheFinshed(), this.isPlaying && this.play(), this.audioWAudio && this.audioWAudio.sampleQueue.length);
+        }
+      }, {
+        key: "_decVFrameIntervalFunc",
+        value: function value() {
+          this._videoQueue.length < 50 && a.cwrap("decodeVideoFrame", "number", ["number"])(this.corePtr);
         }
       }, {
         key: "_frameCallback",
@@ -17953,7 +17980,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               m = new Uint8Array(d),
               b = new Uint8Array(l),
               y = new Uint8Array(p);
-          this.config.readyShow && (s.renderFrame(this.yuv, m, b, y, i, u), this.config.readyShow = !1), this._videoQueue.push(new c(m, b, y, i, n, o, f, u, h));
+          this.config.readyShow && (s.renderFrame(this.yuv, m, b, y, i, u), this.config.readyShow = !1);
+
+          var g = this._videoQueue.length,
+              _ = new c(m, b, y, i, n, o, f, u, h);
+
+          if (g <= 0 || h > this._videoQueue[g - 1].pts) this._videoQueue.push(_);else if (h < this._videoQueue[0].pts) this._videoQueue.splice(0, 0, _);else if (h < this._videoQueue[g - 1].pts) for (var v = 0; v < this._videoQueue.length; v++) {
+            if (h > this._videoQueue[v].pts && v + 1 < this._videoQueue.length && h < this._videoQueue[v + 1].pts) {
+              this._videoQueue.splice(v + 1, 0, _), this._videoQueue;
+              break;
+            }
+          }
+          this.vCachePTS = Math.max(h, this.vCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
         }
       }, {
         key: "_samplesCallback",
@@ -17974,7 +18012,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               data: s,
               pts: n
             };
-            this.audioWAudio.addSample(u);
+            this.aCachePTS = Math.max(n, this.aCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS()), this.audioWAudio.addSample(u);
           }
         }
       }, {
@@ -18186,53 +18224,54 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var s,
-          o = void 0 !== o ? o : {},
-          f = {};
+          o = !0,
+          f = void 0 !== f ? f : {},
+          u = {};
 
-      for (s in o) {
-        o.hasOwnProperty(s) && (f[s] = o[s]);
+      for (s in f) {
+        f.hasOwnProperty(s) && (u[s] = f[s]);
       }
 
-      var u = [],
-          h = "./this.program",
-          c = !1,
+      var h = [],
+          c = "./this.program",
           d = !1,
           l = !1,
           p = !1,
-          m = !1;
-      c = "object" === ("undefined" == typeof window ? "undefined" : a(window)), d = "function" == typeof importScripts, p = "object" === (void 0 === r ? "undefined" : a(r)) && "object" === a(r.versions) && "string" == typeof r.versions.node, l = p && !c && !d, m = !c && !l && !d;
+          m = !1,
+          b = !1;
+      d = "object" === ("undefined" == typeof window ? "undefined" : a(window)), l = "function" == typeof importScripts, m = "object" === (void 0 === r ? "undefined" : a(r)) && "object" === a(r.versions) && "string" == typeof r.versions.node, p = m && !d && !l, b = !d && !p && !l;
 
-      var b,
-          y,
+      var y,
           g,
           _,
-          v = "";
+          v,
+          w = "";
 
-      function w(e) {
-        return o.locateFile ? o.locateFile(e, v) : v + e;
+      function E(e) {
+        return f.locateFile ? f.locateFile(e, w) : w + e;
       }
 
-      l ? (v = n + "/", b = function b(t, r) {
+      p ? (w = n + "/", y = function y(t, r) {
         var i;
-        return g || (g = e("fs")), _ || (_ = e("path")), t = _.normalize(t), i = g.readFileSync(t), r ? i : i.toString();
-      }, y = function y(e) {
-        var t = b(e, !0);
-        return t.buffer || (t = new Uint8Array(t)), N(t.buffer), t;
-      }, r.argv.length > 1 && (h = r.argv[1].replace(/\\/g, "/")), u = r.argv.slice(2), void 0 !== t && (t.exports = o), r.on("uncaughtException", function (e) {
-        if (!(e instanceof oi)) throw e;
-      }), r.on("unhandledRejection", Ne), o.inspect = function () {
+        return _ || (_ = e("fs")), v || (v = e("path")), t = v.normalize(t), i = _.readFileSync(t), r ? i : i.toString();
+      }, g = function g(e) {
+        var t = y(e, !0);
+        return t.buffer || (t = new Uint8Array(t)), O(t.buffer), t;
+      }, r.argv.length > 1 && (c = r.argv[1].replace(/\\/g, "/")), h = r.argv.slice(2), void 0 !== t && (t.exports = f), r.on("uncaughtException", function (e) {
+        if (!(e instanceof pi)) throw e;
+      }), r.on("unhandledRejection", ze), f.inspect = function () {
         return "[Emscripten Module object]";
-      }) : m ? ("undefined" != typeof read && (b = function b(e) {
+      }) : b ? ("undefined" != typeof read && (y = function y(e) {
         return read(e);
-      }), y = function y(e) {
+      }), g = function g(e) {
         var t;
-        return "function" == typeof readbuffer ? new Uint8Array(readbuffer(e)) : (N("object" === a(t = read(e, "binary"))), t);
-      }, "undefined" != typeof scriptArgs ? u = scriptArgs : void 0 !== arguments && (u = arguments), "function" == typeof quit && function (e) {
+        return "function" == typeof readbuffer ? new Uint8Array(readbuffer(e)) : (O("object" === a(t = read(e, "binary"))), t);
+      }, "undefined" != typeof scriptArgs ? h = scriptArgs : void 0 !== arguments && (h = arguments), "function" == typeof quit && function (e) {
         quit(e);
-      }, "undefined" != typeof print && ("undefined" == typeof console && (console = {}), console.log = print, console.warn = console.error = "undefined" != typeof printErr ? printErr : print)) : (c || d) && (d ? v = self.location.href : document.currentScript && (v = document.currentScript.src), v = 0 !== v.indexOf("blob:") ? v.substr(0, v.lastIndexOf("/") + 1) : "", b = function b(e) {
+      }, "undefined" != typeof print && ("undefined" == typeof console && (console = {}), console.log = print, console.warn = console.error = "undefined" != typeof printErr ? printErr : print)) : (d || l) && (l ? w = self.location.href : document.currentScript && (w = document.currentScript.src), w = 0 !== w.indexOf("blob:") ? w.substr(0, w.lastIndexOf("/") + 1) : "", y = function y(e) {
         var t = new XMLHttpRequest();
         return t.open("GET", e, !1), t.send(null), t.responseText;
-      }, d && (y = function y(e) {
+      }, l && (g = function g(e) {
         var t = new XMLHttpRequest();
         return t.open("GET", e, !1), t.responseType = "arraybuffer", t.send(null), new Uint8Array(t.response);
       }), function (e, t, r) {
@@ -18241,20 +18280,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           200 == i.status || 0 == i.status && i.response ? t(i.response) : r();
         }, i.onerror = r, i.send(null);
       });
-      var E = o.print || console.log.bind(console),
-          S = o.printErr || console.warn.bind(console);
+      var S = f.print || console.log.bind(console),
+          A = f.printErr || console.warn.bind(console);
 
-      for (s in f) {
-        f.hasOwnProperty(s) && (o[s] = f[s]);
-      }
-
-      function A(e) {
-        var t = se[pe >> 2],
-            r = t + e + 15 & -16;
-        return r > Mt() && Ne(), se[pe >> 2] = r, t;
+      for (s in u) {
+        u.hasOwnProperty(s) && (f[s] = u[s]);
       }
 
       function x(e) {
+        var t = oe[be >> 2],
+            r = t + e + 15 & -16;
+        return r > kt() && ze(), oe[be >> 2] = r, t;
+      }
+
+      function M(e) {
         switch (e) {
           case "i1":
           case "i8":
@@ -18280,171 +18319,171 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
             if ("i" === e[0]) {
               var t = parseInt(e.substr(1));
-              return N(t % 8 == 0, "getNativeTypeSize invalid bits " + t + ", type " + e), t / 8;
+              return O(t % 8 == 0, "getNativeTypeSize invalid bits " + t + ", type " + e), t / 8;
             }
 
             return 0;
         }
       }
 
-      f = null, o.arguments && (u = o.arguments), o.thisProgram && (h = o.thisProgram), o.quit && o.quit;
-      var M = {
+      u = null, f.arguments && (h = f.arguments), f.thisProgram && (c = f.thisProgram), f.quit && f.quit;
+      var T = {
         "f64-rem": function f64Rem(e, t) {
           return e % t;
         },
         "debugger": function _debugger() {}
       },
-          T = 1,
-          k = new Array(35);
+          k = 1,
+          P = new Array(35);
 
-      function P(e, t) {
+      function U(e, t) {
         for (var r = 0; r < 35; r++) {
-          if (!k[r]) return k[r] = e, T + r;
+          if (!P[r]) return P[r] = e, k + r;
         }
 
         throw "Finished up all reserved function pointers. Use a higher value for RESERVED_FUNCTION_POINTERS.";
       }
 
-      var U,
-          I,
+      var I,
           C,
-          R = 0,
-          B = function B() {
-        return R;
+          R,
+          B = 0,
+          D = function D() {
+        return B;
       };
 
-      function D(e, t, r, i) {
+      function L(e, t, r, i) {
         switch ("*" === (r = r || "i8").charAt(r.length - 1) && (r = "i32"), r) {
           case "i1":
           case "i8":
-            re[e >> 0] = t;
+            ie[e >> 0] = t;
             break;
 
           case "i16":
-            ne[e >> 1] = t;
+            ae[e >> 1] = t;
             break;
 
           case "i32":
-            se[e >> 2] = t;
+            oe[e >> 2] = t;
             break;
 
           case "i64":
-            He = [t >>> 0, (je = t, +ke(je) >= 1 ? je > 0 ? (0 | Ie(+Ue(je / 4294967296), 4294967295)) >>> 0 : ~~+Pe((je - +(~~je >>> 0)) / 4294967296) >>> 0 : 0)], se[e >> 2] = He[0], se[e + 4 >> 2] = He[1];
+            Ye = [t >>> 0, (Ve = t, +Ue(Ve) >= 1 ? Ve > 0 ? (0 | Re(+Ce(Ve / 4294967296), 4294967295)) >>> 0 : ~~+Ie((Ve - +(~~Ve >>> 0)) / 4294967296) >>> 0 : 0)], oe[e >> 2] = Ye[0], oe[e + 4 >> 2] = Ye[1];
             break;
 
           case "float":
-            fe[e >> 2] = t;
+            ue[e >> 2] = t;
             break;
 
           case "double":
-            ue[e >> 3] = t;
+            he[e >> 3] = t;
             break;
 
           default:
-            Ne("invalid type for setValue: " + r);
+            ze("invalid type for setValue: " + r);
         }
       }
 
-      o.wasmBinary && (U = o.wasmBinary), o.noExitRuntime && (I = o.noExitRuntime), "object" !== ("undefined" == typeof WebAssembly ? "undefined" : a(WebAssembly)) && S("no native wasm support detected");
-      var L = new WebAssembly.Table({
+      f.wasmBinary && (I = f.wasmBinary), f.noExitRuntime && (C = f.noExitRuntime), "object" !== ("undefined" == typeof WebAssembly ? "undefined" : a(WebAssembly)) && A("no native wasm support detected");
+      var F = new WebAssembly.Table({
         initial: 4032,
         element: "anyfunc"
       }),
-          F = !1;
+          N = !1;
 
-      function N(e, t) {
-        e || Ne("Assertion failed: " + t);
+      function O(e, t) {
+        e || ze("Assertion failed: " + t);
       }
 
-      function O(e) {
-        var t = o["_" + e];
-        return N(t, "Cannot call unknown function " + e + ", make sure it is exported"), t;
+      function z(e) {
+        var t = f["_" + e];
+        return O(t, "Cannot call unknown function " + e + ", make sure it is exported"), t;
       }
 
-      function z(e, t, r, i, n) {
+      function j(e, t, r, i, n) {
         var a = {
           string: function string(e) {
             var t = 0;
 
             if (null != e && 0 !== e) {
               var r = 1 + (e.length << 2);
-              Z(e, t = ii(r), r);
+              Q(e, t = hi(r), r);
             }
 
             return t;
           },
           array: function array(e) {
-            var t = ii(e.length);
-            return $(e, t), t;
+            var t = hi(e.length);
+            return ee(e, t), t;
           }
         };
-        var s = O(e),
+        var s = z(e),
             o = [],
             f = 0;
         if (i) for (var u = 0; u < i.length; u++) {
           var h = a[r[u]];
-          h ? (0 === f && (f = ai()), o[u] = h(i[u])) : o[u] = i[u];
+          h ? (0 === f && (f = di()), o[u] = h(i[u])) : o[u] = i[u];
         }
         var c = s.apply(null, o);
         return c = function (e) {
-          return "string" === t ? K(e) : "boolean" === t ? Boolean(e) : e;
-        }(c), 0 !== f && ni(f), c;
+          return "string" === t ? X(e) : "boolean" === t ? Boolean(e) : e;
+        }(c), 0 !== f && ci(f), c;
       }
 
-      function j(e, t, r, i) {
+      function H(e, t, r, i) {
         var n = (r = r || []).every(function (e) {
           return "number" === e;
         });
-        return "string" !== t && n && !i ? O(e) : function () {
-          return z(e, t, r, arguments);
+        return "string" !== t && n && !i ? z(e) : function () {
+          return j(e, t, r, arguments);
         };
       }
 
-      var H = 0,
-          V = 3;
+      var V = 0,
+          Y = 3;
 
-      function Y(e, t, r, i) {
+      function q(e, t, r, i) {
         var n, a;
         "number" == typeof e ? (n = !0, a = e) : (n = !1, a = e.length);
         var s,
             o = "string" == typeof t ? t : null;
 
-        if (s = r == V ? i : [ri, ii, A][r](Math.max(a, o ? 1 : t.length)), n) {
+        if (s = r == Y ? i : [ui, hi, x][r](Math.max(a, o ? 1 : t.length)), n) {
           var f;
 
-          for (i = s, N(0 == (3 & s)), f = s + (-4 & a); i < f; i += 4) {
-            se[i >> 2] = 0;
+          for (i = s, O(0 == (3 & s)), f = s + (-4 & a); i < f; i += 4) {
+            oe[i >> 2] = 0;
           }
 
           for (f = s + a; i < f;) {
-            re[i++ >> 0] = 0;
+            ie[i++ >> 0] = 0;
           }
 
           return s;
         }
 
-        if ("i8" === o) return e.subarray || e.slice ? ie.set(e, s) : ie.set(new Uint8Array(e), s), s;
+        if ("i8" === o) return e.subarray || e.slice ? ne.set(e, s) : ne.set(new Uint8Array(e), s), s;
 
         for (var u, h, c, d = 0; d < a;) {
           var l = e[d];
-          0 !== (u = o || t[d]) ? ("i64" == u && (u = "i32"), D(s + d, l, u), c !== u && (h = x(u), c = u), d += h) : d++;
+          0 !== (u = o || t[d]) ? ("i64" == u && (u = "i32"), L(s + d, l, u), c !== u && (h = M(u), c = u), d += h) : d++;
         }
 
         return s;
       }
 
-      function q(e) {
-        return we ? ri(e) : A(e);
+      function G(e) {
+        return Se ? ui(e) : x(e);
       }
 
-      var G = "undefined" != typeof TextDecoder ? new TextDecoder("utf8") : void 0;
+      var W = "undefined" != typeof TextDecoder ? new TextDecoder("utf8") : void 0;
 
-      function W(e, t, r) {
+      function K(e, t, r) {
         for (var i = t + r, n = t; e[n] && !(n >= i);) {
           ++n;
         }
 
-        if (n - t > 16 && e.subarray && G) return G.decode(e.subarray(t, n));
+        if (n - t > 16 && e.subarray && W) return W.decode(e.subarray(t, n));
 
         for (var a = ""; t < n;) {
           var s = e[t++];
@@ -18465,11 +18504,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return a;
       }
 
-      function K(e, t) {
-        return e ? W(ie, e, t) : "";
+      function X(e, t) {
+        return e ? K(ne, e, t) : "";
       }
 
-      function X(e, t, r, i) {
+      function Z(e, t, r, i) {
         if (!(i > 0)) return 0;
 
         for (var n = r, a = r + i - 1, s = 0; s < e.length; ++s) {
@@ -18494,8 +18533,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return t[r] = 0, r - n;
       }
 
-      function Z(e, t, r) {
-        return X(e, ie, t, r);
+      function Q(e, t, r) {
+        return Z(e, ne, t, r);
       }
 
       function J(e) {
@@ -18509,26 +18548,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       "undefined" != typeof TextDecoder && new TextDecoder("utf-16le");
 
-      function Q(e) {
+      function $(e) {
         var t = J(e) + 1,
-            r = ri(t);
-        return r && X(e, re, r, t), r;
+            r = ui(t);
+        return r && Z(e, ie, r, t), r;
       }
 
-      function $(e, t) {
-        re.set(e, t);
+      function ee(e, t) {
+        ie.set(e, t);
       }
 
-      function ee(e, t, r) {
+      function te(e, t, r) {
         for (var i = 0; i < e.length; ++i) {
-          re[t++ >> 0] = e.charCodeAt(i);
+          ie[t++ >> 0] = e.charCodeAt(i);
         }
 
-        r || (re[t >> 0] = 0);
+        r || (ie[t >> 0] = 0);
       }
 
-      var te,
-          re,
+      var re,
           ie,
           ne,
           ae,
@@ -18536,143 +18574,149 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           oe,
           fe,
           ue,
-          he = 65536;
+          he,
+          ce = 16384,
+          de = 65536;
 
-      function ce(e, t) {
+      function le(e, t) {
         return e % t > 0 && (e += t - e % t), e;
       }
 
-      function de(e) {
-        te = e, o.HEAP8 = re = new Int8Array(e), o.HEAP16 = ne = new Int16Array(e), o.HEAP32 = se = new Int32Array(e), o.HEAPU8 = ie = new Uint8Array(e), o.HEAPU16 = ae = new Uint16Array(e), o.HEAPU32 = oe = new Uint32Array(e), o.HEAPF32 = fe = new Float32Array(e), o.HEAPF64 = ue = new Float64Array(e);
+      function pe(e) {
+        re = e, f.HEAP8 = ie = new Int8Array(e), f.HEAP16 = ae = new Int16Array(e), f.HEAP32 = oe = new Int32Array(e), f.HEAPU8 = ne = new Uint8Array(e), f.HEAPU16 = se = new Uint16Array(e), f.HEAPU32 = fe = new Uint32Array(e), f.HEAPF32 = ue = new Float32Array(e), f.HEAPF64 = he = new Float64Array(e);
       }
 
-      var le = 6367984,
-          pe = 1124880,
-          me = o.TOTAL_MEMORY || 536870912;
+      var me = 6368656,
+          be = 1125552,
+          ye = f.TOTAL_MEMORY || 1073741824;
 
-      function be(e) {
+      function ge(e) {
         for (; e.length > 0;) {
           var t = e.shift();
 
           if ("function" != typeof t) {
             var r = t.func;
-            "number" == typeof r ? void 0 === t.arg ? o.dynCall_v(r) : o.dynCall_vi(r, t.arg) : r(void 0 === t.arg ? null : t.arg);
+            "number" == typeof r ? void 0 === t.arg ? f.dynCall_v(r) : f.dynCall_vi(r, t.arg) : r(void 0 === t.arg ? null : t.arg);
           } else t();
         }
       }
 
-      (C = o.wasmMemory ? o.wasmMemory : new WebAssembly.Memory({
-        initial: me / he
-      })) && (te = C.buffer), me = te.byteLength, de(te), se[pe >> 2] = le;
-      var ye = [],
-          ge = [],
-          _e = [],
+      (R = f.wasmMemory ? f.wasmMemory : new WebAssembly.Memory({
+        initial: ye / de
+      })) && (re = R.buffer), ye = re.byteLength, pe(re), oe[be >> 2] = me;
+      var _e = [],
           ve = [],
-          we = !1;
-
-      function Ee() {
-        if (o.preRun) for ("function" == typeof o.preRun && (o.preRun = [o.preRun]); o.preRun.length;) {
-          Me(o.preRun.shift());
-        }
-        be(ye);
-      }
-
-      function Se() {
-        we = !0, o.noFSInit || ot.init.initialized || ot.init(), tt.init(), be(ge);
-      }
+          we = [],
+          Ee = [],
+          Se = !1;
 
       function Ae() {
-        ot.ignorePermissions = !1, be(_e);
+        if (f.preRun) for ("function" == typeof f.preRun && (f.preRun = [f.preRun]); f.preRun.length;) {
+          ke(f.preRun.shift());
+        }
+        ge(_e);
       }
 
       function xe() {
-        if (o.postRun) for ("function" == typeof o.postRun && (o.postRun = [o.postRun]); o.postRun.length;) {
-          Te(o.postRun.shift());
+        Se = !0, f.noFSInit || ut.init.initialized || ut.init(), it.init(), ge(ve);
+      }
+
+      function Me() {
+        ut.ignorePermissions = !1, ge(we);
+      }
+
+      function Te() {
+        if (f.postRun) for ("function" == typeof f.postRun && (f.postRun = [f.postRun]); f.postRun.length;) {
+          Pe(f.postRun.shift());
         }
-        be(ve);
+        ge(Ee);
       }
 
-      function Me(e) {
-        ye.unshift(e);
+      function ke(e) {
+        _e.unshift(e);
       }
 
-      function Te(e) {
-        ve.unshift(e);
+      function Pe(e) {
+        Ee.unshift(e);
       }
 
-      var ke = Math.abs,
-          Pe = Math.ceil,
-          Ue = Math.floor,
-          Ie = Math.min,
-          Ce = Math.trunc,
-          Re = 0,
-          Be = null,
-          De = null;
-
-      function Le(e) {
-        Re++, o.monitorRunDependencies && o.monitorRunDependencies(Re);
-      }
-
-      function Fe(e) {
-        if (Re--, o.monitorRunDependencies && o.monitorRunDependencies(Re), 0 == Re && (null !== Be && (clearInterval(Be), Be = null), De)) {
-          var t = De;
-          De = null, t();
-        }
-      }
+      var Ue = Math.abs,
+          Ie = Math.ceil,
+          Ce = Math.floor,
+          Re = Math.min,
+          Be = Math.trunc,
+          De = 0,
+          Le = null,
+          Fe = null;
 
       function Ne(e) {
-        throw o.onAbort && o.onAbort(e), E(e += ""), S(e), F = !0, 1, "abort(" + e + "). Build with -s ASSERTIONS=1 for more info.";
+        De++, f.monitorRunDependencies && f.monitorRunDependencies(De);
       }
 
-      o.preloadedImages = {}, o.preloadedAudios = {};
-      var Oe = "data:application/octet-stream;base64,";
-
-      function ze(e) {
-        return String.prototype.startsWith ? e.startsWith(Oe) : 0 === e.indexOf(Oe);
-      }
-
-      var je,
-          He,
-          Ve = "missile.wasm";
-
-      function Ye() {
-        try {
-          if (U) return new Uint8Array(U);
-          if (y) return y(Ve);
-          throw "both async and sync fetching of the wasm failed";
-        } catch (e) {
-          Ne(e);
+      function Oe(e) {
+        if (De--, f.monitorRunDependencies && f.monitorRunDependencies(De), 0 == De && (null !== Le && (clearInterval(Le), Le = null), Fe)) {
+          var t = Fe;
+          Fe = null, t();
         }
       }
 
-      function qe() {
-        return U || !c && !d || "function" != typeof fetch ? new Promise(function (e, t) {
-          e(Ye());
-        }) : fetch(Ve, {
+      function ze(e) {
+        throw f.onAbort && f.onAbort(e), S(e += ""), A(e), N = !0, 1, "abort(" + e + "). Build with -s ASSERTIONS=1 for more info.";
+      }
+
+      f.preloadedImages = {}, f.preloadedAudios = {}, o || ke(function () {
+        "undefined" != typeof SharedArrayBuffer && (Ne(), PThread.allocateUnusedWorkers(2, function () {
+          Oe();
+        }));
+      });
+      var je = "data:application/octet-stream;base64,";
+
+      function He(e) {
+        return String.prototype.startsWith ? e.startsWith(je) : 0 === e.indexOf(je);
+      }
+
+      var Ve,
+          Ye,
+          qe = "missile.wasm";
+
+      function Ge() {
+        try {
+          if (I) return new Uint8Array(I);
+          if (g) return g(qe);
+          throw "both async and sync fetching of the wasm failed";
+        } catch (e) {
+          ze(e);
+        }
+      }
+
+      function We() {
+        return I || !d && !l || "function" != typeof fetch ? new Promise(function (e, t) {
+          e(Ge());
+        }) : fetch(qe, {
           credentials: "same-origin"
         }).then(function (e) {
-          if (!e.ok) throw "failed to load wasm binary file at '" + Ve + "'";
+          if (!e.ok) throw "failed to load wasm binary file at '" + qe + "'";
           return e.arrayBuffer();
         })["catch"](function () {
-          return Ye();
+          return Ge();
         });
       }
 
-      function Ge() {
+      function Ke() {
         var e = {
-          env: Kr,
-          wasi_unstable: Kr,
+          env: ti,
+          wasi_unstable: ti,
           global: {
             NaN: NaN,
             Infinity: 1 / 0
           },
           "global.Math": Math,
-          asm2wasm: M
+          asm2wasm: T
         };
 
         function t(e, t) {
           var r = e.exports;
-          o.asm = r, Fe();
+          f.asm = r, Oe();
         }
 
         function r(e) {
@@ -18680,37 +18724,37 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         function i(t) {
-          return qe().then(function (t) {
+          return We().then(function (t) {
             return WebAssembly.instantiate(t, e);
           }).then(t, function (e) {
-            S("failed to asynchronously prepare wasm: " + e), Ne(e);
+            A("failed to asynchronously prepare wasm: " + e), ze(e);
           });
         }
 
-        if (Le(), o.instantiateWasm) try {
-          return o.instantiateWasm(e, t);
+        if (Ne(), f.instantiateWasm) try {
+          return f.instantiateWasm(e, t);
         } catch (e) {
-          return S("Module.instantiateWasm callback failed with error: " + e), !1;
+          return A("Module.instantiateWasm callback failed with error: " + e), !1;
         }
         return function () {
-          if (U || "function" != typeof WebAssembly.instantiateStreaming || ze(Ve) || "function" != typeof fetch) return i(r);
-          fetch(Ve, {
+          if (I || "function" != typeof WebAssembly.instantiateStreaming || He(qe) || "function" != typeof fetch) return i(r);
+          fetch(qe, {
             credentials: "same-origin"
           }).then(function (t) {
             return WebAssembly.instantiateStreaming(t, e).then(r, function (e) {
-              S("wasm streaming compile failed: " + e), S("falling back to ArrayBuffer instantiation"), i(r);
+              A("wasm streaming compile failed: " + e), A("falling back to ArrayBuffer instantiation"), i(r);
             });
           });
         }(), {};
       }
 
-      function We(e) {
+      function Xe(e) {
         return e.replace(/\b__Z[\w\d_]+/g, function (e) {
           return e === e ? e : e + " [" + e + "]";
         });
       }
 
-      function Ke() {
+      function Ze() {
         var e = new Error();
 
         if (!e.stack) {
@@ -18726,27 +18770,27 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return e.stack.toString();
       }
 
-      function Xe() {
-        var e = Ke();
-        return o.extraStackTrace && (e += "\n" + o.extraStackTrace()), We(e);
+      function Qe() {
+        var e = Ze();
+        return f.extraStackTrace && (e += "\n" + f.extraStackTrace()), Xe(e);
       }
 
-      ze(Ve) || (Ve = w(Ve)), o.asm = Ge, ge.push({
+      He(qe) || (qe = E(qe)), f.asm = Ke, ve.push({
         func: function func() {
-          Jr();
+          ni();
         }
       });
-      var Ze = {};
+      var Je = {};
 
-      function Je(e) {
+      function $e(e) {
         var t, r;
-        Je.called ? (r = se[e >> 2], t = se[r >> 2]) : (Je.called = !0, Ze.USER = "web_user", Ze.LOGNAME = "web_user", Ze.PATH = "/", Ze.PWD = "/", Ze.HOME = "/home/web_user", Ze.LANG = ("object" === ("undefined" == typeof navigator ? "undefined" : a(navigator)) && navigator.languages && navigator.languages[0] || "C").replace("-", "_") + ".UTF-8", Ze._ = h, t = q(1024), r = q(256), se[r >> 2] = t, se[e >> 2] = r);
+        $e.called ? (r = oe[e >> 2], t = oe[r >> 2]) : ($e.called = !0, Je.USER = "web_user", Je.LOGNAME = "web_user", Je.PATH = "/", Je.PWD = "/", Je.HOME = "/home/web_user", Je.LANG = ("object" === ("undefined" == typeof navigator ? "undefined" : a(navigator)) && navigator.languages && navigator.languages[0] || "C").replace("-", "_") + ".UTF-8", Je._ = c, t = G(1024), r = G(256), oe[r >> 2] = t, oe[e >> 2] = r);
         var i = [],
             n = 0;
 
-        for (var s in Ze) {
-          if ("string" == typeof Ze[s]) {
-            var o = s + "=" + Ze[s];
+        for (var s in Je) {
+          if ("string" == typeof Je[s]) {
+            var o = s + "=" + Je[s];
             i.push(o), n += o.length;
           }
         }
@@ -18754,17 +18798,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         if (n > 1024) throw new Error("Environment size exceeded TOTAL_ENV_SIZE!");
 
         for (var f = 0; f < i.length; f++) {
-          ee(o = i[f], t), se[r + 4 * f >> 2] = t, t += o.length + 1;
+          te(o = i[f], t), oe[r + 4 * f >> 2] = t, t += o.length + 1;
         }
 
-        se[r + 4 * i.length >> 2] = 0;
+        oe[r + 4 * i.length >> 2] = 0;
       }
 
-      function Qe(e) {
-        return o.___errno_location && (se[o.___errno_location() >> 2] = e), e;
+      function et(e) {
+        return f.___errno_location && (oe[f.___errno_location() >> 2] = e), e;
       }
 
-      var $e = {
+      var tt = {
         splitPath: function splitPath(e) {
           return /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/.exec(e).slice(1);
         },
@@ -18782,12 +18826,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         normalize: function normalize(e) {
           var t = "/" === e.charAt(0),
               r = "/" === e.substr(-1);
-          return (e = $e.normalizeArray(e.split("/").filter(function (e) {
+          return (e = tt.normalizeArray(e.split("/").filter(function (e) {
             return !!e;
           }), !t).join("/")) || t || (e = "."), e && r && (e += "/"), (t ? "/" : "") + e;
         },
         dirname: function dirname(e) {
-          var t = $e.splitPath(e),
+          var t = tt.splitPath(e),
               r = t[0],
               i = t[1];
           return r || i ? (i && (i = i.substr(0, i.length - 1)), r + i) : ".";
@@ -18798,26 +18842,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return -1 === t ? e : e.substr(t + 1);
         },
         extname: function extname(e) {
-          return $e.splitPath(e)[3];
+          return tt.splitPath(e)[3];
         },
         join: function join() {
           var e = Array.prototype.slice.call(arguments, 0);
-          return $e.normalize(e.join("/"));
+          return tt.normalize(e.join("/"));
         },
         join2: function join2(e, t) {
-          return $e.normalize(e + "/" + t);
+          return tt.normalize(e + "/" + t);
         }
       },
-          et = {
+          rt = {
         resolve: function resolve() {
           for (var e = "", t = !1, r = arguments.length - 1; r >= -1 && !t; r--) {
-            var i = r >= 0 ? arguments[r] : ot.cwd();
+            var i = r >= 0 ? arguments[r] : ut.cwd();
             if ("string" != typeof i) throw new TypeError("Arguments to path.resolve must be strings");
             if (!i) return "";
             e = i + "/" + e, t = "/" === i.charAt(0);
           }
 
-          return (t ? "/" : "") + (e = $e.normalizeArray(e.split("/").filter(function (e) {
+          return (t ? "/" : "") + (e = tt.normalizeArray(e.split("/").filter(function (e) {
             return !!e;
           }), !t).join("/")) || ".";
         },
@@ -18834,7 +18878,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return t > r ? [] : e.slice(t, r - t + 1);
           }
 
-          e = et.resolve(e).substr(1), t = et.resolve(t).substr(1);
+          e = rt.resolve(e).substr(1), t = rt.resolve(t).substr(1);
 
           for (var i = r(e.split("/")), n = r(t.split("/")), a = Math.min(i.length, n.length), s = a, o = 0; o < a; o++) {
             if (i[o] !== n[o]) {
@@ -18852,21 +18896,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return (f = f.concat(n.slice(s))).join("/");
         }
       },
-          tt = {
+          it = {
         ttys: [],
         init: function init() {},
         shutdown: function shutdown() {},
         register: function register(e, t) {
-          tt.ttys[e] = {
+          it.ttys[e] = {
             input: [],
             output: [],
             ops: t
-          }, ot.registerDevice(e, tt.stream_ops);
+          }, ut.registerDevice(e, it.stream_ops);
         },
         stream_ops: {
           open: function open(e) {
-            var t = tt.ttys[e.node.rdev];
-            if (!t) throw new ot.ErrnoError(43);
+            var t = it.ttys[e.node.rdev];
+            if (!t) throw new ut.ErrnoError(43);
             e.tty = t, e.seekable = !1;
           },
           close: function close(e) {
@@ -18876,7 +18920,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             e.tty.ops.flush(e.tty);
           },
           read: function read(e, t, r, i, n) {
-            if (!e.tty || !e.tty.ops.get_char) throw new ot.ErrnoError(60);
+            if (!e.tty || !e.tty.ops.get_char) throw new ut.ErrnoError(60);
 
             for (var a = 0, s = 0; s < i; s++) {
               var o;
@@ -18884,10 +18928,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               try {
                 o = e.tty.ops.get_char(e.tty);
               } catch (e) {
-                throw new ot.ErrnoError(29);
+                throw new ut.ErrnoError(29);
               }
 
-              if (void 0 === o && 0 === a) throw new ot.ErrnoError(6);
+              if (void 0 === o && 0 === a) throw new ut.ErrnoError(6);
               if (null == o) break;
               a++, t[r + s] = o;
             }
@@ -18895,14 +18939,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return a && (e.node.timestamp = Date.now()), a;
           },
           write: function write(e, t, r, i, n) {
-            if (!e.tty || !e.tty.ops.put_char) throw new ot.ErrnoError(60);
+            if (!e.tty || !e.tty.ops.put_char) throw new ut.ErrnoError(60);
 
             try {
               for (var a = 0; a < i; a++) {
                 e.tty.ops.put_char(e.tty, t[r + a]);
               }
             } catch (e) {
-              throw new ot.ErrnoError(29);
+              throw new ut.ErrnoError(29);
             }
 
             return i && (e.node.timestamp = Date.now()), a;
@@ -18913,12 +18957,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             if (!e.input.length) {
               var t = null;
 
-              if (l) {
+              if (p) {
                 var n = i.alloc ? i.alloc(256) : new i(256),
                     a = 0;
 
                 try {
-                  a = ar.readSync(r.stdin.fd, n, 0, 256, null);
+                  a = dr.readSync(r.stdin.fd, n, 0, 256, null);
                 } catch (e) {
                   if (-1 == e.toString().indexOf("EOF")) throw e;
                   a = 0;
@@ -18928,83 +18972,83 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               } else "undefined" != typeof window && "function" == typeof window.prompt ? null !== (t = window.prompt("Input: ")) && (t += "\n") : "function" == typeof readline && null !== (t = readline()) && (t += "\n");
 
               if (!t) return null;
-              e.input = or(t, !0);
+              e.input = pr(t, !0);
             }
 
             return e.input.shift();
           },
           put_char: function put_char(e, t) {
-            null === t || 10 === t ? (E(W(e.output, 0)), e.output = []) : 0 != t && e.output.push(t);
+            null === t || 10 === t ? (S(K(e.output, 0)), e.output = []) : 0 != t && e.output.push(t);
           },
           flush: function flush(e) {
-            e.output && e.output.length > 0 && (E(W(e.output, 0)), e.output = []);
+            e.output && e.output.length > 0 && (S(K(e.output, 0)), e.output = []);
           }
         },
         default_tty1_ops: {
           put_char: function put_char(e, t) {
-            null === t || 10 === t ? (S(W(e.output, 0)), e.output = []) : 0 != t && e.output.push(t);
+            null === t || 10 === t ? (A(K(e.output, 0)), e.output = []) : 0 != t && e.output.push(t);
           },
           flush: function flush(e) {
-            e.output && e.output.length > 0 && (S(W(e.output, 0)), e.output = []);
+            e.output && e.output.length > 0 && (A(K(e.output, 0)), e.output = []);
           }
         }
       },
-          rt = {
+          nt = {
         ops_table: null,
         mount: function mount(e) {
-          return rt.createNode(null, "/", 16895, 0);
+          return nt.createNode(null, "/", 16895, 0);
         },
         createNode: function createNode(e, t, r, i) {
-          if (ot.isBlkdev(r) || ot.isFIFO(r)) throw new ot.ErrnoError(63);
-          rt.ops_table || (rt.ops_table = {
+          if (ut.isBlkdev(r) || ut.isFIFO(r)) throw new ut.ErrnoError(63);
+          nt.ops_table || (nt.ops_table = {
             dir: {
               node: {
-                getattr: rt.node_ops.getattr,
-                setattr: rt.node_ops.setattr,
-                lookup: rt.node_ops.lookup,
-                mknod: rt.node_ops.mknod,
-                rename: rt.node_ops.rename,
-                unlink: rt.node_ops.unlink,
-                rmdir: rt.node_ops.rmdir,
-                readdir: rt.node_ops.readdir,
-                symlink: rt.node_ops.symlink
+                getattr: nt.node_ops.getattr,
+                setattr: nt.node_ops.setattr,
+                lookup: nt.node_ops.lookup,
+                mknod: nt.node_ops.mknod,
+                rename: nt.node_ops.rename,
+                unlink: nt.node_ops.unlink,
+                rmdir: nt.node_ops.rmdir,
+                readdir: nt.node_ops.readdir,
+                symlink: nt.node_ops.symlink
               },
               stream: {
-                llseek: rt.stream_ops.llseek
+                llseek: nt.stream_ops.llseek
               }
             },
             file: {
               node: {
-                getattr: rt.node_ops.getattr,
-                setattr: rt.node_ops.setattr
+                getattr: nt.node_ops.getattr,
+                setattr: nt.node_ops.setattr
               },
               stream: {
-                llseek: rt.stream_ops.llseek,
-                read: rt.stream_ops.read,
-                write: rt.stream_ops.write,
-                allocate: rt.stream_ops.allocate,
-                mmap: rt.stream_ops.mmap,
-                msync: rt.stream_ops.msync
+                llseek: nt.stream_ops.llseek,
+                read: nt.stream_ops.read,
+                write: nt.stream_ops.write,
+                allocate: nt.stream_ops.allocate,
+                mmap: nt.stream_ops.mmap,
+                msync: nt.stream_ops.msync
               }
             },
             link: {
               node: {
-                getattr: rt.node_ops.getattr,
-                setattr: rt.node_ops.setattr,
-                readlink: rt.node_ops.readlink
+                getattr: nt.node_ops.getattr,
+                setattr: nt.node_ops.setattr,
+                readlink: nt.node_ops.readlink
               },
               stream: {}
             },
             chrdev: {
               node: {
-                getattr: rt.node_ops.getattr,
-                setattr: rt.node_ops.setattr
+                getattr: nt.node_ops.getattr,
+                setattr: nt.node_ops.setattr
               },
-              stream: ot.chrdev_stream_ops
+              stream: ut.chrdev_stream_ops
             }
           });
-          var n = ot.createNode(e, t, r, i);
-          return ot.isDir(n.mode) ? (n.node_ops = rt.ops_table.dir.node, n.stream_ops = rt.ops_table.dir.stream, n.contents = {}) : ot.isFile(n.mode) ? (n.node_ops = rt.ops_table.file.node, n.stream_ops = rt.ops_table.file.stream, n.usedBytes = 0, n.contents = null) : ot.isLink(n.mode) ? (n.node_ops = rt.ops_table.link.node, n.stream_ops = rt.ops_table.link.stream) : ot.isChrdev(n.mode) && (n.node_ops = rt.ops_table.chrdev.node, n.stream_ops = rt.ops_table.chrdev.stream), n.timestamp = Date.now(), e && (e.contents[t] = n), n;
+          var n = ut.createNode(e, t, r, i);
+          return ut.isDir(n.mode) ? (n.node_ops = nt.ops_table.dir.node, n.stream_ops = nt.ops_table.dir.stream, n.contents = {}) : ut.isFile(n.mode) ? (n.node_ops = nt.ops_table.file.node, n.stream_ops = nt.ops_table.file.stream, n.usedBytes = 0, n.contents = null) : ut.isLink(n.mode) ? (n.node_ops = nt.ops_table.link.node, n.stream_ops = nt.ops_table.link.stream) : ut.isChrdev(n.mode) && (n.node_ops = nt.ops_table.chrdev.node, n.stream_ops = nt.ops_table.chrdev.stream), n.timestamp = Date.now(), e && (e.contents[t] = n), n;
         },
         getFileDataAsRegularArray: function getFileDataAsRegularArray(e) {
           if (e.contents && e.contents.subarray) {
@@ -19047,27 +19091,27 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         node_ops: {
           getattr: function getattr(e) {
             var t = {};
-            return t.dev = ot.isChrdev(e.mode) ? e.id : 1, t.ino = e.id, t.mode = e.mode, t.nlink = 1, t.uid = 0, t.gid = 0, t.rdev = e.rdev, ot.isDir(e.mode) ? t.size = 4096 : ot.isFile(e.mode) ? t.size = e.usedBytes : ot.isLink(e.mode) ? t.size = e.link.length : t.size = 0, t.atime = new Date(e.timestamp), t.mtime = new Date(e.timestamp), t.ctime = new Date(e.timestamp), t.blksize = 4096, t.blocks = Math.ceil(t.size / t.blksize), t;
+            return t.dev = ut.isChrdev(e.mode) ? e.id : 1, t.ino = e.id, t.mode = e.mode, t.nlink = 1, t.uid = 0, t.gid = 0, t.rdev = e.rdev, ut.isDir(e.mode) ? t.size = 4096 : ut.isFile(e.mode) ? t.size = e.usedBytes : ut.isLink(e.mode) ? t.size = e.link.length : t.size = 0, t.atime = new Date(e.timestamp), t.mtime = new Date(e.timestamp), t.ctime = new Date(e.timestamp), t.blksize = 4096, t.blocks = Math.ceil(t.size / t.blksize), t;
           },
           setattr: function setattr(e, t) {
-            void 0 !== t.mode && (e.mode = t.mode), void 0 !== t.timestamp && (e.timestamp = t.timestamp), void 0 !== t.size && rt.resizeFileStorage(e, t.size);
+            void 0 !== t.mode && (e.mode = t.mode), void 0 !== t.timestamp && (e.timestamp = t.timestamp), void 0 !== t.size && nt.resizeFileStorage(e, t.size);
           },
           lookup: function lookup(e, t) {
-            throw ot.genericErrors[44];
+            throw ut.genericErrors[44];
           },
           mknod: function mknod(e, t, r, i) {
-            return rt.createNode(e, t, r, i);
+            return nt.createNode(e, t, r, i);
           },
           rename: function rename(e, t, r) {
-            if (ot.isDir(e.mode)) {
+            if (ut.isDir(e.mode)) {
               var i;
 
               try {
-                i = ot.lookupNode(t, r);
+                i = ut.lookupNode(t, r);
               } catch (e) {}
 
               if (i) for (var n in i.contents) {
-                throw new ot.ErrnoError(55);
+                throw new ut.ErrnoError(55);
               }
             }
 
@@ -19077,10 +19121,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             delete e.contents[t];
           },
           rmdir: function rmdir(e, t) {
-            var r = ot.lookupNode(e, t);
+            var r = ut.lookupNode(e, t);
 
             for (var i in r.contents) {
-              throw new ot.ErrnoError(55);
+              throw new ut.ErrnoError(55);
             }
 
             delete e.contents[t];
@@ -19095,11 +19139,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return t;
           },
           symlink: function symlink(e, t, r) {
-            var i = rt.createNode(e, t, 41471, 0);
+            var i = nt.createNode(e, t, 41471, 0);
             return i.link = r, i;
           },
           readlink: function readlink(e) {
-            if (!ot.isLink(e.mode)) throw new ot.ErrnoError(28);
+            if (!ut.isLink(e.mode)) throw new ut.ErrnoError(28);
             return e.link;
           }
         },
@@ -19122,30 +19166,30 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (n + i <= s.usedBytes) return s.contents.set(t.subarray(r, r + i), n), i;
             }
 
-            if (rt.expandFileStorage(s, n + i), s.contents.subarray && t.subarray) s.contents.set(t.subarray(r, r + i), n);else for (var o = 0; o < i; o++) {
+            if (nt.expandFileStorage(s, n + i), s.contents.subarray && t.subarray) s.contents.set(t.subarray(r, r + i), n);else for (var o = 0; o < i; o++) {
               s.contents[n + o] = t[r + o];
             }
             return s.usedBytes = Math.max(s.usedBytes, n + i), i;
           },
           llseek: function llseek(e, t, r) {
             var i = t;
-            if (1 === r ? i += e.position : 2 === r && ot.isFile(e.node.mode) && (i += e.node.usedBytes), i < 0) throw new ot.ErrnoError(28);
+            if (1 === r ? i += e.position : 2 === r && ut.isFile(e.node.mode) && (i += e.node.usedBytes), i < 0) throw new ut.ErrnoError(28);
             return i;
           },
           allocate: function allocate(e, t, r) {
-            rt.expandFileStorage(e.node, t + r), e.node.usedBytes = Math.max(e.node.usedBytes, t + r);
+            nt.expandFileStorage(e.node, t + r), e.node.usedBytes = Math.max(e.node.usedBytes, t + r);
           },
           mmap: function mmap(e, t, r, i, n, a, s) {
-            if (!ot.isFile(e.node.mode)) throw new ot.ErrnoError(43);
+            if (!ut.isFile(e.node.mode)) throw new ut.ErrnoError(43);
             var o,
                 f,
                 u = e.node.contents;
 
             if (2 & s || u.buffer !== t && u.buffer !== t.buffer) {
               (n > 0 || n + i < e.node.usedBytes) && (u = u.subarray ? u.subarray(n, n + i) : Array.prototype.slice.call(u, n, n + i)), f = !0;
-              var h = t.buffer == re.buffer;
-              if (!(o = ri(i))) throw new ot.ErrnoError(48);
-              (h ? re : t).set(u, o);
+              var h = t.buffer == ie.buffer;
+              if (!(o = ui(i))) throw new ut.ErrnoError(48);
+              (h ? ie : t).set(u, o);
             } else f = !1, o = u.byteOffset;
 
             return {
@@ -19154,14 +19198,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             };
           },
           msync: function msync(e, t, r, i, n) {
-            if (!ot.isFile(e.node.mode)) throw new ot.ErrnoError(43);
+            if (!ut.isFile(e.node.mode)) throw new ut.ErrnoError(43);
             if (2 & n) return 0;
-            rt.stream_ops.write(e, t, 0, i, r, !1);
+            nt.stream_ops.write(e, t, 0, i, r, !1);
             return 0;
           }
         }
       },
-          it = {
+          at = {
         dbs: {},
         indexedDB: function (e) {
           function t() {
@@ -19174,31 +19218,31 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }(function () {
           if ("undefined" != typeof indexedDB) return indexedDB;
           var e = null;
-          return "object" === ("undefined" == typeof window ? "undefined" : a(window)) && (e = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB), N(e, "IDBFS used, but indexedDB not supported"), e;
+          return "object" === ("undefined" == typeof window ? "undefined" : a(window)) && (e = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB), O(e, "IDBFS used, but indexedDB not supported"), e;
         }),
         DB_VERSION: 21,
         DB_STORE_NAME: "FILE_DATA",
         mount: function mount(e) {
-          return rt.mount.apply(null, arguments);
+          return nt.mount.apply(null, arguments);
         },
         syncfs: function syncfs(e, t, r) {
-          it.getLocalSet(e, function (i, n) {
+          at.getLocalSet(e, function (i, n) {
             if (i) return r(i);
-            it.getRemoteSet(e, function (e, i) {
+            at.getRemoteSet(e, function (e, i) {
               if (e) return r(e);
               var a = t ? i : n,
                   s = t ? n : i;
-              it.reconcile(a, s, r);
+              at.reconcile(a, s, r);
             });
           });
         },
         getDB: function getDB(e, t) {
           var r,
-              i = it.dbs[e];
+              i = at.dbs[e];
           if (i) return t(null, i);
 
           try {
-            r = it.indexedDB().open(e, it.DB_VERSION);
+            r = at.indexedDB().open(e, at.DB_VERSION);
           } catch (e) {
             return t(e);
           }
@@ -19208,11 +19252,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var t,
                 r = e.target.result,
                 i = e.target.transaction;
-            (t = r.objectStoreNames.contains(it.DB_STORE_NAME) ? i.objectStore(it.DB_STORE_NAME) : r.createObjectStore(it.DB_STORE_NAME)).indexNames.contains("timestamp") || t.createIndex("timestamp", "timestamp", {
+            (t = r.objectStoreNames.contains(at.DB_STORE_NAME) ? i.objectStore(at.DB_STORE_NAME) : r.createObjectStore(at.DB_STORE_NAME)).indexNames.contains("timestamp") || t.createIndex("timestamp", "timestamp", {
               unique: !1
             });
           }, r.onsuccess = function () {
-            i = r.result, it.dbs[e] = i, t(null, i);
+            i = r.result, at.dbs[e] = i, t(null, i);
           }, r.onerror = function (e) {
             t(this.error), e.preventDefault();
           };
@@ -19226,21 +19270,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           function n(e) {
             return function (t) {
-              return $e.join2(e, t);
+              return tt.join2(e, t);
             };
           }
 
-          for (var a = ot.readdir(e.mountpoint).filter(i).map(n(e.mountpoint)); a.length;) {
+          for (var a = ut.readdir(e.mountpoint).filter(i).map(n(e.mountpoint)); a.length;) {
             var s,
                 o = a.pop();
 
             try {
-              s = ot.stat(o);
+              s = ut.stat(o);
             } catch (e) {
               return t(e);
             }
 
-            ot.isDir(s.mode) && a.push.apply(a, ot.readdir(o).filter(i).map(n(o))), r[o] = {
+            ut.isDir(s.mode) && a.push.apply(a, ut.readdir(o).filter(i).map(n(o))), r[o] = {
               timestamp: s.mtime
             };
           }
@@ -19252,14 +19296,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         getRemoteSet: function getRemoteSet(e, t) {
           var r = {};
-          it.getDB(e.mountpoint, function (e, i) {
+          at.getDB(e.mountpoint, function (e, i) {
             if (e) return t(e);
 
             try {
-              var n = i.transaction([it.DB_STORE_NAME], "readonly");
+              var n = i.transaction([at.DB_STORE_NAME], "readonly");
               n.onerror = function (e) {
                 t(this.error), e.preventDefault();
-              }, n.objectStore(it.DB_STORE_NAME).index("timestamp").openKeyCursor().onsuccess = function (e) {
+              }, n.objectStore(at.DB_STORE_NAME).index("timestamp").openKeyCursor().onsuccess = function (e) {
                 var n = e.target.result;
                 if (!n) return t(null, {
                   type: "remote",
@@ -19279,15 +19323,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var r, i;
 
           try {
-            i = ot.lookupPath(e).node, r = ot.stat(e);
+            i = ut.lookupPath(e).node, r = ut.stat(e);
           } catch (e) {
             return t(e);
           }
 
-          return ot.isDir(r.mode) ? t(null, {
+          return ut.isDir(r.mode) ? t(null, {
             timestamp: r.mtime,
             mode: r.mode
-          }) : ot.isFile(r.mode) ? (i.contents = rt.getFileDataAsTypedArray(i), t(null, {
+          }) : ut.isFile(r.mode) ? (i.contents = nt.getFileDataAsTypedArray(i), t(null, {
             timestamp: r.mtime,
             mode: r.mode,
             contents: i.contents
@@ -19295,13 +19339,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         storeLocalEntry: function storeLocalEntry(e, t, r) {
           try {
-            if (ot.isDir(t.mode)) ot.mkdir(e, t.mode);else {
-              if (!ot.isFile(t.mode)) return r(new Error("node type not supported"));
-              ot.writeFile(e, t.contents, {
+            if (ut.isDir(t.mode)) ut.mkdir(e, t.mode);else {
+              if (!ut.isFile(t.mode)) return r(new Error("node type not supported"));
+              ut.writeFile(e, t.contents, {
                 canOwn: !0
               });
             }
-            ot.chmod(e, t.mode), ot.utime(e, t.timestamp, t.timestamp);
+            ut.chmod(e, t.mode), ut.utime(e, t.timestamp, t.timestamp);
           } catch (e) {
             return r(e);
           }
@@ -19310,9 +19354,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         removeLocalEntry: function removeLocalEntry(e, t) {
           try {
-            ot.lookupPath(e);
-            var r = ot.stat(e);
-            ot.isDir(r.mode) ? ot.rmdir(e) : ot.isFile(r.mode) && ot.unlink(e);
+            ut.lookupPath(e);
+            var r = ut.stat(e);
+            ut.isDir(r.mode) ? ut.rmdir(e) : ut.isFile(r.mode) && ut.unlink(e);
           } catch (e) {
             return t(e);
           }
@@ -19357,8 +19401,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             e.entries[r] || (a.push(r), i++);
           }), !i) return r(null);
           var s = !1,
-              o = ("remote" === e.type ? e.db : t.db).transaction([it.DB_STORE_NAME], "readwrite"),
-              f = o.objectStore(it.DB_STORE_NAME);
+              o = ("remote" === e.type ? e.db : t.db).transaction([at.DB_STORE_NAME], "readwrite"),
+              f = o.objectStore(at.DB_STORE_NAME);
 
           function u(e) {
             if (e && !s) return s = !0, r(e);
@@ -19369,19 +19413,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, o.oncomplete = function (e) {
             s || r(null);
           }, n.sort().forEach(function (e) {
-            "local" === t.type ? it.loadRemoteEntry(f, e, function (t, r) {
+            "local" === t.type ? at.loadRemoteEntry(f, e, function (t, r) {
               if (t) return u(t);
-              it.storeLocalEntry(e, r, u);
-            }) : it.loadLocalEntry(e, function (t, r) {
+              at.storeLocalEntry(e, r, u);
+            }) : at.loadLocalEntry(e, function (t, r) {
               if (t) return u(t);
-              it.storeRemoteEntry(f, e, r, u);
+              at.storeRemoteEntry(f, e, r, u);
             });
           }), a.sort().reverse().forEach(function (e) {
-            "local" === t.type ? it.removeLocalEntry(e, u) : it.removeRemoteEntry(f, e, u);
+            "local" === t.type ? at.removeLocalEntry(e, u) : at.removeRemoteEntry(f, e, u);
           });
         }
       },
-          nt = {
+          st = {
         EPERM: 63,
         ENOENT: 44,
         ESRCH: 71,
@@ -19504,12 +19548,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         EOWNERDEAD: 62,
         ESTRPIPE: 135
       },
-          at = {
+          ot = {
         isWindows: !1,
         staticInit: function staticInit() {
-          at.isWindows = !!r.platform.match(/^win/);
+          ot.isWindows = !!r.platform.match(/^win/);
           var e = r.binding("constants");
-          e.fs && (e = e.fs), at.flagsForNodeMap = {
+          e.fs && (e = e.fs), ot.flagsForNodeMap = {
             1024: e.O_APPEND,
             64: e.O_CREAT,
             128: e.O_EXCL,
@@ -19525,24 +19569,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         convertNodeCode: function convertNodeCode(e) {
           var t = e.code;
-          return N(t in nt), nt[t];
+          return O(t in st), st[t];
         },
         mount: function mount(e) {
-          return N(p), at.createNode(null, "/", at.getMode(e.opts.root), 0);
+          return O(m), ot.createNode(null, "/", ot.getMode(e.opts.root), 0);
         },
         createNode: function createNode(e, t, r, i) {
-          if (!ot.isDir(r) && !ot.isFile(r) && !ot.isLink(r)) throw new ot.ErrnoError(28);
-          var n = ot.createNode(e, t, r);
-          return n.node_ops = at.node_ops, n.stream_ops = at.stream_ops, n;
+          if (!ut.isDir(r) && !ut.isFile(r) && !ut.isLink(r)) throw new ut.ErrnoError(28);
+          var n = ut.createNode(e, t, r);
+          return n.node_ops = ot.node_ops, n.stream_ops = ot.stream_ops, n;
         },
         getMode: function getMode(e) {
           var t;
 
           try {
-            t = ar.lstatSync(e), at.isWindows && (t.mode = t.mode | (292 & t.mode) >> 2);
+            t = dr.lstatSync(e), ot.isWindows && (t.mode = t.mode | (292 & t.mode) >> 2);
           } catch (e) {
             if (!e.code) throw e;
-            throw new ot.ErrnoError(at.convertNodeCode(e));
+            throw new ut.ErrnoError(ot.convertNodeCode(e));
           }
 
           return t.mode;
@@ -19552,32 +19596,32 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             t.push(e.name), e = e.parent;
           }
 
-          return t.push(e.mount.opts.root), t.reverse(), $e.join.apply(null, t);
+          return t.push(e.mount.opts.root), t.reverse(), tt.join.apply(null, t);
         },
         flagsForNode: function flagsForNode(e) {
           e &= -2097153, e &= -2049, e &= -32769, e &= -524289;
           var t = 0;
 
-          for (var r in at.flagsForNodeMap) {
-            e & r && (t |= at.flagsForNodeMap[r], e ^= r);
+          for (var r in ot.flagsForNodeMap) {
+            e & r && (t |= ot.flagsForNodeMap[r], e ^= r);
           }
 
-          if (e) throw new ot.ErrnoError(28);
+          if (e) throw new ut.ErrnoError(28);
           return t;
         },
         node_ops: {
           getattr: function getattr(e) {
             var t,
-                r = at.realPath(e);
+                r = ot.realPath(e);
 
             try {
-              t = ar.lstatSync(r);
+              t = dr.lstatSync(r);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
 
-            return at.isWindows && !t.blksize && (t.blksize = 4096), at.isWindows && !t.blocks && (t.blocks = (t.size + t.blksize - 1) / t.blksize | 0), {
+            return ot.isWindows && !t.blksize && (t.blksize = 4096), ot.isWindows && !t.blocks && (t.blocks = (t.size + t.blksize - 1) / t.blksize | 0), {
               dev: t.dev,
               ino: t.ino,
               mode: t.mode,
@@ -19594,162 +19638,162 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             };
           },
           setattr: function setattr(e, t) {
-            var r = at.realPath(e);
+            var r = ot.realPath(e);
 
             try {
-              if (void 0 !== t.mode && (ar.chmodSync(r, t.mode), e.mode = t.mode), void 0 !== t.timestamp) {
+              if (void 0 !== t.mode && (dr.chmodSync(r, t.mode), e.mode = t.mode), void 0 !== t.timestamp) {
                 var i = new Date(t.timestamp);
-                ar.utimesSync(r, i, i);
+                dr.utimesSync(r, i, i);
               }
 
-              void 0 !== t.size && ar.truncateSync(r, t.size);
+              void 0 !== t.size && dr.truncateSync(r, t.size);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           lookup: function lookup(e, t) {
-            var r = $e.join2(at.realPath(e), t),
-                i = at.getMode(r);
-            return at.createNode(e, t, i);
+            var r = tt.join2(ot.realPath(e), t),
+                i = ot.getMode(r);
+            return ot.createNode(e, t, i);
           },
           mknod: function mknod(e, t, r, i) {
-            var n = at.createNode(e, t, r, i),
-                a = at.realPath(n);
+            var n = ot.createNode(e, t, r, i),
+                a = ot.realPath(n);
 
             try {
-              ot.isDir(n.mode) ? ar.mkdirSync(a, n.mode) : ar.writeFileSync(a, "", {
+              ut.isDir(n.mode) ? dr.mkdirSync(a, n.mode) : dr.writeFileSync(a, "", {
                 mode: n.mode
               });
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
 
             return n;
           },
           rename: function rename(e, t, r) {
-            var i = at.realPath(e),
-                n = $e.join2(at.realPath(t), r);
+            var i = ot.realPath(e),
+                n = tt.join2(ot.realPath(t), r);
 
             try {
-              ar.renameSync(i, n);
+              dr.renameSync(i, n);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           unlink: function unlink(e, t) {
-            var r = $e.join2(at.realPath(e), t);
+            var r = tt.join2(ot.realPath(e), t);
 
             try {
-              ar.unlinkSync(r);
+              dr.unlinkSync(r);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           rmdir: function rmdir(e, t) {
-            var r = $e.join2(at.realPath(e), t);
+            var r = tt.join2(ot.realPath(e), t);
 
             try {
-              ar.rmdirSync(r);
+              dr.rmdirSync(r);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           readdir: function readdir(e) {
-            var t = at.realPath(e);
+            var t = ot.realPath(e);
 
             try {
-              return ar.readdirSync(t);
+              return dr.readdirSync(t);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           symlink: function symlink(e, t, r) {
-            var i = $e.join2(at.realPath(e), t);
+            var i = tt.join2(ot.realPath(e), t);
 
             try {
-              ar.symlinkSync(r, i);
+              dr.symlinkSync(r, i);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           readlink: function readlink(e) {
-            var t = at.realPath(e);
+            var t = ot.realPath(e);
 
             try {
-              return t = ar.readlinkSync(t), t = sr.relative(sr.resolve(e.mount.opts.root), t);
+              return t = dr.readlinkSync(t), t = lr.relative(lr.resolve(e.mount.opts.root), t);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           }
         },
         stream_ops: {
           open: function open(e) {
-            var t = at.realPath(e.node);
+            var t = ot.realPath(e.node);
 
             try {
-              ot.isFile(e.node.mode) && (e.nfd = ar.openSync(t, at.flagsForNode(e.flags)));
+              ut.isFile(e.node.mode) && (e.nfd = dr.openSync(t, ot.flagsForNode(e.flags)));
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           close: function close(e) {
             try {
-              ot.isFile(e.node.mode) && e.nfd && ar.closeSync(e.nfd);
+              ut.isFile(e.node.mode) && e.nfd && dr.closeSync(e.nfd);
             } catch (e) {
               if (!e.code) throw e;
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           read: function read(e, t, r, i, n) {
             if (0 === i) return 0;
 
             try {
-              return ar.readSync(e.nfd, at.bufferFrom(t.buffer), r, i, n);
+              return dr.readSync(e.nfd, ot.bufferFrom(t.buffer), r, i, n);
             } catch (e) {
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           write: function write(e, t, r, i, n) {
             try {
-              return ar.writeSync(e.nfd, at.bufferFrom(t.buffer), r, i, n);
+              return dr.writeSync(e.nfd, ot.bufferFrom(t.buffer), r, i, n);
             } catch (e) {
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
           },
           llseek: function llseek(e, t, r) {
             var i = t;
-            if (1 === r) i += e.position;else if (2 === r && ot.isFile(e.node.mode)) try {
-              i += ar.fstatSync(e.nfd).size;
+            if (1 === r) i += e.position;else if (2 === r && ut.isFile(e.node.mode)) try {
+              i += dr.fstatSync(e.nfd).size;
             } catch (e) {
-              throw new ot.ErrnoError(at.convertNodeCode(e));
+              throw new ut.ErrnoError(ot.convertNodeCode(e));
             }
-            if (i < 0) throw new ot.ErrnoError(28);
+            if (i < 0) throw new ut.ErrnoError(28);
             return i;
           }
         }
       },
-          st = {
+          ft = {
         DIR_MODE: 16895,
         FILE_MODE: 33279,
         reader: null,
         mount: function mount(e) {
-          N(d), st.reader || (st.reader = new FileReaderSync());
-          var t = st.createNode(null, "/", st.DIR_MODE, 0),
+          O(l), ft.reader || (ft.reader = new FileReaderSync());
+          var t = ft.createNode(null, "/", ft.DIR_MODE, 0),
               r = {};
 
           function i(e) {
             for (var i = e.split("/"), n = t, a = 0; a < i.length - 1; a++) {
               var s = i.slice(0, a + 1).join("/");
-              r[s] || (r[s] = st.createNode(n, i[a], st.DIR_MODE, 0)), n = r[s];
+              r[s] || (r[s] = ft.createNode(n, i[a], ft.DIR_MODE, 0)), n = r[s];
             }
 
             return n;
@@ -19761,19 +19805,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           return Array.prototype.forEach.call(e.opts.files || [], function (e) {
-            st.createNode(i(e.name), n(e.name), st.FILE_MODE, 0, e, e.lastModifiedDate);
+            ft.createNode(i(e.name), n(e.name), ft.FILE_MODE, 0, e, e.lastModifiedDate);
           }), (e.opts.blobs || []).forEach(function (e) {
-            st.createNode(i(e.name), n(e.name), st.FILE_MODE, 0, e.data);
+            ft.createNode(i(e.name), n(e.name), ft.FILE_MODE, 0, e.data);
           }), (e.opts.packages || []).forEach(function (e) {
             e.metadata.files.forEach(function (t) {
               var r = t.filename.substr(1);
-              st.createNode(i(r), n(r), st.FILE_MODE, 0, e.blob.slice(t.start, t.end));
+              ft.createNode(i(r), n(r), ft.FILE_MODE, 0, e.blob.slice(t.start, t.end));
             });
           }), t;
         },
         createNode: function createNode(e, t, r, i, n, a) {
-          var s = ot.createNode(e, t, r);
-          return s.mode = r, s.node_ops = st.node_ops, s.stream_ops = st.stream_ops, s.timestamp = (a || new Date()).getTime(), N(st.FILE_MODE !== st.DIR_MODE), r === st.FILE_MODE ? (s.size = n.size, s.contents = n) : (s.size = 4096, s.contents = {}), e && (e.contents[t] = s), s;
+          var s = ut.createNode(e, t, r);
+          return s.mode = r, s.node_ops = ft.node_ops, s.stream_ops = ft.stream_ops, s.timestamp = (a || new Date()).getTime(), O(ft.FILE_MODE !== ft.DIR_MODE), r === ft.FILE_MODE ? (s.size = n.size, s.contents = n) : (s.size = 4096, s.contents = {}), e && (e.contents[t] = s), s;
         },
         node_ops: {
           getattr: function getattr(e) {
@@ -19797,19 +19841,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             void 0 !== t.mode && (e.mode = t.mode), void 0 !== t.timestamp && (e.timestamp = t.timestamp);
           },
           lookup: function lookup(e, t) {
-            throw new ot.ErrnoError(44);
+            throw new ut.ErrnoError(44);
           },
           mknod: function mknod(e, t, r, i) {
-            throw new ot.ErrnoError(63);
+            throw new ut.ErrnoError(63);
           },
           rename: function rename(e, t, r) {
-            throw new ot.ErrnoError(63);
+            throw new ut.ErrnoError(63);
           },
           unlink: function unlink(e, t) {
-            throw new ot.ErrnoError(63);
+            throw new ut.ErrnoError(63);
           },
           rmdir: function rmdir(e, t) {
-            throw new ot.ErrnoError(63);
+            throw new ut.ErrnoError(63);
           },
           readdir: function readdir(e) {
             var t = [".", ".."];
@@ -19821,30 +19865,30 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return t;
           },
           symlink: function symlink(e, t, r) {
-            throw new ot.ErrnoError(63);
+            throw new ut.ErrnoError(63);
           },
           readlink: function readlink(e) {
-            throw new ot.ErrnoError(63);
+            throw new ut.ErrnoError(63);
           }
         },
         stream_ops: {
           read: function read(e, t, r, i, n) {
             if (n >= e.node.size) return 0;
             var a = e.node.contents.slice(n, n + i),
-                s = st.reader.readAsArrayBuffer(a);
+                s = ft.reader.readAsArrayBuffer(a);
             return t.set(new Uint8Array(s), r), a.size;
           },
           write: function write(e, t, r, i, n) {
-            throw new ot.ErrnoError(29);
+            throw new ut.ErrnoError(29);
           },
           llseek: function llseek(e, t, r) {
             var i = t;
-            if (1 === r ? i += e.position : 2 === r && ot.isFile(e.node.mode) && (i += e.node.size), i < 0) throw new ot.ErrnoError(28);
+            if (1 === r ? i += e.position : 2 === r && ut.isFile(e.node.mode) && (i += e.node.size), i < 0) throw new ut.ErrnoError(28);
             return i;
           }
         }
       },
-          ot = {
+          ut = {
         root: null,
         mounts: [],
         devices: {},
@@ -19866,11 +19910,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         filesystems: null,
         syncFSRequests: 0,
         handleFSError: function handleFSError(e) {
-          if (!(e instanceof ot.ErrnoError)) throw e + " : " + Xe();
-          return Qe(e.errno);
+          if (!(e instanceof ut.ErrnoError)) throw e + " : " + Qe();
+          return et(e.errno);
         },
         lookupPath: function lookupPath(e, t) {
-          if (t = t || {}, !(e = et.resolve(ot.cwd(), e))) return {
+          if (t = t || {}, !(e = rt.resolve(ut.cwd(), e))) return {
             path: "",
             node: null
           };
@@ -19883,18 +19927,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             void 0 === t[i] && (t[i] = r[i]);
           }
 
-          if (t.recurse_count > 8) throw new ot.ErrnoError(32);
+          if (t.recurse_count > 8) throw new ut.ErrnoError(32);
 
-          for (var n = $e.normalizeArray(e.split("/").filter(function (e) {
+          for (var n = tt.normalizeArray(e.split("/").filter(function (e) {
             return !!e;
-          }), !1), a = ot.root, s = "/", o = 0; o < n.length; o++) {
+          }), !1), a = ut.root, s = "/", o = 0; o < n.length; o++) {
             var f = o === n.length - 1;
             if (f && t.parent) break;
-            if (a = ot.lookupNode(a, n[o]), s = $e.join2(s, n[o]), ot.isMountpoint(a) && (!f || f && t.follow_mount) && (a = a.mounted.root), !f || t.follow) for (var u = 0; ot.isLink(a.mode);) {
-              var h = ot.readlink(s);
-              if (s = et.resolve($e.dirname(s), h), a = ot.lookupPath(s, {
+            if (a = ut.lookupNode(a, n[o]), s = tt.join2(s, n[o]), ut.isMountpoint(a) && (!f || f && t.follow_mount) && (a = a.mounted.root), !f || t.follow) for (var u = 0; ut.isLink(a.mode);) {
+              var h = ut.readlink(s);
+              if (s = rt.resolve(tt.dirname(s), h), a = ut.lookupPath(s, {
                 recurse_count: t.recurse_count
-              }).node, u++ > 40) throw new ot.ErrnoError(32);
+              }).node, u++ > 40) throw new ut.ErrnoError(32);
             }
           }
 
@@ -19905,7 +19949,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         getPath: function getPath(e) {
           for (var t;;) {
-            if (ot.isRoot(e)) {
+            if (ut.isRoot(e)) {
               var r = e.mount.mountpoint;
               return t ? "/" !== r[r.length - 1] ? r + "/" + t : r + t : r;
             }
@@ -19918,15 +19962,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             r = (r << 5) - r + t.charCodeAt(i) | 0;
           }
 
-          return (e + r >>> 0) % ot.nameTable.length;
+          return (e + r >>> 0) % ut.nameTable.length;
         },
         hashAddNode: function hashAddNode(e) {
-          var t = ot.hashName(e.parent.id, e.name);
-          e.name_next = ot.nameTable[t], ot.nameTable[t] = e;
+          var t = ut.hashName(e.parent.id, e.name);
+          e.name_next = ut.nameTable[t], ut.nameTable[t] = e;
         },
         hashRemoveNode: function hashRemoveNode(e) {
-          var t = ot.hashName(e.parent.id, e.name);
-          if (ot.nameTable[t] === e) ot.nameTable[t] = e.name_next;else for (var r = ot.nameTable[t]; r;) {
+          var t = ut.hashName(e.parent.id, e.name);
+          if (ut.nameTable[t] === e) ut.nameTable[t] = e.name_next;else for (var r = ut.nameTable[t]; r;) {
             if (r.name_next === e) {
               r.name_next = e.name_next;
               break;
@@ -19936,22 +19980,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         },
         lookupNode: function lookupNode(e, t) {
-          var r = ot.mayLookup(e);
-          if (r) throw new ot.ErrnoError(r, e);
+          var r = ut.mayLookup(e);
+          if (r) throw new ut.ErrnoError(r, e);
 
-          for (var i = ot.hashName(e.id, t), n = ot.nameTable[i]; n; n = n.name_next) {
+          for (var i = ut.hashName(e.id, t), n = ut.nameTable[i]; n; n = n.name_next) {
             var a = n.name;
             if (n.parent.id === e.id && a === t) return n;
           }
 
-          return ot.lookup(e, t);
+          return ut.lookup(e, t);
         },
         createNode: function createNode(e, t, r, i) {
-          if (!ot.FSNode) {
-            ot.FSNode = function (e, t, r, i) {
-              e || (e = this), this.parent = e, this.mount = e.mount, this.mounted = null, this.id = ot.nextInode++, this.name = t, this.mode = r, this.node_ops = {}, this.stream_ops = {}, this.rdev = i;
-            }, ot.FSNode.prototype = {};
-            Object.defineProperties(ot.FSNode.prototype, {
+          if (!ut.FSNode) {
+            ut.FSNode = function (e, t, r, i) {
+              e || (e = this), this.parent = e, this.mount = e.mount, this.mounted = null, this.id = ut.nextInode++, this.name = t, this.mode = r, this.node_ops = {}, this.stream_ops = {}, this.rdev = i;
+            }, ut.FSNode.prototype = {};
+            Object.defineProperties(ut.FSNode.prototype, {
               read: {
                 get: function get() {
                   return 365 == (365 & this.mode);
@@ -19970,22 +20014,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               },
               isFolder: {
                 get: function get() {
-                  return ot.isDir(this.mode);
+                  return ut.isDir(this.mode);
                 }
               },
               isDevice: {
                 get: function get() {
-                  return ot.isChrdev(this.mode);
+                  return ut.isChrdev(this.mode);
                 }
               }
             });
           }
 
-          var n = new ot.FSNode(e, t, r, i);
-          return ot.hashAddNode(n), n;
+          var n = new ut.FSNode(e, t, r, i);
+          return ut.hashAddNode(n), n;
         },
         destroyNode: function destroyNode(e) {
-          ot.hashRemoveNode(e);
+          ut.hashRemoveNode(e);
         },
         isRoot: function isRoot(e) {
           return e === e.parent;
@@ -20032,7 +20076,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           "xa+": 1218
         },
         modeStringToFlags: function modeStringToFlags(e) {
-          var t = ot.flagModes[e];
+          var t = ut.flagModes[e];
           if (void 0 === t) throw new Error("Unknown file open mode: " + e);
           return t;
         },
@@ -20041,57 +20085,57 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return 512 & e && (t += "w"), t;
         },
         nodePermissions: function nodePermissions(e, t) {
-          return ot.ignorePermissions || (-1 === t.indexOf("r") || 292 & e.mode) && (-1 === t.indexOf("w") || 146 & e.mode) && (-1 === t.indexOf("x") || 73 & e.mode) ? 0 : 2;
+          return ut.ignorePermissions || (-1 === t.indexOf("r") || 292 & e.mode) && (-1 === t.indexOf("w") || 146 & e.mode) && (-1 === t.indexOf("x") || 73 & e.mode) ? 0 : 2;
         },
         mayLookup: function mayLookup(e) {
-          var t = ot.nodePermissions(e, "x");
+          var t = ut.nodePermissions(e, "x");
           return t || (e.node_ops.lookup ? 0 : 2);
         },
         mayCreate: function mayCreate(e, t) {
           try {
-            ot.lookupNode(e, t);
+            ut.lookupNode(e, t);
             return 20;
           } catch (e) {}
 
-          return ot.nodePermissions(e, "wx");
+          return ut.nodePermissions(e, "wx");
         },
         mayDelete: function mayDelete(e, t, r) {
           var i;
 
           try {
-            i = ot.lookupNode(e, t);
+            i = ut.lookupNode(e, t);
           } catch (e) {
             return e.errno;
           }
 
-          var n = ot.nodePermissions(e, "wx");
+          var n = ut.nodePermissions(e, "wx");
           if (n) return n;
 
           if (r) {
-            if (!ot.isDir(i.mode)) return 54;
-            if (ot.isRoot(i) || ot.getPath(i) === ot.cwd()) return 10;
-          } else if (ot.isDir(i.mode)) return 31;
+            if (!ut.isDir(i.mode)) return 54;
+            if (ut.isRoot(i) || ut.getPath(i) === ut.cwd()) return 10;
+          } else if (ut.isDir(i.mode)) return 31;
 
           return 0;
         },
         mayOpen: function mayOpen(e, t) {
-          return e ? ot.isLink(e.mode) ? 32 : ot.isDir(e.mode) && ("r" !== ot.flagsToPermissionString(t) || 512 & t) ? 31 : ot.nodePermissions(e, ot.flagsToPermissionString(t)) : 44;
+          return e ? ut.isLink(e.mode) ? 32 : ut.isDir(e.mode) && ("r" !== ut.flagsToPermissionString(t) || 512 & t) ? 31 : ut.nodePermissions(e, ut.flagsToPermissionString(t)) : 44;
         },
         MAX_OPEN_FDS: 4096,
         nextfd: function nextfd(e, t) {
-          e = e || 0, t = t || ot.MAX_OPEN_FDS;
+          e = e || 0, t = t || ut.MAX_OPEN_FDS;
 
           for (var r = e; r <= t; r++) {
-            if (!ot.streams[r]) return r;
+            if (!ut.streams[r]) return r;
           }
 
-          throw new ot.ErrnoError(33);
+          throw new ut.ErrnoError(33);
         },
         getStream: function getStream(e) {
-          return ot.streams[e];
+          return ut.streams[e];
         },
         createStream: function createStream(e, t, r) {
-          ot.FSStream || (ot.FSStream = function () {}, ot.FSStream.prototype = {}, Object.defineProperties(ot.FSStream.prototype, {
+          ut.FSStream || (ut.FSStream = function () {}, ut.FSStream.prototype = {}, Object.defineProperties(ut.FSStream.prototype, {
             object: {
               get: function get() {
                 return this.node;
@@ -20116,26 +20160,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               }
             }
           }));
-          var i = new ot.FSStream();
+          var i = new ut.FSStream();
 
           for (var n in e) {
             i[n] = e[n];
           }
 
           e = i;
-          var a = ot.nextfd(t, r);
-          return e.fd = a, ot.streams[a] = e, e;
+          var a = ut.nextfd(t, r);
+          return e.fd = a, ut.streams[a] = e, e;
         },
         closeStream: function closeStream(e) {
-          ot.streams[e] = null;
+          ut.streams[e] = null;
         },
         chrdev_stream_ops: {
           open: function open(e) {
-            var t = ot.getDevice(e.node.rdev);
+            var t = ut.getDevice(e.node.rdev);
             e.stream_ops = t.stream_ops, e.stream_ops.open && e.stream_ops.open(e);
           },
           llseek: function llseek() {
-            throw new ot.ErrnoError(70);
+            throw new ut.ErrnoError(70);
           }
         },
         major: function major(e) {
@@ -20148,12 +20192,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return e << 8 | t;
         },
         registerDevice: function registerDevice(e, t) {
-          ot.devices[e] = {
+          ut.devices[e] = {
             stream_ops: t
           };
         },
         getDevice: function getDevice(e) {
-          return ot.devices[e];
+          return ut.devices[e];
         },
         getMounts: function getMounts(e) {
           for (var t = [], r = [e]; r.length;) {
@@ -20164,12 +20208,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return t;
         },
         syncfs: function syncfs(e, t) {
-          "function" == typeof e && (t = e, e = !1), ot.syncFSRequests++, ot.syncFSRequests > 1 && ot.syncFSRequests;
-          var r = ot.getMounts(ot.root.mount),
+          "function" == typeof e && (t = e, e = !1), ut.syncFSRequests++, ut.syncFSRequests > 1 && ut.syncFSRequests;
+          var r = ut.getMounts(ut.root.mount),
               i = 0;
 
           function n(e) {
-            return ot.syncFSRequests--, t(e);
+            return ut.syncFSRequests--, t(e);
           }
 
           function a(e) {
@@ -20186,14 +20230,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var i,
               n = "/" === r,
               a = !r;
-          if (n && ot.root) throw new ot.ErrnoError(10);
+          if (n && ut.root) throw new ut.ErrnoError(10);
 
           if (!n && !a) {
-            var s = ot.lookupPath(r, {
+            var s = ut.lookupPath(r, {
               follow_mount: !1
             });
-            if (r = s.path, i = s.node, ot.isMountpoint(i)) throw new ot.ErrnoError(10);
-            if (!ot.isDir(i.mode)) throw new ot.ErrnoError(54);
+            if (r = s.path, i = s.node, ut.isMountpoint(i)) throw new ut.ErrnoError(10);
+            if (!ut.isDir(i.mode)) throw new ut.ErrnoError(54);
           }
 
           var o = {
@@ -20203,20 +20247,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             mounts: []
           },
               f = e.mount(o);
-          return f.mount = o, o.root = f, n ? ot.root = f : i && (i.mounted = o, i.mount && i.mount.mounts.push(o)), f;
+          return f.mount = o, o.root = f, n ? ut.root = f : i && (i.mounted = o, i.mount && i.mount.mounts.push(o)), f;
         },
         unmount: function unmount(e) {
-          var t = ot.lookupPath(e, {
+          var t = ut.lookupPath(e, {
             follow_mount: !1
           });
-          if (!ot.isMountpoint(t.node)) throw new ot.ErrnoError(28);
+          if (!ut.isMountpoint(t.node)) throw new ut.ErrnoError(28);
           var r = t.node,
               i = r.mounted,
-              n = ot.getMounts(i);
-          Object.keys(ot.nameTable).forEach(function (e) {
-            for (var t = ot.nameTable[e]; t;) {
+              n = ut.getMounts(i);
+          Object.keys(ut.nameTable).forEach(function (e) {
+            for (var t = ut.nameTable[e]; t;) {
               var r = t.name_next;
-              -1 !== n.indexOf(t.mount) && ot.destroyNode(t), t = r;
+              -1 !== n.indexOf(t.mount) && ut.destroyNode(t), t = r;
             }
           }), r.mounted = null;
           var a = r.mount.mounts.indexOf(i);
@@ -20226,21 +20270,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return e.node_ops.lookup(e, t);
         },
         mknod: function mknod(e, t, r) {
-          var i = ot.lookupPath(e, {
+          var i = ut.lookupPath(e, {
             parent: !0
           }).node,
-              n = $e.basename(e);
-          if (!n || "." === n || ".." === n) throw new ot.ErrnoError(28);
-          var a = ot.mayCreate(i, n);
-          if (a) throw new ot.ErrnoError(a);
-          if (!i.node_ops.mknod) throw new ot.ErrnoError(63);
+              n = tt.basename(e);
+          if (!n || "." === n || ".." === n) throw new ut.ErrnoError(28);
+          var a = ut.mayCreate(i, n);
+          if (a) throw new ut.ErrnoError(a);
+          if (!i.node_ops.mknod) throw new ut.ErrnoError(63);
           return i.node_ops.mknod(i, n, t, r);
         },
         create: function create(e, t) {
-          return t = void 0 !== t ? t : 438, t &= 4095, t |= 32768, ot.mknod(e, t, 0);
+          return t = void 0 !== t ? t : 438, t &= 4095, t |= 32768, ut.mknod(e, t, 0);
         },
         mkdir: function mkdir(e, t) {
-          return t = void 0 !== t ? t : 511, t &= 1023, t |= 16384, ot.mknod(e, t, 0);
+          return t = void 0 !== t ? t : 511, t &= 1023, t |= 16384, ut.mknod(e, t, 0);
         },
         mkdirTree: function mkdirTree(e, t) {
           for (var r = e.split("/"), i = "", n = 0; n < r.length; ++n) {
@@ -20248,7 +20292,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               i += "/" + r[n];
 
               try {
-                ot.mkdir(i, t);
+                ut.mkdir(i, t);
               } catch (e) {
                 if (20 != e.errno) throw e;
               }
@@ -20256,217 +20300,217 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         },
         mkdev: function mkdev(e, t, r) {
-          return void 0 === r && (r = t, t = 438), t |= 8192, ot.mknod(e, t, r);
+          return void 0 === r && (r = t, t = 438), t |= 8192, ut.mknod(e, t, r);
         },
         symlink: function symlink(e, t) {
-          if (!et.resolve(e)) throw new ot.ErrnoError(44);
-          var r = ot.lookupPath(t, {
+          if (!rt.resolve(e)) throw new ut.ErrnoError(44);
+          var r = ut.lookupPath(t, {
             parent: !0
           }).node;
-          if (!r) throw new ot.ErrnoError(44);
-          var i = $e.basename(t),
-              n = ot.mayCreate(r, i);
-          if (n) throw new ot.ErrnoError(n);
-          if (!r.node_ops.symlink) throw new ot.ErrnoError(63);
+          if (!r) throw new ut.ErrnoError(44);
+          var i = tt.basename(t),
+              n = ut.mayCreate(r, i);
+          if (n) throw new ut.ErrnoError(n);
+          if (!r.node_ops.symlink) throw new ut.ErrnoError(63);
           return r.node_ops.symlink(r, i, e);
         },
         rename: function rename(e, t) {
           var r,
               i,
-              n = $e.dirname(e),
-              a = $e.dirname(t),
-              s = $e.basename(e),
-              o = $e.basename(t);
+              n = tt.dirname(e),
+              a = tt.dirname(t),
+              s = tt.basename(e),
+              o = tt.basename(t);
 
           try {
-            r = ot.lookupPath(e, {
+            r = ut.lookupPath(e, {
               parent: !0
-            }).node, i = ot.lookupPath(t, {
+            }).node, i = ut.lookupPath(t, {
               parent: !0
             }).node;
           } catch (e) {
-            throw new ot.ErrnoError(10);
+            throw new ut.ErrnoError(10);
           }
 
-          if (!r || !i) throw new ot.ErrnoError(44);
-          if (r.mount !== i.mount) throw new ot.ErrnoError(75);
+          if (!r || !i) throw new ut.ErrnoError(44);
+          if (r.mount !== i.mount) throw new ut.ErrnoError(75);
           var f,
-              u = ot.lookupNode(r, s),
-              h = et.relative(e, a);
-          if ("." !== h.charAt(0)) throw new ot.ErrnoError(28);
-          if ("." !== (h = et.relative(t, n)).charAt(0)) throw new ot.ErrnoError(55);
+              u = ut.lookupNode(r, s),
+              h = rt.relative(e, a);
+          if ("." !== h.charAt(0)) throw new ut.ErrnoError(28);
+          if ("." !== (h = rt.relative(t, n)).charAt(0)) throw new ut.ErrnoError(55);
 
           try {
-            f = ot.lookupNode(i, o);
+            f = ut.lookupNode(i, o);
           } catch (e) {}
 
           if (u !== f) {
-            var c = ot.isDir(u.mode),
-                d = ot.mayDelete(r, s, c);
-            if (d) throw new ot.ErrnoError(d);
-            if (d = f ? ot.mayDelete(i, o, c) : ot.mayCreate(i, o)) throw new ot.ErrnoError(d);
-            if (!r.node_ops.rename) throw new ot.ErrnoError(63);
-            if (ot.isMountpoint(u) || f && ot.isMountpoint(f)) throw new ot.ErrnoError(10);
-            if (i !== r && (d = ot.nodePermissions(r, "w"))) throw new ot.ErrnoError(d);
+            var c = ut.isDir(u.mode),
+                d = ut.mayDelete(r, s, c);
+            if (d) throw new ut.ErrnoError(d);
+            if (d = f ? ut.mayDelete(i, o, c) : ut.mayCreate(i, o)) throw new ut.ErrnoError(d);
+            if (!r.node_ops.rename) throw new ut.ErrnoError(63);
+            if (ut.isMountpoint(u) || f && ut.isMountpoint(f)) throw new ut.ErrnoError(10);
+            if (i !== r && (d = ut.nodePermissions(r, "w"))) throw new ut.ErrnoError(d);
 
             try {
-              ot.trackingDelegate.willMovePath && ot.trackingDelegate.willMovePath(e, t);
+              ut.trackingDelegate.willMovePath && ut.trackingDelegate.willMovePath(e, t);
             } catch (e) {
               e.message;
             }
 
-            ot.hashRemoveNode(u);
+            ut.hashRemoveNode(u);
 
             try {
               r.node_ops.rename(u, i, o);
             } catch (e) {
               throw e;
             } finally {
-              ot.hashAddNode(u);
+              ut.hashAddNode(u);
             }
 
             try {
-              ot.trackingDelegate.onMovePath && ot.trackingDelegate.onMovePath(e, t);
+              ut.trackingDelegate.onMovePath && ut.trackingDelegate.onMovePath(e, t);
             } catch (e) {
               e.message;
             }
           }
         },
         rmdir: function rmdir(e) {
-          var t = ot.lookupPath(e, {
+          var t = ut.lookupPath(e, {
             parent: !0
           }).node,
-              r = $e.basename(e),
-              i = ot.lookupNode(t, r),
-              n = ot.mayDelete(t, r, !0);
-          if (n) throw new ot.ErrnoError(n);
-          if (!t.node_ops.rmdir) throw new ot.ErrnoError(63);
-          if (ot.isMountpoint(i)) throw new ot.ErrnoError(10);
+              r = tt.basename(e),
+              i = ut.lookupNode(t, r),
+              n = ut.mayDelete(t, r, !0);
+          if (n) throw new ut.ErrnoError(n);
+          if (!t.node_ops.rmdir) throw new ut.ErrnoError(63);
+          if (ut.isMountpoint(i)) throw new ut.ErrnoError(10);
 
           try {
-            ot.trackingDelegate.willDeletePath && ot.trackingDelegate.willDeletePath(e);
+            ut.trackingDelegate.willDeletePath && ut.trackingDelegate.willDeletePath(e);
           } catch (e) {
             e.message;
           }
 
-          t.node_ops.rmdir(t, r), ot.destroyNode(i);
+          t.node_ops.rmdir(t, r), ut.destroyNode(i);
 
           try {
-            ot.trackingDelegate.onDeletePath && ot.trackingDelegate.onDeletePath(e);
+            ut.trackingDelegate.onDeletePath && ut.trackingDelegate.onDeletePath(e);
           } catch (e) {
             e.message;
           }
         },
         readdir: function readdir(e) {
-          var t = ot.lookupPath(e, {
+          var t = ut.lookupPath(e, {
             follow: !0
           }).node;
-          if (!t.node_ops.readdir) throw new ot.ErrnoError(54);
+          if (!t.node_ops.readdir) throw new ut.ErrnoError(54);
           return t.node_ops.readdir(t);
         },
         unlink: function unlink(e) {
-          var t = ot.lookupPath(e, {
+          var t = ut.lookupPath(e, {
             parent: !0
           }).node,
-              r = $e.basename(e),
-              i = ot.lookupNode(t, r),
-              n = ot.mayDelete(t, r, !1);
-          if (n) throw new ot.ErrnoError(n);
-          if (!t.node_ops.unlink) throw new ot.ErrnoError(63);
-          if (ot.isMountpoint(i)) throw new ot.ErrnoError(10);
+              r = tt.basename(e),
+              i = ut.lookupNode(t, r),
+              n = ut.mayDelete(t, r, !1);
+          if (n) throw new ut.ErrnoError(n);
+          if (!t.node_ops.unlink) throw new ut.ErrnoError(63);
+          if (ut.isMountpoint(i)) throw new ut.ErrnoError(10);
 
           try {
-            ot.trackingDelegate.willDeletePath && ot.trackingDelegate.willDeletePath(e);
+            ut.trackingDelegate.willDeletePath && ut.trackingDelegate.willDeletePath(e);
           } catch (e) {
             e.message;
           }
 
-          t.node_ops.unlink(t, r), ot.destroyNode(i);
+          t.node_ops.unlink(t, r), ut.destroyNode(i);
 
           try {
-            ot.trackingDelegate.onDeletePath && ot.trackingDelegate.onDeletePath(e);
+            ut.trackingDelegate.onDeletePath && ut.trackingDelegate.onDeletePath(e);
           } catch (e) {
             e.message;
           }
         },
         readlink: function readlink(e) {
-          var t = ot.lookupPath(e).node;
-          if (!t) throw new ot.ErrnoError(44);
-          if (!t.node_ops.readlink) throw new ot.ErrnoError(28);
-          return et.resolve(ot.getPath(t.parent), t.node_ops.readlink(t));
+          var t = ut.lookupPath(e).node;
+          if (!t) throw new ut.ErrnoError(44);
+          if (!t.node_ops.readlink) throw new ut.ErrnoError(28);
+          return rt.resolve(ut.getPath(t.parent), t.node_ops.readlink(t));
         },
         stat: function stat(e, t) {
-          var r = ot.lookupPath(e, {
+          var r = ut.lookupPath(e, {
             follow: !t
           }).node;
-          if (!r) throw new ot.ErrnoError(44);
-          if (!r.node_ops.getattr) throw new ot.ErrnoError(63);
+          if (!r) throw new ut.ErrnoError(44);
+          if (!r.node_ops.getattr) throw new ut.ErrnoError(63);
           return r.node_ops.getattr(r);
         },
         lstat: function lstat(e) {
-          return ot.stat(e, !0);
+          return ut.stat(e, !0);
         },
         chmod: function chmod(e, t, r) {
           var i;
-          "string" == typeof e ? i = ot.lookupPath(e, {
+          "string" == typeof e ? i = ut.lookupPath(e, {
             follow: !r
           }).node : i = e;
-          if (!i.node_ops.setattr) throw new ot.ErrnoError(63);
+          if (!i.node_ops.setattr) throw new ut.ErrnoError(63);
           i.node_ops.setattr(i, {
             mode: 4095 & t | -4096 & i.mode,
             timestamp: Date.now()
           });
         },
         lchmod: function lchmod(e, t) {
-          ot.chmod(e, t, !0);
+          ut.chmod(e, t, !0);
         },
         fchmod: function fchmod(e, t) {
-          var r = ot.getStream(e);
-          if (!r) throw new ot.ErrnoError(8);
-          ot.chmod(r.node, t);
+          var r = ut.getStream(e);
+          if (!r) throw new ut.ErrnoError(8);
+          ut.chmod(r.node, t);
         },
         chown: function chown(e, t, r, i) {
           var n;
-          "string" == typeof e ? n = ot.lookupPath(e, {
+          "string" == typeof e ? n = ut.lookupPath(e, {
             follow: !i
           }).node : n = e;
-          if (!n.node_ops.setattr) throw new ot.ErrnoError(63);
+          if (!n.node_ops.setattr) throw new ut.ErrnoError(63);
           n.node_ops.setattr(n, {
             timestamp: Date.now()
           });
         },
         lchown: function lchown(e, t, r) {
-          ot.chown(e, t, r, !0);
+          ut.chown(e, t, r, !0);
         },
         fchown: function fchown(e, t, r) {
-          var i = ot.getStream(e);
-          if (!i) throw new ot.ErrnoError(8);
-          ot.chown(i.node, t, r);
+          var i = ut.getStream(e);
+          if (!i) throw new ut.ErrnoError(8);
+          ut.chown(i.node, t, r);
         },
         truncate: function truncate(e, t) {
-          if (t < 0) throw new ot.ErrnoError(28);
+          if (t < 0) throw new ut.ErrnoError(28);
           var r;
-          "string" == typeof e ? r = ot.lookupPath(e, {
+          "string" == typeof e ? r = ut.lookupPath(e, {
             follow: !0
           }).node : r = e;
-          if (!r.node_ops.setattr) throw new ot.ErrnoError(63);
-          if (ot.isDir(r.mode)) throw new ot.ErrnoError(31);
-          if (!ot.isFile(r.mode)) throw new ot.ErrnoError(28);
-          var i = ot.nodePermissions(r, "w");
-          if (i) throw new ot.ErrnoError(i);
+          if (!r.node_ops.setattr) throw new ut.ErrnoError(63);
+          if (ut.isDir(r.mode)) throw new ut.ErrnoError(31);
+          if (!ut.isFile(r.mode)) throw new ut.ErrnoError(28);
+          var i = ut.nodePermissions(r, "w");
+          if (i) throw new ut.ErrnoError(i);
           r.node_ops.setattr(r, {
             size: t,
             timestamp: Date.now()
           });
         },
         ftruncate: function ftruncate(e, t) {
-          var r = ot.getStream(e);
-          if (!r) throw new ot.ErrnoError(8);
-          if (0 == (2097155 & r.flags)) throw new ot.ErrnoError(28);
-          ot.truncate(r.node, t);
+          var r = ut.getStream(e);
+          if (!r) throw new ut.ErrnoError(8);
+          if (0 == (2097155 & r.flags)) throw new ut.ErrnoError(28);
+          ut.truncate(r.node, t);
         },
         utime: function utime(e, t, r) {
-          var i = ot.lookupPath(e, {
+          var i = ut.lookupPath(e, {
             follow: !0
           }).node;
           i.node_ops.setattr(i, {
@@ -20474,33 +20518,33 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           });
         },
         open: function open(e, t, r, i, n) {
-          if ("" === e) throw new ot.ErrnoError(44);
+          if ("" === e) throw new ut.ErrnoError(44);
           var s;
-          if (r = void 0 === r ? 438 : r, r = 64 & (t = "string" == typeof t ? ot.modeStringToFlags(t) : t) ? 4095 & r | 32768 : 0, "object" === a(e)) s = e;else {
-            e = $e.normalize(e);
+          if (r = void 0 === r ? 438 : r, r = 64 & (t = "string" == typeof t ? ut.modeStringToFlags(t) : t) ? 4095 & r | 32768 : 0, "object" === a(e)) s = e;else {
+            e = tt.normalize(e);
 
             try {
-              s = ot.lookupPath(e, {
+              s = ut.lookupPath(e, {
                 follow: !(131072 & t)
               }).node;
             } catch (e) {}
           }
-          var f = !1;
+          var o = !1;
           if (64 & t) if (s) {
-            if (128 & t) throw new ot.ErrnoError(20);
-          } else s = ot.mknod(e, r, 0), f = !0;
-          if (!s) throw new ot.ErrnoError(44);
-          if (ot.isChrdev(s.mode) && (t &= -513), 65536 & t && !ot.isDir(s.mode)) throw new ot.ErrnoError(54);
+            if (128 & t) throw new ut.ErrnoError(20);
+          } else s = ut.mknod(e, r, 0), o = !0;
+          if (!s) throw new ut.ErrnoError(44);
+          if (ut.isChrdev(s.mode) && (t &= -513), 65536 & t && !ut.isDir(s.mode)) throw new ut.ErrnoError(54);
 
-          if (!f) {
-            var u = ot.mayOpen(s, t);
-            if (u) throw new ot.ErrnoError(u);
+          if (!o) {
+            var u = ut.mayOpen(s, t);
+            if (u) throw new ut.ErrnoError(u);
           }
 
-          512 & t && ot.truncate(s, 0), t &= -641;
-          var h = ot.createStream({
+          512 & t && ut.truncate(s, 0), t &= -641;
+          var h = ut.createStream({
             node: s,
-            path: ot.getPath(s),
+            path: ut.getPath(s),
             flags: t,
             seekable: !0,
             position: 0,
@@ -20508,12 +20552,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             ungotten: [],
             error: !1
           }, i, n);
-          h.stream_ops.open && h.stream_ops.open(h), !o.logReadFiles || 1 & t || (ot.readFiles || (ot.readFiles = {}), e in ot.readFiles || (ot.readFiles[e] = 1));
+          h.stream_ops.open && h.stream_ops.open(h), !f.logReadFiles || 1 & t || (ut.readFiles || (ut.readFiles = {}), e in ut.readFiles || (ut.readFiles[e] = 1));
 
           try {
-            if (ot.trackingDelegate.onOpenFile) {
+            if (ut.trackingDelegate.onOpenFile) {
               var c = 0;
-              1 != (2097155 & t) && (c |= ot.tracking.openFlags.READ), 0 != (2097155 & t) && (c |= ot.tracking.openFlags.WRITE), ot.trackingDelegate.onOpenFile(e, c);
+              1 != (2097155 & t) && (c |= ut.tracking.openFlags.READ), 0 != (2097155 & t) && (c |= ut.tracking.openFlags.WRITE), ut.trackingDelegate.onOpenFile(e, c);
             }
           } catch (e) {
             e.message;
@@ -20522,7 +20566,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return h;
         },
         close: function close(e) {
-          if (ot.isClosed(e)) throw new ot.ErrnoError(8);
+          if (ut.isClosed(e)) throw new ut.ErrnoError(8);
           e.getdents && (e.getdents = null);
 
           try {
@@ -20530,7 +20574,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           } catch (e) {
             throw e;
           } finally {
-            ot.closeStream(e.fd);
+            ut.closeStream(e.fd);
           }
 
           e.fd = null;
@@ -20539,44 +20583,44 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return null === e.fd;
         },
         llseek: function llseek(e, t, r) {
-          if (ot.isClosed(e)) throw new ot.ErrnoError(8);
-          if (!e.seekable || !e.stream_ops.llseek) throw new ot.ErrnoError(70);
-          if (0 != r && 1 != r && 2 != r) throw new ot.ErrnoError(28);
+          if (ut.isClosed(e)) throw new ut.ErrnoError(8);
+          if (!e.seekable || !e.stream_ops.llseek) throw new ut.ErrnoError(70);
+          if (0 != r && 1 != r && 2 != r) throw new ut.ErrnoError(28);
           return e.position = e.stream_ops.llseek(e, t, r), e.ungotten = [], e.position;
         },
         read: function read(e, t, r, i, n) {
-          if (i < 0 || n < 0) throw new ot.ErrnoError(28);
-          if (ot.isClosed(e)) throw new ot.ErrnoError(8);
-          if (1 == (2097155 & e.flags)) throw new ot.ErrnoError(8);
-          if (ot.isDir(e.node.mode)) throw new ot.ErrnoError(31);
-          if (!e.stream_ops.read) throw new ot.ErrnoError(28);
+          if (i < 0 || n < 0) throw new ut.ErrnoError(28);
+          if (ut.isClosed(e)) throw new ut.ErrnoError(8);
+          if (1 == (2097155 & e.flags)) throw new ut.ErrnoError(8);
+          if (ut.isDir(e.node.mode)) throw new ut.ErrnoError(31);
+          if (!e.stream_ops.read) throw new ut.ErrnoError(28);
           var a = void 0 !== n;
 
           if (a) {
-            if (!e.seekable) throw new ot.ErrnoError(70);
+            if (!e.seekable) throw new ut.ErrnoError(70);
           } else n = e.position;
 
           var s = e.stream_ops.read(e, t, r, i, n);
           return a || (e.position += s), s;
         },
         write: function write(e, t, r, i, n, a) {
-          if (i < 0 || n < 0) throw new ot.ErrnoError(28);
-          if (ot.isClosed(e)) throw new ot.ErrnoError(8);
-          if (0 == (2097155 & e.flags)) throw new ot.ErrnoError(8);
-          if (ot.isDir(e.node.mode)) throw new ot.ErrnoError(31);
-          if (!e.stream_ops.write) throw new ot.ErrnoError(28);
-          1024 & e.flags && ot.llseek(e, 0, 2);
+          if (i < 0 || n < 0) throw new ut.ErrnoError(28);
+          if (ut.isClosed(e)) throw new ut.ErrnoError(8);
+          if (0 == (2097155 & e.flags)) throw new ut.ErrnoError(8);
+          if (ut.isDir(e.node.mode)) throw new ut.ErrnoError(31);
+          if (!e.stream_ops.write) throw new ut.ErrnoError(28);
+          1024 & e.flags && ut.llseek(e, 0, 2);
           var s = void 0 !== n;
 
           if (s) {
-            if (!e.seekable) throw new ot.ErrnoError(70);
+            if (!e.seekable) throw new ut.ErrnoError(70);
           } else n = e.position;
 
           var o = e.stream_ops.write(e, t, r, i, n, a);
           s || (e.position += o);
 
           try {
-            e.path && ot.trackingDelegate.onWriteToFile && ot.trackingDelegate.onWriteToFile(e.path);
+            e.path && ut.trackingDelegate.onWriteToFile && ut.trackingDelegate.onWriteToFile(e.path);
           } catch (t) {
             e.path, t.message;
           }
@@ -20584,17 +20628,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return o;
         },
         allocate: function allocate(e, t, r) {
-          if (ot.isClosed(e)) throw new ot.ErrnoError(8);
-          if (t < 0 || r <= 0) throw new ot.ErrnoError(28);
-          if (0 == (2097155 & e.flags)) throw new ot.ErrnoError(8);
-          if (!ot.isFile(e.node.mode) && !ot.isDir(e.node.mode)) throw new ot.ErrnoError(43);
-          if (!e.stream_ops.allocate) throw new ot.ErrnoError(138);
+          if (ut.isClosed(e)) throw new ut.ErrnoError(8);
+          if (t < 0 || r <= 0) throw new ut.ErrnoError(28);
+          if (0 == (2097155 & e.flags)) throw new ut.ErrnoError(8);
+          if (!ut.isFile(e.node.mode) && !ut.isDir(e.node.mode)) throw new ut.ErrnoError(43);
+          if (!e.stream_ops.allocate) throw new ut.ErrnoError(138);
           e.stream_ops.allocate(e, t, r);
         },
         mmap: function mmap(e, t, r, i, n, a, s) {
-          if (0 != (2 & a) && 0 == (2 & s) && 2 != (2097155 & e.flags)) throw new ot.ErrnoError(2);
-          if (1 == (2097155 & e.flags)) throw new ot.ErrnoError(2);
-          if (!e.stream_ops.mmap) throw new ot.ErrnoError(43);
+          if (0 != (2 & a) && 0 == (2 & s) && 2 != (2097155 & e.flags)) throw new ut.ErrnoError(2);
+          if (1 == (2097155 & e.flags)) throw new ut.ErrnoError(2);
+          if (!e.stream_ops.mmap) throw new ut.ErrnoError(43);
           return e.stream_ops.mmap(e, t, r, i, n, a, s);
         },
         msync: function msync(e, t, r, i, n) {
@@ -20604,65 +20648,65 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return 0;
         },
         ioctl: function ioctl(e, t, r) {
-          if (!e.stream_ops.ioctl) throw new ot.ErrnoError(59);
+          if (!e.stream_ops.ioctl) throw new ut.ErrnoError(59);
           return e.stream_ops.ioctl(e, t, r);
         },
         readFile: function readFile(e, t) {
           if ((t = t || {}).flags = t.flags || "r", t.encoding = t.encoding || "binary", "utf8" !== t.encoding && "binary" !== t.encoding) throw new Error('Invalid encoding type "' + t.encoding + '"');
           var r,
-              i = ot.open(e, t.flags),
-              n = ot.stat(e).size,
+              i = ut.open(e, t.flags),
+              n = ut.stat(e).size,
               a = new Uint8Array(n);
-          return ot.read(i, a, 0, n, 0), "utf8" === t.encoding ? r = W(a, 0) : "binary" === t.encoding && (r = a), ot.close(i), r;
+          return ut.read(i, a, 0, n, 0), "utf8" === t.encoding ? r = K(a, 0) : "binary" === t.encoding && (r = a), ut.close(i), r;
         },
         writeFile: function writeFile(e, t, r) {
           (r = r || {}).flags = r.flags || "w";
-          var i = ot.open(e, r.flags, r.mode);
+          var i = ut.open(e, r.flags, r.mode);
 
           if ("string" == typeof t) {
             var n = new Uint8Array(J(t) + 1),
-                a = X(t, n, 0, n.length);
-            ot.write(i, n, 0, a, void 0, r.canOwn);
+                a = Z(t, n, 0, n.length);
+            ut.write(i, n, 0, a, void 0, r.canOwn);
           } else {
             if (!ArrayBuffer.isView(t)) throw new Error("Unsupported data type");
-            ot.write(i, t, 0, t.byteLength, void 0, r.canOwn);
+            ut.write(i, t, 0, t.byteLength, void 0, r.canOwn);
           }
 
-          ot.close(i);
+          ut.close(i);
         },
         cwd: function cwd() {
-          return ot.currentPath;
+          return ut.currentPath;
         },
         chdir: function chdir(e) {
-          var t = ot.lookupPath(e, {
+          var t = ut.lookupPath(e, {
             follow: !0
           });
-          if (null === t.node) throw new ot.ErrnoError(44);
-          if (!ot.isDir(t.node.mode)) throw new ot.ErrnoError(54);
-          var r = ot.nodePermissions(t.node, "x");
-          if (r) throw new ot.ErrnoError(r);
-          ot.currentPath = t.path;
+          if (null === t.node) throw new ut.ErrnoError(44);
+          if (!ut.isDir(t.node.mode)) throw new ut.ErrnoError(54);
+          var r = ut.nodePermissions(t.node, "x");
+          if (r) throw new ut.ErrnoError(r);
+          ut.currentPath = t.path;
         },
         createDefaultDirectories: function createDefaultDirectories() {
-          ot.mkdir("/tmp"), ot.mkdir("/home"), ot.mkdir("/home/web_user");
+          ut.mkdir("/tmp"), ut.mkdir("/home"), ut.mkdir("/home/web_user");
         },
         createDefaultDevices: function createDefaultDevices() {
           var t;
 
-          if (ot.mkdir("/dev"), ot.registerDevice(ot.makedev(1, 3), {
+          if (ut.mkdir("/dev"), ut.registerDevice(ut.makedev(1, 3), {
             read: function read() {
               return 0;
             },
             write: function write(e, t, r, i, n) {
               return i;
             }
-          }), ot.mkdev("/dev/null", ot.makedev(1, 3)), tt.register(ot.makedev(5, 0), tt.default_tty_ops), tt.register(ot.makedev(6, 0), tt.default_tty1_ops), ot.mkdev("/dev/tty", ot.makedev(5, 0)), ot.mkdev("/dev/tty1", ot.makedev(6, 0)), "object" === ("undefined" == typeof crypto ? "undefined" : a(crypto)) && "function" == typeof crypto.getRandomValues) {
+          }), ut.mkdev("/dev/null", ut.makedev(1, 3)), it.register(ut.makedev(5, 0), it.default_tty_ops), it.register(ut.makedev(6, 0), it.default_tty1_ops), ut.mkdev("/dev/tty", ut.makedev(5, 0)), ut.mkdev("/dev/tty1", ut.makedev(6, 0)), "object" === ("undefined" == typeof crypto ? "undefined" : a(crypto)) && "function" == typeof crypto.getRandomValues) {
             var r = new Uint8Array(1);
 
             t = function t() {
               return crypto.getRandomValues(r), r[0];
             };
-          } else if (l) try {
+          } else if (p) try {
             var i = e("crypto");
 
             t = function t() {
@@ -20671,18 +20715,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           } catch (e) {}
 
           t || (t = function t() {
-            Ne("random_device");
-          }), ot.createDevice("/dev", "random", t), ot.createDevice("/dev", "urandom", t), ot.mkdir("/dev/shm"), ot.mkdir("/dev/shm/tmp");
+            ze("random_device");
+          }), ut.createDevice("/dev", "random", t), ut.createDevice("/dev", "urandom", t), ut.mkdir("/dev/shm"), ut.mkdir("/dev/shm/tmp");
         },
         createSpecialDirectories: function createSpecialDirectories() {
-          ot.mkdir("/proc"), ot.mkdir("/proc/self"), ot.mkdir("/proc/self/fd"), ot.mount({
+          ut.mkdir("/proc"), ut.mkdir("/proc/self"), ut.mkdir("/proc/self/fd"), ut.mount({
             mount: function mount() {
-              var e = ot.createNode("/proc/self", "fd", 16895, 73);
+              var e = ut.createNode("/proc/self", "fd", 16895, 73);
               return e.node_ops = {
                 lookup: function lookup(e, t) {
                   var r = +t,
-                      i = ot.getStream(r);
-                  if (!i) throw new ot.ErrnoError(8);
+                      i = ut.getStream(r);
+                  if (!i) throw new ut.ErrnoError(8);
                   var n = {
                     parent: null,
                     mount: {
@@ -20701,37 +20745,37 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, {}, "/proc/self/fd");
         },
         createStandardStreams: function createStandardStreams() {
-          o.stdin ? ot.createDevice("/dev", "stdin", o.stdin) : ot.symlink("/dev/tty", "/dev/stdin"), o.stdout ? ot.createDevice("/dev", "stdout", null, o.stdout) : ot.symlink("/dev/tty", "/dev/stdout"), o.stderr ? ot.createDevice("/dev", "stderr", null, o.stderr) : ot.symlink("/dev/tty1", "/dev/stderr");
-          ot.open("/dev/stdin", "r"), ot.open("/dev/stdout", "w"), ot.open("/dev/stderr", "w");
+          f.stdin ? ut.createDevice("/dev", "stdin", f.stdin) : ut.symlink("/dev/tty", "/dev/stdin"), f.stdout ? ut.createDevice("/dev", "stdout", null, f.stdout) : ut.symlink("/dev/tty", "/dev/stdout"), f.stderr ? ut.createDevice("/dev", "stderr", null, f.stderr) : ut.symlink("/dev/tty1", "/dev/stderr");
+          ut.open("/dev/stdin", "r"), ut.open("/dev/stdout", "w"), ut.open("/dev/stderr", "w");
         },
         ensureErrnoError: function ensureErrnoError() {
-          ot.ErrnoError || (ot.ErrnoError = function (e, t) {
+          ut.ErrnoError || (ut.ErrnoError = function (e, t) {
             this.node = t, this.setErrno = function (e) {
               this.errno = e;
             }, this.setErrno(e), this.message = "FS error";
-          }, ot.ErrnoError.prototype = new Error(), ot.ErrnoError.prototype.constructor = ot.ErrnoError, [44].forEach(function (e) {
-            ot.genericErrors[e] = new ot.ErrnoError(e), ot.genericErrors[e].stack = "<generic error, no stack>";
+          }, ut.ErrnoError.prototype = new Error(), ut.ErrnoError.prototype.constructor = ut.ErrnoError, [44].forEach(function (e) {
+            ut.genericErrors[e] = new ut.ErrnoError(e), ut.genericErrors[e].stack = "<generic error, no stack>";
           }));
         },
         staticInit: function staticInit() {
-          ot.ensureErrnoError(), ot.nameTable = new Array(4096), ot.mount(rt, {}, "/"), ot.createDefaultDirectories(), ot.createDefaultDevices(), ot.createSpecialDirectories(), ot.filesystems = {
-            MEMFS: rt,
-            IDBFS: it,
-            NODEFS: at,
-            WORKERFS: st
+          ut.ensureErrnoError(), ut.nameTable = new Array(4096), ut.mount(nt, {}, "/"), ut.createDefaultDirectories(), ut.createDefaultDevices(), ut.createSpecialDirectories(), ut.filesystems = {
+            MEMFS: nt,
+            IDBFS: at,
+            NODEFS: ot,
+            WORKERFS: ft
           };
         },
         init: function init(e, t, r) {
-          ot.init.initialized = !0, ot.ensureErrnoError(), o.stdin = e || o.stdin, o.stdout = t || o.stdout, o.stderr = r || o.stderr, ot.createStandardStreams();
+          ut.init.initialized = !0, ut.ensureErrnoError(), f.stdin = e || f.stdin, f.stdout = t || f.stdout, f.stderr = r || f.stderr, ut.createStandardStreams();
         },
         quit: function quit() {
-          ot.init.initialized = !1;
-          var e = o._fflush;
+          ut.init.initialized = !1;
+          var e = f._fflush;
           e && e(0);
 
-          for (var t = 0; t < ot.streams.length; t++) {
-            var r = ot.streams[t];
-            r && ot.close(r);
+          for (var t = 0; t < ut.streams.length; t++) {
+            var r = ut.streams[t];
+            r && ut.close(r);
           }
         },
         getMode: function getMode(e, t) {
@@ -20739,22 +20783,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return e && (r |= 365), t && (r |= 146), r;
         },
         joinPath: function joinPath(e, t) {
-          var r = $e.join.apply(null, e);
+          var r = tt.join.apply(null, e);
           return t && "/" == r[0] && (r = r.substr(1)), r;
         },
         absolutePath: function absolutePath(e, t) {
-          return et.resolve(t, e);
+          return rt.resolve(t, e);
         },
         standardizePath: function standardizePath(e) {
-          return $e.normalize(e);
+          return tt.normalize(e);
         },
         findObject: function findObject(e, t) {
-          var r = ot.analyzePath(e, t);
-          return r.exists ? r.object : (Qe(r.error), null);
+          var r = ut.analyzePath(e, t);
+          return r.exists ? r.object : (et(r.error), null);
         },
         analyzePath: function analyzePath(e, t) {
           try {
-            e = (i = ot.lookupPath(e, {
+            e = (i = ut.lookupPath(e, {
               follow: !t
             })).path;
           } catch (e) {}
@@ -20772,10 +20816,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           };
 
           try {
-            var i = ot.lookupPath(e, {
+            var i = ut.lookupPath(e, {
               parent: !0
             });
-            r.parentExists = !0, r.parentPath = i.path, r.parentObject = i.node, r.name = $e.basename(e), i = ot.lookupPath(e, {
+            r.parentExists = !0, r.parentPath = i.path, r.parentObject = i.node, r.name = tt.basename(e), i = ut.lookupPath(e, {
               follow: !t
             }), r.exists = !0, r.path = i.path, r.object = i.node, r.name = i.node.name, r.isRoot = "/" === i.path;
           } catch (e) {
@@ -20785,21 +20829,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return r;
         },
         createFolder: function createFolder(e, t, r, i) {
-          var n = $e.join2("string" == typeof e ? e : ot.getPath(e), t),
-              a = ot.getMode(r, i);
-          return ot.mkdir(n, a);
+          var n = tt.join2("string" == typeof e ? e : ut.getPath(e), t),
+              a = ut.getMode(r, i);
+          return ut.mkdir(n, a);
         },
         createPath: function createPath(e, t, r, i) {
-          e = "string" == typeof e ? e : ot.getPath(e);
+          e = "string" == typeof e ? e : ut.getPath(e);
 
           for (var n = t.split("/").reverse(); n.length;) {
             var a = n.pop();
 
             if (a) {
-              var s = $e.join2(e, a);
+              var s = tt.join2(e, a);
 
               try {
-                ot.mkdir(s);
+                ut.mkdir(s);
               } catch (e) {}
 
               e = s;
@@ -20809,14 +20853,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return s;
         },
         createFile: function createFile(e, t, r, i, n) {
-          var a = $e.join2("string" == typeof e ? e : ot.getPath(e), t),
-              s = ot.getMode(i, n);
-          return ot.create(a, s);
+          var a = tt.join2("string" == typeof e ? e : ut.getPath(e), t),
+              s = ut.getMode(i, n);
+          return ut.create(a, s);
         },
         createDataFile: function createDataFile(e, t, r, i, n, a) {
-          var s = t ? $e.join2("string" == typeof e ? e : ot.getPath(e), t) : e,
-              o = ot.getMode(i, n),
-              f = ot.create(s, o);
+          var s = t ? tt.join2("string" == typeof e ? e : ut.getPath(e), t) : e,
+              o = ut.getMode(i, n),
+              f = ut.create(s, o);
 
           if (r) {
             if ("string" == typeof r) {
@@ -20827,19 +20871,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               r = u;
             }
 
-            ot.chmod(f, 146 | o);
-            var d = ot.open(f, "w");
-            ot.write(d, r, 0, r.length, 0, a), ot.close(d), ot.chmod(f, o);
+            ut.chmod(f, 146 | o);
+            var d = ut.open(f, "w");
+            ut.write(d, r, 0, r.length, 0, a), ut.close(d), ut.chmod(f, o);
           }
 
           return f;
         },
         createDevice: function createDevice(e, t, r, i) {
-          var n = $e.join2("string" == typeof e ? e : ot.getPath(e), t),
-              a = ot.getMode(!!r, !!i);
-          ot.createDevice.major || (ot.createDevice.major = 64);
-          var s = ot.makedev(ot.createDevice.major++, 0);
-          return ot.registerDevice(s, {
+          var n = tt.join2("string" == typeof e ? e : ut.getPath(e), t),
+              a = ut.getMode(!!r, !!i);
+          ut.createDevice.major || (ut.createDevice.major = 64);
+          var s = ut.makedev(ut.createDevice.major++, 0);
+          return ut.registerDevice(s, {
             open: function open(e) {
               e.seekable = !1;
             },
@@ -20853,10 +20897,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 try {
                   f = r();
                 } catch (e) {
-                  throw new ot.ErrnoError(29);
+                  throw new ut.ErrnoError(29);
                 }
 
-                if (void 0 === f && 0 === s) throw new ot.ErrnoError(6);
+                if (void 0 === f && 0 === s) throw new ut.ErrnoError(6);
                 if (null == f) break;
                 s++, t[i + o] = f;
               }
@@ -20868,31 +20912,31 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 try {
                   i(t[r + s]);
                 } catch (e) {
-                  throw new ot.ErrnoError(29);
+                  throw new ut.ErrnoError(29);
                 }
               }
 
               return n && (e.node.timestamp = Date.now()), s;
             }
-          }), ot.mkdev(n, a, s);
+          }), ut.mkdev(n, a, s);
         },
         createLink: function createLink(e, t, r, i, n) {
-          var a = $e.join2("string" == typeof e ? e : ot.getPath(e), t);
-          return ot.symlink(r, a);
+          var a = tt.join2("string" == typeof e ? e : ut.getPath(e), t);
+          return ut.symlink(r, a);
         },
         forceLoadFile: function forceLoadFile(e) {
           if (e.isDevice || e.isFolder || e.link || e.contents) return !0;
           var t = !0;
           if ("undefined" != typeof XMLHttpRequest) throw new Error("Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread.");
-          if (!b) throw new Error("Cannot load without read() or XMLHttpRequest.");
+          if (!y) throw new Error("Cannot load without read() or XMLHttpRequest.");
 
           try {
-            e.contents = or(b(e.url), !0), e.usedBytes = e.contents.length;
+            e.contents = pr(y(e.url), !0), e.usedBytes = e.contents.length;
           } catch (e) {
             t = !1;
           }
 
-          return t || Qe(29), t;
+          return t || et(29), t;
         },
         createLazyFile: function createLazyFile(e, t, r, i, n) {
           function a() {
@@ -20925,12 +20969,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 if (t > i - 1) throw new Error("only " + i + " bytes available! programmer error!");
                 var n = new XMLHttpRequest();
                 if (n.open("GET", r, !1), i !== s && n.setRequestHeader("Range", "bytes=" + e + "-" + t), "undefined" != typeof Uint8Array && (n.responseType = "arraybuffer"), n.overrideMimeType && n.overrideMimeType("text/plain; charset=x-user-defined"), n.send(null), !(n.status >= 200 && n.status < 300 || 304 === n.status)) throw new Error("Couldn't load " + r + ". Status: " + n.status);
-                return void 0 !== n.response ? new Uint8Array(n.response || []) : or(n.responseText || "", !0);
+                return void 0 !== n.response ? new Uint8Array(n.response || []) : pr(n.responseText || "", !0);
               }(t, n)), void 0 === o.chunks[e]) throw new Error("doXHR failed!");
               return o.chunks[e];
             }), !a && i || (s = i = 1, i = this.getter(0).length, s = i), this._length = i, this._chunkSize = s, this.lengthKnown = !0;
           }, "undefined" != typeof XMLHttpRequest) {
-            if (!d) throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
+            if (!l) throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
             var s = new a();
             Object.defineProperties(s, {
               length: {
@@ -20953,7 +20997,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             url: r
           };
 
-          var f = ot.createFile(e, t, o, i, n);
+          var f = ut.createFile(e, t, o, i, n);
           o.contents ? f.contents = o.contents : o.url && (f.contents = null, f.url = o.url), Object.defineProperties(f, {
             usedBytes: {
               get: function get() {
@@ -20966,11 +21010,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var t = f.stream_ops[e];
 
             u[e] = function () {
-              if (!ot.forceLoadFile(f)) throw new ot.ErrnoError(29);
+              if (!ut.forceLoadFile(f)) throw new ut.ErrnoError(29);
               return t.apply(null, arguments);
             };
           }), u.read = function (e, t, r, i, n) {
-            if (!ot.forceLoadFile(f)) throw new ot.ErrnoError(29);
+            if (!ut.forceLoadFile(f)) throw new ut.ErrnoError(29);
             var a = e.node.contents;
             if (n >= a.length) return 0;
             var s = Math.min(a.length - n, i);
@@ -20982,24 +21026,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return s;
           }, f.stream_ops = u, f;
         },
-        createPreloadedFile: function createPreloadedFile(e, t, r, i, n, a, s, f, u, h) {
+        createPreloadedFile: function createPreloadedFile(e, t, r, i, n, a, s, o, u, h) {
           Browser.init();
-          var c = t ? et.resolve($e.join2(e, t)) : e;
+          var c = t ? rt.resolve(tt.join2(e, t)) : e;
 
           function d(r) {
             function d(r) {
-              h && h(), f || ot.createDataFile(e, t, r, i, n, u), a && a(), Fe();
+              h && h(), o || ut.createDataFile(e, t, r, i, n, u), a && a(), Oe();
             }
 
             var l = !1;
-            o.preloadPlugins.forEach(function (e) {
+            f.preloadPlugins.forEach(function (e) {
               l || e.canHandle(c) && (e.handle(r, c, d, function () {
-                s && s(), Fe();
+                s && s(), Oe();
               }), l = !0);
             }), l || d(r);
           }
 
-          Le(), "string" == typeof r ? Browser.asyncLoad(r, function (e) {
+          Ne(), "string" == typeof r ? Browser.asyncLoad(r, function (e) {
             d(e);
           }, s) : d(r);
         },
@@ -21013,19 +21057,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         DB_STORE_NAME: "FILE_DATA",
         saveFilesToDB: function saveFilesToDB(e, t, r) {
           t = t || function () {}, r = r || function () {};
-          var i = ot.indexedDB();
+          var i = ut.indexedDB();
 
           try {
-            var n = i.open(ot.DB_NAME(), ot.DB_VERSION);
+            var n = i.open(ut.DB_NAME(), ut.DB_VERSION);
           } catch (e) {
             return r(e);
           }
 
           n.onupgradeneeded = function () {
-            n.result.createObjectStore(ot.DB_STORE_NAME);
+            n.result.createObjectStore(ut.DB_STORE_NAME);
           }, n.onsuccess = function () {
-            var i = n.result.transaction([ot.DB_STORE_NAME], "readwrite"),
-                a = i.objectStore(ot.DB_STORE_NAME),
+            var i = n.result.transaction([ut.DB_STORE_NAME], "readwrite"),
+                a = i.objectStore(ut.DB_STORE_NAME),
                 s = 0,
                 o = 0,
                 f = e.length;
@@ -21035,7 +21079,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             }
 
             e.forEach(function (e) {
-              var t = a.put(ot.analyzePath(e).object.contents, e);
+              var t = a.put(ut.analyzePath(e).object.contents, e);
               t.onsuccess = function () {
                 ++s + o == f && u();
               }, t.onerror = function () {
@@ -21046,10 +21090,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         loadFilesFromDB: function loadFilesFromDB(e, t, r) {
           t = t || function () {}, r = r || function () {};
-          var i = ot.indexedDB();
+          var i = ut.indexedDB();
 
           try {
-            var n = i.open(ot.DB_NAME(), ot.DB_VERSION);
+            var n = i.open(ut.DB_NAME(), ut.DB_VERSION);
           } catch (e) {
             return r(e);
           }
@@ -21058,12 +21102,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var i = n.result;
 
             try {
-              var a = i.transaction([ot.DB_STORE_NAME], "readonly");
+              var a = i.transaction([ut.DB_STORE_NAME], "readonly");
             } catch (e) {
               return void r(e);
             }
 
-            var s = a.objectStore(ot.DB_STORE_NAME),
+            var s = a.objectStore(ut.DB_STORE_NAME),
                 o = 0,
                 f = 0,
                 u = e.length;
@@ -21075,7 +21119,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             e.forEach(function (e) {
               var t = s.get(e);
               t.onsuccess = function () {
-                ot.analyzePath(e).exists && ot.unlink(e), ot.createDataFile($e.dirname(e), $e.basename(e), t.result, !0, !0, !0), ++o + f == u && h();
+                ut.analyzePath(e).exists && ut.unlink(e), ut.createDataFile(tt.dirname(e), tt.basename(e), t.result, !0, !0, !0), ++o + f == u && h();
               }, t.onerror = function () {
                 f++, o + f == u && h();
               };
@@ -21083,19 +21127,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, n.onerror = r;
         }
       },
-          ft = {
+          ht = {
         DEFAULT_POLLMASK: 5,
         mappings: {},
         umask: 511,
         calculateAt: function calculateAt(e, t) {
           if ("/" !== t[0]) {
             var r;
-            if (-100 === e) r = ot.cwd();else {
-              var i = ot.getStream(e);
-              if (!i) throw new ot.ErrnoError(8);
+            if (-100 === e) r = ut.cwd();else {
+              var i = ut.getStream(e);
+              if (!i) throw new ut.ErrnoError(8);
               r = i.path;
             }
-            t = $e.join2(r, t);
+            t = tt.join2(r, t);
           }
 
           return t;
@@ -21104,18 +21148,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           try {
             var i = e(t);
           } catch (e) {
-            if (e && e.node && $e.normalize(t) !== $e.normalize(ot.getPath(e.node))) return -54;
+            if (e && e.node && tt.normalize(t) !== tt.normalize(ut.getPath(e.node))) return -54;
             throw e;
           }
 
-          return se[r >> 2] = i.dev, se[r + 4 >> 2] = 0, se[r + 8 >> 2] = i.ino, se[r + 12 >> 2] = i.mode, se[r + 16 >> 2] = i.nlink, se[r + 20 >> 2] = i.uid, se[r + 24 >> 2] = i.gid, se[r + 28 >> 2] = i.rdev, se[r + 32 >> 2] = 0, He = [i.size >>> 0, (je = i.size, +ke(je) >= 1 ? je > 0 ? (0 | Ie(+Ue(je / 4294967296), 4294967295)) >>> 0 : ~~+Pe((je - +(~~je >>> 0)) / 4294967296) >>> 0 : 0)], se[r + 40 >> 2] = He[0], se[r + 44 >> 2] = He[1], se[r + 48 >> 2] = 4096, se[r + 52 >> 2] = i.blocks, se[r + 56 >> 2] = i.atime.getTime() / 1e3 | 0, se[r + 60 >> 2] = 0, se[r + 64 >> 2] = i.mtime.getTime() / 1e3 | 0, se[r + 68 >> 2] = 0, se[r + 72 >> 2] = i.ctime.getTime() / 1e3 | 0, se[r + 76 >> 2] = 0, He = [i.ino >>> 0, (je = i.ino, +ke(je) >= 1 ? je > 0 ? (0 | Ie(+Ue(je / 4294967296), 4294967295)) >>> 0 : ~~+Pe((je - +(~~je >>> 0)) / 4294967296) >>> 0 : 0)], se[r + 80 >> 2] = He[0], se[r + 84 >> 2] = He[1], 0;
+          return oe[r >> 2] = i.dev, oe[r + 4 >> 2] = 0, oe[r + 8 >> 2] = i.ino, oe[r + 12 >> 2] = i.mode, oe[r + 16 >> 2] = i.nlink, oe[r + 20 >> 2] = i.uid, oe[r + 24 >> 2] = i.gid, oe[r + 28 >> 2] = i.rdev, oe[r + 32 >> 2] = 0, Ye = [i.size >>> 0, (Ve = i.size, +Ue(Ve) >= 1 ? Ve > 0 ? (0 | Re(+Ce(Ve / 4294967296), 4294967295)) >>> 0 : ~~+Ie((Ve - +(~~Ve >>> 0)) / 4294967296) >>> 0 : 0)], oe[r + 40 >> 2] = Ye[0], oe[r + 44 >> 2] = Ye[1], oe[r + 48 >> 2] = 4096, oe[r + 52 >> 2] = i.blocks, oe[r + 56 >> 2] = i.atime.getTime() / 1e3 | 0, oe[r + 60 >> 2] = 0, oe[r + 64 >> 2] = i.mtime.getTime() / 1e3 | 0, oe[r + 68 >> 2] = 0, oe[r + 72 >> 2] = i.ctime.getTime() / 1e3 | 0, oe[r + 76 >> 2] = 0, Ye = [i.ino >>> 0, (Ve = i.ino, +Ue(Ve) >= 1 ? Ve > 0 ? (0 | Re(+Ce(Ve / 4294967296), 4294967295)) >>> 0 : ~~+Ie((Ve - +(~~Ve >>> 0)) / 4294967296) >>> 0 : 0)], oe[r + 80 >> 2] = Ye[0], oe[r + 84 >> 2] = Ye[1], 0;
         },
         doMsync: function doMsync(e, t, r, i) {
-          var n = new Uint8Array(ie.subarray(e, e + r));
-          ot.msync(t, n, 0, r, i);
+          var n = new Uint8Array(ne.subarray(e, e + r));
+          ut.msync(t, n, 0, r, i);
         },
         doMkdir: function doMkdir(e, t) {
-          return "/" === (e = $e.normalize(e))[e.length - 1] && (e = e.substr(0, e.length - 1)), ot.mkdir(e, t, 0), 0;
+          return "/" === (e = tt.normalize(e))[e.length - 1] && (e = e.substr(0, e.length - 1)), ut.mkdir(e, t, 0), 0;
         },
         doMknod: function doMknod(e, t, r) {
           switch (61440 & t) {
@@ -21130,33 +21174,33 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               return -28;
           }
 
-          return ot.mknod(e, t, r), 0;
+          return ut.mknod(e, t, r), 0;
         },
         doReadlink: function doReadlink(e, t, r) {
           if (r <= 0) return -28;
-          var i = ot.readlink(e),
+          var i = ut.readlink(e),
               n = Math.min(r, J(i)),
-              a = re[t + n];
-          return Z(i, t, r + 1), re[t + n] = a, n;
+              a = ie[t + n];
+          return Q(i, t, r + 1), ie[t + n] = a, n;
         },
         doAccess: function doAccess(e, t) {
           if (-8 & t) return -28;
           var r;
-          if (!(r = ot.lookupPath(e, {
+          if (!(r = ut.lookupPath(e, {
             follow: !0
           }).node)) return -44;
           var i = "";
-          return 4 & t && (i += "r"), 2 & t && (i += "w"), 1 & t && (i += "x"), i && ot.nodePermissions(r, i) ? -2 : 0;
+          return 4 & t && (i += "r"), 2 & t && (i += "w"), 1 & t && (i += "x"), i && ut.nodePermissions(r, i) ? -2 : 0;
         },
         doDup: function doDup(e, t, r) {
-          var i = ot.getStream(r);
-          return i && ot.close(i), ot.open(e, t, 0, r, r).fd;
+          var i = ut.getStream(r);
+          return i && ut.close(i), ut.open(e, t, 0, r, r).fd;
         },
         doReadv: function doReadv(e, t, r, i) {
           for (var n = 0, a = 0; a < r; a++) {
-            var s = se[t + 8 * a >> 2],
-                o = se[t + (8 * a + 4) >> 2],
-                f = ot.read(e, re, s, o, i);
+            var s = oe[t + 8 * a >> 2],
+                o = oe[t + (8 * a + 4) >> 2],
+                f = ut.read(e, ie, s, o, i);
             if (f < 0) return -1;
             if (n += f, f < o) break;
           }
@@ -21165,9 +21209,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         doWritev: function doWritev(e, t, r, i) {
           for (var n = 0, a = 0; a < r; a++) {
-            var s = se[t + 8 * a >> 2],
-                o = se[t + (8 * a + 4) >> 2],
-                f = ot.write(e, re, s, o, i);
+            var s = oe[t + 8 * a >> 2],
+                o = oe[t + (8 * a + 4) >> 2],
+                f = ut.write(e, ie, s, o, i);
             if (f < 0) return -1;
             n += f;
           }
@@ -21176,36 +21220,36 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         varargs: 0,
         get: function get(e) {
-          return ft.varargs += 4, se[ft.varargs - 4 >> 2];
+          return ht.varargs += 4, oe[ht.varargs - 4 >> 2];
         },
         getStr: function getStr() {
-          return K(ft.get());
+          return X(ht.get());
         },
         getStreamFromFD: function getStreamFromFD(e) {
-          void 0 === e && (e = ft.get());
-          var t = ot.getStream(e);
-          if (!t) throw new ot.ErrnoError(8);
+          void 0 === e && (e = ht.get());
+          var t = ut.getStream(e);
+          if (!t) throw new ut.ErrnoError(8);
           return t;
         },
         get64: function get64() {
-          var e = ft.get();
-          ft.get();
+          var e = ht.get();
+          ht.get();
           return e;
         },
         getZero: function getZero() {
-          ft.get();
+          ht.get();
         }
       };
 
-      function ut(e, t) {
-        ft.varargs = t;
+      function ct(e, t) {
+        ht.varargs = t;
 
         try {
-          var r = ft.getStreamFromFD();
+          var r = ht.getStreamFromFD();
 
-          switch (ft.get()) {
+          switch (ht.get()) {
             case 0:
-              return (i = ft.get()) < 0 ? -28 : ot.open(r.path, r.flags, 0, i).fd;
+              return (i = ht.get()) < 0 ? -28 : ut.open(r.path, r.flags, 0, i).fd;
 
             case 1:
             case 2:
@@ -21215,12 +21259,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               return r.flags;
 
             case 4:
-              var i = ft.get();
+              var i = ht.get();
               return r.flags |= i, 0;
 
             case 12:
-              i = ft.get();
-              return ne[i + 0 >> 1] = 2, 0;
+              i = ht.get();
+              return ae[i + 0 >> 1] = 2, 0;
 
             case 13:
             case 14:
@@ -21231,62 +21275,48 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               return -28;
 
             case 9:
-              return Qe(28), -1;
+              return et(28), -1;
 
             default:
               return -28;
           }
         } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), -e.errno;
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), -e.errno;
         }
       }
 
-      function ht(e, t) {
-        ft.varargs = t;
+      function dt(e, t) {
+        ht.varargs = t;
 
         try {
-          var r = ft.getStreamFromFD(),
-              i = ft.get(),
-              n = ft.get();
-          return ot.read(r, re, i, n);
+          var r = ht.getStreamFromFD(),
+              i = ht.get(),
+              n = ht.get();
+          return ut.read(r, ie, i, n);
         } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), -e.errno;
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), -e.errno;
         }
       }
 
-      function ct(e, t) {
-        ft.varargs = t;
+      function lt(e, t) {
+        ht.varargs = t;
 
         try {
-          var r = ft.getStr(),
-              i = ft.get(),
-              n = ft.get();
-          return ot.open(r, i, n).fd;
+          var r = ht.getStr(),
+              i = ht.get(),
+              n = ht.get();
+          return ut.open(r, i, n).fd;
         } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), -e.errno;
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), -e.errno;
         }
       }
 
-      function dt(e) {
+      function pt(e) {
         try {
-          var t = ft.getStreamFromFD(e);
-          return ot.close(t), 0;
+          var t = ht.getStreamFromFD(e);
+          return ut.close(t), 0;
         } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), e.errno;
-        }
-      }
-
-      function lt() {
-        return dt.apply(null, arguments);
-      }
-
-      function pt(e, t) {
-        try {
-          var r = ft.getStreamFromFD(e),
-              i = r.tty ? 2 : ot.isDir(r.mode) ? 3 : ot.isLink(r.mode) ? 7 : 4;
-          return re[t >> 0] = i, 0;
-        } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), e.errno;
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), e.errno;
         }
       }
 
@@ -21294,13 +21324,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return pt.apply(null, arguments);
       }
 
-      function bt(e, t, r, i, n) {
+      function bt(e, t) {
         try {
-          var a = ft.getStreamFromFD(e),
-              s = 4294967296 * r + (t >>> 0);
-          return s <= -9007199254740992 || s >= 9007199254740992 ? -61 : (ot.llseek(a, s, i), He = [a.position >>> 0, (je = a.position, +ke(je) >= 1 ? je > 0 ? (0 | Ie(+Ue(je / 4294967296), 4294967295)) >>> 0 : ~~+Pe((je - +(~~je >>> 0)) / 4294967296) >>> 0 : 0)], se[n >> 2] = He[0], se[n + 4 >> 2] = He[1], a.getdents && 0 === s && 0 === i && (a.getdents = null), 0);
+          var r = ht.getStreamFromFD(e),
+              i = r.tty ? 2 : ut.isDir(r.mode) ? 3 : ut.isLink(r.mode) ? 7 : 4;
+          return ie[t >> 0] = i, 0;
         } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), e.errno;
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), e.errno;
         }
       }
 
@@ -21308,13 +21338,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return bt.apply(null, arguments);
       }
 
-      function gt(e, t, r, i) {
+      function gt(e, t, r, i, n) {
         try {
-          var n = ft.getStreamFromFD(e),
-              a = ft.doWritev(n, t, r);
-          return se[i >> 2] = a, 0;
+          var a = ht.getStreamFromFD(e),
+              s = 4294967296 * r + (t >>> 0);
+          return s <= -9007199254740992 || s >= 9007199254740992 ? -61 : (ut.llseek(a, s, i), Ye = [a.position >>> 0, (Ve = a.position, +Ue(Ve) >= 1 ? Ve > 0 ? (0 | Re(+Ce(Ve / 4294967296), 4294967295)) >>> 0 : ~~+Ie((Ve - +(~~Ve >>> 0)) / 4294967296) >>> 0 : 0)], oe[n >> 2] = Ye[0], oe[n + 4 >> 2] = Ye[1], a.getdents && 0 === s && 0 === i && (a.getdents = null), 0);
         } catch (e) {
-          return void 0 !== ot && e instanceof ot.ErrnoError || Ne(e), e.errno;
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), e.errno;
         }
       }
 
@@ -21322,64 +21352,78 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return gt.apply(null, arguments);
       }
 
-      function vt(e) {
-        delete Ut.xhrs[e - 1];
+      function vt(e, t, r, i) {
+        try {
+          var n = ht.getStreamFromFD(e),
+              a = ht.doWritev(n, t, r);
+          return oe[i >> 2] = a, 0;
+        } catch (e) {
+          return void 0 !== ut && e instanceof ut.ErrnoError || ze(e), e.errno;
+        }
       }
 
       function wt() {
-        Ne();
+        return vt.apply(null, arguments);
       }
 
-      function Et() {
-        return void 0 === Et.start && (Et.start = Date.now()), 1e3 * (Date.now() - Et.start) | 0;
+      function Et(e) {
+        delete Ct.xhrs[e - 1];
       }
 
       function St() {
-        Ne();
+        ze();
       }
 
       function At() {
-        return l || "undefined" != typeof dateNow || "object" === ("undefined" == typeof performance ? "undefined" : a(performance)) && performance && "function" == typeof performance.now;
+        return void 0 === At.start && (At.start = Date.now()), 1e3 * (Date.now() - At.start) | 0;
       }
 
-      function xt(e, t) {
-        var r;
-        if (0 === e) r = Date.now();else {
-          if (1 !== e || !At()) return Qe(28), -1;
-          r = St();
-        }
-        return se[t >> 2] = r / 1e3 | 0, se[t + 4 >> 2] = r % 1e3 * 1e3 * 1e3 | 0, 0;
+      function xt() {
+        ze();
       }
 
       function Mt() {
-        return re.length;
+        return p || "undefined" != typeof dateNow || "object" === ("undefined" == typeof performance ? "undefined" : a(performance)) && performance && "function" == typeof performance.now;
       }
 
-      function Tt() {
-        return !d;
+      function Tt(e, t) {
+        var r;
+        if (0 === e) r = Date.now();else {
+          if (1 !== e || !Mt()) return et(28), -1;
+          r = xt();
+        }
+        return oe[t >> 2] = r / 1e3 | 0, oe[t + 4 >> 2] = r % 1e3 * 1e3 * 1e3 | 0, 0;
       }
 
-      function kt(e) {
+      function kt() {
+        return ie.length;
+      }
+
+      function Pt() {
+        return !l;
+      }
+
+      function Ut(e) {
         try {
-          return C.grow(e - te.byteLength + 65535 >> 16), de(C.buffer), 1;
+          return R.grow(e - re.byteLength + 65535 >> 16), pe(R.buffer), 1;
         } catch (e) {}
       }
 
-      function Pt(e) {
-        var t = Mt();
+      function It(e) {
+        var t = kt();
         if (e > 2147418112) return !1;
 
         for (var r = Math.max(t, 16777216); r < e;) {
-          r = r <= 536870912 ? ce(2 * r, 65536) : Math.min(ce((3 * r + 2147483648) / 4, 65536), 2147418112);
+          r = r <= 536870912 ? le(2 * r, 65536) : Math.min(le((3 * r + 2147483648) / 4, 65536), 2147418112);
         }
 
-        return !!kt(r);
+        return !!Ut(r);
       }
 
-      var Ut = {
+      var Ct = {
         xhrs: [],
         setu64: function setu64(e, t) {
-          oe[e >> 2] = t, oe[e + 4 >> 2] = t / 4294967296 | 0;
+          fe[e >> 2] = t, fe[e + 4 >> 2] = t / 4294967296 | 0;
         },
         openDatabase: function openDatabase(e, t, r, i) {
           try {
@@ -21399,71 +21443,71 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         },
         staticInit: function staticInit() {
           var e = "undefined" == typeof ENVIRONMENT_IS_FETCH_WORKER;
-          Ut.openDatabase("emscripten_filesystem", 1, function (t) {
-            Ut.dbInstance = t, e && Fe();
+          Ct.openDatabase("emscripten_filesystem", 1, function (t) {
+            Ct.dbInstance = t, e && Oe();
           }, function () {
-            Ut.dbInstance = !1, e && Fe();
-          }), "undefined" != typeof ENVIRONMENT_IS_FETCH_WORKER && ENVIRONMENT_IS_FETCH_WORKER || Le();
+            Ct.dbInstance = !1, e && Oe();
+          }), "undefined" != typeof ENVIRONMENT_IS_FETCH_WORKER && ENVIRONMENT_IS_FETCH_WORKER || Ne();
         }
       };
 
-      function It(e, t, r, i, n) {
-        var a = oe[e + 8 >> 2];
+      function Rt(e, t, r, i, n) {
+        var a = fe[e + 8 >> 2];
 
         if (a) {
-          var s = K(a),
+          var s = X(a),
               o = e + 112,
-              f = K(o);
+              f = X(o);
           f || (f = "GET");
-          oe[o + 32 >> 2];
+          fe[o + 32 >> 2];
 
-          var u = oe[o + 52 >> 2],
-              h = oe[o + 56 >> 2],
-              c = !!oe[o + 60 >> 2],
-              d = (oe[o + 64 >> 2], oe[o + 68 >> 2]),
-              l = oe[o + 72 >> 2],
-              p = oe[o + 76 >> 2],
-              m = oe[o + 80 >> 2],
-              b = oe[o + 84 >> 2],
-              y = oe[o + 88 >> 2],
+          var u = fe[o + 52 >> 2],
+              h = fe[o + 56 >> 2],
+              c = !!fe[o + 60 >> 2],
+              d = (fe[o + 64 >> 2], fe[o + 68 >> 2]),
+              l = fe[o + 72 >> 2],
+              p = fe[o + 76 >> 2],
+              m = fe[o + 80 >> 2],
+              b = fe[o + 84 >> 2],
+              y = fe[o + 88 >> 2],
               g = !!(1 & u),
               _ = !!(2 & u),
               v = !!(64 & u),
-              w = d ? K(d) : void 0,
-              E = l ? K(l) : void 0,
-              S = m ? K(m) : void 0,
+              w = d ? X(d) : void 0,
+              E = l ? X(l) : void 0,
+              S = m ? X(m) : void 0,
               A = new XMLHttpRequest();
 
-          if (A.withCredentials = c, A.open(f, s, !v, w, E), v || (A.timeout = h), A.url_ = s, N(!_, "streaming uses moz-chunked-arraybuffer which is no longer supported; TODO: rewrite using fetch()"), A.responseType = "arraybuffer", m && A.overrideMimeType(S), p) for (;;) {
-            var x = oe[p >> 2];
+          if (A.withCredentials = c, A.open(f, s, !v, w, E), v || (A.timeout = h), A.url_ = s, O(!_, "streaming uses moz-chunked-arraybuffer which is no longer supported; TODO: rewrite using fetch()"), A.responseType = "arraybuffer", m && A.overrideMimeType(S), p) for (;;) {
+            var x = fe[p >> 2];
             if (!x) break;
-            var M = oe[p + 4 >> 2];
+            var M = fe[p + 4 >> 2];
             if (!M) break;
             p += 8;
-            var T = K(x),
-                k = K(M);
+            var T = X(x),
+                k = X(M);
             A.setRequestHeader(T, k);
           }
-          Ut.xhrs.push(A);
-          var P = Ut.xhrs.length;
-          oe[e + 0 >> 2] = P;
-          var U = b && y ? ie.slice(b, b + y) : null;
+          Ct.xhrs.push(A);
+          var P = Ct.xhrs.length;
+          fe[e + 0 >> 2] = P;
+          var U = b && y ? ne.slice(b, b + y) : null;
           A.onload = function (i) {
             var n = A.response ? A.response.byteLength : 0,
                 a = 0,
                 s = 0;
-            g && !_ && (a = ri(s = n), ie.set(new Uint8Array(A.response), a)), oe[e + 12 >> 2] = a, Ut.setu64(e + 16, s), Ut.setu64(e + 24, 0), n && Ut.setu64(e + 32, n), ae[e + 40 >> 1] = A.readyState, 4 === A.readyState && 0 === A.status && (A.status = n > 0 ? 200 : 404), ae[e + 42 >> 1] = A.status, A.statusText && Z(A.statusText, e + 44, 64), A.status >= 200 && A.status < 300 ? t && t(e, A, i) : r && r(e, A, i);
+            g && !_ && (a = ui(s = n), ne.set(new Uint8Array(A.response), a)), fe[e + 12 >> 2] = a, Ct.setu64(e + 16, s), Ct.setu64(e + 24, 0), n && Ct.setu64(e + 32, n), se[e + 40 >> 1] = A.readyState, 4 === A.readyState && 0 === A.status && (A.status = n > 0 ? 200 : 404), se[e + 42 >> 1] = A.status, A.statusText && Q(A.statusText, e + 44, 64), A.status >= 200 && A.status < 300 ? t && t(e, A, i) : r && r(e, A, i);
           }, A.onerror = function (t) {
             var i = A.status;
-            4 === A.readyState && 0 === i && (i = 404), oe[e + 12 >> 2] = 0, Ut.setu64(e + 16, 0), Ut.setu64(e + 24, 0), Ut.setu64(e + 32, 0), ae[e + 40 >> 1] = A.readyState, ae[e + 42 >> 1] = i, r && r(e, A, t);
+            4 === A.readyState && 0 === i && (i = 404), fe[e + 12 >> 2] = 0, Ct.setu64(e + 16, 0), Ct.setu64(e + 24, 0), Ct.setu64(e + 32, 0), se[e + 40 >> 1] = A.readyState, se[e + 42 >> 1] = i, r && r(e, A, t);
           }, A.ontimeout = function (t) {
             r && r(e, A, t);
           }, A.onprogress = function (t) {
             var r = g && _ && A.response ? A.response.byteLength : 0,
                 n = 0;
-            g && _ && (n = ri(r), ie.set(new Uint8Array(A.response), n)), oe[e + 12 >> 2] = n, Ut.setu64(e + 16, r), Ut.setu64(e + 24, t.loaded - r), Ut.setu64(e + 32, t.total), ae[e + 40 >> 1] = A.readyState, A.readyState >= 3 && 0 === A.status && t.loaded > 0 && (A.status = 200), ae[e + 42 >> 1] = A.status, A.statusText && Z(A.statusText, e + 44, 64), i && i(e, A, t);
+            g && _ && (n = ui(r), ne.set(new Uint8Array(A.response), n)), fe[e + 12 >> 2] = n, Ct.setu64(e + 16, r), Ct.setu64(e + 24, t.loaded - r), Ct.setu64(e + 32, t.total), se[e + 40 >> 1] = A.readyState, A.readyState >= 3 && 0 === A.status && t.loaded > 0 && (A.status = 200), se[e + 42 >> 1] = A.status, A.statusText && Q(A.statusText, e + 44, 64), i && i(e, A, t);
           }, A.onreadystatechange = function (t) {
-            ae[e + 40 >> 1] = A.readyState, A.readyState >= 2 && (ae[e + 42 >> 1] = A.status), n && n(e, A, t);
+            se[e + 40 >> 1] = A.readyState, A.readyState >= 2 && (se[e + 42 >> 1] = A.status), n && n(e, A, t);
           };
 
           try {
@@ -21474,18 +21518,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else r(e, 0, "no url specified!");
       }
 
-      function Ct(e, t, r, i, n) {
+      function Bt(e, t, r, i, n) {
         if (e) {
-          var a = oe[t + 112 + 64 >> 2];
-          a || (a = oe[t + 8 >> 2]);
-          var s = K(a);
+          var a = fe[t + 112 + 64 >> 2];
+          a || (a = fe[t + 8 >> 2]);
+          var s = X(a);
 
           try {
             var o = e.transaction(["FILES"], "readwrite").objectStore("FILES").put(r, s);
             o.onsuccess = function (e) {
-              ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 200, Z("OK", t + 44, 64), i(t, 0, s);
+              se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 200, Q("OK", t + 44, 64), i(t, 0, s);
             }, o.onerror = function (e) {
-              ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 413, Z("Payload Too Large", t + 44, 64), n(t, 0, e);
+              se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 413, Q("Payload Too Large", t + 44, 64), n(t, 0, e);
             };
           } catch (e) {
             n(t, 0, e);
@@ -21493,11 +21537,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else n(t, 0, "IndexedDB not available!");
       }
 
-      function Rt(e, t, r, i) {
+      function Dt(e, t, r, i) {
         if (e) {
-          var n = oe[t + 112 + 64 >> 2];
-          n || (n = oe[t + 8 >> 2]);
-          var a = K(n);
+          var n = fe[t + 112 + 64 >> 2];
+          n || (n = fe[t + 8 >> 2]);
+          var a = X(n);
 
           try {
             var s = e.transaction(["FILES"], "readonly").objectStore("FILES").get(a);
@@ -21505,11 +21549,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (e.target.result) {
                 var n = e.target.result,
                     a = n.byteLength || n.length,
-                    s = ri(a);
-                ie.set(new Uint8Array(n), s), oe[t + 12 >> 2] = s, Ut.setu64(t + 16, a), Ut.setu64(t + 24, 0), Ut.setu64(t + 32, a), ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 200, Z("OK", t + 44, 64), r(t, 0, n);
-              } else ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 404, Z("Not Found", t + 44, 64), i(t, 0, "no data");
+                    s = ui(a);
+                ne.set(new Uint8Array(n), s), fe[t + 12 >> 2] = s, Ct.setu64(t + 16, a), Ct.setu64(t + 24, 0), Ct.setu64(t + 32, a), se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 200, Q("OK", t + 44, 64), r(t, 0, n);
+              } else se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 404, Q("Not Found", t + 44, 64), i(t, 0, "no data");
             }, s.onerror = function (e) {
-              ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 404, Z("Not Found", t + 44, 64), i(t, 0, e);
+              se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 404, Q("Not Found", t + 44, 64), i(t, 0, e);
             };
           } catch (e) {
             i(t, 0, e);
@@ -21517,19 +21561,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else i(t, 0, "IndexedDB not available!");
       }
 
-      function Bt(e, t, r, i) {
+      function Lt(e, t, r, i) {
         if (e) {
-          var n = oe[t + 112 + 64 >> 2];
-          n || (n = oe[t + 8 >> 2]);
-          var a = K(n);
+          var n = fe[t + 112 + 64 >> 2];
+          n || (n = fe[t + 8 >> 2]);
+          var a = X(n);
 
           try {
             var s = e.transaction(["FILES"], "readwrite").objectStore("FILES")["delete"](a);
             s.onsuccess = function (e) {
               var i = e.target.result;
-              oe[t + 12 >> 2] = 0, Ut.setu64(t + 16, 0), Ut.setu64(t + 24, 0), Ut.setu64(t + 32, 0), ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 200, Z("OK", t + 44, 64), r(t, 0, i);
+              fe[t + 12 >> 2] = 0, Ct.setu64(t + 16, 0), Ct.setu64(t + 24, 0), Ct.setu64(t + 32, 0), se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 200, Q("OK", t + 44, 64), r(t, 0, i);
             }, s.onerror = function (e) {
-              ae[t + 40 >> 1] = 4, ae[t + 42 >> 1] = 404, Z("Not Found", t + 44, 64), i(t, 0, e);
+              se[t + 40 >> 1] = 4, se[t + 42 >> 1] = 404, Q("Not Found", t + 44, 64), i(t, 0, e);
             };
           } catch (e) {
             i(t, 0, e);
@@ -21537,112 +21581,112 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else i(t, 0, "IndexedDB not available!");
       }
 
-      function Dt(e, t, r, i, n) {
-        void 0 !== I && (I = !0);
+      function Ft(e, t, r, i, n) {
+        void 0 !== C && (C = !0);
 
         var a = e + 112,
-            s = K(a),
-            o = oe[a + 36 >> 2],
-            f = oe[a + 40 >> 2],
-            u = oe[a + 44 >> 2],
-            h = oe[a + 48 >> 2],
-            c = oe[a + 52 >> 2],
+            s = X(a),
+            o = fe[a + 36 >> 2],
+            f = fe[a + 40 >> 2],
+            u = fe[a + 44 >> 2],
+            h = fe[a + 48 >> 2],
+            c = fe[a + 52 >> 2],
             d = !!(4 & c),
             l = !!(32 & c),
             p = !!(16 & c),
             m = function m(e, r, i) {
-          o ? si(o, e) : t && t(e);
+          o ? li(o, e) : t && t(e);
         },
             b = function b(e, t, r) {
-          u ? si(u, e) : i && i(e);
+          u ? li(u, e) : i && i(e);
         },
             y = function y(e, t, i) {
-          f ? si(f, e) : r && r(e);
+          f ? li(f, e) : r && r(e);
         },
             g = function g(e, t, r) {
-          h ? si(h, e) : n && n(e);
+          h ? li(h, e) : n && n(e);
         },
             _ = function _(e, r, i) {
-          Ct(Ut.dbInstance, e, r.response, function (e, r, i) {
-            o ? si(o, e) : t && t(e);
+          Bt(Ct.dbInstance, e, r.response, function (e, r, i) {
+            o ? li(o, e) : t && t(e);
           }, function (e, r, i) {
-            o ? si(o, e) : t && t(e);
+            o ? li(o, e) : t && t(e);
           });
         };
 
         if ("EM_IDB_STORE" === s) {
-          var v = oe[a + 84 >> 2];
-          Ct(Ut.dbInstance, e, ie.slice(v, v + oe[a + 88 >> 2]), m, y);
-        } else if ("EM_IDB_DELETE" === s) Bt(Ut.dbInstance, e, m, y);else if (p) {
+          var v = fe[a + 84 >> 2];
+          Bt(Ct.dbInstance, e, ne.slice(v, v + fe[a + 88 >> 2]), m, y);
+        } else if ("EM_IDB_DELETE" === s) Lt(Ct.dbInstance, e, m, y);else if (p) {
           if (l) return 0;
-          It(e, d ? _ : m, y, b, g);
-        } else Rt(Ut.dbInstance, e, m, l ? y : d ? function (e, t, r) {
-          It(e, _, y, b, g);
+          Rt(e, d ? _ : m, y, b, g);
+        } else Dt(Ct.dbInstance, e, m, l ? y : d ? function (e, t, r) {
+          Rt(e, _, y, b, g);
         } : function (e, t, r) {
-          It(e, m, y, b, g);
+          Rt(e, m, y, b, g);
         });
 
         return e;
       }
 
-      var Lt = ke;
+      var Nt = Ue;
 
-      function Ft(e) {
-        return 0 === e ? 0 : (e = K(e), Ze.hasOwnProperty(e) ? (Ft.ret && ti(Ft.ret), Ft.ret = Q(Ze[e]), Ft.ret) : 0);
+      function Ot(e) {
+        return 0 === e ? 0 : (e = X(e), Je.hasOwnProperty(e) ? (Ot.ret && fi(Ot.ret), Ot.ret = $(Je[e]), Ot.ret) : 0);
       }
 
-      function Nt(e) {
+      function zt(e) {
         var t = Date.now();
-        return se[e >> 2] = t / 1e3 | 0, se[e + 4 >> 2] = t % 1e3 * 1e3 | 0, 0;
+        return oe[e >> 2] = t / 1e3 | 0, oe[e + 4 >> 2] = t % 1e3 * 1e3 | 0, 0;
       }
 
-      var Ot = (Z("GMT", 1124976, 4), 1124976);
+      var jt = (Q("GMT", 1125648, 4), 1125648);
 
-      function zt(e, t) {
-        var r = new Date(1e3 * se[e >> 2]);
-        se[t >> 2] = r.getUTCSeconds(), se[t + 4 >> 2] = r.getUTCMinutes(), se[t + 8 >> 2] = r.getUTCHours(), se[t + 12 >> 2] = r.getUTCDate(), se[t + 16 >> 2] = r.getUTCMonth(), se[t + 20 >> 2] = r.getUTCFullYear() - 1900, se[t + 24 >> 2] = r.getUTCDay(), se[t + 36 >> 2] = 0, se[t + 32 >> 2] = 0;
+      function Ht(e, t) {
+        var r = new Date(1e3 * oe[e >> 2]);
+        oe[t >> 2] = r.getUTCSeconds(), oe[t + 4 >> 2] = r.getUTCMinutes(), oe[t + 8 >> 2] = r.getUTCHours(), oe[t + 12 >> 2] = r.getUTCDate(), oe[t + 16 >> 2] = r.getUTCMonth(), oe[t + 20 >> 2] = r.getUTCFullYear() - 1900, oe[t + 24 >> 2] = r.getUTCDay(), oe[t + 36 >> 2] = 0, oe[t + 32 >> 2] = 0;
         var i = Date.UTC(r.getUTCFullYear(), 0, 1, 0, 0, 0, 0),
             n = (r.getTime() - i) / 864e5 | 0;
-        return se[t + 28 >> 2] = n, se[t + 40 >> 2] = Ot, t;
-      }
-
-      function jt(e) {
-        return Math.pow(2, e);
-      }
-
-      function Ht(e) {
-        return jt(e);
+        return oe[t + 28 >> 2] = n, oe[t + 40 >> 2] = jt, t;
       }
 
       function Vt(e) {
-        return Math.log(e) / Math.LN2;
+        return Math.pow(2, e);
       }
 
       function Yt(e) {
-        var t = qt,
+        return Vt(e);
+      }
+
+      function qt(e) {
+        return Math.log(e) / Math.LN2;
+      }
+
+      function Gt(e) {
+        var t = Wt,
             r = t.LLVM_SAVEDSTACKS[e];
-        t.LLVM_SAVEDSTACKS.splice(e, 1), ni(r);
+        t.LLVM_SAVEDSTACKS.splice(e, 1), ci(r);
       }
-
-      function qt() {
-        var e = qt;
-        return e.LLVM_SAVEDSTACKS || (e.LLVM_SAVEDSTACKS = []), e.LLVM_SAVEDSTACKS.push(ai()), e.LLVM_SAVEDSTACKS.length - 1;
-      }
-
-      var Gt = Ce;
 
       function Wt() {
-        if (!Wt.called) {
-          Wt.called = !0, se[$r() >> 2] = 60 * new Date().getTimezoneOffset();
+        var e = Wt;
+        return e.LLVM_SAVEDSTACKS || (e.LLVM_SAVEDSTACKS = []), e.LLVM_SAVEDSTACKS.push(di()), e.LLVM_SAVEDSTACKS.length - 1;
+      }
+
+      var Kt = Be;
+
+      function Xt() {
+        if (!Xt.called) {
+          Xt.called = !0, oe[si() >> 2] = 60 * new Date().getTimezoneOffset();
           var e = new Date().getFullYear(),
               t = new Date(e, 0, 1),
               r = new Date(e, 6, 1);
-          se[Qr() >> 2] = Number(t.getTimezoneOffset() != r.getTimezoneOffset());
+          oe[ai() >> 2] = Number(t.getTimezoneOffset() != r.getTimezoneOffset());
           var i = o(t),
               n = o(r),
-              a = Y(or(i), "i8", H),
-              s = Y(or(n), "i8", H);
-          r.getTimezoneOffset() < t.getTimezoneOffset() ? (se[ei() >> 2] = a, se[ei() + 4 >> 2] = s) : (se[ei() >> 2] = s, se[ei() + 4 >> 2] = a);
+              a = q(pr(i), "i8", V),
+              s = q(pr(n), "i8", V);
+          r.getTimezoneOffset() < t.getTimezoneOffset() ? (oe[oi() >> 2] = a, oe[oi() + 4 >> 2] = s) : (oe[oi() >> 2] = s, oe[oi() + 4 >> 2] = a);
         }
 
         function o(e) {
@@ -21651,28 +21695,28 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }
 
-      function Kt(e, t) {
-        Wt();
-        var r = new Date(1e3 * se[e >> 2]);
-        se[t >> 2] = r.getSeconds(), se[t + 4 >> 2] = r.getMinutes(), se[t + 8 >> 2] = r.getHours(), se[t + 12 >> 2] = r.getDate(), se[t + 16 >> 2] = r.getMonth(), se[t + 20 >> 2] = r.getFullYear() - 1900, se[t + 24 >> 2] = r.getDay();
+      function Zt(e, t) {
+        Xt();
+        var r = new Date(1e3 * oe[e >> 2]);
+        oe[t >> 2] = r.getSeconds(), oe[t + 4 >> 2] = r.getMinutes(), oe[t + 8 >> 2] = r.getHours(), oe[t + 12 >> 2] = r.getDate(), oe[t + 16 >> 2] = r.getMonth(), oe[t + 20 >> 2] = r.getFullYear() - 1900, oe[t + 24 >> 2] = r.getDay();
         var i = new Date(r.getFullYear(), 0, 1),
             n = (r.getTime() - i.getTime()) / 864e5 | 0;
-        se[t + 28 >> 2] = n, se[t + 36 >> 2] = -60 * r.getTimezoneOffset();
+        oe[t + 28 >> 2] = n, oe[t + 36 >> 2] = -60 * r.getTimezoneOffset();
         var a = new Date(r.getFullYear(), 6, 1).getTimezoneOffset(),
             s = i.getTimezoneOffset(),
             o = 0 | (a != s && r.getTimezoneOffset() == Math.min(s, a));
-        se[t + 32 >> 2] = o;
-        var f = se[ei() + (o ? 4 : 0) >> 2];
-        return se[t + 40 >> 2] = f, t;
+        oe[t + 32 >> 2] = o;
+        var f = oe[oi() + (o ? 4 : 0) >> 2];
+        return oe[t + 40 >> 2] = f, t;
       }
 
-      function Xt(e, t, r) {
-        ie.set(ie.subarray(t, t + r), e);
+      function Qt(e, t, r) {
+        ne.set(ne.subarray(t, t + r), e);
       }
 
-      function Zt(e) {
+      function Jt(e) {
         var t = e / 1e3;
-        if ((c || d) && self.performance && self.performance.now) for (var r = self.performance.now(); self.performance.now() - r < t;) {
+        if ((d || l) && self.performance && self.performance.now) for (var r = self.performance.now(); self.performance.now() - r < t;) {
           ;
         } else for (r = Date.now(); Date.now() - r < t;) {
           ;
@@ -21680,18 +21724,32 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return 0;
       }
 
-      function Jt(e, t) {
-        if (0 === e) return Qe(28), -1;
-        var r = se[e >> 2],
-            i = se[e + 4 >> 2];
-        return i < 0 || i > 999999999 || r < 0 ? (Qe(28), -1) : (0 !== t && (se[t >> 2] = 0, se[t + 4 >> 2] = 0), Zt(1e6 * r + i / 1e3));
+      function $t(e, t) {
+        if (0 === e) return et(28), -1;
+        var r = oe[e >> 2],
+            i = oe[e + 4 >> 2];
+        return i < 0 || i > 999999999 || r < 0 ? (et(28), -1) : (0 !== t && (oe[t >> 2] = 0, oe[t + 4 >> 2] = 0), Jt(1e6 * r + i / 1e3));
       }
 
-      function Qt(e) {
+      function er() {
+        return 0;
+      }
+
+      function tr() {
+        return 0;
+      }
+
+      function rr() {
+        return 6;
+      }
+
+      function ir() {}
+
+      function nr(e) {
         return e % 4 == 0 && (e % 100 != 0 || e % 400 == 0);
       }
 
-      function $t(e, t) {
+      function ar(e, t) {
         for (var r = 0, i = 0; i <= t; r += e[i++]) {
           ;
         }
@@ -21699,14 +21757,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return r;
       }
 
-      var er = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-          tr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      var sr = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+          or = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-      function rr(e, t) {
+      function fr(e, t) {
         for (var r = new Date(e.getTime()); t > 0;) {
-          var i = Qt(r.getFullYear()),
+          var i = nr(r.getFullYear()),
               n = r.getMonth(),
-              a = (i ? er : tr)[n];
+              a = (i ? sr : or)[n];
           if (!(t > a - r.getDate())) return r.setDate(r.getDate() + t), r;
           t -= a - r.getDate() + 1, r.setDate(1), n < 11 ? r.setMonth(n + 1) : (r.setMonth(0), r.setFullYear(r.getFullYear() + 1));
         }
@@ -21714,22 +21772,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return r;
       }
 
-      function ir(e, t, r, i) {
-        var n = se[i + 40 >> 2],
+      function ur(e, t, r, i) {
+        var n = oe[i + 40 >> 2],
             a = {
-          tm_sec: se[i >> 2],
-          tm_min: se[i + 4 >> 2],
-          tm_hour: se[i + 8 >> 2],
-          tm_mday: se[i + 12 >> 2],
-          tm_mon: se[i + 16 >> 2],
-          tm_year: se[i + 20 >> 2],
-          tm_wday: se[i + 24 >> 2],
-          tm_yday: se[i + 28 >> 2],
-          tm_isdst: se[i + 32 >> 2],
-          tm_gmtoff: se[i + 36 >> 2],
-          tm_zone: n ? K(n) : ""
+          tm_sec: oe[i >> 2],
+          tm_min: oe[i + 4 >> 2],
+          tm_hour: oe[i + 8 >> 2],
+          tm_mday: oe[i + 12 >> 2],
+          tm_mon: oe[i + 16 >> 2],
+          tm_year: oe[i + 20 >> 2],
+          tm_wday: oe[i + 24 >> 2],
+          tm_yday: oe[i + 28 >> 2],
+          tm_isdst: oe[i + 32 >> 2],
+          tm_gmtoff: oe[i + 36 >> 2],
+          tm_zone: n ? X(n) : ""
         },
-            s = K(r),
+            s = X(r),
             o = {
           "%c": "%a %b %d %H:%M:%S %Y",
           "%D": "%m/%d/%y",
@@ -21815,7 +21873,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         function m(e) {
-          var t = rr(new Date(e.tm_year + 1900, 0, 1), e.tm_yday),
+          var t = fr(new Date(e.tm_year + 1900, 0, 1), e.tm_yday),
               r = new Date(t.getFullYear(), 0, 4),
               i = new Date(t.getFullYear() + 1, 0, 4),
               n = p(r),
@@ -21859,7 +21917,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             return 0 == t ? t = 12 : t > 12 && (t -= 12), _d(t, 2);
           },
           "%j": function j(e) {
-            return _d(e.tm_mday + $t(Qt(e.tm_year + 1900) ? er : tr, e.tm_mon - 1), 3);
+            return _d(e.tm_mday + ar(nr(e.tm_year + 1900) ? sr : or, e.tm_mon - 1), 3);
           },
           "%m": function m(e) {
             return _d(e.tm_mon + 1, 2);
@@ -21884,11 +21942,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           },
           "%U": function U(e) {
             var t = new Date(e.tm_year + 1900, 0, 1),
-                r = 0 === t.getDay() ? t : rr(t, 7 - t.getDay()),
+                r = 0 === t.getDay() ? t : fr(t, 7 - t.getDay()),
                 i = new Date(e.tm_year + 1900, e.tm_mon, e.tm_mday);
 
             if (l(r, i) < 0) {
-              var n = $t(Qt(i.getFullYear()) ? er : tr, i.getMonth() - 1) - 31,
+              var n = ar(nr(i.getFullYear()) ? sr : or, i.getMonth() - 1) - 31,
                   a = 31 - r.getDate() + n + i.getDate();
               return _d(Math.ceil(a / 7), 2);
             }
@@ -21901,7 +21959,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 i = new Date(e.tm_year + 1901, 0, 4),
                 n = p(r),
                 a = p(i),
-                s = rr(new Date(e.tm_year + 1900, 0, 1), e.tm_yday);
+                s = fr(new Date(e.tm_year + 1900, 0, 1), e.tm_yday);
             return l(s, n) < 0 ? "53" : l(a, s) <= 0 ? "01" : (t = n.getFullYear() < e.tm_year + 1900 ? e.tm_yday + 32 - n.getDate() : e.tm_yday + 1 - n.getDate(), _d(Math.ceil(t / 7), 2));
           },
           "%w": function w(e) {
@@ -21909,11 +21967,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           },
           "%W": function W(e) {
             var t = new Date(e.tm_year, 0, 1),
-                r = 1 === t.getDay() ? t : rr(t, 0 === t.getDay() ? 1 : 7 - t.getDay() + 1),
+                r = 1 === t.getDay() ? t : fr(t, 0 === t.getDay() ? 1 : 7 - t.getDay() + 1),
                 i = new Date(e.tm_year + 1900, e.tm_mon, e.tm_mday);
 
             if (l(r, i) < 0) {
-              var n = $t(Qt(i.getFullYear()) ? er : tr, i.getMonth() - 1) - 31,
+              var n = ar(nr(i.getFullYear()) ? sr : or, i.getMonth() - 1) - 31,
                   a = 31 - r.getDate() + n + i.getDate();
               return _d(Math.ceil(a / 7), 2);
             }
@@ -21943,395 +22001,591 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           s.indexOf(f) >= 0 && (s = s.replace(new RegExp(f, "g"), b[f](a)));
         }
 
-        var y = or(s, !1);
-        return y.length > t ? 0 : ($(y, e), y.length - 1);
+        var y = pr(s, !1);
+        return y.length > t ? 0 : (ee(y, e), y.length - 1);
       }
 
-      function nr(e) {
+      function hr(e) {
+        switch (e) {
+          case 30:
+            return ce;
+
+          case 85:
+            return 2147418112 / ce;
+
+          case 132:
+          case 133:
+          case 12:
+          case 137:
+          case 138:
+          case 15:
+          case 235:
+          case 16:
+          case 17:
+          case 18:
+          case 19:
+          case 20:
+          case 149:
+          case 13:
+          case 10:
+          case 236:
+          case 153:
+          case 9:
+          case 21:
+          case 22:
+          case 159:
+          case 154:
+          case 14:
+          case 77:
+          case 78:
+          case 139:
+          case 80:
+          case 81:
+          case 82:
+          case 68:
+          case 67:
+          case 164:
+          case 11:
+          case 29:
+          case 47:
+          case 48:
+          case 95:
+          case 52:
+          case 51:
+          case 46:
+            return 200809;
+
+          case 79:
+            return 0;
+
+          case 27:
+          case 246:
+          case 127:
+          case 128:
+          case 23:
+          case 24:
+          case 160:
+          case 161:
+          case 181:
+          case 182:
+          case 242:
+          case 183:
+          case 184:
+          case 243:
+          case 244:
+          case 245:
+          case 165:
+          case 178:
+          case 179:
+          case 49:
+          case 50:
+          case 168:
+          case 169:
+          case 175:
+          case 170:
+          case 171:
+          case 172:
+          case 97:
+          case 76:
+          case 32:
+          case 173:
+          case 35:
+            return -1;
+
+          case 176:
+          case 177:
+          case 7:
+          case 155:
+          case 8:
+          case 157:
+          case 125:
+          case 126:
+          case 92:
+          case 93:
+          case 129:
+          case 130:
+          case 131:
+          case 94:
+          case 91:
+            return 1;
+
+          case 74:
+          case 60:
+          case 69:
+          case 70:
+          case 4:
+            return 1024;
+
+          case 31:
+          case 42:
+          case 72:
+            return 32;
+
+          case 87:
+          case 26:
+          case 33:
+            return 2147483647;
+
+          case 34:
+          case 1:
+            return 47839;
+
+          case 38:
+          case 36:
+            return 99;
+
+          case 43:
+          case 37:
+            return 2048;
+
+          case 0:
+            return 2097152;
+
+          case 3:
+            return 65536;
+
+          case 28:
+            return 32768;
+
+          case 44:
+            return 32767;
+
+          case 75:
+            return 16384;
+
+          case 39:
+            return 1e3;
+
+          case 89:
+            return 700;
+
+          case 71:
+            return 256;
+
+          case 40:
+            return 255;
+
+          case 2:
+            return 100;
+
+          case 180:
+            return 64;
+
+          case 25:
+            return 20;
+
+          case 5:
+            return 16;
+
+          case 6:
+            return 6;
+
+          case 73:
+            return 4;
+
+          case 84:
+            return "object" === ("undefined" == typeof navigator ? "undefined" : a(navigator)) && navigator.hardwareConcurrency || 1;
+        }
+
+        return et(28), -1;
+      }
+
+      function cr(e) {
         var t = Date.now() / 1e3 | 0;
-        return e && (se[e >> 2] = t), t;
+        return e && (oe[e >> 2] = t), t;
       }
 
-      if (ot.staticInit(), p) {
-        var ar = e("fs"),
-            sr = e("path");
-        at.staticInit();
+      if (ut.staticInit(), m) {
+        var dr = e("fs"),
+            lr = e("path");
+        ot.staticInit();
       }
 
-      function or(e, t, r) {
+      function pr(e, t, r) {
         var i = r > 0 ? r : J(e) + 1,
             n = new Array(i),
-            a = X(e, n, 0, n.length);
+            a = Z(e, n, 0, n.length);
         return t && (n.length = a), n;
       }
 
-      function fr(e, t) {
-        return k[e](t);
+      function mr(e, t) {
+        return P[e](t);
       }
 
-      function ur(e, t, r) {
-        return k[e](t, r);
+      function br(e, t, r) {
+        return P[e](t, r);
       }
 
-      function hr(e, t, r, i) {
-        return k[e](t, r, i);
+      function yr(e, t, r, i) {
+        return P[e](t, r, i);
       }
 
-      function cr(e, t, r) {
-        return k[e](t, r);
+      function gr(e, t, r) {
+        return P[e](t, r);
       }
 
-      function dr(e, t, r, i) {
-        return k[e](t, r, i);
+      function _r(e, t, r, i) {
+        return P[e](t, r, i);
       }
 
-      function lr(e, t) {
-        return k[e](t);
+      function vr(e, t) {
+        return P[e](t);
       }
 
-      function pr(e, t, r, i, n, a, s) {
-        return k[e](t, r, i, n, a, s);
+      function wr(e, t, r, i, n, a, s) {
+        return P[e](t, r, i, n, a, s);
       }
 
-      function mr(e, t, r) {
-        return k[e](t, r);
+      function Er(e, t, r) {
+        return P[e](t, r);
       }
 
-      function br(e, t, r, i) {
-        return k[e](t, r, i);
-      }
-
-      function yr(e, t, r, i, n) {
-        return k[e](t, r, i, n);
-      }
-
-      function gr(e, t, r, i, n, a) {
-        return k[e](t, r, i, n, a);
-      }
-
-      function _r(e, t, r, i, n, a, s) {
-        return k[e](t, r, i, n, a, s);
-      }
-
-      function vr(e, t, r, i, n, a, s, o) {
-        return k[e](t, r, i, n, a, s, o);
-      }
-
-      function wr(e, t, r, i, n, a) {
-        return k[e](t, r, i, n, a);
-      }
-
-      function Er(e, t, r, i, n) {
-        return k[e](t, r, i, n);
-      }
-
-      function Sr(e, t, r, i, n) {
-        return k[e](t, r, i, n);
+      function Sr(e, t, r, i) {
+        return P[e](t, r, i);
       }
 
       function Ar(e, t, r, i, n) {
-        return k[e](t, r, i, n);
+        return P[e](t, r, i, n);
       }
 
-      function xr(e, t, r, i) {
-        return k[e](t, r, i);
+      function xr(e, t, r, i, n, a) {
+        return P[e](t, r, i, n, a);
       }
 
-      function Mr(e) {
-        k[e]();
+      function Mr(e, t, r, i, n, a, s) {
+        return P[e](t, r, i, n, a, s);
       }
 
-      function Tr(e, t, r, i, n, a, s, o, f, u) {
-        k[e](t, r, i, n, a, s, o, f, u);
+      function Tr(e, t, r, i, n, a, s, o) {
+        return P[e](t, r, i, n, a, s, o);
       }
 
-      function kr(e, t) {
-        k[e](t);
+      function kr(e, t, r, i, n, a) {
+        return P[e](t, r, i, n, a);
       }
 
-      function Pr(e, t, r) {
-        k[e](t, r);
+      function Pr(e, t, r, i, n) {
+        return P[e](t, r, i, n);
       }
 
       function Ur(e, t, r, i, n) {
-        k[e](t, r, i, n);
+        return P[e](t, r, i, n);
       }
 
       function Ir(e, t, r, i, n) {
-        k[e](t, r, i, n);
+        return P[e](t, r, i, n);
       }
 
       function Cr(e, t, r, i) {
-        k[e](t, r, i);
+        return P[e](t, r, i);
       }
 
-      function Rr(e, t, r, i, n) {
-        k[e](t, r, i, n);
+      function Rr(e) {
+        P[e]();
       }
 
-      function Br(e, t, r, i, n, a) {
-        k[e](t, r, i, n, a);
+      function Br(e, t, r, i, n, a, s, o, f, u) {
+        P[e](t, r, i, n, a, s, o, f, u);
       }
 
-      function Dr(e, t, r, i, n, a, s, o) {
-        k[e](t, r, i, n, a, s, o);
+      function Dr(e, t) {
+        P[e](t);
       }
 
-      function Lr(e, t, r, i, n, a) {
-        k[e](t, r, i, n, a);
+      function Lr(e, t, r) {
+        P[e](t, r);
       }
 
-      function Fr(e, t, r, i, n, a, s) {
-        k[e](t, r, i, n, a, s);
+      function Fr(e, t, r, i, n) {
+        P[e](t, r, i, n);
       }
 
-      function Nr(e, t, r, i, n, a, s, o, f) {
-        k[e](t, r, i, n, a, s, o, f);
+      function Nr(e, t, r, i, n) {
+        P[e](t, r, i, n);
       }
 
-      function Or(e, t, r, i, n, a, s, o) {
-        k[e](t, r, i, n, a, s, o);
+      function Or(e, t, r, i) {
+        P[e](t, r, i);
       }
 
-      function zr(e, t, r, i, n, a, s, o, f) {
-        k[e](t, r, i, n, a, s, o, f);
+      function zr(e, t, r, i, n) {
+        P[e](t, r, i, n);
       }
 
-      function jr(e, t, r, i, n, a, s, o, f, u) {
-        k[e](t, r, i, n, a, s, o, f, u);
+      function jr(e, t, r, i, n, a) {
+        P[e](t, r, i, n, a);
       }
 
-      function Hr(e, t, r, i, n, a, s, o, f, u) {
-        k[e](t, r, i, n, a, s, o, f, u);
+      function Hr(e, t, r, i, n, a, s, o) {
+        P[e](t, r, i, n, a, s, o);
       }
 
-      function Vr(e, t, r, i, n, a, s, o, f, u, h) {
-        k[e](t, r, i, n, a, s, o, f, u, h);
+      function Vr(e, t, r, i, n, a) {
+        P[e](t, r, i, n, a);
       }
 
-      function Yr(e, t, r, i, n, a, s, o, f, u, h, c) {
-        k[e](t, r, i, n, a, s, o, f, u, h, c);
+      function Yr(e, t, r, i, n, a, s) {
+        P[e](t, r, i, n, a, s);
       }
 
-      function qr(e, t, r, i, n, a, s, o, f, u, h, c, d) {
-        k[e](t, r, i, n, a, s, o, f, u, h, c, d);
+      function qr(e, t, r, i, n, a, s, o, f) {
+        P[e](t, r, i, n, a, s, o, f);
       }
 
-      function Gr(e, t, r, i, n, a, s, o, f, u, h, c, d, l, p) {
-        k[e](t, r, i, n, a, s, o, f, u, h, c, d, l, p);
+      function Gr(e, t, r, i, n, a, s, o) {
+        P[e](t, r, i, n, a, s, o);
       }
 
-      St = l ? function () {
+      function Wr(e, t, r, i, n, a, s, o, f) {
+        P[e](t, r, i, n, a, s, o, f);
+      }
+
+      function Kr(e, t, r, i, n, a, s, o, f, u) {
+        P[e](t, r, i, n, a, s, o, f, u);
+      }
+
+      function Xr(e, t, r, i, n, a, s, o, f, u) {
+        P[e](t, r, i, n, a, s, o, f, u);
+      }
+
+      function Zr(e, t, r, i, n, a, s, o, f, u, h) {
+        P[e](t, r, i, n, a, s, o, f, u, h);
+      }
+
+      function Qr(e, t, r, i, n, a, s, o, f, u, h, c) {
+        P[e](t, r, i, n, a, s, o, f, u, h, c);
+      }
+
+      function Jr(e, t, r, i, n, a, s, o, f, u, h, c, d) {
+        P[e](t, r, i, n, a, s, o, f, u, h, c, d);
+      }
+
+      function $r(e, t, r, i, n, a, s, o, f, u, h, c, d, l, p) {
+        P[e](t, r, i, n, a, s, o, f, u, h, c, d, l, p);
+      }
+
+      xt = p ? function () {
         var e = r.hrtime();
         return 1e3 * e[0] + e[1] / 1e6;
       } : "undefined" != typeof dateNow ? dateNow : "object" === ("undefined" == typeof performance ? "undefined" : a(performance)) && performance && "function" == typeof performance.now ? function () {
         return performance.now();
-      } : Date.now, Ut.staticInit();
-      var Wr = {},
-          Kr = {
-        qa: Je,
-        S: ut,
-        pa: ht,
-        oa: ct,
-        R: lt,
-        na: mt,
-        T: yt,
-        ma: _t,
-        la: vt,
+      } : Date.now, Ct.staticInit();
+      var ei = {},
+          ti = {
+        va: $e,
+        W: ct,
+        ua: dt,
+        ta: lt,
+        V: mt,
+        sa: yt,
+        X: _t,
+        ra: wt,
+        qa: Et,
         __memory_base: 1024,
         __table_base: 0,
-        a: wt,
-        ka: Et,
-        ja: xt,
-        ia: Mt,
-        ha: Tt,
-        ga: Xt,
-        fa: Pt,
-        ea: Dt,
-        da: Lt,
-        K: Ft,
-        Q: Nt,
-        ca: zt,
-        P: Ht,
-        M: Vt,
-        ba: Yt,
-        aa: qt,
-        $: Gt,
-        _: Kt,
-        O: Jt,
-        N: ir,
-        Z: nr,
-        b: Ne,
-        L: B,
-        J: fr,
-        y: ur,
-        n: hr,
-        h: cr,
-        g: dr,
-        f: lr,
-        e: pr,
-        d: mr,
-        c: br,
-        I: yr,
-        H: gr,
-        G: _r,
-        F: vr,
-        Y: wr,
-        X: Er,
-        W: Sr,
-        V: Ar,
-        U: xr,
-        E: Mr,
-        D: Tr,
-        C: kr,
-        B: Pr,
-        A: Ur,
-        z: Ir,
-        x: Cr,
-        w: Rr,
-        v: Br,
-        u: Dr,
-        t: Lr,
-        s: Fr,
-        r: Nr,
-        q: Or,
-        p: zr,
-        o: jr,
-        m: Hr,
-        l: Vr,
-        k: Yr,
-        j: qr,
-        i: Gr,
-        memory: C,
-        table: L
+        a: St,
+        pa: At,
+        oa: Tt,
+        na: kt,
+        ma: Pt,
+        la: Qt,
+        ka: It,
+        ja: Ft,
+        ia: Nt,
+        M: Ot,
+        U: zt,
+        ha: Ht,
+        T: Yt,
+        O: qt,
+        ga: Gt,
+        fa: Wt,
+        ea: Kt,
+        da: Zt,
+        S: $t,
+        L: er,
+        K: tr,
+        R: rr,
+        Q: ir,
+        P: ur,
+        ca: hr,
+        ba: cr,
+        b: ze,
+        N: D,
+        J: mr,
+        y: br,
+        n: yr,
+        h: gr,
+        g: _r,
+        f: vr,
+        e: wr,
+        d: Er,
+        c: Sr,
+        I: Ar,
+        H: xr,
+        G: Mr,
+        F: Tr,
+        aa: kr,
+        $: Pr,
+        _: Ur,
+        Z: Ir,
+        Y: Cr,
+        E: Rr,
+        D: Br,
+        C: Dr,
+        B: Lr,
+        A: Fr,
+        z: Nr,
+        x: Or,
+        w: zr,
+        v: jr,
+        u: Hr,
+        t: Vr,
+        s: Yr,
+        r: qr,
+        q: Gr,
+        p: Wr,
+        o: Kr,
+        m: Xr,
+        l: Zr,
+        k: Qr,
+        j: Jr,
+        i: $r,
+        memory: R,
+        table: F
       },
-          Xr = o.asm(Wr, Kr, te);
-      o.asm = Xr;
+          ri = f.asm(ei, ti, re);
+      f.asm = ri;
 
-      o._AVSniffStreamInit = function () {
-        return o.asm.ra.apply(null, arguments);
+      f._AVSniffStreamInit = function () {
+        return f.asm.wa.apply(null, arguments);
       };
 
-      var Zr,
-          Jr = o.___emscripten_environ_constructor = function () {
-        return o.asm.sa.apply(null, arguments);
+      var ii,
+          ni = f.___emscripten_environ_constructor = function () {
+        return f.asm.xa.apply(null, arguments);
       },
-          Qr = (o.___errno_location = function () {
-        return o.asm.ta.apply(null, arguments);
-      }, o.__get_daylight = function () {
-        return o.asm.ua.apply(null, arguments);
+          ai = (f.___errno_location = function () {
+        return f.asm.ya.apply(null, arguments);
+      }, f.__get_daylight = function () {
+        return f.asm.za.apply(null, arguments);
       }),
-          $r = o.__get_timezone = function () {
-        return o.asm.va.apply(null, arguments);
+          si = f.__get_timezone = function () {
+        return f.asm.Aa.apply(null, arguments);
       },
-          ei = o.__get_tzname = function () {
-        return o.asm.wa.apply(null, arguments);
+          oi = f.__get_tzname = function () {
+        return f.asm.Ba.apply(null, arguments);
       },
-          ti = (o._closeVideo = function () {
-        return o.asm.xa.apply(null, arguments);
-      }, o._decodeCodecContext = function () {
-        return o.asm.ya.apply(null, arguments);
-      }, o._demuxBox = function () {
-        return o.asm.za.apply(null, arguments);
-      }, o._exitMissile = function () {
-        return o.asm.Aa.apply(null, arguments);
-      }, o._exitTsMissile = function () {
-        return o.asm.Ba.apply(null, arguments);
-      }, o._free = function () {
-        return o.asm.Ca.apply(null, arguments);
+          fi = (f._closeVideo = function () {
+        return f.asm.Ca.apply(null, arguments);
+      }, f._decodeCodecContext = function () {
+        return f.asm.Da.apply(null, arguments);
+      }, f._decodeVideoFrame = function () {
+        return f.asm.Ea.apply(null, arguments);
+      }, f._demuxBox = function () {
+        return f.asm.Fa.apply(null, arguments);
+      }, f._exitMissile = function () {
+        return f.asm.Ga.apply(null, arguments);
+      }, f._exitTsMissile = function () {
+        return f.asm.Ha.apply(null, arguments);
+      }, f._free = function () {
+        return f.asm.Ia.apply(null, arguments);
       }),
-          ri = (o._getAudioCodecID = function () {
-        return o.asm.Da.apply(null, arguments);
-      }, o._getExtensionInfo = function () {
-        return o.asm.Ea.apply(null, arguments);
-      }, o._getMediaInfo = function () {
-        return o.asm.Fa.apply(null, arguments);
-      }, o._getPPS = function () {
-        return o.asm.Ga.apply(null, arguments);
-      }, o._getPPSLen = function () {
-        return o.asm.Ha.apply(null, arguments);
-      }, o._getPacket = function () {
-        return o.asm.Ia.apply(null, arguments);
-      }, o._getSEI = function () {
-        return o.asm.Ja.apply(null, arguments);
-      }, o._getSEILen = function () {
-        return o.asm.Ka.apply(null, arguments);
-      }, o._getSPS = function () {
-        return o.asm.La.apply(null, arguments);
-      }, o._getSPSLen = function () {
-        return o.asm.Ma.apply(null, arguments);
-      }, o._getSniffStreamPkg = function () {
-        return o.asm.Na.apply(null, arguments);
-      }, o._getVLC = function () {
-        return o.asm.Oa.apply(null, arguments);
-      }, o._getVLCLen = function () {
-        return o.asm.Pa.apply(null, arguments);
-      }, o._getVPS = function () {
-        return o.asm.Qa.apply(null, arguments);
-      }, o._getVPSLen = function () {
-        return o.asm.Ra.apply(null, arguments);
-      }, o._getVideoCodecID = function () {
-        return o.asm.Sa.apply(null, arguments);
-      }, o._initMissile = function () {
-        return o.asm.Ta.apply(null, arguments);
-      }, o._initTsMissile = function () {
-        return o.asm.Ua.apply(null, arguments);
-      }, o._initializeDecoder = function () {
-        return o.asm.Va.apply(null, arguments);
-      }, o._initializeDemuxer = function () {
-        return o.asm.Wa.apply(null, arguments);
-      }, o._initializeSniffStreamModule = function () {
-        return o.asm.Xa.apply(null, arguments);
-      }, o._malloc = function () {
-        return o.asm.Ya.apply(null, arguments);
+          ui = (f._getAudioCodecID = function () {
+        return f.asm.Ja.apply(null, arguments);
+      }, f._getExtensionInfo = function () {
+        return f.asm.Ka.apply(null, arguments);
+      }, f._getMediaInfo = function () {
+        return f.asm.La.apply(null, arguments);
+      }, f._getPPS = function () {
+        return f.asm.Ma.apply(null, arguments);
+      }, f._getPPSLen = function () {
+        return f.asm.Na.apply(null, arguments);
+      }, f._getPacket = function () {
+        return f.asm.Oa.apply(null, arguments);
+      }, f._getSEI = function () {
+        return f.asm.Pa.apply(null, arguments);
+      }, f._getSEILen = function () {
+        return f.asm.Qa.apply(null, arguments);
+      }, f._getSPS = function () {
+        return f.asm.Ra.apply(null, arguments);
+      }, f._getSPSLen = function () {
+        return f.asm.Sa.apply(null, arguments);
+      }, f._getSniffStreamPkg = function () {
+        return f.asm.Ta.apply(null, arguments);
+      }, f._getSniffStreamPkgNoCheckProbe = function () {
+        return f.asm.Ua.apply(null, arguments);
+      }, f._getVLC = function () {
+        return f.asm.Va.apply(null, arguments);
+      }, f._getVLCLen = function () {
+        return f.asm.Wa.apply(null, arguments);
+      }, f._getVPS = function () {
+        return f.asm.Xa.apply(null, arguments);
+      }, f._getVPSLen = function () {
+        return f.asm.Ya.apply(null, arguments);
+      }, f._getVideoCodecID = function () {
+        return f.asm.Za.apply(null, arguments);
+      }, f._initMissile = function () {
+        return f.asm._a.apply(null, arguments);
+      }, f._initTsMissile = function () {
+        return f.asm.$a.apply(null, arguments);
+      }, f._initializeDecoder = function () {
+        return f.asm.ab.apply(null, arguments);
+      }, f._initializeDemuxer = function () {
+        return f.asm.bb.apply(null, arguments);
+      }, f._initializeSniffStreamModule = function () {
+        return f.asm.cb.apply(null, arguments);
+      }, f._initializeSniffStreamModuleWithAOpt = function () {
+        return f.asm.db.apply(null, arguments);
+      }, f._malloc = function () {
+        return f.asm.eb.apply(null, arguments);
       }),
-          ii = (o._pushSniffStreamData = function () {
-        return o.asm.Za.apply(null, arguments);
-      }, o._registerPlayer = function () {
-        return o.asm._a.apply(null, arguments);
-      }, o._release = function () {
-        return o.asm.$a.apply(null, arguments);
-      }, o._releaseSniffStream = function () {
-        return o.asm.ab.apply(null, arguments);
-      }, o._setCodecType = function () {
-        return o.asm.bb.apply(null, arguments);
-      }, o.stackAlloc = function () {
-        return o.asm.eb.apply(null, arguments);
+          hi = (f._pushSniffStreamData = function () {
+        return f.asm.fb.apply(null, arguments);
+      }, f._registerPlayer = function () {
+        return f.asm.gb.apply(null, arguments);
+      }, f._release = function () {
+        return f.asm.hb.apply(null, arguments);
+      }, f._releaseSniffStream = function () {
+        return f.asm.ib.apply(null, arguments);
+      }, f._setCodecType = function () {
+        return f.asm.jb.apply(null, arguments);
+      }, f.stackAlloc = function () {
+        return f.asm.mb.apply(null, arguments);
       }),
-          ni = o.stackRestore = function () {
-        return o.asm.fb.apply(null, arguments);
+          ci = f.stackRestore = function () {
+        return f.asm.nb.apply(null, arguments);
       },
-          ai = o.stackSave = function () {
-        return o.asm.gb.apply(null, arguments);
+          di = f.stackSave = function () {
+        return f.asm.ob.apply(null, arguments);
       },
-          si = (o.dynCall_v = function () {
-        return o.asm.cb.apply(null, arguments);
-      }, o.dynCall_vi = function () {
-        return o.asm.db.apply(null, arguments);
+          li = (f.dynCall_v = function () {
+        return f.asm.kb.apply(null, arguments);
+      }, f.dynCall_vi = function () {
+        return f.asm.lb.apply(null, arguments);
       });
 
-      function oi(e) {
+      function pi(e) {
         this.name = "ExitStatus", this.message = "Program terminated with exit(" + e + ")", this.status = e;
       }
 
-      function fi(e) {
+      function mi(e) {
         function t() {
-          Zr || (Zr = !0, F || (Se(), Ae(), o.onRuntimeInitialized && o.onRuntimeInitialized(), xe()));
+          ii || (ii = !0, N || (xe(), Me(), f.onRuntimeInitialized && f.onRuntimeInitialized(), Te()));
         }
 
-        e = e || u, Re > 0 || (Ee(), Re > 0 || (o.setStatus ? (o.setStatus("Running..."), setTimeout(function () {
+        e = e || h, De > 0 || (Ae(), De > 0 || (f.setStatus ? (f.setStatus("Running..."), setTimeout(function () {
           setTimeout(function () {
-            o.setStatus("");
+            f.setStatus("");
           }, 1), t();
         }, 1)) : t()));
       }
 
-      if (o.asm = Xr, o.ccall = z, o.cwrap = j, o.addFunction = P, De = function e() {
-        Zr || fi(), Zr || (De = e);
-      }, o.run = fi, o.preInit) for ("function" == typeof o.preInit && (o.preInit = [o.preInit]); o.preInit.length > 0;) {
-        o.preInit.pop()();
+      if (f.asm = ri, f.ccall = j, f.cwrap = H, f.addFunction = U, Fe = function e() {
+        ii || mi(), ii || (Fe = e);
+      }, f.run = mi, f.preInit) for ("function" == typeof f.preInit && (f.preInit = [f.preInit]); f.preInit.length > 0;) {
+        f.preInit.pop()();
       }
-      I = !0, fi(), t.exports = o;
+      C = !0, mi(), t.exports = f;
     }).call(this, e("_process"), e("buffer").Buffer, "/src/decoder");
   }, {
     _process: 157,
@@ -22416,6 +22670,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         isNewSeek: !1,
         isCheckDisplay: !1,
         isPlayLoadingFinish: 0,
+        vCachePTS: 0,
+        aCachePTS: 0,
         showScreen: !1,
         noCacheFrame: 0,
         onPlayingTime: null,
@@ -22449,11 +22705,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return t.isPlaying;
         },
         appendAACFrame: function appendAACFrame(e) {
-          return t.audio.addSample(e);
+          t.audio.addSample(e), t.aCachePTS = Math.max(e.pts, t.aCachePTS);
         },
         appendHevcFrame: function appendHevcFrame(e) {
           var r;
-          t.config.appendHevcType == u.APPEND_TYPE_STREAM ? t.stream = new Uint8Array((r = i(t.stream)).concat.apply(r, i(e))) : t.config.appendHevcType == u.APPEND_TYPE_FRAME && t.frameList.push(e);
+          t.config.appendHevcType == u.APPEND_TYPE_STREAM ? t.stream = new Uint8Array((r = i(t.stream)).concat.apply(r, i(e))) : t.config.appendHevcType == u.APPEND_TYPE_FRAME && (t.frameList.push(e), t.vCachePTS = Math.max(e.pts, t.vCachePTS));
+        },
+        getCachePTS: function getCachePTS() {
+          return t.vCachePTS, t.aCachePTS, Math.max(t.vCachePTS, t.aCachePTS);
         },
         endAudio: function endAudio() {
           0 == t.config.audioNone && t.audio.stop();
@@ -22477,7 +22736,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         seek: function seek(e) {
           var r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
               i = t.isPlaying;
-          t.nowPacket = null, t.pause(), t.cleanSample(), t.cleanVideoQueue(), t.cleanCacheYUV(), e && e(), t.isNewSeek = !0, t.videoPTS = parseInt(r.seekTime);
+          t.nowPacket = null, t.vCachePTS = 0, t.aCachePTS = 0, t.pause(), t.cleanSample(), t.cleanVideoQueue(), t.cleanCacheYUV(), e && e(), t.isNewSeek = !0, t.videoPTS = parseInt(r.seekTime);
           var n = {
             seekPos: r.seekTime || -1,
             mode: r.mode || u.PLAYER_MODE_VOD,
@@ -22817,52 +23076,63 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, this.timerFeed = null, this.timerTsWasm = null, this.seekPos = -1, this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.aCodec = !1, this.durationMs = -1, this.bufObject = o(), this.fps = -1, this.sampleRate = -1, this.size = {
           width: -1,
           height: -1
-        }, this.mediaInfo = null, this.extensionInfo = null, this.onReadyOBJ = null, this.onFinished = null, this.onDemuxed = null, this.onSamples = null;
+        }, this.mediaInfo = null, this.extensionInfo = null, this.onReadyOBJ = null, this.onFinished = null, this.onDemuxed = null, this.onSamples = null, this.onCacheProcess = null;
       }
 
       var t, r, h;
       return t = e, (r = [{
+        key: "getCachePTS",
+        value: function value() {
+          return Math.max(this.vPreFramePTS, this.aPreFramePTS);
+        }
+      }, {
         key: "demux",
         value: function value(e) {
-          var t = this;
-          this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.hls.onTransportStream = function (e, r) {
-            t.tsList.push({
+          var t = this,
+              r = this;
+          this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.hls.onTransportStream = function (e, t) {
+            r.tsList.push({
               streamURI: e,
-              streamDur: r
+              streamDur: t
             });
           }, this.hls.onFinished = function (e) {
-            e.type == u.PLAYER_IN_TYPE_M3U8_VOD ? t.durationMs = 1e3 * e.duration : t.durationMs = -1, null != t.onFinished && t.onFinished(t.onReadyOBJ, e);
+            e.type == u.PLAYER_IN_TYPE_M3U8_VOD ? r.durationMs = 1e3 * e.duration : r.durationMs = -1, null != r.onFinished && r.onFinished(r.onReadyOBJ, e);
           }, this.mpegTsObj.onDemuxed = function () {
-            null == t.mediaInfo && (t.mediaInfo = t.mpegTsObj.readMediaInfo(), t.mediaInfo, t.aCodec = t.mediaInfo.aCodec, t.fps = t.mediaInfo.vFps, t.sampleRate = t.mediaInfo.sampleRate), null == t.extensionInfo && (t.extensionInfo = t.mpegTsObj.readExtensionInfo(), t.extensionInfo.vWidth > 0 && t.extensionInfo.vHeight > 0 && (t.size.width = t.extensionInfo.vWidth, t.size.height = t.extensionInfo.vHeight)), t.mediaInfo.duration, null != t.onDemuxed && t.onDemuxed(t.onReadyOBJ);
+            null == r.mediaInfo && (r.mediaInfo = r.mpegTsObj.readMediaInfo(), r.mediaInfo, r.aCodec = r.mediaInfo.aCodec, r.fps = r.mediaInfo.vFps, r.sampleRate = r.mediaInfo.sampleRate), null == r.extensionInfo && (r.extensionInfo = r.mpegTsObj.readExtensionInfo(), r.extensionInfo.vWidth > 0 && r.extensionInfo.vHeight > 0 && (r.size.width = r.extensionInfo.vWidth, r.size.height = r.extensionInfo.vHeight)), r.mediaInfo.duration, null != r.onDemuxed && r.onDemuxed(r.onReadyOBJ);
 
             for (var e = !1;;) {
-              var r = t.mpegTsObj.readPacket();
-              if (r.size <= 0) break;
-              var i = r.dtime > 0 ? r.dtime : r.ptime;
-              if (!(i < 0)) if (0 == r.type) {
-                i <= t.vPreFramePTS && (e = !0);
-                var n = f.PACK_NALU(r.layer),
-                    a = 1 == r.keyframe,
-                    o = 1 == e ? i + t.vStartTime : i,
-                    u = new s.BufferFrame(o, a, n, !0);
-                t.bufObject.appendFrame(u.pts, u.data, !0, u.isKey), t.vPreFramePTS = o, null != t.onSamples && t.onSamples(t.onReadyOBJ, u);
-              } else if (i <= t.aPreFramePTS && (e = !0), "aac" == t.mediaInfo.aCodec) for (var h = r.data, c = 0; c < h.length; c++) {
-                var d = h[c],
-                    l = 1 == e ? d.ptime + t.vStartTime : i,
-                    p = new s.BufferFrame(l, !0, d.data, !1);
-                t.bufObject.appendFrameByBufferFrame(p), t.aPreFramePTS = l, null != t.onSamples && t.onSamples(t.onReadyOBJ, p);
-              } else {
-                var m = 1 == e ? i + t.vStartTime : i,
-                    b = new s.BufferFrame(m, !0, r.data, !1);
-                t.bufObject.appendFrameByBufferFrame(b), t.aPreFramePTS = m, null != t.onSamples && t.onSamples(t.onReadyOBJ, b);
+              var i = r.mpegTsObj.readPacket();
+              if (i.size <= 0) break;
+              var n = i.dtime > 0 ? i.dtime : i.ptime;
+
+              if (!(n < 0)) {
+                if (0 == i.type) {
+                  n <= r.vPreFramePTS && (e = !0);
+                  var a = f.PACK_NALU(i.layer),
+                      o = 1 == i.keyframe,
+                      u = 1 == e ? n + r.vStartTime : n,
+                      h = new s.BufferFrame(u, o, a, !0);
+                  r.bufObject.appendFrame(h.pts, h.data, !0, h.isKey), r.vPreFramePTS = u, null != r.onSamples && r.onSamples(r.onReadyOBJ, h);
+                } else if (n <= r.aPreFramePTS && (e = !0), "aac" == r.mediaInfo.aCodec) for (var c = i.data, d = 0; d < c.length; d++) {
+                  var l = c[d],
+                      p = 1 == e ? l.ptime + r.vStartTime : n,
+                      m = new s.BufferFrame(p, !0, l.data, !1);
+                  r.bufObject.appendFrameByBufferFrame(m), r.aPreFramePTS = p, null != r.onSamples && r.onSamples(r.onReadyOBJ, m);
+                } else {
+                  var b = 1 == e ? n + r.vStartTime : n,
+                      y = new s.BufferFrame(b, !0, i.data, !1);
+                  r.bufObject.appendFrameByBufferFrame(y), r.aPreFramePTS = b, null != r.onSamples && r.onSamples(r.onReadyOBJ, y);
+                }
+
+                t.onCacheProcess && t.onCacheProcess(t.getCachePTS());
               }
             }
 
-            t.vStartTime += parseFloat(t.lockWait.lockMember.dur), t.aStartTime += parseFloat(t.lockWait.lockMember.dur), t.vStartTime, t.lockWait.state = !1;
+            r.vStartTime += parseFloat(r.lockWait.lockMember.dur), r.aStartTime += parseFloat(r.lockWait.lockMember.dur), r.vStartTime, r.lockWait.state = !1;
           }, this.mpegTsObj.onReady = function () {
-            t._onTsReady(e);
-          }, t.mpegTsObj.initDemuxer(), this.timerTsWasm = window.setInterval(function () {
-            t.mpegTsWasmState ? (window.clearInterval(t.timerTsWasm), t.timerTsWasm = null) : t.mpegTsWasmRetryLoadTimes >= 3 ? (t._onTsReady(e), window.clearInterval(t.timerTsWasm), t.timerTsWasm = null) : (t.mpegTsWasmRetryLoadTimes += 1, t.mpegTsObj.initDemuxer());
+            r._onTsReady(e);
+          }, r.mpegTsObj.initDemuxer(), this.timerTsWasm = window.setInterval(function () {
+            r.mpegTsWasmState ? (window.clearInterval(r.timerTsWasm), r.timerTsWasm = null) : r.mpegTsWasmRetryLoadTimes >= 3 ? (r._onTsReady(e), window.clearInterval(r.timerTsWasm), r.timerTsWasm = null) : (r.mpegTsWasmRetryLoadTimes += 1, r.mpegTsObj.initDemuxer());
           }, 3e3);
         }
       }, {
@@ -23635,7 +23905,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         rawFps: 24,
         autoCrop: !1,
         core: h.PLAYER_CORE_TYPE_DEFAULT,
-        coreProbePart: 1
+        coreProbePart: 1,
+        checkProbe: !0,
+        ignoreAudio: 0
       };
 
       d.onRuntimeInitialized = function () {
@@ -23658,11 +23930,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             loadIcon: i.loadIcon || "assets/icon-loading.gif",
             token: i.token || null,
             extInfo: i.extInfo || l
-          }, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null) : alert("请输入TOKEN！Please set token param!");
+          }, this.filterConfigParams(), this.configFormat, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null, this.onCacheProcess = null) : alert("请输入TOKEN！Please set token param!");
         }
 
         var r, d, p;
         return r = e, (d = [{
+          key: "filterConfigParams",
+          value: function value() {
+            void 0 !== this.configFormat.extInfo.checkProbe && null !== this.configFormat.extInfo.checkProbe || (this.configFormat.extInfo.checkProbe = !0);
+          }
+        }, {
           key: "do",
           value: function value() {
             var e = this,
@@ -23796,8 +24073,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (null != s) for (var f = 0; f < s.length; f++) {
                 e.player.appendAACFrame(s[f]);
               }
-              if (null != a && (e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1), t++), null != s && r++, t > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, void (null != i && i());
-            }, 0);
+              if (e.onCacheProcess && e.onCacheProcess(e.player.getCachePTS()), null != a && (e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1), t++), null != s && r++, t > n || e.player.getCachePTS() > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, void (null != i && i());
+            }, 5);
           }
         }, {
           key: "_makeMP4Player",
@@ -23920,16 +24197,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               height: this.configFormat.playerH,
               playerId: this.configFormat.playerId,
               token: this.configFormat.token,
-              readyShow: this.configFormat.extInfo.readyShow
+              readyShow: this.configFormat.extInfo.readyShow,
+              checkProbe: this.configFormat.extInfo.checkProbe,
+              ignoreAudio: this.configFormat.extInfo.ignoreAudio
             }), this.player.onProbeFinish = function () {
               t.playParam.durationMs = 1e3 * t.player.duration, t.playParam.fps = t.player.config.fps, t.playParam.sampleRate = t.player.config.sampleRate, t.playParam.size = {
                 width: t.player.width,
                 height: t.player.height
-              }, t.playParam.audioNone = !1, t.player.vCodecID === h.V_CODEC_NAME_HEVC ? (t.playParam.audioIdx < 0 && (t.playParam.audioNone = !0), t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = h.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
+              }, t.playParam.audioNone = t.player.audioNone, t.player.vCodecID === h.V_CODEC_NAME_HEVC ? (t.playParam.audioIdx < 0 && (t.playParam.audioNone = !0), t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = h.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
             }, this.player.onPlayingTime = function (e) {
               t._durationText(e), t._durationText(t.player.duration), null != t.onPlayTime && t.onPlayTime(e);
             }, this.player.onPlayingFinish = function () {
               t.pause(), t.onPlayFinish && t.onPlayFinish(), t.player.release(), e.player = null, e._cDemuxDecoderEntry();
+            }, this.player.onCacheProcess = function (t) {
+              e.onCacheProcess && e.onCacheProcess(t);
             }, this.player.onLoadCache = function () {
               null != e.onLoadCache && e.onLoadCache();
             }, this.player.onLoadCacheFinshed = function () {
@@ -23986,6 +24267,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 i = 0;
             this.hlsObj = new u.M3u8(), this.hlsObj.bindReady(t), this.hlsObj.onFinished = function (e, n) {
               0 == r && (i = t.hlsObj.getDurationMs(), t.hlsConf.hlsType = n.type, r = !0);
+            }, this.hlsObj.onCacheProcess = function (t) {
+              e.onCacheProcess && e.onCacheProcess(t);
             }, this.hlsObj.onDemuxed = function (e) {
               if (null == t.player) {
                 var r = t.hlsObj.getACodec(),
@@ -24577,6 +24860,7 @@ global.makeH265webjs = function (videoURL, config) {
 
   var h265webjs = _index["default"].createPlayer(videoURL, config);
 
+  var cachePts = document.querySelector('#cachePts');
   var progressPts = document.querySelector('#progressPts');
   var progressVoice = document.querySelector('#progressVoice');
   var playBar = document.querySelector('#playBtn');
@@ -24679,13 +24963,20 @@ global.makeH265webjs = function (videoURL, config) {
 
     if (mediaInfo.videoType == "vod") {
       progressPts.max = mediaInfo.meta.durationMs / 1000;
+      cachePts.max = mediaInfo.meta.durationMs / 1000;
       ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
     } else {
       progressPts.hidden = true;
+      cachePts.hidden = true;
       ptsLabel.textContent = '0:0:0/LIVE';
     }
 
     showLabel.textContent = SHOW_DONE;
+  };
+
+  h265webjs.onCacheProcess = function (cPts) {
+    // console.log("onCacheProcess => ", cPts);
+    cachePts.value = cPts;
   };
 
   h265webjs.onPlayTime = function (videoPTS) {

@@ -59,6 +59,11 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/03/28 |
+| - | 1.Add cache process event |
+| - | 2.Fixed some bugs |
+| - | 3.Remove HLS Log |
+| - | 4.Play without audio optio(New Core) |
 | Time | 2021/03/14 |
 | - | 1.New Core: Fixed: render of bytes align |
 | Time | 2021/03/12 |
@@ -119,6 +124,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | 1080P | Y |  ----  | ---- |
 | 720P | Y |  ----  | ---- |
 | Create multi players | Y |  ----  | ---- |
+| Play without Audio | Y |  ----  | ---- |
+| Cache process | Y |  ----  | ---- |
 
 <br>
 
@@ -185,23 +192,11 @@ require('./dist/h265webjs');
 import H265webjsModule from './dist/index';
 ```
 
-* By npm
-
-[![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js) | <a href="https://www.npmjs.com/package/h265web.js">npm:h265web.js</a>
-
 <br>
 
 #### 2）Install Wasm
 
 * If you install it by github, you could skip this step.
-
-* If you install it by `npm`，you need to copy `./node_modules/h265web.js/dist/*.wasm` to `h265webjs.js`'s path.
-
-	* Cmd
-	```bash
-	npm i h265web.js
-	cp ./node_modules/h265web.js/dist/*.wasm ./dist/
-	```
 
 <br>
 
@@ -219,14 +214,6 @@ import H265webjsModule from './dist/index';
 	import H265webjsModule from './dist/index';
 	```
 
-
-* Npm include
-
-[![npm version](https://badge.fury.io/js/h265web.js.svg)](https://www.npmjs.com/package/h265web.js)
-
-```javascript
-const H265webjs = require('h265web.js');
-```
 
 <br>
 
@@ -268,8 +255,9 @@ let config = {
 | \+ moovStartFlag  | Bool | true/false | N:default is sfalse | mp4 with moov before mdat |
 | \+ readyShow  | Bool | true/false | N:default is false | need cover image |
 | \+ rawFps  | Float32 | Example:30 | N:default 24 | Fps for play HEVC/AVC stream |
-| \+ core  | Int | - | N:default 0 | 0:Default player core 1: New player core(beta) |
-| \+ coreProbePart  | Float32 | - | 否:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with New player core(beta)) |
+| \+ core  | Int | - | N:default 0 | 0:Default player core <br>1: New player core(beta) |
+| \+ coreProbePart  | Float32 | - | N:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with New player core(beta)) |
+| \+ ignoreAudio | Int | - | N:Default is 0 | 0:Play with audio <br>1:Without audio |
 
 
 <br>
@@ -485,6 +473,20 @@ player.onPlayFinish = () => {
 };
 ```
 
+#### 6）Player cache process
+
+|  Callback param | Type | Default | Need | Desc | 
+|  ----  | ----  | ---- | ---- | ---- |
+| cPts  | float64 | - | - | Cache process timestamp |
+
+* Example
+
+```javascript
+player.onCacheProcess = (cPts) => {
+    // console.log("onCacheProcess => ", cPts);
+};
+````
+
 <br>
 
 ### PlayerAPIDocument ###
@@ -694,6 +696,11 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 ```
 
 
+<hr>
+
+## Stargazers over time
+
+[![Stargazers over time](https://starcharts.herokuapp.com/numberwolf/h265web.js.svg)](https://starcharts.herokuapp.com/numberwolf/h265web.js)
 
 
 
