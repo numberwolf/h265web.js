@@ -5,6 +5,10 @@ const ScreenModule = require('./screen');
 const SHOW_LOADING = "LOADING...!";
 const SHOW_DONE = "done.";
 
+const getMsTime = () => {
+    return new Date().getTime();
+};
+
 function durationText(duration) {
     if (duration < 0) {
         return "Play";
@@ -202,7 +206,64 @@ global.makeH265webjsRaw = (url265, config) => {
     };
 
     h265webjs.onLoadFinish = () => {
-        h265webjs.setVoice(1.0);
+        /*
+         * fetch 265
+         * you can use your code to fetch vod stream
+         * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+         */
+        let rawParser = new RawParserModule();
+
+        /*
+         * fetch 265
+         */
+        let fetchFinished = false;
+        let startFetch = false;
+        let networkInterval = window.setInterval(() => {
+            if (!startFetch) {
+                startFetch = true;
+                fetch(url265).then(function(response) {
+                    let pump = function(reader) {
+                        return reader.read().then(function(result) {
+                            if (result.done) {
+                                // console.log("========== RESULT DONE ===========");
+                                fetchFinished = true;
+                                window.clearInterval(networkInterval);
+                                networkInterval = null;
+                                return;
+                            }
+
+                            let chunk = result.value;
+                            rawParser.appendStreamRet(chunk);
+                            return pump(reader);
+                        });
+                    }
+                    return pump(response.body.getReader());
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }
+        }, 1);
+
+        // fps>=30 play else cache
+        let naluParseInterval = window.setInterval(() => {
+            let test1time = getMsTime();
+            let nalBuf = rawParser.nextNalu(); // nal
+            let preCostTime = getMsTime() - test1time;
+            console.log("rawParser.nextNalu() => ", nalBuf, " usage => ",preCostTime);
+
+            if (nalBuf != false) {
+                // require
+                h265webjs.append265NaluFrame(nalBuf);
+            } else if (fetchFinished) {
+                window.clearInterval(naluParseInterval);
+                naluParseInterval = null;
+            }
+
+        }, 1);
+
+
+        h265webjs.setVoice(0.0);
         mediaInfo = h265webjs.mediaInfo();
         console.log("mediaInfo===========>", mediaInfo);
         /*
@@ -235,64 +296,6 @@ global.makeH265webjsRaw = (url265, config) => {
     };
 
     h265webjs.do();
-
-    /*
-     * fetch 265
-     */
-
-    /*
-     * fetch 265
-     * you can use your code to fetch vod stream
-     * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
-     */
-    let rawParser = new RawParserModule();
-
-    let fetchFinished = false;
-    let startFetch = false;
-    let networkInterval = window.setInterval(() => {
-        if (!startFetch) {
-            startFetch = true;
-            fetch(url265).then(function(response) {
-                let pump = function(reader) {
-                    return reader.read().then(function(result) {
-                        if (result.done) {
-                            // console.log("========== RESULT DONE ===========");
-                            fetchFinished = true;
-                            window.clearInterval(networkInterval);
-                            networkInterval = null;
-                            return;
-                        }
-
-                        let chunk = result.value;
-                        rawParser.appendStreamRet(chunk);
-                        return pump(reader);
-                    });
-                }
-                return pump(response.body.getReader());
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        }
-    }, 1);
-
-    // fps>=30 play else cache
-    let naluParseInterval = window.setInterval(() => {
-        let test1time = getMsTime();
-        let nalBuf = rawParser.nextNalu(); // nal
-        let preCostTime = getMsTime() - test1time;
-        console.log("rawParser.nextNalu() => ", nalBuf, " usage => ",preCostTime);
-
-        if (nalBuf != false) {
-            // require
-            h265webjs.append265NaluFrame(nalBuf);
-        } else if (fetchFinished) {
-            window.clearInterval(naluParseInterval);
-            naluParseInterval = null;
-        }
-
-    }, 1);
-
     return h265webjs;
 };
 

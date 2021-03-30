@@ -18586,8 +18586,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         re = e, f.HEAP8 = ie = new Int8Array(e), f.HEAP16 = ae = new Int16Array(e), f.HEAP32 = oe = new Int32Array(e), f.HEAPU8 = ne = new Uint8Array(e), f.HEAPU16 = se = new Uint16Array(e), f.HEAPU32 = fe = new Uint32Array(e), f.HEAPF32 = ue = new Float32Array(e), f.HEAPF64 = he = new Float64Array(e);
       }
 
-      var me = 6368656,
-          be = 1125552,
+      var me = 6368720,
+          be = 1125616,
           ye = f.TOTAL_MEMORY || 1073741824;
 
       function ge(e) {
@@ -21640,7 +21640,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return oe[e >> 2] = t / 1e3 | 0, oe[e + 4 >> 2] = t % 1e3 * 1e3 | 0, 0;
       }
 
-      var jt = (Q("GMT", 1125648, 4), 1125648);
+      var jt = (Q("GMT", 1125712, 4), 1125712);
 
       function Ht(e, t) {
         var r = new Date(1e3 * oe[e >> 2]);
@@ -23930,7 +23930,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             loadIcon: i.loadIcon || "assets/icon-loading.gif",
             token: i.token || null,
             extInfo: i.extInfo || l
-          }, this.filterConfigParams(), this.configFormat, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null, this.onCacheProcess = null) : alert("请输入TOKEN！Please set token param!");
+          }, this.filterConfigParams(), this.configFormat, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null, this.onCacheProcess = null, this.onReadyShowDone = null) : alert("请输入TOKEN！Please set token param!");
         }
 
         var r, d, p;
@@ -24073,7 +24073,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (null != s) for (var f = 0; f < s.length; f++) {
                 e.player.appendAACFrame(s[f]);
               }
-              if (e.onCacheProcess && e.onCacheProcess(e.player.getCachePTS()), null != a && (e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1), t++), null != s && r++, t > n || e.player.getCachePTS() > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, void (null != i && i());
+              if (e.onCacheProcess && e.onCacheProcess(e.player.getCachePTS()), null != a && (e.configFormat.extInfo.readyShow && e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1, e.onReadyShowDone && e.onReadyShowDone()), t++), null != s && r++, t > n || e.player.getCachePTS() > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, void (null != i && i());
             }, 5);
           }
         }, {
@@ -24298,7 +24298,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               data: e,
               pts: this.rawModePts
             };
-            this.player.appendHevcFrame(t), this.configFormat.extInfo.readyShow && this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (this.player.playFrameYUV(!0, !0), this.configFormat.extInfo.readyShow = !1), this.rawModePts += 1 / this.configFormat.extInfo.rawFps;
+            this.player.appendHevcFrame(t), this.configFormat.extInfo.readyShow && this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (this.player.playFrameYUV(!0, !0), this.configFormat.extInfo.readyShow = !1, this.onReadyShowDone && this.onReadyShowDone()), this.rawModePts += 1 / this.configFormat.extInfo.rawFps;
           }
         }]) && i(r.prototype, d), p && i(r, p), e;
       }();
@@ -24846,6 +24846,10 @@ var ScreenModule = require('./screen');
 var SHOW_LOADING = "LOADING...!";
 var SHOW_DONE = "done.";
 
+var getMsTime = function getMsTime() {
+  return new Date().getTime();
+};
+
 function durationText(duration) {
   if (duration < 0) {
     return "Play";
@@ -25044,7 +25048,61 @@ global.makeH265webjsRaw = function (url265, config) {
   };
 
   h265webjs.onLoadFinish = function () {
-    h265webjs.setVoice(1.0);
+    /*
+     * fetch 265
+     * you can use your code to fetch vod stream
+     * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
+     */
+    var rawParser = new _rawParser["default"]();
+    /*
+     * fetch 265
+     */
+
+    var fetchFinished = false;
+    var startFetch = false;
+    var networkInterval = window.setInterval(function () {
+      if (!startFetch) {
+        startFetch = true;
+        fetch(url265).then(function (response) {
+          var pump = function pump(reader) {
+            return reader.read().then(function (result) {
+              if (result.done) {
+                // console.log("========== RESULT DONE ===========");
+                fetchFinished = true;
+                window.clearInterval(networkInterval);
+                networkInterval = null;
+                return;
+              }
+
+              var chunk = result.value;
+              rawParser.appendStreamRet(chunk);
+              return pump(reader);
+            });
+          };
+
+          return pump(response.body.getReader());
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    }, 1); // fps>=30 play else cache
+
+    var naluParseInterval = window.setInterval(function () {
+      var test1time = getMsTime();
+      var nalBuf = rawParser.nextNalu(); // nal
+
+      var preCostTime = getMsTime() - test1time;
+      console.log("rawParser.nextNalu() => ", nalBuf, " usage => ", preCostTime);
+
+      if (nalBuf != false) {
+        // require
+        h265webjs.append265NaluFrame(nalBuf);
+      } else if (fetchFinished) {
+        window.clearInterval(naluParseInterval);
+        naluParseInterval = null;
+      }
+    }, 1);
+    h265webjs.setVoice(0.0);
     mediaInfo = h265webjs.mediaInfo();
     console.log("mediaInfo===========>", mediaInfo);
     /*
@@ -25079,61 +25137,6 @@ global.makeH265webjsRaw = function (url265, config) {
   };
 
   h265webjs["do"]();
-  /*
-   * fetch 265
-   */
-
-  /*
-   * fetch 265
-   * you can use your code to fetch vod stream
-   * only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
-   */
-
-  var rawParser = new _rawParser["default"]();
-  var fetchFinished = false;
-  var startFetch = false;
-  var networkInterval = window.setInterval(function () {
-    if (!startFetch) {
-      startFetch = true;
-      fetch(url265).then(function (response) {
-        var pump = function pump(reader) {
-          return reader.read().then(function (result) {
-            if (result.done) {
-              // console.log("========== RESULT DONE ===========");
-              fetchFinished = true;
-              window.clearInterval(networkInterval);
-              networkInterval = null;
-              return;
-            }
-
-            var chunk = result.value;
-            rawParser.appendStreamRet(chunk);
-            return pump(reader);
-          });
-        };
-
-        return pump(response.body.getReader());
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }, 1); // fps>=30 play else cache
-
-  var naluParseInterval = window.setInterval(function () {
-    var test1time = getMsTime();
-    var nalBuf = rawParser.nextNalu(); // nal
-
-    var preCostTime = getMsTime() - test1time;
-    console.log("rawParser.nextNalu() => ", nalBuf, " usage => ", preCostTime);
-
-    if (nalBuf != false) {
-      // require
-      h265webjs.append265NaluFrame(nalBuf);
-    } else if (fetchFinished) {
-      window.clearInterval(naluParseInterval);
-      naluParseInterval = null;
-    }
-  }, 1);
   return h265webjs;
 };
 
