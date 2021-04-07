@@ -22205,7 +22205,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           readyShow: t.readyShow || !1,
           checkProbe: t.checkProbe,
           ignoreAudio: t.ignoreAudio
-        }, this.config, this.probeSize = 4524611, this.audioWAudio = null, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = f.V_CODEC_NAME_UNKN, this.audioIdx = -1, this.audioNone = !1, this.retryAuSampleNo = 0, this.cacheStatus = !1, this.playPTS = 0, this.vCachePTS = 0, this.aCachePTS = 0, this.decPktInterval = null, this.decVFrameInterval = null, this.playFrameInterval = null, this._videoQueue = [], this._videoTimeQ = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.onCacheProcess = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, u.PLAYER_VERSION), this.corePtr;
+        }, this.config, this.probeSize = 4524611, this.audioWAudio = null, this.duration = -1, this.channels = -1, this.width = -1, this.height = -1, this.isPlaying = !1, this.pushEOF = !1, this.readEOF = !1, this.isCheckDisplay = !1, this.frameTime = 1e3 / this.config.fps, this.vCodecID = f.V_CODEC_NAME_UNKN, this.audioIdx = -1, this.audioNone = !1, this.canvasBox = null, this.canvas = null, this.yuv = null, this.retryAuSampleNo = 0, this.cacheStatus = !1, this.showScreen = !1, this.playPTS = 0, this.vCachePTS = 0, this.aCachePTS = 0, this.decPktInterval = null, this.decVFrameInterval = null, this.playFrameInterval = null, this._videoQueue = [], this._videoTimeQ = [], this.onProbeFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onRender = null, this.onCacheProcess = null, this.corePtr = a.cwrap("AVSniffStreamInit", "number", ["string", "string"])(this.config.token, u.PLAYER_VERSION), this.corePtr;
         var r = a.addFunction(this._probeFinCallback.bind(this)),
             i = a.addFunction(this._frameCallback.bind(this)),
             s = a.addFunction(this._samplesCallback.bind(this)),
@@ -22220,6 +22220,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         value: function value() {
           var e = a.cwrap("releaseSniffStream", "number", ["number"])(this.corePtr);
           return this.audioWAudio && this.audioWAudio.stop(), this.audioWAudio = null, this._clearDecInterval(), e;
+        }
+      }, {
+        key: "setScreen",
+        value: function value() {
+          var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
+          this.showScreen = e, this.canvas && (e ? this.canvas.setAttribute("hidden", !0) : this.canvas.removeAttribute("hidden"));
         }
       }, {
         key: "getCachePTS",
@@ -22258,7 +22264,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 var n = e._videoQueue.shift(),
                     a = 0;
 
-                if (e.audioWAudio && (a = 1e3 * (n.pts - e.audioWAudio.getAlignVPTS())), t = r, h(), s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), n.pts, e.playPTS = n.pts, e.onPlayingTime && e.onPlayingTime(n.pts), e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v), a < 0 && -1 * a <= e.frameTime || a >= 0) {
+                if (e.audioWAudio && (a = 1e3 * (n.pts - e.audioWAudio.getAlignVPTS())), t = r, h(), n.pts, e.playPTS = n.pts, e.onPlayingTime && e.onPlayingTime(n.pts), e.showScreen ? e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v) : s.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height), a < 0 && -1 * a <= e.frameTime || a >= 0) {
                   if (n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e._clearDecInterval(), e.pause();else if (e.readEOF, e.pushEOF, !0 === e.readEOF && !0 === e.pushEOF) return e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e._clearDecInterval(), e.pause(), void (e.onPlayingTime && e.onPlayingTime(e.duration));
                   i = h() - r;
                 } else a < 0 && e.frameTime, i = e.frameTime, e.frameTime;
@@ -22685,7 +22691,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         onRender: null,
         setScreen: function setScreen() {
           var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
-          t.showScreen = e;
+          null != t && (t.showScreen = e, t.canvas && (e ? t.canvas.setAttribute("hidden", !0) : t.canvas.removeAttribute("hidden")));
         },
         setSize: function setSize(e, r) {
           t.config.width = e || u.DEFAULT_WIDTH, t.config.height = r || u.DEFAULT_HEIGHT;
@@ -23914,13 +23920,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         coreProbePart: 1,
         checkProbe: !0,
         ignoreAudio: 0
+      },
+          p = function p(e, t) {
+        return t - 1e3 / e;
       };
 
       d.onRuntimeInitialized = function () {
         t.STATIC_MEM_wasmDecoderState = 1, t.STATIC_MEM_wasmDecoderState;
       };
 
-      var p = function () {
+      var m = function () {
         function e(r, i) {
           !function (e, t) {
             if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
@@ -23939,7 +23948,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, this.filterConfigParams(), this.configFormat, null != this.configFormat.token ? (this.playMode = h.PLAYER_MODE_VOD, this.seekTarget = 0, this.playParam = null, this.timerFeed = null, this.player = null, this.rawModePts = 0, this.feedMP4Data = null, this.onPlayTime = null, this.onLoadFinish = null, this.onSeekStart = null, this.onSeekFinish = null, this.onRender = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onPlayFinish = null, this.onCacheProcess = null, this.onReadyShowDone = null) : alert("请输入TOKEN！Please set token param!");
         }
 
-        var r, d, p;
+        var r, d, m;
         return r = e, (d = [{
           key: "filterConfigParams",
           value: function value() {
@@ -24159,12 +24168,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           value: function value() {
             var e = this;
             this.timerFeed = null, this.mp4Obj = new o(), this.mp4Obj.onMp4BoxReady = function (t) {
-              var r = e.mp4Obj.getDurationMs(),
-                  i = e.mp4Obj.getFPS(),
+              var r = e.mp4Obj.getFPS(),
+                  i = p(r, e.mp4Obj.getDurationMs()),
                   n = e.mp4Obj.getSampleRate(),
                   a = e.mp4Obj.getSize(),
                   s = e.mp4Obj.getVideoCoder();
-              t === h.CODEC_H265 ? (e._makeMP4PlayerViewEvent(r, i, n, a, e.mp4Obj.audioNone, s), parseInt(r / 1e3), e._avFeedMP4Data(0, 0)) : e._makeNativePlayer(r, i, n, a, e.mp4Obj.audioNone, s);
+              t === h.CODEC_H265 ? (e._makeMP4PlayerViewEvent(i, r, n, a, e.mp4Obj.audioNone, s), parseInt(i / 1e3), e._avFeedMP4Data(0, 0)) : e._makeNativePlayer(i, r, n, a, e.mp4Obj.audioNone, s);
             };
           }
         }, {
@@ -24212,7 +24221,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               checkProbe: this.configFormat.extInfo.checkProbe,
               ignoreAudio: this.configFormat.extInfo.ignoreAudio
             }), this.player.onProbeFinish = function () {
-              t.playParam.durationMs = 1e3 * t.player.duration, t.playParam.fps = t.player.config.fps, t.playParam.sampleRate = t.player.config.sampleRate, t.playParam.size = {
+              t.playParam.fps = t.player.config.fps, t.playParam.durationMs = p(t.playParam.fps, 1e3 * t.player.duration), t.playParam.sampleRate = t.player.config.sampleRate, t.playParam.size = {
                 width: t.player.width,
                 height: t.player.height
               }, t.playParam.audioNone = t.player.audioNone, t.player.vCodecID === h.V_CODEC_NAME_HEVC ? (t.playParam.audioIdx < 0 && (t.playParam.audioNone = !0), t.playParam.videoCodec = h.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = h.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
@@ -24311,11 +24320,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             };
             this.player.appendHevcFrame(t), this.configFormat.extInfo.readyShow && this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (this.player.playFrameYUV(!0, !0), this.configFormat.extInfo.readyShow = !1, this.onReadyShowDone && this.onReadyShowDone()), this.rawModePts += 1 / this.configFormat.extInfo.rawFps;
           }
-        }]) && i(r.prototype, d), p && i(r, p), e;
+        }]) && i(r.prototype, d), m && i(r, m), e;
       }();
 
-      r.H265webjs = p, t.new265webjs = function (e, t) {
-        return new p(e, t);
+      r.H265webjs = m, t.new265webjs = function (e, t) {
+        return new m(e, t);
       };
     }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
   }, {
@@ -24505,11 +24514,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// const VERSION = 'v20210406';
-// const MOD_NAME = './h265webjs-' + VERSION;
-// require('./h265webjs-' + VERSION + '.js');
-// require(MOD_NAME);
-require('./h265webjs-v20210406');
+require('./h265webjs-v20210407');
 
 var h265webjs =
 /*#__PURE__*/
@@ -24537,7 +24542,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20210406":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20210407":1}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/04/07 |
+| - | 1.Fixed duration error |
 | Time | 2021/03/28 |
 | - | 1.Add cache process event |
 | - | 2.Fixed some bugs |
