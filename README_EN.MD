@@ -59,6 +59,10 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/04/22 |
+| - | 1.New play core(test) support: seek |
+| - | 2.New play core(test) support: yuvj420p |
+| - | 3.Others |
 | Time | 2021/04/12 |
 | - | 1.Fixed bug: Some video(encode hev) play failed |
 | - | 2.Fixed bug: Some video(nalu unstandard) play failed |

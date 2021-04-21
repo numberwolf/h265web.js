@@ -180,6 +180,7 @@
         var token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
         var type = "mp4";
         var url = "res/video40_265_moov.mp4";
+        // var url = "res/06hY38_64_yuvj420p.mp4";
 
         // var type = "ts";
         // var url = "res/hls/v-000.ts"
@@ -190,8 +191,8 @@
         // var url = "res/hls/veilside.m3u8";
         // var url = "res/hls1/test.m3u8";
 
-        const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器 recommand!!!!!!
-        const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验万能播放器 can not seek
+        const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认内核 recommand!!!!!!
+        const PLAYER_CORE_TYPE_CNATIVE = 1; // 测试内核
 
         var config = {
             type: type,
@@ -204,7 +205,8 @@
                 core : PLAYER_CORE_TYPE_DEFAULT,
                 coreProbePart : 0.1,
                 moovStartFlag : true,
-                readyShow : true
+                readyShow : true,
+                ignoreAudio : 0
             }
         };
         makeH265webjs(url, config);
