@@ -59,6 +59,9 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/04/27 |
+| - | 1.Fixed: Some video playing with gray block(mosic) |
+| - | 2.Fixed: Some video when playing first gop with gray block(mosic) |
 | Time | 2021/04/22 |
 | - | 1.New play core(test) support: seek |
 | - | 2.New play core(test) support: yuvj420p |
@@ -98,7 +101,6 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | TODO | Content |
 | ---- | ---- |
 | 1 | Support Http-flv |
-| 2 | New Play Core Support seek |
 
 
 #### Supported ####
