@@ -130,7 +130,11 @@ global.makeH265webjs = (videoURL, config) => {
         } else {
             progressPts.hidden = true;
             cachePts.hidden = true;
-            ptsLabel.textContent = '0:0:0/LIVE';
+            ptsLabel.textContent = 'LIVE';
+            setTimeout(() => {
+                playBar.textContent = '||';
+                h265webjs.play();
+            }, 1000);
         }
 
         showLabel.textContent = SHOW_DONE;
@@ -146,7 +150,7 @@ global.makeH265webjs = (videoURL, config) => {
             progressPts.value = videoPTS;
             ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
         } else {
-            ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+            ptsLabel.textContent = 'LIVE';
         }
     };
 

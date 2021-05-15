@@ -610,7 +610,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var et,
           tt,
-          it = "missile-v20210422.wasm";
+          it = "missile-v20210515.wasm";
 
       function rt() {
         try {
@@ -23746,7 +23746,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }).then(function (t) {
             return 1 == i._uriParse(e) ? i._m3u8Parse(t) : null;
           }).then(function (r) {
-            null != r && t._type == n.PLAYER_IN_TYPE_M3U8_LIVE && setTimeout(function () {
+            null != r && !1 !== r && !0 !== r && t._type == n.PLAYER_IN_TYPE_M3U8_LIVE && setTimeout(function () {
               i.fetchM3u8(e);
             }, 1e3 * r);
           });
@@ -23770,13 +23770,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "_m3u8Parse",
         value: function value(e) {
-          for (var t = e.split(a.lineDelimiter), i = a.defaultMinDur, r = 0; r < t.length; r++) {
-            var s = t[r];
+          for (var t = e.split(a.lineDelimiter), i = a.defaultMinDur, r = "", s = 0; s < t.length; s++) {
+            var o = t[s];
 
-            if (!(s.length < 1)) {
-              var o = this._readTag(s);
+            if (!(o.length < 1)) {
+              if (null != r && "" !== r) switch (r) {
+                case a.version:
+                case a.mediaSequence:
+                case a.allowCache:
+                case a.discontinuity:
+                case a.targetDuration:
+                case a.combined:
+                  break;
 
-              if (null != o) switch (o.key) {
+                case a.streamInf:
+                  return this.fetchM3u8(o), null;
+              }
+
+              var l = this._readTag(o);
+
+              if (null != l) switch (r = l.key, l.key) {
                 case a.version:
                 case a.mediaSequence:
                 case a.allowCache:
@@ -23788,36 +23801,36 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
                 case a.endList:
                   if (this._type = n.PLAYER_IN_TYPE_M3U8_VOD, null != this.onFinished) {
-                    var l = {
+                    var f = {
                       type: this._type,
                       duration: this.duration
                     };
-                    this.onFinished(l);
+                    this.onFinished(f);
                   }
 
                   return !0;
 
                 default:
-                  o.key;
+                  l.key;
               }
-              var f = a.segmentParse.exec(s);
+              var u = a.segmentParse.exec(o);
 
-              if (null != f) {
-                var u = f[1];
-                this.duration += parseFloat(f[1]), i > u && (i = u);
-                var c = t[r += 1],
-                    h = this._preURI + c;
-                this._slices.indexOf(h) < 0 && (this._slices.push(h), null != this.onTransportStream && this.onTransportStream(h, u));
+              if (null != u) {
+                var c = u[1];
+                this.duration += parseFloat(u[1]), i > c && (i = c);
+                var h = t[s += 1],
+                    d = this._preURI + h;
+                this._slices.indexOf(d) < 0 && (this._slices.push(d), null != this.onTransportStream && this.onTransportStream(d, c));
               }
             }
           }
 
           if (this._slices.length > a.hlsSliceLimit && this._type == n.PLAYER_IN_TYPE_M3U8_LIVE && (this._slices = this._slices.slice(-1 * a.hlsSliceLimit)), null != this.onFinished) {
-            var d = {
+            var _ = {
               type: this._type,
               duration: -1
             };
-            this.onFinished(d);
+            this.onFinished(_);
           }
 
           return i;
@@ -25017,7 +25030,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-require('./h265webjs-v20210427');
+require('./h265webjs-v20210515');
 
 var h265webjs =
 /*#__PURE__*/
@@ -25045,7 +25058,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20210427":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20210515":1}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25495,7 +25508,11 @@ global.makeH265webjs = function (videoURL, config) {
     } else {
       progressPts.hidden = true;
       cachePts.hidden = true;
-      ptsLabel.textContent = '0:0:0/LIVE';
+      ptsLabel.textContent = 'LIVE';
+      setTimeout(function () {
+        playBar.textContent = '||';
+        h265webjs.play();
+      }, 1000);
     }
 
     showLabel.textContent = SHOW_DONE;
@@ -25511,7 +25528,7 @@ global.makeH265webjs = function (videoURL, config) {
       progressPts.value = videoPTS;
       ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
     } else {
-      ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+      ptsLabel.textContent = 'LIVE';
     }
   };
 

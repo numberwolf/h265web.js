@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/05/15 |
+| - | 1.Fixed: HLS Play(LIVE) |
 | Time | 2021/04/27 |
 | - | 1.Fixed: Some video playing with gray block(mosic) |
 | - | 2.Fixed: Some video when playing first gop with gray block(mosic) |
