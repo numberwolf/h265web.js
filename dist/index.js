@@ -1,4 +1,4 @@
-require('./h265webjs-v20210515');
+require('./h265webjs-v20210516');
 export default class h265webjs {
 	static createPlayer(videoURL, config) {
 		return window.new265webjs(videoURL, config);
