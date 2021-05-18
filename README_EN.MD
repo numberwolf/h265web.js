@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/05/18 |
+| - | 1.HLS(LIVE) performance optimizing and add Audio |
 | Time | 2021/05/16 |
 | - | 1.MP4(VOD) Fixed:BD265 Mp4 box badcase |
 | Time | 2021/05/15 |

@@ -13,6 +13,21 @@
         body {
             background-color: #eeeeee;
         }
+        #coverLayer {
+            width: 100%;
+            height: 100%;
+            padding-top: 300px;
+            z-index: 10000;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        #coverLayerBtn {
+            width: 20%;
+            height: 200px;
+            border-radius: 50px;
+        }
         #controller {
             background-color: black;
             width: 960px;
@@ -133,6 +148,12 @@
 </head>
 <body>
 
+    <div id="coverLayer" hidden="hidden">
+        <center>
+            <button id="coverLayerBtn"><font size="100px">PLAY</font></button>
+        </center>
+    </div>
+
     <h1> h265web.js demo </h1>
     <div id="glplayer"></div>
     <div id="controller">
@@ -188,10 +209,12 @@
         // var type = "ts";
         // var url = "res/hls/v-000.ts"
 
-        // var type = "hls";
+        //var type = "hls";
         // var url = "res/m3u82/cg720phevc.m3u8";
         // var url = "res/m3u8/cg.m3u8";
         // var url = "res/hls/veilside.m3u8";
+        //var url = "res/hls/veilside_live.m3u8";
+        //var url = "res/hls-an/veilside_live.m3u8";
         // var url = "res/hls1/test.m3u8";
 
         const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认内核 recommand!!!!!!

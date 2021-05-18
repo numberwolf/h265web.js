@@ -23304,10 +23304,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           t.playParams.seekEvent && (t.playParams.seekEvent = !1, t.onSeekFinish(), t.isPlaying || (t.playFrameYUV(!0, t.playParams.accurateSeek), t.pause()), t.config.audioNone || t.audio.setVoice(t.realVolume)), t.onPlayingTime && t.onPlayingTime(t.videoPTS), t.checkFinished(t.playParams.mode);
         },
         play: function play(e) {
-          t.playParams = e, t.calcuteStartTime = h(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, t.playParams.mode == f.PLAYER_MODE_NOTIME_LIVE ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, t.loop = window.setInterval(function () {
-            var e = h();
-            t.playFrameYUV(!0, t.playParams.accurateSeek), t.preCostTime = h() - e, t.preCostTime;
-          }, t.frameTime)) : t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
+          t.playParams = e, t.calcuteStartTime = h(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
             var e = h();
             t.playFunc(), t.preCostTime = h() - e, t.preCostTime;
           }, 1)) : (t.loop = window.setInterval(function () {
@@ -25048,7 +25045,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-require('./h265webjs-v20210516');
+require('./h265webjs-v20210518');
 
 var h265webjs =
 /*#__PURE__*/
@@ -25076,7 +25073,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20210516":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20210518":1}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25425,6 +25422,8 @@ global.makeH265webjs = function (videoURL, config) {
   var showLabel = document.querySelector('#showLabel');
   var ptsLabel = document.querySelector('#ptsLabel');
   var fullScreenBtn = document.querySelector('#fullScreenBtn');
+  var coverToast = document.querySelector('#coverLayer');
+  var coverBtn = document.querySelector('#coverLayerBtn');
   var mediaInfo = null;
   playBar.disabled = true;
   playBar.textContent = '>';
@@ -25527,10 +25526,23 @@ global.makeH265webjs = function (videoURL, config) {
       progressPts.hidden = true;
       cachePts.hidden = true;
       ptsLabel.textContent = 'LIVE';
-      setTimeout(function () {
+
+      if (mediaInfo.meta.audioNone === true) {
         playBar.textContent = '||';
         h265webjs.play();
-      }, 1000);
+      } else {
+        coverToast.removeAttribute('hidden');
+
+        coverBtn.onclick = function () {
+          playBar.textContent = '||';
+          h265webjs.play();
+          coverToast.setAttribute('hidden', 'hidden');
+        };
+      } //setTimeout(() => {
+      //playBar.textContent = '||';
+      //h265webjs.play();
+      //}, 1000);
+
     }
 
     showLabel.textContent = SHOW_DONE;

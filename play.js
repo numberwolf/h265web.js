@@ -31,6 +31,8 @@ global.makeH265webjs = (videoURL, config) => {
     let showLabel       = document.querySelector('#showLabel');
     let ptsLabel        = document.querySelector('#ptsLabel');
     let fullScreenBtn   = document.querySelector('#fullScreenBtn');
+    let coverToast      = document.querySelector('#coverLayer');
+    let coverBtn        = document.querySelector('#coverLayerBtn');
     let mediaInfo       = null;
 
     playBar.disabled    = true;
@@ -131,10 +133,24 @@ global.makeH265webjs = (videoURL, config) => {
             progressPts.hidden = true;
             cachePts.hidden = true;
             ptsLabel.textContent = 'LIVE';
-            setTimeout(() => {
+
+            if (mediaInfo.meta.audioNone === true) {
                 playBar.textContent = '||';
                 h265webjs.play();
-            }, 1000);
+            } else {
+                coverToast.removeAttribute('hidden');
+                coverBtn.onclick = () => {
+                    playBar.textContent = '||';
+                    h265webjs.play();
+                    coverToast.setAttribute('hidden', 'hidden');
+                };
+            }
+
+            //setTimeout(() => {
+                //playBar.textContent = '||';
+                //h265webjs.play();
+            //}, 1000);
+
         }
 
         showLabel.textContent = SHOW_DONE;
