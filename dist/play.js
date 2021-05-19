@@ -23554,7 +23554,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           lockMember: {
             dur: 0
           }
-        }, this.timerFeed = null, this.timerTsWasm = null, this.seekPos = -1, this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.aCodec = !1, this.durationMs = -1, this.bufObject = o(), this.fps = -1, this.sampleRate = -1, this.size = {
+        }, this.timerFeed = null, this.timerTsWasm = null, this.seekPos = -1, this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.aCodec = !1, this.aChannel = 0, this.durationMs = -1, this.bufObject = o(), this.fps = -1, this.sampleRate = -1, this.size = {
           width: -1,
           height: -1
         }, this.mediaInfo = null, this.extensionInfo = null, this.onReadyOBJ = null, this.onFinished = null, this.onDemuxed = null, this.onSamples = null, this.onCacheProcess = null;
@@ -23579,7 +23579,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, this.hls.onFinished = function (e) {
             e.type == f.PLAYER_IN_TYPE_M3U8_VOD ? i.durationMs = 1e3 * e.duration : i.durationMs = -1, null != i.onFinished && i.onFinished(i.onReadyOBJ, e);
           }, this.mpegTsObj.onDemuxed = function () {
-            null == i.mediaInfo && (i.mediaInfo = i.mpegTsObj.readMediaInfo(), i.mediaInfo, i.aCodec = i.mediaInfo.aCodec, i.fps = i.mediaInfo.vFps, i.sampleRate = i.mediaInfo.sampleRate), null == i.extensionInfo && (i.extensionInfo = i.mpegTsObj.readExtensionInfo(), i.extensionInfo.vWidth > 0 && i.extensionInfo.vHeight > 0 && (i.size.width = i.extensionInfo.vWidth, i.size.height = i.extensionInfo.vHeight)), i.mediaInfo.duration, null != i.onDemuxed && i.onDemuxed(i.onReadyOBJ);
+            null == i.mediaInfo && (i.mediaInfo = i.mpegTsObj.readMediaInfo(), i.mediaInfo, i.aCodec = i.mediaInfo.aCodec, i.aChannel = i.mediaInfo.sampleChannel, i.fps = i.mediaInfo.vFps, i.sampleRate = i.mediaInfo.sampleRate), null == i.extensionInfo && (i.extensionInfo = i.mpegTsObj.readExtensionInfo(), i.extensionInfo.vWidth > 0 && i.extensionInfo.vHeight > 0 && (i.size.width = i.extensionInfo.vWidth, i.size.height = i.extensionInfo.vHeight)), i.mediaInfo.duration, null != i.onDemuxed && i.onDemuxed(i.onReadyOBJ);
 
             for (var e = !1;;) {
               var r = i.mpegTsObj.readPacket();
@@ -23661,6 +23661,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         key: "getSampleRate",
         value: function value() {
           return this.sampleRate;
+        }
+      }, {
+        key: "getSampleChannel",
+        value: function value() {
+          return this.aChannel;
         }
       }, {
         key: "getSize",
@@ -24201,7 +24206,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 u = n.HEAPU32[e / 4 + 2 + 2 + 2 + 2 + 2];
             this.mediaAttr.vFps = r, this.mediaAttr.vGop = u, this.mediaAttr.vDuration = o, this.mediaAttr.aDuration = l, this.mediaAttr.duration = f;
             var h = n.cwrap("getAudioCodecID", "number", [])();
-            h >= 0 ? (this.mediaAttr.aCodec = s.CODEC_OFFSET_TABLE[h], this.mediaAttr.sampleRate = t > 0 ? t : s.DEFAULT_SAMPLERATE, this.mediaAttr.sampleChannel = i > 0 ? i : s.DEFAULT_CHANNEL) : (this.mediaAttr.sampleRate = 0, this.mediaAttr.sampleChannel = 0);
+            h >= 0 ? (this.mediaAttr.aCodec = s.CODEC_OFFSET_TABLE[h], this.mediaAttr.sampleRate = t > 0 ? t : s.DEFAULT_SAMPLERATE, this.mediaAttr.sampleChannel = i >= 0 ? i : s.DEFAULT_CHANNEL) : (this.mediaAttr.sampleRate = 0, this.mediaAttr.sampleChannel = 0);
             var c = n.cwrap("getVideoCodecID", "number", [])();
             c >= 0 && (this.mediaAttr.vCodec = s.CODEC_OFFSET_TABLE[c]), null == this.aacDec ? this.aacDec = new a.AACDecoder(this.mediaAttr) : this.aacDec.updateConfig(this.mediaAttr);
           }
@@ -24825,9 +24830,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 var i = t.hlsObj.getACodec(),
                     n = t.hlsObj.getFPS(),
                     a = t.hlsObj.getSampleRate(),
-                    s = t.hlsObj.getSize();
-
-                t._makeMP4PlayerViewEvent(r, n, a, s, "" == i);
+                    s = t.hlsObj.getSize(),
+                    o = !1;
+                o = t.hlsObj.getSampleChannel() <= 0 || "" === i, t._makeMP4PlayerViewEvent(r, n, a, s, o);
               }
             }, this.hlsObj.onSamples = function (t, i) {
               var r = e;
