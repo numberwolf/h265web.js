@@ -23,14 +23,13 @@
   "author": "numberwolf - changyanlong",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "browserify play.js -o ./dist/play.js && node server.js",
+    "start": "browserify play.js -o ./dist/play.js && echo 'OK! Please move to your webroot'",
     "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
   },
   "dependencies": {
     "@babel/preset-env": "^7.12.11",
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
-    "pinipig": "^1.6.1",
     "webpack": "^4.44.1"
   },
   "devDependencies": {

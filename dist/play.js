@@ -23131,6 +23131,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         nowPacket: null,
         stream: new Uint8Array(),
         audio: null,
+        liveStartMs: -1,
         durationMs: -1,
         videoPTS: 0,
         loop: null,
@@ -23280,31 +23281,42 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         },
         playFunc: function playFunc() {
-          if (t.playParams.seekEvent || h() - t.calcuteStartTime >= t.frameTime - t.preCostTime) {
-            var e = !0;
-            if (t.calcuteStartTime = h(), t.config.audioNone) t.playFrameYUV(e, t.playParams.accurateSeek);else {
-              t.fix_poc_err_skip > 0 && (t.fix_poc_err_skip--, e = !1);
-              var i = t.videoPTS - t.audio.getAlignVPTS();
-              if (i > 0) return void (t.playParams.seekEvent && !t.config.audioNone && t.audio.setVoice(0));
+          var e = !1;
 
-              if (e) {
-                if (!(e = -1 * i <= 1 * t.frameTimeSec)) {
-                  for (var r = parseInt(i / t.frameTimeSec), n = 0; n < r; n++) {
+          if (t.playParams.seekEvent || h() - t.calcuteStartTime >= t.frameTime - t.preCostTime) {
+            e = !0;
+            var i = !0;
+            if (t.calcuteStartTime = h(), t.config.audioNone) t.playFrameYUV(i, t.playParams.accurateSeek);else {
+              t.fix_poc_err_skip > 0 && (t.fix_poc_err_skip--, i = !1);
+              var r = t.videoPTS - t.audio.getAlignVPTS();
+              if (r > 0) return void (t.playParams.seekEvent && !t.config.audioNone && t.audio.setVoice(0));
+
+              if (i) {
+                if (!(i = -1 * r <= 1 * t.frameTimeSec)) {
+                  for (var n = parseInt(r / t.frameTimeSec), a = 0; a < n; a++) {
                     t.playFrameYUV(!1, t.playParams.accurateSeek);
                   }
 
                   t.playFrameYUV(!0, t.playParams.accurateSeek);
                 }
 
-                t.playFrameYUV(e, t.playParams.accurateSeek);
+                t.playFrameYUV(i, t.playParams.accurateSeek);
               }
             }
           }
 
-          t.playParams.seekEvent && (t.playParams.seekEvent = !1, t.onSeekFinish(), t.isPlaying || (t.playFrameYUV(!0, t.playParams.accurateSeek), t.pause()), t.config.audioNone || t.audio.setVoice(t.realVolume)), t.onPlayingTime && t.onPlayingTime(t.videoPTS), t.checkFinished(t.playParams.mode);
+          return t.playParams.seekEvent && (t.playParams.seekEvent = !1, t.onSeekFinish(), t.isPlaying || (t.playFrameYUV(!0, t.playParams.accurateSeek), t.pause()), t.config.audioNone || t.audio.setVoice(t.realVolume)), t.onPlayingTime && t.onPlayingTime(t.videoPTS), t.checkFinished(t.playParams.mode), e;
         },
         play: function play(e) {
-          t.playParams = e, t.calcuteStartTime = h(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
+          if (t.playParams = e, t.calcuteStartTime = h(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, !0 === t.config.audioNone && t.playParams.mode == f.PLAYER_MODE_NOTIME_LIVE) {
+            t.liveStartMs = h(), t.frameTime = Math.floor(1e3 / t.config.fps), t.frameTimeSec = t.frameTime / 1e3;
+            var i = 0;
+            t.loop = window.setInterval(function () {
+              var e = h() - t.liveStartMs,
+                  r = e / t.frameTime;
+              r >= i && (t.playFrameYUV(!0, t.playParams.accurateSeek), i += 1);
+            }, 1);
+          } else t.videoPTS >= t.playParams.seekPos && !t.isNewSeek || 0 === t.playParams.seekPos || 0 === t.playParams.seekPos ? (t.frameTime = 1e3 / t.config.fps, t.frameTimeSec = t.frameTime / 1e3, 0 == t.config.audioNone && t.audio.play(), t.realVolume = t.config.audioNone ? 0 : t.audio.voice, t.playParams.seekEvent && (t.fix_poc_err_skip = 10), t.loop = window.setInterval(function () {
             var e = h();
             t.playFunc(), t.preCostTime = h() - e, t.preCostTime;
           }, 1)) : (t.loop = window.setInterval(function () {
@@ -23361,7 +23373,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               i = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
               r = t.cacheYuvBuf.vYuv();
           if (null == r) return t.noCacheFrame += 1, e && !t.playParams.seekEvent && t.loadCache(), !1;
-          t.noCacheFrame = 0;
+          t.noCacheFrame = 0, r.pts;
           var n = r.pts;
           return t.videoPTS = n, (!e && i || e) && e && t.drawImage(r.width, r.height, r.imageBufferY, r.imageBufferB, r.imageBufferR), e && !t.playParams.seekEvent && t.isPlaying && t.loadCache(), !0;
         },
@@ -23750,7 +23762,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }).then(function (r) {
             null != r && !1 !== r && !0 !== r && t._type == n.PLAYER_IN_TYPE_M3U8_LIVE && setTimeout(function () {
               i.fetchM3u8(e);
-            }, 1e3 * r);
+            }, 500 * r);
           });
         }
       }, {
@@ -25050,7 +25062,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-require('./h265webjs-v20210518');
+require('./h265webjs-v20210521');
 
 var h265webjs =
 /*#__PURE__*/
@@ -25078,7 +25090,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20210518":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20210521":1}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
