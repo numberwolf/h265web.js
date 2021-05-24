@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/05/24 |
+| - | 1.FLV VOD Play(In the bak player core mode) |
 | Time | 2021/05/21 |
 | - | 1.HLS(LIVE:No audio)performance optimizing |
 | Time | 2021/05/18 |
@@ -71,8 +73,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | - | 1.Fixed: Some video playing with gray block(mosic) |
 | - | 2.Fixed: Some video when playing first gop with gray block(mosic) |
 | Time | 2021/04/22 |
-| - | 1.New play core(test) support: seek |
-| - | 2.New play core(test) support: yuvj420p |
+| - | 1.Bak player core mode(test) support: seek |
+| - | 2.Bak player core mode(test) support: yuvj420p |
 | - | 3.Others |
 | Time | 2021/04/12 |
 | - | 1.Fixed bug: Some video(encode hev) play failed |
@@ -86,20 +88,20 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | - | 3.Remove HLS Log |
 | - | 4.Play without audio optio(New Core) |
 | Time | 2021/03/14 |
-| - | 1.New Core: Fixed: render of bytes align |
+| - | 1.Bak player core mode: Fixed: render of bytes align |
 | Time | 2021/03/12 |
 | - | 1.Sorry my friends, I was too tired to make a mistake with hls feature... Now I have fixed it. ~_~! |
 | Time | 2021/03/06 |
-| - | 1.New Core Type, Fixed: multi-stream play badcase |
+| - | 1.Bak player core mode, Fixed: multi-stream play badcase |
 | Time | 2021/02/28 |
 | - | 1.Add function to feed 265 nalu-frame `append265NaluFrame(nalBuf);` |
 | - | 2.Add new library to parse 265 stream [raw-parser.js](./dist/raw-parser.js) |
 | Time | 2021/02/21 |
 | - | 1.New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
 | Time | 2021/02/18 |
-| - | 1.New player core support play with audio |
+| - | 1.Bak player core mode support play with audio |
 | Time | 2021/02/08 |
-| - | 1.New player core (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
+| - | 1.Bak player core mode (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
 | Time | 2021/01/04 |
 | - | 1.Player Support Hevc file|
 | - | 2.Player Support Hevc stream|
@@ -126,7 +128,7 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | H.265 | Video on demand |  Y  | ---- |
 | H.265 | Live |  Y  | ---- |
 | http-flv | Live |  N  | TODO |
-| flv | Video on demand |  N  | TODO |
+| flv | Video on demand |  Y  | Bak player core mode |
 
 * Features
 
@@ -134,7 +136,7 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 | ---- | ---- |  ----  |
 | Video on demand | Y |  ----  | ---- |
 | Live | Y |  ----  | ---- |
-| Seek | Y | when core equal to 1, do not support  | ---- |
+| Seek | Y | ----  | ---- |
 | AccurateSeek | Y |  ----  | ---- |
 | Cover Image | Y |  ----  | ---- |
 | Playing with download | Y |  ----  | ---- |
@@ -245,7 +247,7 @@ import H265webjsModule from './dist/index';
 
 ```javascript
 const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器内核
-const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验播放器内核
+const PLAYER_CORE_TYPE_CNATIVE = 1; // 备用播放器内核
 
 let config = {
     type: "mp4",
@@ -277,8 +279,8 @@ let config = {
 | \+ moovStartFlag  | Bool | true/false | N:default is sfalse | mp4 with moov before mdat |
 | \+ readyShow  | Bool | true/false | N:default is false | need cover image |
 | \+ rawFps  | Float32 | Example:30 | N:default 24 | Fps for play HEVC/AVC stream |
-| \+ core  | Int | - | N:default 0 | 0:Default player core <br>1: New player core(beta) |
-| \+ coreProbePart  | Float32 | - | N:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with New player core(beta)) |
+| \+ core  | Int | - | N:default 0 | 0:Default player core <br>1: Bak player core mode(beta) |
+| \+ coreProbePart  | Float32 | - | N:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with Bak player core mode(beta)) |
 | \+ ignoreAudio | Int | - | N:Default is 0 | 0:Play with audio <br>1:Without audio |
 
 
@@ -332,6 +334,29 @@ let config = {
 		        rawFps : 30 // frame rate
 		    }
 		};
+		````
+
+		* Example 3 Create `FLV`(Video on demand) Player
+
+		```javascript
+		const PLAYER_CORE_TYPE_DEFAULT = 0; // Default player core
+        const PLAYER_CORE_TYPE_CNATIVE = 1; // Bak player core mode
+		let config = {
+            type: "mp4", // play flv, here use mp4 type mode
+            player: "glplayer",
+            width: 960,
+            height: 540,
+            accurateSeek : true,
+            token : token,
+            extInfo : {
+                moovStartFlag : true,
+                readyShow : true,
+                autoCrop : false,
+                core : PLAYER_CORE_TYPE_CNATIVE,
+                coreProbePart : 0.1,
+                ignoreAudio : 0
+            }
+        };
 		````
 
 	* 2）Player
