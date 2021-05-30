@@ -59,6 +59,9 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/05/30 |
+| - | 1.Fixed: Some problem with seek and play(Important) |
+| - | 2.Feature: Event/Callback of Video's cover image load finished |
 | Time | 2021/05/24 |
 | - | 1.FLV VOD Play(In the bak player core mode) |
 | Time | 2021/05/21 |
@@ -533,6 +536,17 @@ player.onCacheProcess = (cPts) => {
     // console.log("onCacheProcess => ", cPts);
 };
 ````
+
+#### 7）Player Cover Image load finished
+
+* Example
+
+```javascript
+player.onReadyShowDone = () => {
+    // console.log("onReadyShowDone");
+    // to play
+};
+```
 
 <br>
 

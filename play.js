@@ -102,6 +102,11 @@ global.makeH265webjs = (videoURL, config) => {
         showLabel.textContent = SHOW_DONE;
     };
 
+    h265webjs.onReadyShowDone = () => {
+        console.log("onReadyShowDone");
+        showLabel.textContent = "Cover Img OK";
+    };
+
     h265webjs.onLoadFinish = () => {
         h265webjs.setVoice(1.0);
         mediaInfo = h265webjs.mediaInfo();

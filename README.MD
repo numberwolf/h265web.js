@@ -58,6 +58,9 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/05/30 |
+| - | 1.解决了一些Seek和播放的bug(比较重要的升级) |
+| - | 2.播放器封面图加载完成 事件通知 |
 | 时间 | 2021/05/24 |
 | - | 1.FLV点播支持(在备用播放内核模式下可用) |
 | 时间 | 2021/05/21 |
@@ -542,7 +545,19 @@ player.onPlayFinish = () => {
 player.onCacheProcess = (cPts) => {
     // console.log("onCacheProcess => ", cPts);
 };
-````
+```
+
+#### 7）播放器封面图加载完成
+
+* 示例
+
+```javascript
+player.onReadyShowDone = () => {
+    // console.log("onReadyShowDone");
+    // to play 封面图加载完成了
+};
+```
+
 
 <br>
 
