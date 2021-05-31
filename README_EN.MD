@@ -176,7 +176,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### Demo ####
 
-<a href="http://hevc.xvideo.video/">http://hevc.xvideo.video</a>
+<a href="https://www.zzsin.com/h265webjs.html">https://www.zzsin.com/h265webjs.html</a>
 
 <br>
 
