@@ -58,6 +58,11 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/06/27 |
+| - | 0.开源! |
+| - | 1.支持了FLV视频播放Seek能力 |
+| - | 2.解决了新播放内核的SEEK问题 |
+| - | 3.FLV播放新类型支持, 以及不需要设置播放内核 |
 | 时间 | 2021/05/30 |
 | - | 1.解决了一些Seek和播放的bug(比较重要的升级) |
 | - | 2.播放器封面图加载完成 事件通知 |
@@ -132,7 +137,7 @@
 | H.265 | 点播 |  是  | ---- |
 | H.265 | 直播 |  是  | ---- |
 | http-flv | 直播 |  否  | 待支持 |
-| flv | 点播 |  是  | 备用播放内核模式 |
+| flv | 点播 |  是  | 备用播放内核模式,不需要填写 |
 
 * 能力
 
@@ -277,7 +282,7 @@ var config = {
 
 |  配置项 | 类型 | 可选值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
-| type  | String | mp4/hls/ts/raw265 | 是 | 播放文件的类型 |
+| type  | String | mp4/hls/ts/raw265/flv | 是 | 播放文件的类型 |
 | player  | String | - | 是 | 播放窗口的dom的id值 |
 | width  | Int | - | 是 | 播放窗口的宽度 |
 | height  | Int | - | 是 | 播放窗口的高度 |
@@ -297,6 +302,18 @@ var config = {
 <br>
 
 ### 初始化播放器 ###
+
+* 务必注意！！！
+
+<strong>请将你整体项目最终编译出来的`JS目标文件` 与 `wasm文件`放置于`同一级目录`</strong>
+
+* 例如
+
+```c
+	./dist/你最终编译产出.js
+	./dist/missile.wasm
+	./index.html
+```
 
 * 创建方法(全局方法) 
 
@@ -344,13 +361,13 @@ var config = {
 		    }
 		};
 
-		* 例子3 创建`FLV`点播
+		* 例子3 创建`FLV`点播播放器
 
 		```javascript
 		const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器
         const PLAYER_CORE_TYPE_CNATIVE = 1; // 备用播放内核
 		let config = {
-            type: "mp4", // 虽然播放FLV 但是这里类型走MP4类型
+            type: "flv",
             player: "glplayer",
             width: 960,
             height: 540,
@@ -360,7 +377,6 @@ var config = {
                 moovStartFlag : true,
                 readyShow : true,
                 autoCrop : false,
-                core : PLAYER_CORE_TYPE_CNATIVE,
                 coreProbePart : 0.1,
                 ignoreAudio : 0
             }

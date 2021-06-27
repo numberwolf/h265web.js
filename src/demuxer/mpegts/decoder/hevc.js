@@ -19,14 +19,38 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20210627');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
+const def = require('../consts');
+
+class HevcClazz {
+	/**
+	 * @brief UInt8array
+	 */
+	constructor(frame) {
+		this.frame = frame;
 	}
 
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
-    }
+	_removeAud() {
+		// def.H265AUD
+		if ([
+				this.frame[0], this.frame[0], this.frame[0], this.frame[0], 
+				this.frame[0], this.frame[0], this.frame[0]
+			] == def.H265AUD
+		) {
+
+			let frameTemp = new Uint8Array(this.frame.length - 7);
+            frameTemp.set(this.frame.subarray(7));
+            this.frame = frameTemp;
+		}
+	}
+
+	_getKeyType() {
+		
+	}
+
+	handleFrame() {
+		this._removeAud();
+		return this.frame;
+	}
 }
+
+exports.Hevc = HevcClazz;

@@ -19,14 +19,16 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20210627');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
-	}
+global.STATIC_MEM_wasmDecoderState = -1;
+global.STATICE_MEM_playerCount = -1;
+global.STATICE_MEM_playerIndexPtr = 0;
 
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
-    }
-}
+// /**
+//  * CNative function ptr
+//  */
+// global.STATIC_MEM_playerAddCNativeFunctions = 0;
+// // function ptrs
+// global.STATIC_MEM_playerFuncProbeCallbackPtr = -1;
+// global.STATIC_MEM_playerFuncFrameCallbackPtr = -1;
+// global.STATIC_MEM_playerFuncSampleCallbackPtr = -1;
+// global.STATIC_MEM_playerFuncAACCallback = -1;

@@ -19,14 +19,30 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20210627');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
-	}
-
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
+module.exports = {
+	/*
+	 static bool isH264iFrame(byte[] paket)
+	    {
+	        int RTPHeaderBytes = 0;
+	 
+	        int nal_type = paket[RTPHeaderBytes + 1] & 0x1F; 
+	        if (nal_type == 5 || nal_type == 7 || nal_type == 8|| nal_type == 2)
+	        {
+	            return true;
+	        }
+	 
+	        return false;
+	   }
+   */
+	NALU_IS_KEYFRAME: (charByte) => {
+        let nal_type = charByte & 31;
+        console.log(nal_type);
+        if (nal_type === 5 
+        	|| nal_type == 7 
+	        || nal_type == 8 
+	        || nal_type == 2) {
+            return true;
+        }
+        return false;
     }
-}
+};

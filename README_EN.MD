@@ -59,6 +59,11 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/06/27 |
+| - | 0.Open Source! |
+| - | 1.Support Seek in FLV |
+| - | 2.Fixed: Seek problems with bak player core mode |
+| - | 3.Add FLV type ,and do not need set player-core |
 | Time | 2021/05/30 |
 | - | 1.Fixed: Some problem with seek and play(Important) |
 | - | 2.Feature: Event/Callback of Video's cover image load finished |
@@ -272,7 +277,7 @@ let config = {
 
 |  Config | Type | Value | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
-| type  | String | mp4/hls/ts/raw265 | Y | Media file type |
+| type  | String | mp4/hls/ts/raw265/flv | Y | Media file type |
 | player  | String | - | Y | Player dom id |
 | width  | Int | - | Y | Player width |
 | height  | Int | - | Y | Player height |
@@ -290,6 +295,18 @@ let config = {
 <br>
 
 ### InitPlayer ###
+
+* Warning！！！
+
+<strong>After compile ,Please put your `JS file` with `wasm file` in the same directory </strong>
+
+* Example
+
+```c
+	./dist/after-compile-dist.js
+	./dist/missile.wasm
+	./index.html
+```
 
 * Create your player(Global function) 
 
@@ -345,7 +362,7 @@ let config = {
 		const PLAYER_CORE_TYPE_DEFAULT = 0; // Default player core
         const PLAYER_CORE_TYPE_CNATIVE = 1; // Bak player core mode
 		let config = {
-            type: "mp4", // play flv, here use mp4 type mode
+            type: "flv",
             player: "glplayer",
             width: 960,
             height: 540,
@@ -355,7 +372,6 @@ let config = {
                 moovStartFlag : true,
                 readyShow : true,
                 autoCrop : false,
-                core : PLAYER_CORE_TYPE_CNATIVE,
                 coreProbePart : 0.1,
                 ignoreAudio : 0
             }

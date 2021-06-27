@@ -19,14 +19,20 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20210627');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
-	}
+// UI
+// You can design your own playerUI here
+class UIModule {
+    constructor() {}
 
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
+    static createPlayerRender(id, w, h) {
+        let canvasBox = document.querySelector('div#' + id);
+        canvasBox.style.position = 'relative';
+        canvasBox.style.backgroundColor = 'black';
+        canvasBox.style.width = w + 'px';
+        canvasBox.style.height = h + 'px';
+
+        return canvasBox;
     }
 }
+
+exports.UI = UIModule;

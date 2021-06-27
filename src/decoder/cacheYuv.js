@@ -19,14 +19,28 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20210627');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
+class CacheYuvStruct {
+	// width, height, imageBufferY, imageBufferB, imageBufferR
+	constructor(pts, width, height, imageBufferY, imageBufferB, imageBufferR) {
+		this.pts 	= pts;
+		this.width 	= width;
+		this.height = height;
+		this.imageBufferY = imageBufferY;
+		this.imageBufferB = imageBufferB;
+		this.imageBufferR = imageBufferR;
 	}
 
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
-    }
+	setYuv(pts, width, height, imageBufferY, imageBufferB, imageBufferR) {
+		this.pts 	= pts;
+		this.width 	= width;
+		this.height = height;
+		this.imageBufferY = imageBufferY;
+		this.imageBufferB = imageBufferB;
+		this.imageBufferR = imageBufferR;
+	}
 }
+
+exports.CacheYuvStruct = CacheYuvStruct;
+
+
+

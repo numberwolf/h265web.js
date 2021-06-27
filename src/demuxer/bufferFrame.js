@@ -19,14 +19,29 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20210627');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
+class BufferFrameStruct {
+	constructor(pts, isKey, data, video) {
+		this.pts 	= pts;
+		this.dts	= pts;
+		this.isKey 	= isKey;
+		this.data 	= data;
+		this.video 	= video;
 	}
 
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
-    }
+	setFrame(pts, isKey, data, video){
+		this.pts 	= pts;
+		this.isKey 	= isKey;
+		this.data 	= data;
+		this.video 	= video;
+	}
 }
+
+exports.BufferFrame = BufferFrameStruct;
+exports.ConstructWithDts = (pts, dts, isKey, data, video) => {
+	let newBufObject = new BufferFrameStruct(pts, isKey, data, video);
+	newBufObject.dts = dts;
+	return newBufObject;
+};
+
+
+
