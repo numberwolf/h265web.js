@@ -59,6 +59,8 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
+| 时间 | 2021/07/01 |
+| - | 0.Add example and package.json file |
 | Time | 2021/06/27 |
 | - | 0.Open Source! |
 | - | 1.Support Seek in FLV |
