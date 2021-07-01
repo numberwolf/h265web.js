@@ -14,6 +14,7 @@
 *.mp3
 #Node stuff
 node_modules
+node_modules*
 bundle_player.js
 # Others
 VideoMissileServerDemo
