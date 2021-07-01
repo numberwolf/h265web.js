@@ -1,0 +1,1 @@
+VERSION='v20210627' # output version + index.js
