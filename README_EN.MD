@@ -15,6 +15,20 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
 
 
+# Remind!
+
+H265web.js use the soft-decode mode(Can not use hard-decode and assembly-optimization on browers), so your device performance has a large impact on player.
+
+Notice：
+
+* Recommended FPS <= 30fps
+	* Better: 24fps
+
+* Recommended Bitrate <= 1500kbps
+	* Better: 300~600kbps
+
+
+
 ## Index
 
 - [0、README](#0readme)
@@ -59,7 +73,9 @@ __`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web
 
 | Update | Content |
 | ---- | ---- |
-| 时间 | 2021/07/01 |
+| Time | 2021/07/04 |
+| - | 0.Fixed: <a href="https://github.com/numberwolf/h265web.js/issues/58">`ISSUE#58`</a> (When default player-core's status is caching-frames, can not pause video) |
+| Time | 2021/07/01 |
 | - | 0.Add example and package.json file |
 | Time | 2021/06/27 |
 | - | 0.Open Source! |

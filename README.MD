@@ -4,8 +4,7 @@
 
 <img src="./resource/logo@300x300.png" width="300px" />
 
-一个可支持HEVC/H.265编码播放720P、1080P的播放器
-`~^_^~` 作者用爱发电 如果 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> 帮助到了你，请点击右上角的star!
+一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的播放器 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
 | h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK |
 | ---- | ---- | ---- |
@@ -13,6 +12,17 @@
 
 <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
 
+# Remind!
+
+因为使用软解码能力（浏览器上无法做硬解码加速 与 汇编优化）,故设备电脑配置性能 会 影响播放器性能！
+
+请注意：
+
+* 视频帧率最好 <= 30fps
+	* 建议：24fps
+
+* 视频码率最好 <= 1.5Mb
+	* 建议：300~600kbps (HEVC/H.265可提供较高的压缩率)
 
 ## 目录
 
@@ -58,6 +68,8 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/07/04 |
+| - | 0.修复 <a href="https://github.com/numberwolf/h265web.js/issues/58">`ISSUE#58`</a> (默认内核缓存状态下的暂停问题) |
 | 时间 | 2021/07/01 |
 | - | 0.增加示例 与 编译所需 |
 | 时间 | 2021/06/27 |

@@ -68,6 +68,7 @@ global.makeH265webjs = (videoURL, config) => {
     showLabel.textContent = SHOW_LOADING;
 
     playBar.onclick = () => {
+        console.log("is playing:", h265webjs.isPlaying());
         if (h265webjs.isPlaying()) {
             console.log("bar pause============>");
             playBar.textContent = '>';
@@ -256,6 +257,7 @@ global.makeH265webjs2 = (videoURL, config) => {
     showLabel.textContent = SHOW_LOADING;
 
     playBar.onclick = () => {
+        console.log("is playing:", h265webjs.isPlaying());
         if (h265webjs.isPlaying()) {
             console.log("bar pause============>");
             playBar.textContent = '>';
@@ -395,6 +397,7 @@ global.makeH265webjsRaw = (url265, config) => {
     playBar.textContent = '>';
 
     playBar.onclick = () => {
+        console.log("is playing:", h265webjs.isPlaying());
         if (h265webjs.isPlaying()) {
             console.log("bar pause============>");
             playBar.textContent = '>';

@@ -98,6 +98,7 @@ module.exports = config => {
         preCostTime: 0, // Play Use MS
         realVolume: 1, // Play Use 0~1
         isPlaying: false,
+        isCaching: def.CACHE_NO_LOADCACHE,
         isNewSeek: false,
         isCheckDisplay: false,
         isPlayLoadingFinish: 0, // 0:undo, 1 loading 2 loading finish
@@ -147,7 +148,7 @@ module.exports = config => {
         player.config.audioNone == false && player.audio.setVoice(player.realVolume);
     };
     player.isPlayingState = () => {
-        return player.isPlaying;
+        return player.isPlaying || player.isCaching === def.CACHE_WITH_PLAY_SIGN;
     };
     // {pts: 3.04, isKey: false, data: Uint8Array(682), video: true}
     player.appendAACFrame = streamBytes => {
@@ -188,6 +189,10 @@ module.exports = config => {
         player.loop = null;
         player.config.audioNone == false && player.audio.pause();
         player.isPlaying = false;
+
+        if (player.isCaching === def.CACHE_WITH_PLAY_SIGN) {
+            player.isCaching = def.CACHE_WITH_NOPLAY_SIGN
+        }
     };
     player.checkFinished = (mode = def.PLAYER_MODE_VOD) => {
         // //console.log((mode == def.PLAYER_MODE_VOD) 
@@ -369,13 +374,18 @@ module.exports = config => {
         // 就剩下最后3帧就别管了
         if (player.frameList.length <= 3) {
             return;
-        } 
+        }
 
         let isPlay = player.isPlaying;
-
         if (player.cacheYuvBuf.yuvCache.length <= 3) {
             player.pause();
             player.onLoadCache != null && player.onLoadCache();
+
+            if (isPlay) {
+                player.isCaching = def.CACHE_WITH_PLAY_SIGN;
+            } else {
+                player.isCaching = def.CACHE_WITH_NOPLAY_SIGN;
+            }
         } else {
             return;
         }
@@ -391,9 +401,11 @@ module.exports = config => {
                 window.clearInterval(cacheInterval);
                 cacheInterval = null;
 
-                if (isPlay) {
+                if (player.isCaching === def.CACHE_WITH_PLAY_SIGN) {
                     player.play(player.playParams);
                 }
+
+                player.isCaching = def.CACHE_NO_LOADCACHE;
             }
         }, 40);
     };
