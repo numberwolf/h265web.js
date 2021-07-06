@@ -793,9 +793,7 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 <hr>
 
-## Stargazers over time
 
-[![Stargazers over time](https://starcharts.herokuapp.com/numberwolf/h265web.js.svg)](https://starcharts.herokuapp.com/numberwolf/h265web.js)
 
 
 
