@@ -61,7 +61,7 @@ Notice：
 
 - [3、Others](#3others)
 
-	- [Donate - Give me power Give me love - I will make list of donaters](#donate)
+	- [Donate](#donate)
 	
 	- [Transcode and get hevc media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
 
@@ -242,7 +242,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 require('./dist/h265webjs');
 ```
 
-* By github 1.2 by `import xxx from xxx` （recommend）
+* `import xxx from xxx` （recommend）
 
 ```javascript
 import H265webjsModule from './dist/index';

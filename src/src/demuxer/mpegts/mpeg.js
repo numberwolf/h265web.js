@@ -236,6 +236,10 @@ class MPEG_JS_Module {
         return this.extensionInfo;
     }
 
+    readAudioNone() {
+        return this.mediaAttr.audioNone;
+    }
+
     /**
      * @brief Desc of Packet
      *        Include : Nalu Layer/VLC Layer

@@ -32,7 +32,6 @@ const UI = require('./utils/ui/ui');
 const CacheYUV = require('./decoder/cache');
 const AVModule = require('./decoder/missile.js');
 // const RawParser = require('./decoder/raw-parser');
-
 // http://localhost:8080/h265webjs-roi/
 
 const DEFAULT_CONFIG_EXT = {
