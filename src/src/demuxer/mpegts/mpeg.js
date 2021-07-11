@@ -40,7 +40,8 @@ class MPEG_JS_Module {
         	aDuration : 0,
         	duration : 0,
             aCodec: "",
-            vCodec: ""
+            vCodec: "",
+            audioNone: false,
         };
 
         this.extensionInfo = {
@@ -201,6 +202,7 @@ class MPEG_JS_Module {
         } else {
             this.mediaAttr.sampleRate = 0;
             this.mediaAttr.sampleChannel = 0;
+            this.mediaAttr.audioNone = true;
         }
         let videoCodecID = ModuleTS.cwrap('getVideoCodecID', 'number', [])();
         if (videoCodecID >= 0) {

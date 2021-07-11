@@ -68,6 +68,8 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/07/11 |
+| - | 0.兼容 ZLMediaKit + 华为摄像头推的流 |
 | 时间 | 2021/07/04 |
 | - | 0.修复 <a href="https://github.com/numberwolf/h265web.js/issues/58">`ISSUE#58`</a> (默认内核缓存状态下的暂停问题) |
 | 时间 | 2021/07/01 |
@@ -224,6 +226,10 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 #### 如果想使用底层的265解码器能力 可以看 [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder)
 
 ### 安装 ###
+
+> * <h4> 注意：不要从npm商店引入！ 请用github仓库下载后引入！ 因为npm商店对wasm不友好</h4>
+
+> * <h4> 注意：.wasm 文件请放置于 你通过`webpack`/`browerify`等打包工具打包出来的js相同目录下！不然无法使用！！！或者直接用我打包好的dist文件夹下的js和wasm单独引入</h4>
 
 #### 1）引入包
 

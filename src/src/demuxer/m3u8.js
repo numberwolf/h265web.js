@@ -49,6 +49,7 @@ class M3u8ParserModule {
 		this.vPreFramePTS	= 0;
 		this.aPreFramePTS	= 0;
 
+		this.audioNone		= false;
 		this.aCodec			= false;
 		this.aChannel		= 0;
 	    this.durationMs    	= -1.0;
@@ -115,6 +116,11 @@ class M3u8ParserModule {
 	            _this.fps 			= _this.mediaInfo.vFps;
 	            _this.sampleRate 	= _this.mediaInfo.sampleRate;
 	            // console.log("samplerate:" + _this.sampleRate);
+
+	            if (_this.aCodec === null || _this.aCodec === "" 
+	            	|| _this.aChannel <= 0) {
+	            	_this.audioNone = true;
+	            }
 	        }
 	        if (_this.extensionInfo == null) {
 	        	_this.extensionInfo = _this.mpegTsObj.readExtensionInfo();
@@ -134,6 +140,7 @@ class M3u8ParserModule {
             let needIncrStart = false;
 	        while(1) {
 	            let readData = _this.mpegTsObj.readPacket();
+	            console.log("readData=>", readData);
 	            if (readData.size <= 0) {
 	                break;
 	            }

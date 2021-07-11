@@ -534,7 +534,7 @@ module.exports = config => {
                 // let test1time = getMsTime();
                 let spendMs = getMsTime() - player.liveStartMs;
                 let frameCount = spendMs / player.frameTime;
-                console.log("player.loop====>", spendMs, frameCount, frameIdx);
+                // console.log("player.loop====>", spendMs, frameCount, frameIdx);
 
                 if (frameCount >= frameIdx) {
                     player.playFrameYUV(true, player.playParams.accurateSeek);

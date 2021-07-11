@@ -73,6 +73,8 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/07/11 |
+| - | 0.Fixed: The player compatible with ZLMediaKit + HUAWEI HoloSens Camera LIVE Stream |
 | Time | 2021/07/04 |
 | - | 0.Fixed: <a href="https://github.com/numberwolf/h265web.js/issues/58">`ISSUE#58`</a> (When default player-core's status is caching-frames, can not pause video) |
 | Time | 2021/07/01 |
@@ -226,6 +228,10 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 #### New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder)
 
 ### Install ###
+
+> * <h4> Warning: Do not install from npm store! Please download from Github！ Because npm store is not friendly with Webassembly!</h4>
+
+> * <h4> Warning: Put the .wasm file into `webpack`/`browerify`'s dist Directory! If wasm's path is not same with `webpack`/`browerify`'s dist file's path, you can not running with it！！！Or you can include with this github's dist/\*.js and dist/missile\*.wasm</h4>
 
 #### 1）Install SDK Package
 

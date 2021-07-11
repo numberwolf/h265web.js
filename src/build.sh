@@ -41,7 +41,7 @@ cmd[4]="cp -r src/index.js dist/"
 cmd[5]="rm ./dist/h265webjs_tmp.js"
 cmd[6]="cp -r ./dist/* ./demo/dist/"
 cmd[7]="cp ./src/decoder/raw-parser.js ./dist/" # extension module
-cmd[8]="browserify play.js -o ./dist/dist-play-${VERSION}.js"
+cmd[8]="browserify play.js -o ./dist/dist-play.js"
 # cmd[9]="node server.js"
 
 cmdLen=${#cmd[@]}

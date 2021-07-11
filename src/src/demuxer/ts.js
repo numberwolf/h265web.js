@@ -202,6 +202,10 @@ class TsParserModule {
         return this.aCodec;
     }
 
+    getAudioNone() {
+        return this.mpegTsObj.mediaAttr.audioNone;
+    }
+
 	getDurationMs () {
     	return this.durationMs;
 	}

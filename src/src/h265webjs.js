@@ -514,9 +514,11 @@ class H265webjsModule {
                 this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
                 this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
             {
+                console.log("avFeed mpegts ", this.mpegTsObj);
                 videoFrame = this.mpegTsObj.popBuffer(1, secVideoIdx);
-                audioFrame = this.mpegTsObj.audioNone ? null : this.mpegTsObj.popBuffer(2, secAudioIdx);
+                audioFrame = this.mpegTsObj.getAudioNone() ? null : this.mpegTsObj.popBuffer(2, secAudioIdx);
             } else if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+                console.log("this.hlsObj", this.hlsObj);
                 videoFrame = this.hlsObj.popBuffer(1, secVideoIdx);
                 audioFrame = this.hlsObj.audioNone ? null : this.hlsObj.popBuffer(2, secAudioIdx);
             }
@@ -538,7 +540,9 @@ class H265webjsModule {
                 }
             }
 
-            this.onCacheProcess && this.onCacheProcess(this.player.getCachePTS());
+            if (this.playMode !== def.PLAYER_MODE_NOTIME_LIVE) {
+                this.onCacheProcess && this.onCacheProcess(this.player.getCachePTS());
+            }
 
             if (videoFrame != null) {
                 // 首帧显示渲染
@@ -643,6 +647,7 @@ class H265webjsModule {
         this.playParam.size = size;
         this.playParam.audioNone = audioNone;
         this.playParam.videoCodec = videoCodec || def.CODEC_H265;
+        console.log("this.playParam: ", this.playParam);
 
         if (
             (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8 
@@ -1114,7 +1119,7 @@ class H265webjsModule {
         let fps         = _this.mpegTsObj.getFPS();
         let sampleRate  = _this.mpegTsObj.getSampleRate();
         let size        = _this.mpegTsObj.getSize();
-        // console.log(sampleRate);
+        console.log("aCodec:", aCodec);
 
         _this._makeMP4PlayerViewEvent(durationMs, fps, sampleRate, size, aCodec == "");
         // dur seconds
@@ -1151,7 +1156,9 @@ class H265webjsModule {
         };
 
         this.hlsObj.onCacheProcess = (pts) => {
-            this.onCacheProcess && this.onCacheProcess(pts);
+            if (this.playMode !== def.PLAYER_MODE_NOTIME_LIVE) {
+                this.onCacheProcess && this.onCacheProcess(pts);
+            }
         };
 
         this.hlsObj.onDemuxed = (readyObj) => {
@@ -1174,10 +1181,11 @@ class H265webjsModule {
 
         this.hlsObj.onSamples = (readyObj, frame) => {
             let _this = this;
+            console.log("this.hlsObj", this.hlsObj, frame);
             if (frame.video == true) {
                 // console.log("FRAME==========>" + frame.pts);
                 _this.player.appendHevcFrame(frame);
-            } else {
+            } else if (this.hlsObj.audioNone === false) {
                 _this.player.appendAACFrame(frame);
             }
 
