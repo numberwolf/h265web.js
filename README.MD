@@ -225,7 +225,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### 如果想使用底层的265解码器能力 可以看 [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder)
 
-###安装###
+### 安装 ###
 
 > * <h4> 注意：不要从npm商店引入！ 请用github仓库下载后引入！ 因为npm商店对wasm不友好</h4>
 
