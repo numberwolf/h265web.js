@@ -62,9 +62,9 @@
 
 <hr>
 
-###0 说明###
+### 0 说明 ###
 
-####更新日志####
+#### 更新日志 ####
 
 | 更新日志 | 内容 |
 | ---- | ---- |
@@ -140,7 +140,7 @@
 
 <br>
 
-####当前能力####
+#### 当前能力 ####
 
 * 协议
 
@@ -186,7 +186,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 <br>
 
-####联系我####
+#### 联系我 ####
 
 * Github: https://github.com/numberwolf/h265web.js
 * Email(porschegt23@foxmail.com)
@@ -197,13 +197,13 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 <br>
 
-####线上demo####
+#### 线上demo ####
 
 <a href="https://www.zzsin.com/h265webjs.html">https://www.zzsin.com/h265webjs.html</a>
 
 <br>
 
-####效果预览####
+#### 效果预览 ####
 
 |  类型 |  点播 | 直播 |
 | ---- |  ----  | ---- |
@@ -211,7 +211,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 <br>
 
-##1-快捷方式使用##
+## 1 快捷方式使用 ##
 
 * 使用流程也可以直接看 `play.js`和`index.html`的Demo使用
 
@@ -219,7 +219,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 <br>
 
-##2-播放器SDK使用文档##
+## 2 播放器SDK使用文档 ##
 
 ———————— __API以及事件能力__
 
@@ -273,7 +273,7 @@ import H265webjsModule from './dist/index';
 
 <br>
 
-###播放器配置###
+### 播放器配置 ###
 
 * 创建代码如下
 
@@ -321,7 +321,7 @@ var config = {
 
 <br>
 
-###初始化播放器###
+### 初始化播放器 ###
 
 * 务必注意！！！
 
@@ -490,7 +490,7 @@ var config = {
 
 <br>
 
-###播放器相关事件绑定###
+### 播放器相关事件绑定 ###
 
 #### 1）Seek完成
 
@@ -618,7 +618,7 @@ player.onLoadCacheFinshed = () => {
 
 <br>
 
-###播放器API能力###
+### 播放器API能力 ###
 
 #### 1）加载播放器
 
@@ -778,9 +778,9 @@ let mediaInfo = player.mediaInfo();
 
 <br>
 
-##3-其它##
+## 3 其它 ##
 
-###捐赠###
+### 捐赠 ###
 
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
@@ -788,7 +788,7 @@ let mediaInfo = player.mediaInfo();
 
 <br>
 
-###FFmpeg转码265编码的视频###
+### FFmpeg转码265编码的视频 ###
 
 * mp4
 
