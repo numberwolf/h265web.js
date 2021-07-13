@@ -594,6 +594,27 @@ player.onReadyShowDone = () => {
 };
 ```
 
+#### 8）当前正在缓存帧数据
+
+* 示例
+
+```javascript
+player.onLoadCache = () => {
+	// caching frames
+};
+```
+
+
+#### 9）帧数据缓存完成
+
+* 示例
+
+```javascript
+player.onLoadCacheFinshed = () => {
+    // cache finished
+};
+```
+
 
 <br>
 

@@ -588,6 +588,27 @@ player.onReadyShowDone = () => {
 };
 ```
 
+#### 8）Player is caching frames
+
+* Example
+
+```javascript
+player.onLoadCache = () => {
+	// caching frames
+};
+```
+
+
+#### 9）Cache finished
+
+* Example
+
+```javascript
+player.onLoadCacheFinshed = () => {
+    // cache finished
+};
+```
+
 <br>
 
 ### PlayerAPIDocument ###
