@@ -1,0 +1,71 @@
+.controller li { 
+    position: relative; 
+    float: left;
+    border: 15px solid #404040;
+    color: #404040; height: 0;
+    width:0;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -o-border-radius: 100%;
+    border-radius: 100%;
+    margin: 0 5px; 
+}
+.controller li a { 
+    border-style: solid; 
+    text-indent: -9999px; 
+    position: absolute; 
+    top: -8px; 
+    left: -5px;  
+}
+
+.playBtn a {
+    border-color: transparent transparent transparent #fff;
+    border-width: 8px 0 8px 12px;
+    width: 0; 
+    height: 0;
+}
+.pauseBtn a {
+    border-color: transparent white;  
+    border-width: 0 3px; 
+    height: 15px; 
+    width: 6px; 
+    left: -6px;
+}
+.stopBtn a {
+    border: 7px solid #fff; 
+    height: 0; 
+    width: 0; 
+    left: -7px; 
+    top: -7px;
+}
+.forwardBtn a {
+    border-left-width: 8px; 
+    left: 1px;
+}
+.forwardBtn a:first-child {
+    margin-left: -7px; 
+}
+
+.rewindBtn a {
+    border-width: 8px 8px 8px 0; 
+    border-color: transparent #fff transparent transparent; 
+    width: 0; 
+    height: 0;
+}
+.rewindBtn a:first-child {
+    margin-left: -7px;
+}
+
+.ejectBtn a.arrow {
+    border-width: 0 8px 8px 8px; 
+    border-color: transparent transparent #fff transparent; 
+    top:-26px; 
+    left:-8px;
+}
+.ejectBtn a.dash {
+    border-width: 0 0 4px; 
+    border-color: transparent transparent #fff; 
+    height: 0; width:16px; 
+    left: -8px; 
+    top: 4px;
+}
