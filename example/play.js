@@ -1,115 +1,198 @@
 import H265webjsModule from './dist/index';
 import RawParserModule from './dist/raw-parser.js';
 
-const ScreenModule = require('./screen');
-const SHOW_LOADING = "LOADING...!";
+const SHOW_LOADING = "loading...";
 const SHOW_DONE = "done.";
 
-const getMsTime = () => {
-    return new Date().getTime();
-};
+function durationFormatSubVal(val) {
+    let valStr = val.toString();
+    if (valStr.length < 2) {
+        return '0' + valStr;
+    }
+    return valStr;
+}
 
 function durationText(duration) {
     if (duration < 0) {
         return "Play";
     }
     let durationSecInt = Math.round(duration);
-    return Math.floor(durationSecInt / 3600)
-    + ":" + Math.floor((durationSecInt % 3600) / 60)
-    + ":" + Math.floor(durationSecInt % 60);
+    return durationFormatSubVal(Math.floor(durationSecInt / 3600))
+    + ":" + durationFormatSubVal(Math.floor((durationSecInt % 3600) / 60))
+    + ":" + durationFormatSubVal(Math.floor(durationSecInt % 60));
 }
 
+const getMsTime = () => {
+    return new Date().getTime();
+};
+
+/*************************************************
+ *
+ *
+ *               Build Player
+ *
+ *
+ **************************************************/
+// clear cache count
+H265webjsModule.clear();
 global.makeH265webjs = (videoURL, config) => {
-    let screenView = new ScreenModule.Screen();
+    let playerId        = config.player;
 
-    let h265webjs       = H265webjsModule.createPlayer(videoURL, config);
+    let playerObj       = H265webjsModule.createPlayer(videoURL, config);
 
-    let cachePts        = document.querySelector('#cachePts');
-    let progressPts     = document.querySelector('#progressPts');
+    let playerDom       = document.querySelector('#' + playerId);
+    let playerCont      = document.querySelector('#player-container');
+    let controllerCont  = document.querySelector('#controller');
+    let progressCont    = document.querySelector('#progress-contaniner');
+    let progressContW   = progressCont.offsetWidth;
+    let cachePts        = progressCont.querySelector('#cachePts');
+    let progressPts     = progressCont.querySelector('#progressPts');
     let progressVoice   = document.querySelector('#progressVoice');
-    let playBar         = document.querySelector('#playBtn');
+    let playBar         = document.querySelector('#playBar');
+    let playBtn         = playBar.getElementsByTagName('a')[0];
     let showLabel       = document.querySelector('#showLabel');
     let ptsLabel        = document.querySelector('#ptsLabel');
-    let fullScreenBtn   = document.querySelector('#fullScreenBtn');
     let coverToast      = document.querySelector('#coverLayer');
     let coverBtn        = document.querySelector('#coverLayerBtn');
+    let muteBtn         = document.querySelector('#muteBtn');
+    // let debugYUVBtn     = document.querySelector('#debugYUVBtn');
+    // let debugYUVATag    = document.querySelector('#debugYUVUrl');
+    let fullScreenBtn   = document.querySelector('#fullScreenBtn');
     let mediaInfo       = null;
 
-    playBar.disabled    = true;
-    playBar.textContent = '>';
-
+    playBtn.disabled    = true;
+    // playBar.textContent = '>';
     showLabel.textContent = SHOW_LOADING;
+    playerCont.style.width = config.width + 'px';
+    playerCont.style.height = config.height + 'px';
+    controllerCont.style.width = config.width + 'px';
 
-    playBar.onclick = () => {
-        if (h265webjs.isPlaying()) {
+    let muteState = false;
+
+    // controllerCont.style.left = playerContainer.clientLeft;
+    // controllerCont.style.bottom = playerContainer.clientBottom;
+    // alert(playerContainer.clientLeft);
+
+    let playAction = () => {
+        console.log("is playing:", playerObj.isPlaying());
+        if (playerObj.isPlaying()) {
             console.log("bar pause============>");
-            playBar.textContent = '>';
-            h265webjs.pause();
+            // playBar.textContent = '>';
+            playBar.setAttribute('class', 'playBtn');
+            playerObj.pause();
         } else {
-            playBar.textContent = '||';
-            h265webjs.play();
+            // playBar.textContent = '||';
+            playBar.setAttribute('class', 'pauseBtn');
+            playerObj.play();
         }
     };
 
+    playerCont.onmouseover = function() {
+        controllerCont.hidden = false;
+    };
+
+    playerCont.onmouseout = function() {
+        controllerCont.hidden = true;
+    };
+
+    playerDom.onmouseup = function() {
+        playAction();
+    };
+
+    playBtn.onclick = () => {
+        playAction();
+    };
+
+    muteBtn.onclick = () => {
+        console.log(playerObj.getVolume());
+        if (muteState === true) {
+            playerObj.setVoice(1.0);
+            progressVoice.value = 100;
+        } else {
+            playerObj.setVoice(0.0);
+            progressVoice.value = 0;
+        }
+        muteState = !muteState;
+    };
+
     fullScreenBtn.onclick = () => {
-        screenView.open();
-        h265webjs.setRenderScreen(true);
+        playerObj.fullScreen();
+        // setTimeout(() => {
+        //     playerObj.closeFullScreen();
+        // }, 2000);
     };
 
-    screenView.onClose = () => {
-        h265webjs.setRenderScreen(false);
-    };
-
-    progressPts.addEventListener('click', (e) => {
+    progressCont.addEventListener('click', (e) => {
         showLabel.textContent = SHOW_LOADING;
-        let x = e.pageX - progressPts.offsetLeft; // or e.offsetX (less support, though)
-        let y = e.pageY - progressPts.offsetTop;  // or e.offsetY
-        let clickedValue = x * progressPts.max / progressPts.offsetWidth;
-        h265webjs.seek(clickedValue);
+        let x = e.pageX - progressCont.getBoundingClientRect().left; // or e.offsetX (less support, though)
+        let y = e.pageY - progressCont.getBoundingClientRect().top;  // or e.offsetY
+        let clickedValue = x * progressCont.max / progressCont.offsetWidth;
+        // alert(clickedValue);
+        playerObj.seek(clickedValue);
     });
 
     progressVoice.addEventListener('click', (e) => {
-        let x = e.pageX - progressVoice.offsetLeft; // or e.offsetX (less support, though)
-        let y = e.pageY - progressVoice.offsetTop;  // or e.offsetY
+        let x = e.pageX - progressVoice.getBoundingClientRect().left; // or e.offsetX (less support, though)
+        let y = e.pageY - progressVoice.getBoundingClientRect().top;  // or e.offsetY
         let clickedValue = x * progressVoice.max / progressVoice.offsetWidth;
         progressVoice.value = clickedValue;
         let volume = clickedValue / 100;
-        h265webjs.setVoice(volume);
+        // alert(volume);
+        // console.log(
+        //     progressVoice.offsetLeft, // 209
+        //     x, y, // 324 584
+        //     progressVoice.max, progressVoice.offsetWidth);
+        playerObj.setVoice(volume);
     });
 
-    h265webjs.onSeekStart = (pts) => {
+    playerObj.onSeekStart = (pts) => {
         showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
     };
 
-    h265webjs.onSeekFinish = () => {
+    playerObj.onSeekFinish = () => {
         showLabel.textContent = SHOW_DONE;
     };
 
-    h265webjs.onPlayFinish = () => {
-        playBar.textContent = '>';
+    playerObj.onPlayFinish = () => {
+        console.log("============= FINISHED ===============");
+        // playBar.textContent = '>';
+        playBar.setAttribute('class', 'playBtn');
+        // playerObj.release();
+        // console.log("=========> release ok");
     };
 
-    h265webjs.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
-        screenView.render(width, height, imageBufferY, imageBufferB, imageBufferR);
+    playerObj.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
         console.log("on render");
     };
 
-    h265webjs.onLoadCache = () => {
-        showLabel.textContent = "Caching...";
+    playerObj.onOpenFullScreen = () => {
+        console.log("onOpenFullScreen");
     };
 
-    h265webjs.onLoadCacheFinshed = () => {
+    playerObj.onCloseFullScreen = () => {
+        console.log("onCloseFullScreen");
+    };
+
+    playerObj.onSeekFinish = () => {
         showLabel.textContent = SHOW_DONE;
     };
 
-    h265webjs.onReadyShowDone = () => {
+    playerObj.onLoadCache = () => {
+        showLabel.textContent = "Caching...";
+    };
+
+    playerObj.onLoadCacheFinshed = () => {
+        showLabel.textContent = SHOW_DONE;
+    };
+
+    playerObj.onReadyShowDone = () => {
         console.log("onReadyShowDone");
         showLabel.textContent = "Cover Img OK";
     };
 
-    h265webjs.onLoadFinish = () => {
-        h265webjs.setVoice(1.0);
-        mediaInfo = h265webjs.mediaInfo();
+    playerObj.onLoadFinish = () => {
+        playerObj.setVoice(1.0);
+        mediaInfo = playerObj.mediaInfo();
         console.log("mediaInfo===========>", mediaInfo);
         /*
         meta:
@@ -123,62 +206,73 @@ global.makeH265webjs = (videoURL, config) => {
             audioNone : false
         videoType: "vod"
         */
-        playBar.disabled = false;
+        playBtn.disabled = false;
 
         if (mediaInfo.meta.audioNone) {
             progressVoice.value = 0;
             progressVoice.style.display = 'none';
+        } else {
+            playerObj.setVoice(0.5);
         }
 
         if (mediaInfo.videoType == "vod") {
-            progressPts.max = mediaInfo.meta.durationMs / 1000;
             cachePts.max = mediaInfo.meta.durationMs / 1000;
-            ptsLabel.textContent = '0:0:0/' + durationText(progressPts.max);
+            progressCont.max = mediaInfo.meta.durationMs / 1000;
+            ptsLabel.textContent = durationText(0) + '/' + durationText(progressCont.max);
         } else {
-            progressPts.hidden = true;
             cachePts.hidden = true;
+            progressCont.hidden = true;
             ptsLabel.textContent = 'LIVE';
 
             if (mediaInfo.meta.audioNone === true) {
                 playBar.textContent = '||';
-                h265webjs.play();
+                playerObj.play();
             } else {
+
                 coverToast.removeAttribute('hidden');
                 coverBtn.onclick = () => {
                     playBar.textContent = '||';
-                    h265webjs.play();
+                    playerObj.play();
                     coverToast.setAttribute('hidden', 'hidden');
                 };
             }
-
-            //setTimeout(() => {
-                //playBar.textContent = '||';
-                //h265webjs.play();
-            //}, 1000);
 
         }
 
         showLabel.textContent = SHOW_DONE;
     };
 
-    h265webjs.onCacheProcess = (cPts) => {
+    playerObj.onCacheProcess = (cPts) => {
         // console.log("onCacheProcess => ", cPts);
-        cachePts.value = cPts;
-    };
-
-    h265webjs.onPlayTime = (videoPTS) => {
-        if (mediaInfo.videoType == "vod") {
-            progressPts.value = videoPTS;
-            ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressPts.max);
-        } else {
-            ptsLabel.textContent = 'LIVE';
+        try {
+            // cachePts.value = cPts;
+            let precent = cPts / progressCont.max;
+            let cacheWidth = precent * progressContW;
+            // console.log(precent, precent * progressCont.offsetWidth);
+            cachePts.style.width = cacheWidth + 'px';
+        } catch(err) {
+            console.log(err);
         }
     };
 
-    h265webjs.do();
-    return h265webjs;
-};
+    playerObj.onPlayTime = (videoPTS) => {
+        if (mediaInfo.videoType == "vod") {
+            // progressPts.value = videoPTS;
+            let precent = videoPTS / progressCont.max;
+            let progWidth = precent * progressContW;
+            // console.log(precent, precent * progressCont.offsetWidth);
+            progressPts.style.width = progWidth + 'px';
 
+            ptsLabel.textContent = durationText(videoPTS) + '/' + durationText(progressCont.max);
+        } else {
+            // ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
+            ptsLabel.textContent = '/LIVE';
+        }
+    };
+
+    playerObj.do();
+    return playerObj;
+};
 
 /*
  * 创建265流播放器
