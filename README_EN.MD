@@ -2,17 +2,20 @@
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
+<hr>
 <img src="./resource/logo@300x300.png" width="300px" />
+<a href="./resource/demo.png">
+<img src="./resource/demo.png" height="300px" />
+</a>
+<hr>
 
-__`A hevc/h.265 web player, easy to play 1080P.`__
+A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web</a> helped you, please `star` it~
 
-__`~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> help you, please `star` it~__
+### Demo: <a href="https://www.zzsin.com/h265webjs.html">`https://www.zzsin.com/h265webjs.html`</a>
 
-| h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder |
-| ---- | ---- | ---- |
-| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
-
-<a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
+| h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
+| ---- | ---- | ---- | ---- |
+| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0</a> |
 
 
 # Remind!
@@ -32,8 +35,6 @@ Notice：
 ## Index
 
 - [0、README](#0readme)
-	
-	- [Update Log](upldatelog)
 
 	- [Support what?](#supported)
 
@@ -57,13 +58,57 @@ Notice：
 
 	- [Player bind events](#playerbindevents)
 
+		- [Seed Finished](#seedfinished)
+
+		- [Callback Yuv Data](#callbackyuvdata)
+
+		- [Media Load Successed](#medialoadsuccessed)
+
+		- [Player Pts Update](#playerptsupdate)
+
+		- [Play Finished](#playfinished)
+
+		- [Cache Download](#cachedownload)
+
+		- [Cover Image Load Finished](#coverimageloadfinished)
+
+		- [Caching Decode Frames](#cachingdecodeframes)
+
+		- [Caching Decode Finished](#cachingdecodefinished)
+
+		- [Open FullScreen Event](#openfullscreenevent)
+
+		- [Exit FullScreen Event](#closefullscreenevent)
+
 	- [Player API Document](#playerapidocument)
+
+		- [Build Player](#buildplayer)
+
+		- [Get Player Play Status](#getplayerplaystatus)
+
+		- [Start Play](#startplay)
+
+		- [Pause](#pause)
+
+		- [Set Render Callback YuvFrame](#setrendercallbackyuvframe)
+
+		- [Seek](#seek)
+
+		- [Volume Option](#volumeoption)
+
+		- [Get MediaInfo](#getmediainfo)
+
+		- [Open Fullscreen](#openfullscreen)
+
+		- [Exit Fullscreen](#exitfullscreen)
 
 - [3、Others](#3others)
 
 	- [Donate](#donate)
 	
 	- [Transcode and get hevc media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
+
+	- [Update Log](upldatelog)
 
 <hr>
 
@@ -73,6 +118,10 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/07/18 |
+| - | 0.Upgrade: Player UI Style |
+| - | 1.Support: fullscreen & close fullscreen |
+| - | 2.Add Event: open/close fullscreen |
 | Time | 2021/07/11 |
 | - | 0.Fixed: The player compatible with ZLMediaKit + HUAWEI HoloSens Camera LIVE Stream |
 | Time | 2021/07/04 |
@@ -178,6 +227,9 @@ Notice：
 | Create multi players | Y |  ----  | ---- |
 | Play without Audio | Y |  ----  | ---- |
 | Cache process | Y |  ----  | ---- |
+| Open Fullscreen | Y |  ----  | ---- |
+| Exit Fullscreen | Y |  ----  | ---- |
+
 
 <br>
 
@@ -207,9 +259,10 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### PreviewImage ####
 
-|  Type |  Vod | Live |
-| ---- |  ----  | ---- |
-|  Click | <a href='./resource/demo3.png' target="_blank"><img src="./resource/demo3.png" height="300px" /></a>  | <a href='./resource/demo2.png' target="_blank"><img src="./resource/demo2.png" height="300px" /></a> |
+|  Type | Example |
+| ---- |  ----  |
+|  VOD | <a href='./resource/demo.png' target="_blank"><img src="./resource/demo.png" height="300px" /></a>  |
+| LIVE | <a href='./resource/demo2.png' target="_blank"><img src="./resource/demo2.png" height="300px" /></a> |
 
 <br>
 
@@ -488,7 +541,7 @@ let config = {
 
 ### PlayerBindEvents ###
 
-#### 1）Seed finished
+#### SeedFinished ####
 
 * Example
 
@@ -500,7 +553,7 @@ player.onSeekFinish = () => {
 
 <br>
 
-#### 2）Get yuv data
+#### CallbackYuvData ####
 
 |  Callback param | Type | Default | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -524,7 +577,7 @@ player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
 
 <br>
 
-#### 3）Media load success
+#### MediaLoadSuccessed ####
 
 > If this event happened, you can start play
 
@@ -538,7 +591,7 @@ player.onLoadFinish = () => {
 
 <br>
 
-#### 4）Player's play timestamp update
+#### PlayerPtsUpdate ####
 
 |  Callback param | Type | Default | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -553,7 +606,7 @@ player.onPlayTime = (videoPTS) => {
 };
 ```
 
-#### 5）Player play finished
+#### PlayFinished ####
 
 * Example
 
@@ -563,7 +616,7 @@ player.onPlayFinish = () => {
 };
 ```
 
-#### 6）Player cache process
+#### CacheDownload ####
 
 |  Callback param | Type | Default | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -577,7 +630,7 @@ player.onCacheProcess = (cPts) => {
 };
 ````
 
-#### 7）Player Cover Image load finished
+#### CoverImageLoadFinished ####
 
 * Example
 
@@ -588,7 +641,7 @@ player.onReadyShowDone = () => {
 };
 ```
 
-#### 8）Player is caching frames
+#### CachingDecodeFrames ####
 
 * Example
 
@@ -599,7 +652,7 @@ player.onLoadCache = () => {
 ```
 
 
-#### 9）Cache finished
+#### CachingDecodeFinished ####
 
 * Example
 
@@ -609,11 +662,31 @@ player.onLoadCacheFinshed = () => {
 };
 ```
 
+#### OpenFullScreenEvent ####
+
+* Example
+
+```javascript
+player.onOpenFullScreen = () => {
+    // todo
+};
+```
+
+#### CloseFullScreenEvent ####
+
+* Example
+
+```javascript
+player.onCloseFullScreen = () => {
+    // todo
+};
+```
+
 <br>
 
 ### PlayerAPIDocument ###
 
-#### 1）Start load player
+#### BuildPlayer ####
 
 > After【set player config】和【bind events】
 
@@ -625,7 +698,7 @@ player.do();
 
 <br>
 
-#### 2）Get player's play status
+#### GetPlayerPlayStatus ####
 
 |  Function | Return | Desc |
 |  ---- | ----  | ---- |
@@ -642,7 +715,7 @@ if (player.isPlaying()) {
 
 <br>
 
-#### 3）Start play
+#### StartPlay ####
 
 |  Function | Return | Desc |
 |  ----  | ----  | ---- |
@@ -656,7 +729,7 @@ player.play();
 
 <br>
 
-#### 4）Pause
+#### Pause ####
 
 |  Function | Return | Desc |
 |  ----  | ----  | ---- |
@@ -670,7 +743,7 @@ player.pause();
 
 <br>
 
-#### 5）Open/Close : Render callback YUV Frame data
+#### SetRenderCallbackYuvFrame ####
 
 > After open，you can use `onRender` Event
 
@@ -695,7 +768,7 @@ player.setRenderScreen(false);
 
 <br>
 
-#### 6）Seek
+#### Seek ####
 
 |  Function | Return | Desc |
 |  ----  | ----  | ---- |
@@ -716,7 +789,7 @@ player.seek(10.01);
 
 <br>
 
-#### 7）Volume option
+#### VolumeOption ####
 
 |  Function | Return | Desc |
 |  ----  | ----  | ---- |
@@ -737,7 +810,7 @@ player.setVoice(0.5);
 
 <br>
 
-#### 8）Get media info
+#### GetMediaInfo ####
 
 |  Function | Return | Desc |
 |  ----  | ----  | ---- |
@@ -762,6 +835,34 @@ videoType: "vod" // vod or live
 
 ```javascript
 let mediaInfo = player.mediaInfo();
+```
+
+<br>
+
+#### OpenFullscreen ####
+
+|  Function | Return | Desc |
+|  ----  | ----  | ---- |
+| fullScreen()  | - | open fullscreen |
+
+* Example
+
+```javascript
+player.fullScreen();
+```
+
+<br>
+
+#### ExitFullscreen ####
+
+|  Function | Return | Desc |
+|  ----  | ----  | ---- |
+| closeFullScreen()  | - | exit fullscreen |
+
+* Example
+
+```javascript
+player.closeFullScreen();
 ```
 
 <br>

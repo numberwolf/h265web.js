@@ -2,15 +2,23 @@
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
+<hr>
 <img src="./resource/logo@300x300.png" width="300px" />
+<a href="./resource/demo.png">
+<img src="./resource/demo.png" height="300px" />
+</a>
+<hr>
+一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的HEVC播放器 
+<br>
 
-一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的播放器 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
+### DEMO: <a href="https://www.zzsin.com/h265webjs.html"> https://www.zzsin.com/h265webjs.html
+</a>
 
-| h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK |
-| ---- | ---- | ---- |
-| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
+<br>
 
-<a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.md</a>
+| h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK | LICENSE |
+| ---- | ---- | ---- | ---- |
+| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0</a> |
 
 # Remind!
 
@@ -27,8 +35,6 @@
 ## 目录
 
 - [0-说明](#0-说明)
-
-	- [更新日志](#更新日志)
 
 	- [当前能力](#当前能力)
 
@@ -52,13 +58,57 @@
 
 	- [播放器相关事件绑定](#播放器相关事件绑定)
 
+		- [Seek完成](#seek完成)
+
+		- [YUV帧数据渲染](#yuv帧数据渲染)
+
+		- [媒体文件加载完成事件](#媒体文件加载完成事件)
+
+		- [播放器当前播放PTS时刻更新](#播放器当前播放pts时刻更新)
+
+		- [播放器媒体播放结束事件](#播放器媒体播放结束事件)
+
+		- [播放器缓冲进度回调](#播放器缓冲进度回调)
+
+		- [播放器封面图加载完成](#播放器封面图加载完成)
+
+		- [当前正在缓存帧数据](#当前正在缓存帧数据)
+
+		- [帧数据缓存完成](#帧数据缓存完成)
+
+		- [开启全屏事件](#开启全屏事件)
+
+		- [关闭全屏事件](#关闭全屏事件)
+
 	- [播放器API能力](#播放器api能力)
+
+		- [加载播放器](#加载播放器)
+
+		- [获取当前播放状态](#获取当前播放状态)
+
+		- [开始播放](#开始播放)
+
+		- [暂停播放](#暂停播放)
+
+		- [渲染过程中回调YUV帧数据](#渲染过程中回调yuv帧数据)
+
+		- [Seek跳转到某个时刻](#seek跳转到某个时刻)
+
+		- [调整音量](#调整音量)
+
+		- [获取媒资数据](#获取媒资数据)
+
+		- [全屏播放](#全屏播放)
+
+		- [退出全屏播放](#退出全屏播放)
 
 - [3-其它](#3-其它)
 
 	- [捐赠](#捐赠)
 	
 	- [FFmpeg转码265编码的视频](#ffmpeg转码265编码的视频)
+
+	- [更新日志](#更新日志)
 
 <hr>
 
@@ -68,6 +118,10 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/07/18 |
+| - | 0.播放器UI改造升级 |
+| - | 1.支持全屏播放能力 |
+| - | 2.全屏播放回调事件 |
 | 时间 | 2021/07/11 |
 | - | 0.兼容 ZLMediaKit + 华为摄像头推的流 |
 | 时间 | 2021/07/04 |
@@ -175,6 +229,8 @@
 | 多路播放 | 是 |  ----  | ---- |
 | 去音频播放 | 是 |  ----  | ---- |
 | 缓冲进度 | 是 |  ----  | ---- |
+| 开启全屏播放 | 是 |  ----  | ---- |
+| 退出全屏播放 | 是 |  ----  | ---- |
 
 <br>
 
@@ -205,9 +261,10 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### 效果预览 ####
 
-|  类型 |  点播 | 直播 |
-| ---- |  ----  | ---- |
-|  点击<br>放大 | <a href='./resource/demo3.png' target="_blank"><img src="./resource/demo3.png" height="300px" /></a>  | <a href='./resource/demo2.png' target="_blank"><img src="./resource/demo2.png" height="300px" /></a> |
+| 类型 | 示例图 |
+| ---- | ---- |
+| 点播 | <a href='./resource/demo.png' target="_blank"><img src="./resource/demo.png" height="300px" /></a> |
+| 直播 | <a href='./resource/demo2.png' target="_blank"><img src="./resource/demo2.png" height="300px" /></a> |
 
 <br>
 
@@ -492,7 +549,7 @@ var config = {
 
 ### 播放器相关事件绑定 ###
 
-#### 1）Seek完成
+#### Seek完成 ####
 
 > 主要用于SEEK完成做一些操作
 
@@ -506,7 +563,7 @@ player.onSeekFinish = () => {
 
 <br>
 
-#### 2）YUV帧数据渲染
+#### YUV帧数据渲染 ####
 
 |  回调参数 | 类型 | 默认值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -530,7 +587,7 @@ player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
 
 <br>
 
-#### 3）媒体文件加载完成事件
+#### 媒体文件加载完成事件 ####
 
 > 媒体文件当前加载成功，可以进行播放
 
@@ -544,7 +601,7 @@ player.onLoadFinish = () => {
 
 <br>
 
-#### 4）播放器当前播放PTS（时刻）更新
+#### 播放器当前播放PTS时刻更新 ####
 
 |  回调参数 | 类型 | 默认值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -559,7 +616,7 @@ player.onPlayTime = (videoPTS) => {
 };
 ```
 
-#### 5）播放器媒体播放结束事件
+#### 播放器媒体播放结束事件 ####
 
 * 示例
 
@@ -569,7 +626,7 @@ player.onPlayFinish = () => {
 };
 ```
 
-#### 6）播放器缓冲进度回调
+#### 播放器缓冲进度回调 ####
 
 |  回调参数 | 类型 | 默认值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
@@ -583,7 +640,7 @@ player.onCacheProcess = (cPts) => {
 };
 ```
 
-#### 7）播放器封面图加载完成
+#### 播放器封面图加载完成 ####
 
 * 示例
 
@@ -594,7 +651,7 @@ player.onReadyShowDone = () => {
 };
 ```
 
-#### 8）当前正在缓存帧数据
+#### 当前正在缓存帧数据 ####
 
 * 示例
 
@@ -605,7 +662,7 @@ player.onLoadCache = () => {
 ```
 
 
-#### 9）帧数据缓存完成
+#### 帧数据缓存完成 ####
 
 * 示例
 
@@ -615,12 +672,32 @@ player.onLoadCacheFinshed = () => {
 };
 ```
 
+#### 开启全屏事件 ####
+
+* 示例
+
+```javascript
+player.onOpenFullScreen = () => {
+    // todo
+};
+```
+
+#### 关闭全屏事件 ####
+
+* 示例
+
+```javascript
+player.onCloseFullScreen = () => {
+    // todo
+};
+```
+
 
 <br>
 
 ### 播放器API能力 ###
 
-#### 1）加载播放器
+#### 加载播放器 ####
 
 > 一般在配置完成【播放器配置】和【事件】之后进行播放器加载
 
@@ -632,7 +709,7 @@ player.do();
 
 <br>
 
-#### 2）获取当前播放状态
+#### 获取当前播放状态 ####
 
 |  调用函数 | 返回 | 说明 |
 |  ---- | ----  | ---- |
@@ -650,7 +727,7 @@ if (player.isPlaying()) {
 
 <br>
 
-#### 3）开始播放
+#### 开始播放 ####
 
 |  调用函数 | 返回 | 说明 |
 |  ----  | ----  | ---- |
@@ -664,7 +741,7 @@ player.play();
 
 <br>
 
-#### 4）暂停播放
+#### 暂停播放 ####
 
 |  调用函数 | 返回 | 说明 |
 |  ----  | ----  | ---- |
@@ -678,7 +755,7 @@ player.pause();
 
 <br>
 
-#### 5）开启/关闭渲染过程中 回调YUV帧数据
+#### 渲染过程中回调YUV帧数据 ####
 
 > 开启之后，`onRender`事件才可以收到数据
 
@@ -703,7 +780,7 @@ player.setRenderScreen(false);
 
 <br>
 
-#### 6）Seek: 跳转到某个时刻
+#### Seek跳转到某个时刻 ####
 
 |  调用函数 | 返回 | 说明 |
 |  ----  | ----  | ---- |
@@ -724,7 +801,7 @@ player.seek(10.01);
 
 <br>
 
-#### 7）调整音量
+#### 调整音量 ####
 
 > 调整视频的播放音量
 
@@ -747,7 +824,7 @@ player.setVoice(0.5);
 
 <br>
 
-#### 8）获取媒资数据
+#### 获取媒资数据 ####
 
 > 获取当前播放的视频文件的信息数据
 
@@ -774,6 +851,32 @@ videoType: "vod" // 点播vod 直播live
 
 ```javascript
 let mediaInfo = player.mediaInfo();
+```
+<br>
+
+#### 全屏播放 ####
+
+|  调用函数 | 返回 | 说明 |
+|  ----  | ----  | ---- |
+| fullScreen()  | - | 全屏播放 |
+
+* 示例
+
+```javascript
+player.fullScreen();
+```
+<br>
+
+#### 退出全屏播放 ####
+
+|  调用函数 | 返回 | 说明 |
+|  ----  | ----  | ---- |
+| closeFullScreen()  | - | 退出全屏 |
+
+* 示例
+
+```javascript
+player.closeFullScreen();
 ```
 
 <br>
