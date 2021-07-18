@@ -30,9 +30,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
     "mp4box": "^0.4.1",
-    "webpack": "^4.44.1",
-    "yuv-buffer": "^1.0.0",
-    "yuv-canvas": "^1.2.6"
+    "webpack": "^4.44.1"
   },
   "browserify": {
     "transform": [

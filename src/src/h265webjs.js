@@ -117,8 +117,12 @@ class H265webjsModule {
 
         this.timerFeed = null;
         this.player = null;
+        this.volume = 1.0;
 
         this.rawModePts = 0.0; // only use in raw 265 mode
+
+        // screen
+        this.autoScreenClose = true;
 
         // func
         this.feedMP4Data = null;
@@ -136,9 +140,27 @@ class H265webjsModule {
         this.onPlayFinish = null;
         this.onCacheProcess = null;
         this.onReadyShowDone = null;
+        this.onOpenFullScreen = null;
+        this.onCloseFullScreen = null;
 
         this.filterConfigParams();
         console.log("configFormat ==> ", this.configFormat);
+
+        let _this = this;
+        document.addEventListener("fullscreenchange", function(event) {
+            // console.log("fullscreenchange", event);
+            if (_this._isFullScreen()) {
+                _this.onOpenFullScreen && _this.onOpenFullScreen();
+            } else {
+                if (_this.autoScreenClose === true) {
+                    _this.closeFullScreen(true);
+                }
+                 _this.onCloseFullScreen && _this.onCloseFullScreen();
+            }
+        });
+
+        this.screenW = window.screen.width;
+        this.screenH = window.screen.height;
     }
 
     filterConfigParams() {
@@ -285,7 +307,12 @@ class H265webjsModule {
             console.log("voice must larger than 0.0!");
             return false;
         }
+        this.volume = voice;
         this.player.setVoice(voice);
+    }
+
+    getVolume() {
+        return this.volume;
     }
 
     mediaInfo() {
@@ -367,6 +394,55 @@ class H265webjsModule {
         return true;
     }
 
+    fullScreen() {
+        this.autoScreenClose = true;
+
+        let glCanvasBox = document
+            .querySelector('#' + this.configFormat.playerId);
+        let glCanvas = glCanvasBox
+            .getElementsByTagName('canvas')[0];
+
+        glCanvasBox.style.width = this.screenW + 'px';
+        glCanvasBox.style.height = this.screenH + 'px';
+
+        let displayInfo = this._checkScreenDisplaySize(
+            this.screenW, this.screenH,
+            this.playParam.size.width, this.playParam.size.height);
+
+        glCanvas.style.marginTop = displayInfo[0] + 'px';
+        glCanvas.style.marginLeft = displayInfo[1] + 'px';
+        glCanvas.style.width = displayInfo[2] + 'px';
+        glCanvas.style.height = displayInfo[3] + 'px';
+
+        this._requestFullScreen(glCanvasBox);
+    }
+
+    closeFullScreen(escClick = false) {
+        if (escClick === false) {
+            this.autoScreenClose = false;
+            this._exitFull();
+        }
+
+        let glCanvasBox = document
+            .querySelector('#' + this.configFormat.playerId);
+        let glCanvas = glCanvasBox
+            .getElementsByTagName('canvas')[0];
+
+        glCanvasBox.style.width = this.configFormat.playerW + 'px';
+        glCanvasBox.style.height = this.configFormat.playerH + 'px';
+
+        let displayInfo = this._checkScreenDisplaySize(
+            this.configFormat.playerW, this.configFormat.playerH,
+            this.playParam.size.width, this.playParam.size.height);
+
+        glCanvas.style.marginTop = displayInfo[0] + 'px';
+        glCanvas.style.marginLeft = displayInfo[1] + 'px';
+        glCanvas.style.width = displayInfo[2] + 'px';
+        glCanvas.style.height = displayInfo[3] + 'px';
+
+        // this.autoScreenClose = true;
+    }
+
     /**********
      Private
      **********/
@@ -387,6 +463,69 @@ class H265webjsModule {
     //         "maskImg" : document.querySelector('img#' + maskBgTag.maskImg),
     //     }
     // }
+
+    /*
+     * full screen
+     */
+    _checkScreenDisplaySize(
+        boxW, boxH,
+        widthIn, heightIn
+    ) {
+        let biggerWidth = widthIn / boxW > heightIn / boxH;
+        let fixedWidth = (boxW / widthIn).toFixed(2);
+        let fixedHeight = (boxH / heightIn).toFixed(2);
+        let scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
+        let width = this.fixed ? boxW : parseInt(widthIn  * scaleRatio);
+        let height = this.fixed ? boxH : parseInt(heightIn * scaleRatio);
+
+        let topMargin = parseInt((boxH - height) / 2);
+        let leftMargin = parseInt((boxW - width) / 2);
+
+        return [topMargin, leftMargin, width, height];
+    };
+
+    _isFullScreen() {
+        let fullscreenElement =
+            document.fullscreenElement
+            || document.mozFullscreenElement
+            || document.webkitFullscreenElement;
+        let fullscreenEnabled =
+            document.fullscreenEnabled
+            || document.mozFullscreenEnabled
+            || document.webkitFullscreenEnabled;
+        if (fullscreenElement == null)
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    _requestFullScreen(element) {
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullScreen();
+        }
+    }
+
+    _exitFull() {
+        // let document = this.glCanvasBox.ownerDocument;
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+
 
     _durationText(duration) {
         if (duration < 0) {
