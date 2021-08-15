@@ -27,7 +27,7 @@ source ./version.sh
 !
 
 REMOVE_FUNCS='"console.log","console.warn"'
-# REMOVE_FUNCS=''
+# REMOVE_FUNCS='"console.log"'
 
 rm ./dist/*.js
 rm ./dist/*.wasm
@@ -41,8 +41,14 @@ cmd[4]="cp -r src/index.js dist/"
 cmd[5]="rm ./dist/h265webjs_tmp.js"
 cmd[6]="cp -r ./dist/* ./demo/dist/"
 cmd[7]="cp ./src/decoder/raw-parser.js ./dist/" # extension module
-cmd[8]="browserify play.js -o ./dist/dist-play.js"
-# cmd[9]="node server.js"
+
+cmd[8]="browserify worker-fetch.js -o ./dist/worker-fetch-dist.js"
+cmd[9]="browserify worker-parse.js -o ./dist/worker-parse-dist.js"
+
+cmd[10]="browserify play.js -o ./dist/dist-play.js"
+# cmd[9]="cp raw-worker.js ./dist/raw-worker.js"
+# cmd[10]="cp parse-worker.js ./dist/parse-worker.js"
+
 
 cmdLen=${#cmd[@]}
 

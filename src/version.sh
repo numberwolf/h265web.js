@@ -19,4 +19,4 @@
 #  * Github: https://github.com/numberwolf/h265web.js
 #  * 
 #  **********************************************************/
-VERSION='v20210718' # output version + index.js
+VERSION='v20210815' # output version + index.js

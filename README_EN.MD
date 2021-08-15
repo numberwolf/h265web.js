@@ -118,6 +118,8 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/08/15 |
+| - | 0.H265/HEVC Upgrade Raw Data Player for VOD/LIVE |
 | Time | 2021/07/18 |
 | - | 0.Upgrade: Player UI Style |
 | - | 1.Support: fullscreen & close fullscreen |

@@ -27,7 +27,7 @@ const AfterGetNalThenMvLen  = 3;
 
 export default class RawParserModule {
     constructor() {
-        this.frameList = null;
+        this.frameList = [];
         this.stream = null;
     }
 
@@ -107,6 +107,21 @@ export default class RawParserModule {
         mergeStream.set(input, lenOld);
 
         this.stream = mergeStream;
+
+        // let retList = this.nextNaluList(9000);
+        // if (retList !== false && retList.length > 0) {
+        //     this.frameList.push(...retList);
+        // }
+
+        for (let i = 0; i < 9999; i++) {
+            let nalBuf = this.nextNalu();
+            if (nalBuf !== false && nalBuf !== null && nalBuf !== undefined) {
+                this.frameList.push(nalBuf);
+            } else {
+                break;
+            }
+        }
+
         return true;
     }
 
@@ -145,13 +160,14 @@ export default class RawParserModule {
 
         for (let i = 0;i < this.stream.length; i++) {
             if (i + 5 >= this.stream.length) {
-                if (startTag == -1) {
-                    return false;
-                } else {
-                    // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
-                    returnNalBuf = this.subBuf(startTag, this.stream.length-1);
-                    return returnNalBuf;
-                }
+                return false;
+                // if (startTag == -1) {
+                //     return false;
+                // } else {
+                //     // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
+                //     returnNalBuf = this.subBuf(startTag, this.stream.length-1);
+                //     return returnNalBuf;
+                // }
             }
 
             // find nal

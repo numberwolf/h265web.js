@@ -72,6 +72,7 @@ module.exports = config => {
          * frame.pts
          */
         frameList: [],
+        cacheInterval: null,
         cacheYuvBuf: CacheYUV(CACHE_LENGTH),
         nowPacket: null, // 当前处理的Packet
         stream: new Uint8Array(),
@@ -161,6 +162,7 @@ module.exports = config => {
             player.stream = new Uint8Array([...player.stream].concat(...streamBytes));
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
             player.frameList.push(streamBytes);
+            console.warn("append frame", streamBytes);
             player.vCachePTS = Math.max(streamBytes.pts, player.vCachePTS);
         }
     };
@@ -262,8 +264,7 @@ module.exports = config => {
             let frame = player.frameList.shift(); // nal
 
             if(!frame) {
-                //console.log('cache got empty frame');
-                
+                // console.warn('cache got empty frame', frame);
                 return null;
             }
 
@@ -283,7 +284,7 @@ module.exports = config => {
         // decode Frame
         let offset = AVModule._malloc(nalBuf.length);
         AVModule.HEAP8.set(nalBuf, offset);
-        console.log("decodeNalu1Frame===>", pts);
+        // console.warn("decodeNalu1Frame===>", pts);
 
         let ptsMS = parseInt(pts * 1000);
         let decRet = AVModule.cwrap('decodeCodecContext', 'number', 
@@ -355,9 +356,10 @@ module.exports = config => {
                 // console.log("is full");
                 return;
             }
-            // console.log("not full");
+            // console.warn("not full");
 
             let getPktObj = player.getNalu1Packet(false);
+            // console.warn("getPktObj", getPktObj);
             if (getPktObj == null) return;
 
             let nalBuf = getPktObj.nalBuf;
@@ -395,19 +397,21 @@ module.exports = config => {
          */
         let minCacheCount = player.frameList.length > CACHE_LENGTH ? CACHE_LENGTH : player.frameList.length;
 
-        let cacheInterval = window.setInterval(() => {
-            if (player.cacheYuvBuf.yuvCache.length >= minCacheCount) {
-                player.onLoadCacheFinshed != null && player.onLoadCacheFinshed();
-                window.clearInterval(cacheInterval);
-                cacheInterval = null;
+        if (null === player.cacheInterval) {
+            player.cacheInterval = window.setInterval(() => {
+                if (player.cacheYuvBuf.yuvCache.length >= minCacheCount) {
+                    player.onLoadCacheFinshed != null && player.onLoadCacheFinshed();
+                    window.clearInterval(player.cacheInterval);
+                    player.cacheInterval = null;
 
-                if (player.isCaching === def.CACHE_WITH_PLAY_SIGN) {
-                    player.play(player.playParams);
+                    if (player.isCaching === def.CACHE_WITH_PLAY_SIGN) {
+                        player.play(player.playParams);
+                    }
+
+                    player.isCaching = def.CACHE_NO_LOADCACHE;
                 }
-
-                player.isCaching = def.CACHE_NO_LOADCACHE;
-            }
-        }, 40);
+            }, 40);
+        }
     };
     player.playFunc = () => {
         let ret = false;
@@ -726,12 +730,14 @@ module.exports = config => {
      */
     player.playFrameYUV = (show = false, accurateSeek = false) => {
         let yuvItemObj = player.cacheYuvBuf.vYuv();
+        // console.warn("yuvItemObj", yuvItemObj);
         if (yuvItemObj == null) {
             //console.log("cacheThread ----> noCacheFrame");
             player.noCacheFrame += 1;
 
             // 只有在播放时候才会触发cache事件
             if (show && !player.playParams.seekEvent) {
+                // console.warn("loadCache");
                 player.loadCache();
             }
             return false;
@@ -876,7 +882,7 @@ module.exports = config => {
             ['string', 'string'])(player.config.token, VersionModule.PLAYER_VERSION);
 
         let videoCallback = AVModule.addFunction(function(addr_y, addr_u, addr_v, stride_y, stride_u, stride_v, width, height, pts) {
-            console.log("In video callback, size = %d * %d, pts = %f", width, height, pts);
+            // console.warn("In video callback, size = %d * %d, pts = %f", width, height, pts);
 
             let out_y = AVModule.HEAPU8.subarray(addr_y, addr_y + stride_y * height);
             let out_u = AVModule.HEAPU8.subarray(addr_u, addr_u + (stride_u * height) / 2);

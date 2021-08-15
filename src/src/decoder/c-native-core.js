@@ -282,7 +282,7 @@ class CNativeCoreModule {
     }
 
     _clearDecInterval() {
-        console.warn("_clearDecInterval RUN");
+        // console.warn("_clearDecInterval RUN");
     	this.decVFrameInterval && window.clearInterval(this.decVFrameInterval);
         this.decVFrameInterval = null;
     }
@@ -375,18 +375,18 @@ class CNativeCoreModule {
 							&& this.audioWAudio !== null 
 							&& this.audioWAudio !== undefined) {
 							diff = (videoFrame.pts - this.audioWAudio.getAlignVPTS()) * 1000;
-							console.warn(
-								"vpts: ", videoFrame.pts,
-								",apts: ", this.audioWAudio.getAlignVPTS(),
-								",diff:", diff);
+							// console.warn(
+							// 	"vpts: ", videoFrame.pts,
+							// 	",apts: ", this.audioWAudio.getAlignVPTS(),
+							// 	",diff:", diff);
 
 							this.playPTS = Math.max(this.audioWAudio.getAlignVPTS(), this.playPTS);
 						}
 						calcuteStartTime = nowTimestamp;
 
 						let startR = getMsTime();
-						console.warn("shift videoFrame.pts", 
-							videoFrame.pts, this.seekTarget, this.isNewSeek);
+						// console.warn("shift videoFrame.pts", 
+						// 	videoFrame.pts, this.seekTarget, this.isNewSeek);
 						this.playPTS = Math.max(videoFrame.pts, this.playPTS);
 
 						if (this.isNewSeek 
@@ -409,7 +409,7 @@ class CNativeCoreModule {
 
 							}
 
-							console.warn("TO RENDER videoFrame.pts", videoFrame.pts);
+							// console.warn("TO RENDER videoFrame.pts", videoFrame.pts);
 
 							if (this.showScreen) { // on render
 								// Render callback
