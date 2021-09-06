@@ -27,7 +27,8 @@ source ./version.sh
 !
 
 REMOVE_FUNCS='"console.log","console.warn"'
-# REMOVE_FUNCS='"console.log"'
+#REMOVE_FUNCS='"console.log"'
+#REMOVE_FUNCS=''
 
 rm ./dist/*.js
 rm ./dist/*.wasm

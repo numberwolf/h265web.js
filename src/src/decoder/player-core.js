@@ -254,7 +254,7 @@ module.exports = config => {
             realPlay : statusNow
         };
         player.play(playParams);
-    };
+    }; // seek
     player.getNalu1Packet = (alginPTS=true) => {
         let nalBuf  = null;
         let pts     = -1;
@@ -279,7 +279,7 @@ module.exports = config => {
             nalBuf: nalBuf,
             pts: pts
         }
-    };
+    }; // getNalu1Packet
     player.decodeNalu1Frame = (nalBuf, pts, hardcopy=false) => {
         // decode Frame
         let offset = AVModule._malloc(nalBuf.length);
@@ -308,7 +308,7 @@ module.exports = config => {
         // }
         AVModule._free(offset);
         return false;
-    };
+    }; // decodeNalu1Frame
     /**
      * ~@param CacheYuvStruct &cacheYuvStructObj~
      * @return cacheYuvStructObj

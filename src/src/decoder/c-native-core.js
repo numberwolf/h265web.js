@@ -175,6 +175,9 @@ class CNativeCoreModule {
 		this.vCachePTS		= 0;
 		this.aCachePTS		= 0;
 
+        this.reFull         = false; // refull
+        this.bufOK          = false;
+
         /*
          * Interval
          */
@@ -330,6 +333,7 @@ class CNativeCoreModule {
      * @brief Start play
      */
     play() {
+        console.warn("play=========>");
         if (!this.playFrameInterval 
         	&& null === this.playFrameInterval 
         	&& undefined == this.playFrameInterval) {
@@ -352,9 +356,9 @@ class CNativeCoreModule {
         	// }, this.frameDur * 1000);
 
 			this.playFrameInterval = window.setInterval(() => {
+                console.warn("playFrameInterval");
 				nowTimestamp = getMsTime();
 				if (this._videoQueue.length > 0) {
-                    // console.warn("playFrameInterval 
 
 					/*
 					 * Calcute time
@@ -534,6 +538,7 @@ class CNativeCoreModule {
         this.audioWAudio && this.audioWAudio.setVoice(0);
         this.audioWAudio.resetStartParam();
         this.audioWAudio.stop();
+
     	this._avFeedData(options.seekTime);
 
     	// @TODO 粗暴一点
@@ -645,11 +650,11 @@ class CNativeCoreModule {
     	}
 
     	// test
-    	this._avFeedData(0);
+    	this._avFeedData(0, false);
     }
 
     /**
-     * 检查avRect是否结束
+     * 检查avRecv是否结束
      */
     _avCheckRecvFinish() {
         if (this.config.playMode === def.PLAYER_MODE_VOD) {
@@ -661,25 +666,45 @@ class CNativeCoreModule {
         		if (this.avRecvInterval !== null) {
     				window.clearInterval(this.avRecvInterval);
     				this.avRecvInterval = null;
+                    this.bufOK = true;
     			}
         	}
         }
     }
 
-    _afterAvFeedSeekToStart(pts) {
+    _afterAvFeedSeekToStartWithFinishedBuffer(pts) {
+        let afterAvFeedSeekToStartInterval = window.setInterval(() => {
+            console.log("afterAvFeedSeekToStartInterval length:", this._videoQueue.length);
+            // @TODO 最后seek位置剩余帧数不足 VIDEO_CACHE_LEN怎么办
+            if (this._videoQueue.length >= VIDEO_CACHE_LEN) {
+                this.onSeekFinish && this.onSeekFinish();
+                this.onPlayingTime && this.onPlayingTime(pts);
+                this.play();
+                window.clearInterval(afterAvFeedSeekToStartInterval);
+                afterAvFeedSeekToStartInterval = null;
+            }
+        }, 10);
+        return true;
+    } // _afterAvFeedSeekToStartWithFinishedBuffer
+
+    _afterAvFeedSeekToStartWithUnFinBuffer(pts) {
     	let afterAvFeedSeekToStartInterval = window.setInterval(() => {
             console.log("afterAvFeedSeekToStartInterval length:", this._videoQueue.length);
     		// @TODO 最后seek位置剩余帧数不足 VIDEO_CACHE_LEN怎么办
     		if (this._videoQueue.length >= VIDEO_CACHE_LEN) {
 				this.onSeekFinish && this.onSeekFinish();
                 this.onPlayingTime && this.onPlayingTime(pts);
-				this.play();
+                if (this.reFull === false) {
+    				this.play();
+                } else {
+                    this.reFull = false;
+                }
 				window.clearInterval(afterAvFeedSeekToStartInterval);
 				afterAvFeedSeekToStartInterval = null;
 			}
     	}, 10);
-    	
-    }
+    	return true;
+    } // _afterAvFeedSeekToStartWithUnFinBuffer
 
     /**
      * @TODO feed数据流
@@ -691,15 +716,17 @@ class CNativeCoreModule {
     	this.audioWAudio && this.audioWAudio.cleanQueue();
     	// this.playAPipe.length = 0;
 
+        // alert("_avFeedData" + pts);
+
     	// .push(xxx)
 
-    	if (pts <= 0.0) { // start begin
+    	if (pts <= 0.0 && this.bufOK === false) { // only for start begin
     		// 考虑recv动态
     		// video
     		let videoSecIdx = 0;
     		this.avFeedVideoInterval = window.setInterval(() => {
     			let videoSecLen = this.bufObject.videoBuffer.length;
-    			// console.log("avFeedVideoInterval:", videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
+    			// console.warn("avFeedVideoInterval:", videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
 
     			if ((videoSecLen - 1 > videoSecIdx) 
     			|| (this.duration - this.getMaxPTS() < this.frameDur && videoSecLen - 1 == videoSecIdx)
@@ -714,7 +741,7 @@ class CNativeCoreModule {
     	    					this.bufObject.videoBuffer[videoSecIdx][i].isKey, 
     	    					this.bufObject.videoBuffer[videoSecIdx][i].data, true));
 
-    	    				// console.log("=============> ", 
+    	    				// console.warn("=============> ", 
     	    				// 	videoSecIdx,  
     	    				// 	this.bufObject.videoBuffer[videoSecIdx][i].pts, 
     	    				// 	this.bufObject.videoBuffer[videoSecIdx][len - 1].pts, 
@@ -733,7 +760,8 @@ class CNativeCoreModule {
 	    				console.warn("======1=======> V BREAK ", 
                             this.playVPipe[this.playVPipe.length - 1].pts,
                             this.bufLastVDTS, 
-                            this.bufObject.videoBuffer
+                            this.bufObject.videoBuffer,
+                            this.playVPipe
                         );
 	    			}
 	    		} else {
@@ -746,10 +774,20 @@ class CNativeCoreModule {
 	    				console.warn("=======2======> V BREAK ", 
                             this.playVPipe[this.playVPipe.length - 1].pts, 
                             this.duration,
-                            this.bufObject.videoBuffer);
+                            this.bufObject.videoBuffer,
+                            this.playVPipe);
 	    			}
 	    		}
-    		}, 5);
+                // 2 feed
+                if (this.avSeekVState) {
+                    console.warn("_afterAvFeedSeekToStartWithFinishedBuffer:", videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
+
+                    if (this.config.playMode === def.PLAYER_MODE_VOD) {
+                        this._afterAvFeedSeekToStartWithFinishedBuffer(pts);
+                        this.avSeekVState = false;
+                    }
+                } // this.avSeekVState
+    		}, 5); // avFeedVideoInterval
 
 
     		// audio
@@ -885,10 +923,12 @@ class CNativeCoreModule {
 
                 // 2 feed
                 if (this.avSeekVState) {
-                    // console.log("avFeedVideoInterval:", videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
+                    console.warn(
+                        "avFeedVideo_afterAvFeedSeekToStartWithUnFinBufferInterval:", 
+                        videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
 
                     if (this.config.playMode === def.PLAYER_MODE_VOD) {
-                        this._afterAvFeedSeekToStart(pts);
+                        this._afterAvFeedSeekToStartWithUnFinBuffer(pts);
                         this.avSeekVState = false;
                     }
                 } // this.avSeekVState
@@ -1219,7 +1259,7 @@ class CNativeCoreModule {
         				let dtsMS = parseInt(frame.dts * 1000, 10);
 
         				this.yuvMaxTime = Math.max(frame.pts, this.yuvMaxTime);
-        				// console.log("+++++decVFrameRet : ", ptsMS, dtsMS);
+        				console.warn("+++++decVFrameRet : ", ptsMS, dtsMS);
 
 	    				let decVFrameRet = AVModule.cwrap('decodeVideoFrame', 
 	    					'number', 
@@ -1364,6 +1404,10 @@ class CNativeCoreModule {
      *				Public Core
      *
      * ******************************************/
+
+    // reFull() {
+    //     this._avFeedData(0);
+    // }
 
     setProbeSize(size) {
     	this.probeSize = size;

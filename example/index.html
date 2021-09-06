@@ -107,7 +107,8 @@
         //var token = "============>>>>>>>>>>>>>>Author:changyanlong|numberwolf,Github:https://github.com/numberwolf,Email:porschegt23@foxmail.com,QQ:531365872,HomePage:http://xvideo.video,Discord:numberwolf#8694,Beijing,WorkIn:Baidu<<<<<<<<<<<<===========";
         var token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
         var type = "mp4";
-        var url = "res/video40_265_moov.mp4";
+        var url = "hevc_test_moov_set_head_16s.mp4";
+        // var url = "res/video40_265_moov.mp4";
         // var url = "res/hevc_issue_58.mp4";
         // var url = "res/speed_moov.mp4";
         // var url = "res/no_formattag_265.mp4";
@@ -131,6 +132,13 @@
         const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认内核 recommand!!!!!!
         const PLAYER_CORE_TYPE_CNATIVE = 1; // 测试内核 FLV请用此内核(FLV VOD use this mode)
 
+        // try it: bak player core for mp4/flv/yuvj
+        // others use PLAYER_CORE_TYPE_DEFAULT
+        let playerCore = PLAYER_CORE_TYPE_DEFAULT;
+        if (type === 'mp4') {
+            playerCore = PLAYER_CORE_TYPE_CNATIVE;
+        }
+
         var config = {
             type: type,
             player: "glplayer",
@@ -139,20 +147,21 @@
             accurateSeek : true,
             token : token,
             extInfo : {
-                core : PLAYER_CORE_TYPE_DEFAULT,
-                // core : PLAYER_CORE_TYPE_CNATIVE,
+                //core : PLAYER_CORE_TYPE_DEFAULT,
+                //core : PLAYER_CORE_TYPE_CNATIVE,
+                core : playerCore,
                 coreProbePart : 0.4,
                 moovStartFlag : true,
                 readyShow : true,
                 ignoreAudio : 0
             }
         };
-        //makeH265webjs(url, config);
+        makeH265webjs(url, config);
 
         /*
          * Play raw 265 demo
          */
-        // /*
+        /*
         var type = "raw265";
         var url265raw = "/res/spreedmovie.hevc";
         var config = {
@@ -168,7 +177,7 @@
             }
         };
         var h265Object = makeH265webjsRaw(url265raw, config);
-        // */
+        */
     </script>
 </body>
 </html>

@@ -1063,6 +1063,7 @@ class H265webjsModule {
      *
      */
     _cDemuxDecoderEntry() {
+        // alert("_cDemuxDecoderEntry");
         let _this = this;
         this.player = new CNativeCore.CNativeCore({
             width: this.configFormat.playerW,
@@ -1110,14 +1111,14 @@ class H265webjsModule {
                     false, _this.playParam.videoCodec);
             }
             // _this.onLoadFinish && _this.onLoadFinish();
-        };
+        }; // onProbeFinish
 
         this.player.onPlayingTime = (pts) => {
             let now = _this._durationText(pts);
             let total = _this._durationText(_this.player.duration);
             // event
             if (_this.onPlayTime != null) _this.onPlayTime(pts);
-        };
+        }; // onPlayingTime
 
         this.player.onPlayingFinish = () => {
             _this.pause();
@@ -1129,11 +1130,15 @@ class H265webjsModule {
              * @Todo 临时释放，之后得用真正的Seek操作
              *
              */
-            let releaseRet = _this.player.release();
-            console.log("releaseRet ===> ", releaseRet);
-            this.player = null;
-            this._cDemuxDecoderEntry();
-        };
+            // let releaseRet = _this.player.release();
+            // console.log("releaseRet ===> ", releaseRet);
+            // _this.player.reFull();
+            _this.player.reFull = true;
+            _this.seek(0);
+            // @TODO
+            // this.player = null;
+            // this._cDemuxDecoderEntry();
+        }; // onPlayingFinish
 
         this.player.onCacheProcess = (cPts) => {
             this.onCacheProcess && this.onCacheProcess(cPts);

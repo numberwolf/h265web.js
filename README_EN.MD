@@ -118,6 +118,8 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/09/07 |
+| - | 0.Bak Player Core - Fixed:MP4/FLV(VOD) Seek BUG can not seek to 0; And performance optimizing for play |
 | Time | 2021/08/15 |
 | - | 0.H265/HEVC Upgrade Raw Data Player for VOD/LIVE |
 | Time | 2021/07/18 |
