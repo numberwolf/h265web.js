@@ -685,23 +685,28 @@ class H265webjsModule {
             if (videoFrame != null) {
                 // 首帧显示渲染
                 if (this.configFormat.extInfo.readyShow) {
-                    // let retInitFrame = this.player.playFrame(true, true);
-                    // let retry = 10;
-                    // while (!retInitFrame && retry > 0) {
-                    //     let retryIn = 5;
-                    //     retInitFrame = this.player.playFrame(true, true);
-                    //     while (!retInitFrame && retryIn > 0) {
-                    //         retInitFrame = this.player.playFrame(true, true, true);
-                    //         retryIn -= 1;
-                    //     }
-                    //     retry -= 1;
-                    // }
-
-                    console.log("============== readyShow");
-                    if (this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) {
-                        this.player.playFrameYUV(true, true);
+                    if (this.configFormat.type === def.PLAYER_IN_TYPE_M3U8) {
                         this.configFormat.extInfo.readyShow = false;
                         this.onReadyShowDone && this.onReadyShowDone();
+                    } else {
+                        // let retInitFrame = this.player.playFrame(true, true);
+                        // let retry = 10;
+                        // while (!retInitFrame && retry > 0) {
+                        //     let retryIn = 5;
+                        //     retInitFrame = this.player.playFrame(true, true);
+                        //     while (!retInitFrame && retryIn > 0) {
+                        //         retInitFrame = this.player.playFrame(true, true, true);
+                        //         retryIn -= 1;
+                        //     }
+                        //     retry -= 1;
+                        // }
+
+                        console.log("============== readyShow");
+                        if (this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) {
+                            this.player.playFrameYUV(true, true);
+                            this.configFormat.extInfo.readyShow = false;
+                            this.onReadyShowDone && this.onReadyShowDone();
+                        }
                     }
                 }
                 // if (this.configFormat.extInfo.cacheBuffer) {

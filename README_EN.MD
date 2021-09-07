@@ -118,7 +118,9 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
-| Time | 2021/09/07 |
+| Time | 2021/09/07 - Evening |
+| - | 0.M3U8 Fixed: some error with parse mpegts file |
+| Time | 2021/09/07 - In the small hours |
 | - | 0.Bak Player Core - Fixed:MP4/FLV(VOD) Seek BUG can not seek to 0; And performance optimizing for play |
 | Time | 2021/08/15 |
 | - | 0.H265/HEVC Upgrade Raw Data Player for VOD/LIVE |

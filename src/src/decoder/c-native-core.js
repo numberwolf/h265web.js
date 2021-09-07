@@ -603,9 +603,9 @@ class CNativeCoreModule {
     	this.canvasBox.style.overflow = "hidden"; // 多于的像素不显示
 
     	// first remove all child, clean
-    	while (this.canvasBox.hasChildNodes()) {
-		    this.canvasBox.removeChild(this.canvasBox.lastChild);
-		}
+        // while (this.canvasBox.hasChildNodes()) {
+        //     this.canvasBox.removeChild(this.canvasBox.lastChild);
+        // }
 
     	// second step create view
         this.canvas = document.createElement('canvas');

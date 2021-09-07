@@ -101,6 +101,7 @@ module.exports = config => {
         isPlaying: false,
         isCaching: def.CACHE_NO_LOADCACHE,
         isNewSeek: false,
+        flushDecoder: 0,
         isCheckDisplay: false,
         isPlayLoadingFinish: 0, // 0:undo, 1 loading 2 loading finish
         vCachePTS: 0, // 视频缓冲
@@ -237,6 +238,7 @@ module.exports = config => {
         player.vCachePTS = 0; // 视频缓冲
         player.aCachePTS = 0;
         player.pause();
+        player.stopCacheThread();
         player.cleanSample();
         player.cleanVideoQueue();
         player.cleanCacheYUV();
@@ -244,6 +246,7 @@ module.exports = config => {
             execCall();
         }
         player.isNewSeek = true;
+        player.flushDecoder = 1;
         // temp set videoPTS to int() idx , must lt to target time
         player.videoPTS = parseInt(options.seekTime);
         let playParams = {
@@ -253,6 +256,7 @@ module.exports = config => {
             seekEvent : options.seekEvent || true,
             realPlay : statusNow
         };
+        player.cacheThread();
         player.play(playParams);
     }; // seek
     player.getNalu1Packet = (alginPTS=true) => {
@@ -287,10 +291,14 @@ module.exports = config => {
         // console.warn("decodeNalu1Frame===>", pts);
 
         let ptsMS = parseInt(pts * 1000);
+
+
         let decRet = AVModule.cwrap('decodeCodecContext', 'number', 
-            ['number', 'number', 'number', 'number'])(
-                player.vcodecerPtr, offset, nalBuf.length, ptsMS);
+            ['number', 'number', 'number', 'number', 'number'])(
+                player.vcodecerPtr, offset, nalBuf.length, ptsMS, player.flushDecoder);
         console.log("decRet:", decRet, pts);
+
+        player.flushDecoder = 0;
         
         // let maxRetry = 3;
         // while (decRet == 0 && maxRetry > 0) {
@@ -368,6 +376,12 @@ module.exports = config => {
             // decode Frame
             player.decodeNalu1Frame(nalBuf, pts, true);
         }, 10);
+    };
+    player.stopCacheThread = () => {
+        if (player.cacheLoop !== null) {
+            window.clearInterval(player.cacheLoop);
+            player.cacheLoop = null;
+        }
     };
     /**
      * 缓存中
