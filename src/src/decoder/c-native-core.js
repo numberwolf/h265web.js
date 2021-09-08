@@ -198,6 +198,7 @@ class CNativeCoreModule {
         this.onLoadCacheFinshed = null;
         this.onRender 			= null;
         this.onCacheProcess		= null;
+        this.onReadyShowDone    = null;
 
 		/*
 		 * Init AVModule
@@ -556,6 +557,10 @@ class CNativeCoreModule {
     	// this.audioPlayer && this.audioPlayer.setVoice(voice);
     	this.audioVoice = voice;
     	this.audioWAudio && this.audioWAudio.setVoice(voice);
+    }
+
+    cacheIsFull() {
+        return this._videoQueue.length >= VIDEO_CACHE_LEN;
     }
 
     _checkDisplaySize(realW, widthIn, heightIn) {
@@ -1367,6 +1372,7 @@ class CNativeCoreModule {
 	     //        alignCropData[0], alignCropData[1], alignCropData[2],
 	     //        width, height);
     		this.config.readyShow = false;
+            this.onReadyShowDone && this.onReadyShowDone();
     	} // end if readyShow
 
     	let frameUnit = new CNativeVideoFrame(

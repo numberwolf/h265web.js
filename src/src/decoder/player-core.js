@@ -163,7 +163,7 @@ module.exports = config => {
             player.stream = new Uint8Array([...player.stream].concat(...streamBytes));
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
             player.frameList.push(streamBytes);
-            console.warn("append frame", streamBytes);
+            // console.warn("append frame", streamBytes);
             player.vCachePTS = Math.max(streamBytes.pts, player.vCachePTS);
         }
     };
@@ -182,6 +182,7 @@ module.exports = config => {
             player.stream = new Uint8Array();
         } else if (player.config.appendHevcType == def.APPEND_TYPE_FRAME) {
             player.frameList = [];
+            player.frameList.length = 0;
         }
     };
     player.cleanCacheYUV = () => {
@@ -226,6 +227,14 @@ module.exports = config => {
         }
         return false;
     };
+    player.clearAllCache = () => {
+        player.nowPacket = null;
+        player.vCachePTS = 0; // 视频缓冲
+        player.aCachePTS = 0;
+        player.cleanSample();
+        player.cleanVideoQueue();
+        player.cleanCacheYUV();
+    };
     /**
      * options:
      *      seekTime        : seekTime,
@@ -234,14 +243,9 @@ module.exports = config => {
      */
     player.seek = (execCall, options = {}) => {
         let statusNow = player.isPlaying;
-        player.nowPacket = null;
-        player.vCachePTS = 0; // 视频缓冲
-        player.aCachePTS = 0;
         player.pause();
         player.stopCacheThread();
-        player.cleanSample();
-        player.cleanVideoQueue();
-        player.cleanCacheYUV();
+        player.clearAllCache();
         if (execCall) {
             execCall();
         }
@@ -255,7 +259,7 @@ module.exports = config => {
             accurateSeek : options.accurateSeek || true, 
             seekEvent : options.seekEvent || true,
             realPlay : statusNow
-        };
+        }; // playParams;
         player.cacheThread();
         player.play(playParams);
     }; // seek
@@ -361,7 +365,7 @@ module.exports = config => {
     player.cacheThread = () => {
         player.cacheLoop = window.setInterval(() => {
             if (player.cacheYuvBuf.getState() == CACHE_APPEND_STATUS_CODE.FULL) {
-                // console.log("is full");
+                // console.warn("is full");
                 return;
             }
             // console.warn("not full");

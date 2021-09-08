@@ -275,13 +275,39 @@ class M3u8ParserModule {
 	    if (ptsec < 0) {
 	        return null;
 	    }
-	    if (track_id == 1) {
-	    	// console.log("ptsec : " + ptsec);
-	    	// console.log(this.bufObject.vFrame(ptsec));
+	    if (track_id === 1) {
+	    	// console.warn("popBuffer ptsec : " + ptsec);
+	    	// console.warn(this.bufObject.vFrame(ptsec));
+
+	    	if (ptsec + 1 > this.bufObject.videoBuffer.length) {
+	    		return null;
+	    	}
+
 	        return this.bufObject.vFrame(ptsec);
-	    } else if (track_id == 2) {
+	    } else if (track_id === 2) {
+
+	    	if (ptsec + 1 > this.bufObject.audioBuffer.length) {
+	    		return null;
+	    	}
+
 	        return this.bufObject.aFrame(ptsec);
 	    } else {}
+	}
+
+	getVLen() {
+		return this.bufObject.videoBuffer.length;
+	}
+
+	getALen() {
+		return this.bufObject.audioBuffer.length;
+	}
+
+	getLastIdx() {
+		return this.bufObject.videoBuffer.length - 1;
+	}
+
+	getALastIdx() {
+		return this.bufObject.audioBuffer.length - 1;
 	}
 
 	getACodec () {
@@ -316,7 +342,7 @@ class M3u8ParserModule {
 	        // todo
 	        let realPos = this.bufObject.seekIDR(pts);
 	        this.seekPos = realPos;
-	        console.log("this.bufObject.seekIDR toSeek: "
+	        console.warn("this.bufObject.seekIDR toSeek: "
 	        	+ "[pts, realPos===> ", pts, realPos);
 	    }
 	    // console.log(this.bufObject.idrIdxBuffer);

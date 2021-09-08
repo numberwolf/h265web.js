@@ -129,31 +129,13 @@
         //var url = "res/hls-an/veilside_live.m3u8";
         // var url = "res/hls1/test.m3u8";
 
-        const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认内核 recommand!!!!!!
-        const PLAYER_CORE_TYPE_CNATIVE = 1; // 测试内核 FLV请用此内核(FLV VOD use this mode)
-
-        // try it: bak player core for mp4/flv/yuvj
-        // others use PLAYER_CORE_TYPE_DEFAULT
-        let playerCore = PLAYER_CORE_TYPE_DEFAULT;
-        if (type === 'mp4') {
-            playerCore = PLAYER_CORE_TYPE_CNATIVE;
-        }
-
         var config = {
-            type: type,
             player: "glplayer",
             width: 960,
             height: 540,
-            accurateSeek : true,
             token : token,
             extInfo : {
-                //core : PLAYER_CORE_TYPE_DEFAULT,
-                //core : PLAYER_CORE_TYPE_CNATIVE,
-                core : playerCore,
-                coreProbePart : 0.4,
-                moovStartFlag : true,
-                readyShow : true,
-                ignoreAudio : 0
+                coreProbePart : 0.4
             }
         };
         makeH265webjs(url, config);
@@ -169,10 +151,8 @@
             player: "glplayer",
             width: 960,
             height: 540,
-            accurateSeek : true,
             token : token,
             extInfo : {
-                readyShow : true,
                 rawFps : 30
             }
         };

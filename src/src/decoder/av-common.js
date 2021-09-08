@@ -19,6 +19,46 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
+
+const def = require('../consts');
+const Formats = [
+	{
+		format: 'mp4',
+		value: 'mp4',
+		core: def.PLAYER_CORE_TYPE_CNATIVE
+	},
+	{
+		format: 'flv',
+		value: 'flv',
+		core: def.PLAYER_CORE_TYPE_CNATIVE
+	},
+	{
+		format: 'm3u8',
+		value: 'hls',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
+		format: 'ts',
+		value: 'ts',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
+		format: 'mpegts',
+		value: 'ts',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
+		format: 'hevc',
+		value: 'raw265',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
+		format: 'h265',
+		value: 'raw265',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	}
+]; // httpflv
+
 /**
  * I420 420P
  * @return [y, u, v]
@@ -64,8 +104,39 @@ function frameDataAlignCrop(
 
 		return [new_y, new_u, new_v];
 	}
-}
+} // frameDataAlignCrop
+
+
+function GetUriFormat(uri) {
+	for (let i = 0; i < Formats.length; i++) {
+		const formatTag = Formats[i];
+		const formatRegex = '\.' + formatTag.format;
+
+		let patt = formatRegex;
+		let n = uri.search(patt);
+
+		if (n >= 0) {
+			// alert(formatTag.value);
+			return formatTag.value;
+		} // end if
+	} // end for
+
+	return Formats[0].value;
+} // GetUriFormat
+
+function GetFormatPlayCore(inputFormat) {
+	for (let i = 0; i < Formats.length; i++) {
+		const formatTag = Formats[i];
+		if (formatTag.value === inputFormat) {
+			return formatTag.core;
+		} // end if
+	} // end for
+
+	return Formats[0].core;
+} // GetFormatPlayCore
 
 module.exports = {
-    frameDataAlignCrop : frameDataAlignCrop
-};
+    frameDataAlignCrop : frameDataAlignCrop,
+    GetUriFormat : GetUriFormat,
+    GetFormatPlayCore : GetFormatPlayCore
+}; // module exports

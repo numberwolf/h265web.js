@@ -1,4 +1,4 @@
-# h265web.js
+# h265web.js - 即将支持HDR10!
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
@@ -118,6 +118,10 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/09/08 - 晚 |
+| - | 0.M3U8 Seek导致花屏问题 |
+| - | 1.MP4 部分用户上报花屏问题 |
+| - | 2.入口配置项缩减,部分配置选项去除,改为自动化配置 |
 | 时间 | 2021/09/07 - 晚 |
 | - | 0.M3U8 内核解决部分解析错误 |
 | 时间 | 2021/09/07 - 凌晨 |
@@ -345,18 +349,12 @@ const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器内核
 const PLAYER_CORE_TYPE_CNATIVE = 1; // 实验播放器内核
 
 var config = {
-    type: "mp4",
     player: "glplayer",
     width: 960,
     height: 540,
-    accurateSeek : true,
     token : token,
     extInfo : {
-        moovStartFlag : true,
-        readyShow : true,
-        rawFps : 30,
-        autoCrop : false,
-        core : PLAYER_CORE_TYPE_DEFAULT
+        moovStartFlag : true
     }
 };
 ```
@@ -365,15 +363,13 @@ var config = {
 
 |  配置项 | 类型 | 可选值 | 必填 | 说明 | 
 |  ----  | ----  | ---- | ---- | ---- |
-| type  | String | mp4/hls/ts/raw265/flv | 是 | 播放文件的类型 |
+| type  | String | mp4/hls/ts/raw265/flv | 否 | 播放文件的类型,不填写自动识别 |
 | player  | String | - | 是 | 播放窗口的dom的id值 |
 | width  | Int | - | 是 | 播放窗口的宽度 |
 | height  | Int | - | 是 | 播放窗口的高度 |
-| accurateSeek  | Bool | true/false | 是 | 精准Seek（暂时固定为true） |
 | token  | String | - | 是 | 播放器token值 |
 | extInfo  | Object | - | 否 | 播放器额外配置 |
 | \+ moovStartFlag  | Bool | true/false | 否:默认false | Mp4的moov box是否前置 关联到动态加载 |
-| \+ readyShow  | Bool | true/false | 否:默认false | 是否需要封面图展示 |
 | \+ rawFps  | Float32 | 例如:30 | 否:默认24 | HEVC/AVC裸流播放时候的帧率设定 |
 | \+ autoCrop  | Bool | - | 否:默认false | 如果播放器配置的长宽与视频纵横比不匹配，自动裁剪黑边区域 |
 | \+ core  | Int | - | 否:默认0 | 0:默认播放内核 <br>1:备用播放内核 |
@@ -415,15 +411,12 @@ var config = {
 		```javascript
 		let videoURL = "h265_test.mp4";
 		let config = {
-		    type: "mp4",
 		    player: "glplayer",
 		    width: 960,
 		    height: 540,
-		    accurateSeek : true,
 		    token : token,
 		    extInfo : {
-		        moovStartFlag : true,
-		        readyShow : true
+		        moovStartFlag : true
 		    }
 		};
 		````
@@ -436,10 +429,8 @@ var config = {
 		    player: "glplayer",
 		    width: 960,
 		    height: 540,
-		    accurateSeek : true,
 		    token : token,
 		    extInfo : {
-		        readyShow : true,
 		        rawFps : 30 // 播放帧率
 		    }
 		};
@@ -450,16 +441,12 @@ var config = {
 		const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器
         const PLAYER_CORE_TYPE_CNATIVE = 1; // 备用播放内核
 		let config = {
-            type: "flv",
             player: "glplayer",
             width: 960,
             height: 540,
-            accurateSeek : true,
             token : token,
             extInfo : {
                 moovStartFlag : true,
-                readyShow : true,
-                autoCrop : false,
                 coreProbePart : 0.1,
                 ignoreAudio : 0
             }

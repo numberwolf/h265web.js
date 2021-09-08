@@ -64,6 +64,8 @@ module.exports = () => {
 			}
         }
 
+        // console.warn("IDR Buffer:", bufferModule.idrIdxBuffer);
+
         return true;
 	};
 	/*
@@ -94,6 +96,8 @@ module.exports = () => {
 			}
         }
 
+        // console.warn("IDR Buffer 2:", bufferModule.idrIdxBuffer);
+
         return true;
 	};
 	// by object
@@ -118,6 +122,8 @@ module.exports = () => {
 			}
         }
 
+        // console.warn("IDR Buffer 3:", bufferModule.idrIdxBuffer);
+
         return true;
 	};
 	bufferModule.cleanPipeline = () => {
@@ -137,9 +143,9 @@ module.exports = () => {
 		return bufferModule.audioBuffer[ptsec];
 	};
 	bufferModule.seekIDR = (pts = -1.0) => {
-		console.log("IDR Buffer:", bufferModule.idrIdxBuffer);
-		// console.log(bufferModule.videoBuffer);
-		// console.log("seek target => ", pts);
+		console.warn("IDR Buffer:", bufferModule.idrIdxBuffer);
+		console.warn("VideoBuffer:", bufferModule.videoBuffer);
+		console.warn("seek target => ", pts);
 		// console.log(bufferModule.idrIdxBuffer);
 		if (pts < 0) {
 			return null;
@@ -151,23 +157,35 @@ module.exports = () => {
 		} else {
 			// Find IDR Frame Position
 			for (let i = 0; i < bufferModule.idrIdxBuffer.length; i++) {
+				// IDR Buffer 3: (2) [0.06666666666666667, 4.166666666666667]
 				/**
 				 * |-----[last]|
 				 *        ^ 
 				 * |-----[i] [i+1]----|
 				 *          ^ <- pts
 				 */
-				if (i === bufferModule.idrIdxBuffer.length - 1 || 
-					(bufferModule.idrIdxBuffer[i] < pts && bufferModule.idrIdxBuffer[i+1] > pts) ||
-					(i === 0 && bufferModule.idrIdxBuffer[i] >= pts)
+				if (
+					i === bufferModule.idrIdxBuffer.length - 1 
+					|| (
+							bufferModule.idrIdxBuffer[i] < pts 
+							&& bufferModule.idrIdxBuffer[i+1] > pts
+						) 
+					|| (i === 0 && bufferModule.idrIdxBuffer[i] >= pts)
 				) {
 
 					for (let j = 1; j >= 0; j--) {
 						let idxFind = i - j;
 						if (idxFind >= 0) {
+							console.warn(
+								"seek IDR idxFind => ", 
+								bufferModule.idrIdxBuffer[idxFind], 
+								idxFind, i, j);
 							return bufferModule.idrIdxBuffer[idxFind];
 						}
 					}
+					console.warn(
+						"seek IDR idxFind => ", 
+						bufferModule.idrIdxBuffer[i], i, j);
 					return bufferModule.idrIdxBuffer[i];
 				}
 			} // end for

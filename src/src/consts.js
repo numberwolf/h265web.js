@@ -76,4 +76,4 @@ module.exports = {
     CACHE_NO_LOADCACHE      : 0xC0,
     CACHE_WITH_PLAY_SIGN    : 0xC1,
     CACHE_WITH_NOPLAY_SIGN  : 0xC2,
-}
+}; // module export

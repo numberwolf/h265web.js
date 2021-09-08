@@ -1,4 +1,4 @@
-# h265web.js
+# h265web.js - Will support HDR10!
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
@@ -118,6 +118,10 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| 时间 | 2021/09/08 - Evening |
+| - | 0.Fixed: M3U8 Seek with Decode Failed |
+| - | 1.Fixed: Some MP4 Case |
+| - | 2.Config update, remove some options, make it auto set |
 | Time | 2021/09/07 - Evening |
 | - | 0.M3U8 Fixed: some error with parse mpegts file |
 | Time | 2021/09/07 - In the small hours |
@@ -337,21 +341,16 @@ import H265webjsModule from './dist/index';
 * Make player config
 
 ```javascript
-const PLAYER_CORE_TYPE_DEFAULT = 0; // 默认播放器内核
-const PLAYER_CORE_TYPE_CNATIVE = 1; // 备用播放器内核
+const PLAYER_CORE_TYPE_DEFAULT = 0; // Default player core
+const PLAYER_CORE_TYPE_CNATIVE = 1; // BAK player Core
 
 let config = {
-    type: "mp4",
     player: "glplayer",
     width: 960,
     height: 540,
-    accurateSeek : true,
     token : token,
     extInfo : {
-        moovStartFlag : true,
-        readyShow : true,
-        rawFps : 30,
-        core : PLAYER_CORE_TYPE_DEFAULT
+        moovStartFlag : true
     }
 };
 ```
@@ -360,18 +359,16 @@ let config = {
 
 |  Config | Type | Value | Need | Desc | 
 |  ----  | ----  | ---- | ---- | ---- |
-| type  | String | mp4/hls/ts/raw265/flv | Y | Media file type |
+| type  | String | mp4/hls/ts/raw265/flv | N | Media file type, or auto detect |
 | player  | String | - | Y | Player dom id |
 | width  | Int | - | Y | Player width |
 | height  | Int | - | Y | Player height |
-| accurateSeek  | Bool | true/false | Y | Accurate seek |
 | token  | String | - | Y | player's token |
 | extInfo  | Object | - | N | player extra info |
 | \+ moovStartFlag  | Bool | true/false | N:default is sfalse | mp4 with moov before mdat |
-| \+ readyShow  | Bool | true/false | N:default is false | need cover image |
 | \+ rawFps  | Float32 | Example:30 | N:default 24 | Fps for play HEVC/AVC stream |
-| \+ core  | Int | - | N:default 0 | 0:Default player core <br>1: Bak player core mode(beta) |
 | \+ coreProbePart  | Float32 | - | N:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with Bak player core mode(beta)) |
+| \+ core  | Int | - | N:Default 0 | 0:Default Core <br>1:Bak Core |
 | \+ ignoreAudio | Int | - | N:Default is 0 | 0:Play with audio <br>1:Without audio |
 
 
@@ -408,7 +405,6 @@ let config = {
 		```javascript
 		let videoURL = "h265_test.mp4";
 		let config = {
-		    type: "mp4",
 		    player: "glplayer",
 		    width: 960,
 		    height: 540,
@@ -445,7 +441,6 @@ let config = {
 		const PLAYER_CORE_TYPE_DEFAULT = 0; // Default player core
         const PLAYER_CORE_TYPE_CNATIVE = 1; // Bak player core mode
 		let config = {
-            type: "flv",
             player: "glplayer",
             width: 960,
             height: 540,
