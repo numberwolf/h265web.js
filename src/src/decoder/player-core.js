@@ -643,8 +643,12 @@ module.exports = config => {
     };
     player.release = () => { // 释放
         player.endAudio();
+        player.cacheLoop && window.clearInterval(player.cacheLoop);
+        player.cacheLoop = null;
+
         player.loop && window.clearInterval(player.loop);
         player.loop = null;
+        
         player.pause();
         AVModule.cwrap('release', 'number', ['number'])(player.vcodecerPtr);
         player.stream = null;

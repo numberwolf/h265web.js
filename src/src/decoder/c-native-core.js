@@ -233,6 +233,26 @@ class CNativeCoreModule {
     }
 
     release() {
+        if (this.playFrameInterval !== null) {
+            window.clearInterval(this.playFrameInterval);
+            this.playFrameInterval = null;
+        }
+
+        if (this.avFeedVideoInterval !== null) {
+            window.clearInterval(this.avFeedVideoInterval);
+            this.avFeedVideoInterval = null;
+        }
+
+        if (this.avFeedAudioInterval !== null) {
+            window.clearInterval(this.avFeedAudioInterval);
+            this.avFeedAudioInterval = null;
+        }
+
+        if (this.avRecvInterval !== null) {
+            window.clearInterval(this.avRecvInterval);
+            this.avRecvInterval = null;
+        }
+        this._clearDecInterval();
     	let releaseRet = AVModule.cwrap(
     		'releaseSniffStream', 'number', ['number'])(this.corePtr);
     	this.audioWAudio && this.audioWAudio.stop();
@@ -244,8 +264,6 @@ class CNativeCoreModule {
 
     	this.playVPipe.length = 0;
     	// this.playAPipe.length = 0;
-
-    	this._clearDecInterval();
     	return releaseRet;
     }
 
@@ -536,9 +554,11 @@ class CNativeCoreModule {
         this.isNewSeek = true;
         this.avSeekVState = true;
         this.seekTarget = options.seekTime;
-        this.audioWAudio && this.audioWAudio.setVoice(0);
-        this.audioWAudio.resetStartParam();
-        this.audioWAudio.stop();
+        if (this.audioWAudio !== null && this.audioWAudio !== undefined) {
+            this.audioWAudio.setVoice(0);
+            this.audioWAudio.resetStartParam();
+            this.audioWAudio.stop();
+        }
 
     	this._avFeedData(options.seekTime);
 

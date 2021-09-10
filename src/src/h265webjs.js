@@ -285,6 +285,9 @@ class H265webjsModule {
     release() {
         console.log("===>", this.player);
         if (this.playParam.videoCodec === def.CODEC_H265 && this.player) {
+            if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+                this.hlsObj.release();
+            }
             this.player.release();
         }
     }

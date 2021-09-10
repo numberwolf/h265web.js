@@ -263,6 +263,11 @@ class M3u8ParserModule {
 	    }, 50);
 	}
 
+	release() {
+		this.timerFeed && window.clearInterval(this.timerFeed);
+		this.timerTsWasm && window.clearInterval(this.timerTsWasm);
+	}
+
 	bindReady(bindObject) {
     	this.onReadyOBJ = bindObject;
     }
