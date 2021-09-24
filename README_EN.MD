@@ -113,6 +113,8 @@ Notice：
 
 		- [Exit Fullscreen](#exitfullscreen)
 
+		- [Release Player](#release)
+
 - [3、Others](#3others)
 
 	- [Donate](#donate)
@@ -880,6 +882,18 @@ player.fullScreen();
 
 ```javascript
 player.closeFullScreen();
+```
+
+#### release ####
+
+| Function | Return | Desc |
+| ----  | ----  | ---- |
+| release()  | - | Release Player |
+
+* 示例
+
+```javascript
+player.release();
 ```
 
 <br>
