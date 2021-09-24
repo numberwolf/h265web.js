@@ -27,3 +27,5 @@ res
 test.sh
 
 node_modules.bak/
+
+*.bak

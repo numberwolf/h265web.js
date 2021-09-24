@@ -28,6 +28,9 @@ class MPEG_JS_Module {
         this.configFormat = {
         };
 
+        // this.testdebug = 0;
+        this.isLive = 0;
+
         // member
         this.mediaAttr = {
         	sampleRate : 0,
@@ -49,10 +52,13 @@ class MPEG_JS_Module {
             vHeight : 0,
         };
 
+        this.offsetDemux = null;
+
         this.wasmState = 0;
 
         this.onReady = null;
         this.onDemuxed = null;
+        this.onDemuxedFailed = null;
         this.aacDec = null;
         // this.init();
 
@@ -115,7 +121,15 @@ class MPEG_JS_Module {
 
 	// inside
 	_demuxerTsInit(videoURL) {
+        // this.testdebug++;
+        // if (this.testdebug % 10 === 0) {
+        //     videoURL = videoURL.replace(".ts", ".404ts");
+        // }
+
 		let _this = this;
+        console.warn("_demuxerTsInit ==> ", videoURL);
+
+        // OK
 		fetch(videoURL)
 		.then(res => res.arrayBuffer())
 		.then(streamBuffer => {
@@ -123,23 +137,50 @@ class MPEG_JS_Module {
 
 			// array buffer to unit8array
 			let streamUint8Buf = new Uint8Array(streamBuffer);
-			_this._demuxCore(streamUint8Buf);
-		});
+            if (streamUint8Buf !== undefined && streamUint8Buf !== null) {
+                _this._demuxCore(streamUint8Buf);
+            } else {
+                console.error("_demuxerTsInit ERROR fetch res is null ==> ", videoURL);
+            }
+            streamUint8Buf = null;
+		}).catch(error => {
+            console.error("_demuxerTsInit ERROR fetch ERROR ==> ", error);
+            alert("_demuxerTsInit ERROR fetch ERROR ==> ");
+            alert(error);
+            _this._releaseOffset();
+            _this.onDemuxedFailed && _this.onDemuxedFailed(error, videoURL);
+        });
 	}
 
+    _releaseOffset() {
+        if (this.offsetDemux !== undefined && this.offsetDemux !== null) {
+            console.warn("------------> _releaseOffset");
+            ModuleTS._free(this.offsetDemux);
+            this.offsetDemux = null;
+        }
+    }
+
     _demuxCore(streamUint8Buf) {
+        console.warn("_________demuxCore");
         let _this = this;
+        this._releaseOffset();
 
         // refresh
         this._refreshDemuxer();
 
         // console.log(streamUint8Buf);
         // console.log(streamUint8Buf.length);
-        let offset = ModuleTS._malloc(streamUint8Buf.length)
-        ModuleTS.HEAP8.set(streamUint8Buf, offset)
+        
+        this.offsetDemux = ModuleTS._malloc(streamUint8Buf.length);
+        ModuleTS.HEAP8.set(streamUint8Buf, this.offsetDemux);
 
-        let decRet = ModuleTS.cwrap('demuxBox', 'number', ['number', 'number'])(offset, streamUint8Buf.length)
-        console.log('Run demux box result : ' + decRet);
+        let decRet = ModuleTS.cwrap('demuxBox', 'number', 
+            ['number', 'number', 'number'])
+        (this.offsetDemux, streamUint8Buf.length, this.isLive);
+        console.warn('-----------Run demux box result : ' + decRet);
+
+        ModuleTS._free(this.offsetDemux);
+        this.offsetDemux = null;
 
         if (decRet >= 0) {
             _this._setMediaInfo();

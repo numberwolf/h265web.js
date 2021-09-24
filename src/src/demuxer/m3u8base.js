@@ -40,6 +40,10 @@ const def = require('../consts');
 // ...
 // #EXT-X-ENDLIST <-- vod, if live will not include this tag
 
+const removeTags = [
+	/#EXT-X-PROGRAM-DATE-TIME.+\n/g,
+];
+
 const matchers = {
 	lineDelimiter: /\r?\n/,
 	extensionHeader: '#EXTM3U',
@@ -79,6 +83,13 @@ class M3u8BaseParserModule {
 		this.onFinished = null;
 	}
 
+	isLive() {
+		if (this._type === def.PLAYER_IN_TYPE_M3U8_LIVE) {
+			return 1
+		}
+		return 0;
+	}
+
 	fetchM3u8(videoURL) {
 		let _this = this;
 		// fetch('http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8')
@@ -102,7 +113,15 @@ class M3u8BaseParserModule {
 					_this.fetchM3u8(videoURL);
 				}, minDur * 500);
 			}
-  		});
+  		}).catch(error => {
+            console.error("fetchM3u8 ERROR fetch ERROR ==> ", error);
+            alert("fetchM3u8 ERROR fetch ERROR ==> ");
+            alert(error);
+
+			setTimeout(() => {
+				_this.fetchM3u8(videoURL);
+			}, 500);
+        });
 	}
 
 	_uriParse(videoURL) {
@@ -134,8 +153,16 @@ class M3u8BaseParserModule {
 	}
 
 	// return ts item list
-	_m3u8Parse(hlsBody) {
+	_m3u8Parse(p_hlsBody) {
 		let _this = this;
+
+		let hlsBody = p_hlsBody;
+
+		for (let i = 0; i < removeTags.length; i++) {
+			console.log(removeTags[i]);
+			hlsBody = p_hlsBody.replace(removeTags[i], '');
+		}
+		console.log(hlsBody);
 
 		let lines = hlsBody.split(matchers.lineDelimiter);
 		let minDur = matchers.defaultMinDur;
@@ -164,7 +191,7 @@ class M3u8BaseParserModule {
 					case matchers.combined:
 						break;
 					case matchers.streamInf:
-						// console.log("matchers beforeTag streamInf===>", line);
+						// console.warn("matchers beforeTag streamInf===>", line);
 						_this.fetchM3u8(line);
 						return null; // todo
 					default:
@@ -205,6 +232,7 @@ class M3u8BaseParserModule {
 							}
 							this.onFinished(callFinData);
 						}
+						// console.warn("matchers finished", line);
 						return true; // end
 					default:
 						console.log("unknow tag" + tagParse.key);
@@ -212,6 +240,7 @@ class M3u8BaseParserModule {
 			}
 
 			let segmentParse = matchers.segmentParse.exec(line);
+			// console.warn("------>matchers segmentParse", line, segmentParse);
 			if (segmentParse != null) {
 				let segmentDur = segmentParse[1];
 				this.duration += parseFloat(segmentParse[1]);
@@ -223,10 +252,19 @@ class M3u8BaseParserModule {
 				i += 1; // pointer to media file
 
 				let mediaFile = lines[i];
-				let mediaURI = this._preURI + mediaFile;
+				let mediaURI = null;
+				if (mediaFile.indexOf("http") >= 0) {
+					mediaURI = mediaFile;
+				} else {
+					mediaURI = this._preURI + mediaFile;
+				}
+
+				// console.warn("------>matchers segmentParse mediaURI", mediaURI);
 
 				if (this._slices.indexOf(mediaURI) < 0) {
 					this._slices.push(mediaURI);
+
+					console.warn("------>push segmentParse mediaURI", this._slices[this._slices.length - 1], mediaURI);
 
 					if (this.onTransportStream != null) {
 						this.onTransportStream(mediaURI, segmentDur);

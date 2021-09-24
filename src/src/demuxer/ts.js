@@ -87,9 +87,13 @@ class TsParserModule {
 
             let readData = null;
             while(1) {
+            // let readInterval = setInterval(function() {
                 readData = _this.mpegTsObj.readPacket();
                 if (readData.size <= 0) {
                     break;
+                    // clearInterval(readInterval);
+                    // readInterval = null;
+                    // return;
                 }
 
                 let pts = readData.dtime;
@@ -121,6 +125,7 @@ class TsParserModule {
                 	}
                 }
                 // console.log(pts);
+            // }, 1);
             }
             console.log(_this.bufObject.videoBuffer);
             console.log(_this.bufObject.audioBuffer);

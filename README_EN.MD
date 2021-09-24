@@ -11,12 +11,23 @@
 
 A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web</a> helped you, please `star` it~
 
-### Demo: <a href="https://www.zzsin.com/h265webjs.html">`https://www.zzsin.com/h265webjs.html`</a>
+#### demo <a href="https://www.zzsin.com/h265webjs.html"> https://www.zzsin.com/h265webjs.html
+</a>
+
+<hr>
+
+| Feature | Feature | Feature | Feature |
+| ---- | ---- | ---- | ---- |
+| HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
+| <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
+| M3u8(VOD) | HDR10(BT2020) | HTTP FLV(LIVE) | G711A |
+| <img src="resource/icon-m3u8.png" height="100"> | @TODO Support - <br>Before 2021/10/31 | @TODO Support - <br>Before 2021/10/31 | @TODO |
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
 | [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0</a> |
 
+<hr>
 
 # Remind!
 
@@ -118,7 +129,12 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
-| 时间 | 2021/09/08 - Evening |
+| Time | 2021/09/25 - In the small hours |
+| - | 0.HLS Live Fixed: Crash by OOM |
+| - | 1.HLS Live Fixed: MPEG-TS full path |
+| - | 2.HLS Live Fixed: Stop by lost stream a moment |
+| - | 3.HLS Live Fixed: Stop by unstable network |
+| Time | 2021/09/08 - Evening |
 | - | 0.Fixed: M3U8 Seek with Decode Failed |
 | - | 1.Fixed: Some MP4 Case |
 | - | 2.Config update, remove some options, make it auto set |

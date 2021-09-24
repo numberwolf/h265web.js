@@ -337,7 +337,7 @@ class CNativeCoreModule {
     			this.onPlayingTime && this.onPlayingTime(this.duration);
 
     			// this._avFeedData(0);
-    			console.log("================> FINISHED PLAY!");
+    			console.warn("================> FINISHED PLAY!");
 
     			this.onLoadCacheFinshed && this.onLoadCacheFinshed();
     			this.onPlayingFinish && this.onPlayingFinish();
@@ -354,8 +354,8 @@ class CNativeCoreModule {
     play() {
         console.warn("play=========>");
         if (!this.playFrameInterval 
-        	&& null === this.playFrameInterval 
-        	&& undefined == this.playFrameInterval) {
+        	|| null === this.playFrameInterval 
+        	|| undefined == this.playFrameInterval) {
 
         	if (this._videoQueue.length > 0) {
         		this.isPlaying = true;
@@ -365,145 +365,156 @@ class CNativeCoreModule {
         	let nowTimestamp 		= 0;
         	let playFrameCostTime 	= 0;
 
-        	// this.playFrameInterval = window.setInterval(() => {
-        	// 	let videoFrame = this._videoQueue.shift();
-        	// 	console.log("==> shift videoFrame.pts play", videoFrame.pts);
-        	// 	RenderEngine420P.renderFrame(
-		       //      this.yuv,
-		       //      videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
-		       //      videoFrame.line1, videoFrame.height);
-        	// }, this.frameDur * 1000);
+            if (this.config.playMode === def.PLAYER_MODE_NOTIME_LIVE) {
+                console.warn("LIVE start play =========>");
+            	this.playFrameInterval = window.setInterval(() => {
+                    if (this._videoQueue.length > 0) {
+                		let videoFrame = this._videoQueue.shift();
+                		console.warn("LIVE ==> shift videoFrame.pts play", videoFrame.pts);
+                		RenderEngine420P.renderFrame(
+        		            this.yuv,
+        		            videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+        		            videoFrame.line1, videoFrame.height);
+                    }
+            	}, this.frameDur * 1000);
+                // }, 1000);
+            } else {
 
-			this.playFrameInterval = window.setInterval(() => {
-                console.warn("playFrameInterval");
-				nowTimestamp = getMsTime();
-				if (this._videoQueue.length > 0) {
+    			this.playFrameInterval = window.setInterval(() => {
+                    // console.warn("playFrameInterval", 
+                    //     nowTimestamp, calcuteStartTime, 
+                    //     ">=", 
+                    //     this.frameTime, playFrameCostTime);
+    				nowTimestamp = getMsTime();
+    				if (this._videoQueue.length > 0) {
 
-					/*
-					 * Calcute time
-					 */
-					if (nowTimestamp - calcuteStartTime >= this.frameTime - playFrameCostTime) { // play
-                        // console.warn("playFrameInterval handle frame");
-						// if (this.playVPipe.length > 0) { // debug
-						// 	console.log("==> shift videoFrame.pts playVPipe length", 
-						// 		this.playVPipe.length, 
-						// 		this.playVPipe[this.playVPipe.length - 1].pts, 
-						// 		this.bufObject.videoBuffer.length);
-						// }
-						let videoFrame = this._videoQueue.shift();
-						// let videoFrame = this._videoQueue[this.playIdx++];
+    					/*
+    					 * Calcute time
+    					 */
+    					if (nowTimestamp - calcuteStartTime >= this.frameTime - playFrameCostTime) { // play
+                            // console.warn("playFrameInterval handle frame");
+    						// if (this.playVPipe.length > 0) { // debug
+    						// 	console.log("==> shift videoFrame.pts playVPipe length", 
+    						// 		this.playVPipe.length, 
+    						// 		this.playVPipe[this.playVPipe.length - 1].pts, 
+    						// 		this.bufObject.videoBuffer.length);
+    						// }
+    						let videoFrame = this._videoQueue.shift();
+    						// let videoFrame = this._videoQueue[this.playIdx++];
 
-						let diff = 0;
-						if (!this.isNewSeek 
-							&& this.audioWAudio !== null 
-							&& this.audioWAudio !== undefined) {
-							diff = (videoFrame.pts - this.audioWAudio.getAlignVPTS()) * 1000;
-							// console.warn(
-							// 	"vpts: ", videoFrame.pts,
-							// 	",apts: ", this.audioWAudio.getAlignVPTS(),
-							// 	",diff:", diff);
+    						let diff = 0;
+    						if (!this.isNewSeek 
+    							&& this.audioWAudio !== null 
+    							&& this.audioWAudio !== undefined) {
+    							diff = (videoFrame.pts - this.audioWAudio.getAlignVPTS()) * 1000;
+    							// console.warn(
+    							// 	"vpts: ", videoFrame.pts,
+    							// 	",apts: ", this.audioWAudio.getAlignVPTS(),
+    							// 	",diff:", diff);
 
-							this.playPTS = Math.max(this.audioWAudio.getAlignVPTS(), this.playPTS);
-						}
-						calcuteStartTime = nowTimestamp;
+    							this.playPTS = Math.max(this.audioWAudio.getAlignVPTS(), this.playPTS);
+    						}
+    						calcuteStartTime = nowTimestamp;
+                            console.log("after set calcuteStartTime", calcuteStartTime);
 
-						let startR = getMsTime();
-						// console.warn("shift videoFrame.pts", 
-						// 	videoFrame.pts, this.seekTarget, this.isNewSeek);
-						this.playPTS = Math.max(videoFrame.pts, this.playPTS);
+    						let startR = getMsTime();
+    						// console.warn("shift videoFrame.pts", 
+    						// 	videoFrame.pts, this.seekTarget, this.isNewSeek);
+    						this.playPTS = Math.max(videoFrame.pts, this.playPTS);
 
-						if (this.isNewSeek 
-							&& this.seekTarget - this.frameDur > videoFrame.pts) {
-							playFrameCostTime = this.frameTime; // 快进呀
-							return;
-						} else { // render
-							if (this.isNewSeek) {
-                                // alert("after seek, play"
-                                //     + ", target:" + this.seekTarget
-                                //     + ", playVPipe pts:" + this.playVPipe[0].pts
-                                //     + ", vpts:" + videoFrame.pts
-                                //     + ", apts:" + this.audioWAudio.getAlignVPTS());
-								this.audioWAudio && this.audioWAudio.setVoice(this.audioVoice);
-								this.audioWAudio && this.audioWAudio.play();
-								playFrameCostTime = 0;
-								// calcuteStartTime = 0;
-								this.isNewSeek = false;
-								this.seekTarget = 0;
+    						if (this.isNewSeek 
+    							&& this.seekTarget - this.frameDur > videoFrame.pts) {
+    							playFrameCostTime = this.frameTime; // 快进呀
+    							return;
+    						} else { // render
+    							if (this.isNewSeek) {
+                                    // alert("after seek, play"
+                                    //     + ", target:" + this.seekTarget
+                                    //     + ", playVPipe pts:" + this.playVPipe[0].pts
+                                    //     + ", vpts:" + videoFrame.pts
+                                    //     + ", apts:" + this.audioWAudio.getAlignVPTS());
+    								this.audioWAudio && this.audioWAudio.setVoice(this.audioVoice);
+    								this.audioWAudio && this.audioWAudio.play();
+    								playFrameCostTime = 0;
+    								// calcuteStartTime = 0;
+    								this.isNewSeek = false;
+    								this.seekTarget = 0;
 
-							}
-
-							// console.warn("TO RENDER videoFrame.pts", videoFrame.pts);
-
-							if (this.showScreen) { // on render
-								// Render callback
-								this.onRender		&& this.onRender(
-									videoFrame.line1, videoFrame.height, 
-									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v);
-							} else {
-                                // console.warn("RenderEngine420P.renderFrame videoFrame.pts", videoFrame.pts);
-								RenderEngine420P.renderFrame(
-									this.yuv,
-									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
-									videoFrame.line1, videoFrame.height);
-							}
-
-							/*
-							 * Event Call
-							 */
-							this.onPlayingTime 	&& this.onPlayingTime(videoFrame.pts);
-						}
-
-						// 正常播放
-						// Video慢于Audio时候: 小于1帧
-						// Video快于Audio:
-						if (!this.isNewSeek && this.audioWAudio && (
-							(diff < 0 && diff * (-1) <= this.frameTime) 
-							|| diff >= 0
-							)
-						) {
-							// Check Finished
-							// console.log("pts: ", videoFrame.pts, " duration:", this.duration);
-                            if (this.config.playMode === def.PLAYER_MODE_VOD) {
-    							if (videoFrame.pts >= this.duration) { // play finish 1
-    								this.onLoadCacheFinshed && this.onLoadCacheFinshed();
-    								this.onPlayingFinish && this.onPlayingFinish();
-    								this._clearDecInterval();
-    								this.pause();
-    							} else {
-    								if (this._checkPlayFinished()) { // play finish 2
-    									return;
-    								}
     							}
-                            }
-							/*
-							 * Cost Time
-							 */
-							playFrameCostTime = getMsTime() - nowTimestamp;
-							// console.log("shift videoFrame.pts 常规", playFrameCostTime);
-						} else if (!this.isNewSeek && this.audioWAudio) {
-							if (diff < 0 && diff * (-1) > this.frameTime) {
-								// Video特别慢于Audio: > 1帧
-								playFrameCostTime = this.frameTime; // 快进呀
-								// console.log("shift videoFrame.pts 快进", this.frameTime);
-							} else { // @TODO
-								playFrameCostTime = this.frameTime;
-								// console.log("shift videoFrame.pts 快进2", this.frameTime);
-							}
-						}
 
-					} else {
-						console.warn("shift videoFrame.pts 等待");
-					} // end if check play timestamp
-				} else {
-                    console.warn("playFrameInterval this._videoQueue.length < 0");
-                } // end if videoQueue > 0
+    							// console.warn("TO RENDER videoFrame.pts", videoFrame.pts);
 
-				if (this._checkPlayFinished()) { // play finish 2
-                    // console.warn("native-core FINISHED!");
-					return;
-				}
+    							if (this.showScreen) { // on render
+    								// Render callback
+    								this.onRender		&& this.onRender(
+    									videoFrame.line1, videoFrame.height, 
+    									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v);
+    							} else {
+                                    console.warn("RenderEngine420P.renderFrame videoFrame.pts", videoFrame.pts);
+    								RenderEngine420P.renderFrame(
+    									this.yuv,
+    									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+    									videoFrame.line1, videoFrame.height);
+    							}
 
-			}, 1); // end playFrameInterval
+    							/*
+    							 * Event Call
+    							 */
+    							this.onPlayingTime 	&& this.onPlayingTime(videoFrame.pts);
+    						}
+
+    						// 正常播放
+    						// Video慢于Audio时候: 小于1帧
+    						// Video快于Audio:
+    						if (!this.isNewSeek && this.audioWAudio && (
+    							(diff < 0 && diff * (-1) <= this.frameTime) 
+    							|| diff >= 0
+    							)
+    						) {
+    							// Check Finished
+    							// console.log("pts: ", videoFrame.pts, " duration:", this.duration);
+                                if (this.config.playMode === def.PLAYER_MODE_VOD) {
+        							if (videoFrame.pts >= this.duration) { // play finish 1
+        								this.onLoadCacheFinshed && this.onLoadCacheFinshed();
+        								this.onPlayingFinish && this.onPlayingFinish();
+        								this._clearDecInterval();
+        								this.pause();
+        							} else {
+        								if (this._checkPlayFinished()) { // play finish 2
+        									return;
+        								}
+        							}
+                                }
+    							/*
+    							 * Cost Time
+    							 */
+    							playFrameCostTime = getMsTime() - nowTimestamp;
+    							// console.log("shift videoFrame.pts 常规", playFrameCostTime);
+    						} else if (!this.isNewSeek && this.audioWAudio) {
+    							if (diff < 0 && diff * (-1) > this.frameTime) {
+    								// Video特别慢于Audio: > 1帧
+    								playFrameCostTime = this.frameTime; // 快进呀
+    								// console.log("shift videoFrame.pts 快进", this.frameTime);
+    							} else { // @TODO
+    								playFrameCostTime = this.frameTime;
+    								// console.log("shift videoFrame.pts 快进2", this.frameTime);
+    							}
+    						}
+
+    					} else {
+    						console.warn("shift videoFrame.pts 等待");
+    					} // end if check play timestamp
+    				} else {
+                        console.warn("playFrameInterval this._videoQueue.length < 0");
+                    } // end if videoQueue > 0
+
+    				if (this._checkPlayFinished()) { // play finish 2
+                        // console.warn("native-core FINISHED!");
+    					return;
+    				}
+
+    			}, 1); // end playFrameInterval
+            } // end check playMode
 	    } // end if !this.playFrameInterval
 
 	    if (!this.isNewSeek) {
@@ -1034,7 +1045,8 @@ class CNativeCoreModule {
     	let _this = this;
     	this._createYUVCanvas();
 
-    	console.log("_probeFinCallback codec name:", vcodec_name_id, def.V_CODEC_NAME_HEVC);
+    	console.warn("_probeFinCallback codec name:", 
+            vcodec_name_id, def.V_CODEC_NAME_HEVC, duration, fps);
 
     	this.config.fps = fps * 1.0;
     	this.frameTime 	= 1000.0 / this.config.fps; // micro second
@@ -1047,6 +1059,13 @@ class CNativeCoreModule {
     	this.config.sampleRate 	= sample_rate;
     	this.channels 			= channels;
     	this.audioIdx			= audioIdx;
+
+        if (this.duration < 0) {
+            this.config.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+            console.warn(
+                "_probeFinCallback set to live mode", 
+                this.frameTime, this.frameDur);
+        }
 
     	// 获取const char*的指针地址这里是, 没长度，但是按照编码规律 读取上10个顶天了
     	// eg fltp s16le s16be s32le s32be
@@ -1149,7 +1168,7 @@ class CNativeCoreModule {
     _naluCallback(data, len, isKey, width, height, pts, dts) {
     	let ptsFixed = this._ptsFixed2(pts);
     	// let dtsFixed = this._ptsFixed2(dts);
-    	// console.log("_naluCallback => ", data, len, isKey, width, height, ptsFixed, dts);
+    	console.warn("LIVE naluCallback => ", len, isKey, width, height, ptsFixed, dts);
 
     	let outData = AVModule.HEAPU8.subarray(data, data + len);
         let bufData = new Uint8Array(outData);
@@ -1312,12 +1331,17 @@ class CNativeCoreModule {
     	line1, line2, line3, 
     	width, height, pts, tag) {
 
+        console.warn(
+            "++++++++++++ LIVE _frameCallback successed pts===========",
+            pts, this._videoQueue.length);
+
     	if (this.openFrameCall === false 
     		|| tag !== this.frameCallTag 
     		|| pts > this.yuvMaxTime + this.frameDur) { 
             // 预防seek之后又出现上次的回调尾巴
             // console.log("++++++++++++_frameCallback continue frame call===========", 
                 // pts, this._videoQueue.length);
+            console.warn("LIVE yuvMaxTime remove CALL YUV");
     		return;
     	}
 
@@ -1329,15 +1353,15 @@ class CNativeCoreModule {
             return;
         }
 
-        // console.warn(
-        //     "++++++++++++_frameCallback successed pts===========",
-        //     pts, this.yuvMaxTime, this.isNewSeek, this.seekTarget, this._videoQueue.length);
+        
 
     	// @TODO 暂时加个健壮性判断，如果 pts_new - pts_last > 1.0 ,return
     	let len = this._videoQueue.length;
-    	if (len > 0 && pts - this._videoQueue[len - 1].pts > 1.0) {
-    		return;
-    	}
+        // @TODO
+    	// if (len > 0 && pts - this._videoQueue[len - 1].pts > 1.0) {
+        //     console.warn("LIVE pts - lastPTS > 1.0");
+    	// 	   return;
+    	// }
 
     	// check canvas width/height
         if (this.canvas.width != line1 || this.canvas.height != height) {
@@ -1351,6 +1375,7 @@ class CNativeCoreModule {
         }
 
         if (this.playPTS > pts) {
+            console.warn("LIVE playPTS > pts");
         	return;
         }
 
@@ -1383,6 +1408,7 @@ class CNativeCoreModule {
     	 * readyShow
     	 */
     	if (this.config.readyShow) {
+            console.warn("this.config.readyShow --- DEBUG");
     		RenderEngine420P.renderFrame(
 	            this.yuv,
 	            buf_y, buf_u, buf_v,
@@ -1420,6 +1446,8 @@ class CNativeCoreModule {
 	    	}
 	    }
 
+        console.warn("LIVE frameCall videoQueueRet:", this._videoQueue);
+
 	    this.vCachePTS = Math.max(pts, this.vCachePTS);
 	    this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
         
@@ -1451,6 +1479,8 @@ class CNativeCoreModule {
         	['number', 'number', 'number', 'number'])(
             this.corePtr, offset, buffer.length, this.probeSize);
         console.log("cnative pushRet : ", pushRet);
+
+        // @TODO
         return pushRet;
     }
 

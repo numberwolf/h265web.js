@@ -26,9 +26,10 @@ source ./version.sh
     "start": "cp src/decoder/missile* ./dist/ && cp src/demuxer/missile* ./dist/ && cp -r src/assets dist && browserify src/h265webjs.js -o ./dist/h265webjs_tmp.js && terser ./dist/h265webjs_tmp.js -c pure_funcs=[],toplevel=true -m -o ./dist/h265webjs.js && rm ./dist/h265webjs_tmp.js && cp -r ./dist/* ./demo/dist/ && browserify play.js -o ./dist/play.js && node server.js",
 !
 
-REMOVE_FUNCS='"console.log","console.warn"'
-#REMOVE_FUNCS='"console.log"'
-#REMOVE_FUNCS=''
+REMOVE_FUNCS='"console.log","console.warn","alert"'
+# REMOVE_FUNCS='"console.warn","alert"'
+# REMOVE_FUNCS='"console.log","alert"'
+# REMOVE_FUNCS=''
 
 rm ./dist/*.js
 rm ./dist/*.wasm

@@ -11,14 +11,25 @@
 一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的HEVC播放器 
 <br>
 
-### DEMO: <a href="https://www.zzsin.com/h265webjs.html"> https://www.zzsin.com/h265webjs.html
+#### demo <a href="https://www.zzsin.com/h265webjs.html"> https://www.zzsin.com/h265webjs.html
 </a>
+
+<hr>
+
+| Feature | Feature | Feature | Feature |
+| ---- | ---- | ---- | ---- |
+| HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
+| <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
+| M3u8(VOD) | HDR10(BT2020) | HTTP FLV(LIVE) | G711A |
+| <img src="resource/icon-m3u8.png" height="100"> | @TODO Support - <br>Before 2021/10/31 | @TODO Support - <br>Before 2021/10/31 | @TODO |
 
 <br>
 
 | h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK | LICENSE |
 | ---- | ---- | ---- | ---- |
 | [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0</a> |
+
+<hr>
 
 # Remind!
 
@@ -118,6 +129,11 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/09/25 - 凌晨 |
+| - | 0.HLS直播 解决长时直播内存泄露问题 |
+| - | 1.HLS直播 解决HLS TS分片全路径不兼容问题 |
+| - | 2.HLS直播 解决断流导致停播问题 |
+| - | 3.HLS直播 解决网络不稳定导致停播问题 |
 | 时间 | 2021/09/08 - 晚 |
 | - | 0.M3U8 Seek导致花屏问题 |
 | - | 1.MP4 部分用户上报花屏问题 |

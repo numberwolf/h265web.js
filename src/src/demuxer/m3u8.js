@@ -82,7 +82,7 @@ class M3u8ParserModule {
 		this.aPreFramePTS = 0.0;
 
 		this.hls.onTransportStream = (streamURI, streamDur) => {
-			// console.log("Event onTransportStream ===> ", streamURI, streamDur);
+			console.warn("Event onTransportStream ===> ", streamURI, streamDur, _this.lockWait.state, _this.tsList.length);
 			// demuxURL(streamURI);
 			_this.tsList.push({
 				streamURI : streamURI,
@@ -103,6 +103,11 @@ class M3u8ParserModule {
 			if (_this.onFinished != null) {
 				_this.onFinished(_this.onReadyOBJ, callFinData);
 			}
+		};
+
+		this.mpegTsObj.onDemuxedFailed = (error, url) => {
+			console.error("onDemuxedFailed: ", error, url);
+			_this.lockWait.state = false;
 		};
 
 		this.mpegTsObj.onDemuxed = () => {
@@ -249,16 +254,29 @@ class M3u8ParserModule {
 		_this.mpegTsWasmState = true;
 
 		_this.timerFeed = window.setInterval(() => {
-	    	if (_this.tsList.length > 0 && _this.lockWait.state == false) {
-	    		let item = _this.tsList.shift();
-	    		let itemURI = item.streamURI;
-	    		let itemDur = item.streamDur;
+	    	if (_this.tsList.length > 0 && _this.lockWait.state == false) 
+	    	{
+	    		try {
+		    		let item = _this.tsList.shift();
+		    		if (item !== undefined && item !== null) {
+			    		let itemURI = item.streamURI;
+			    		let itemDur = item.streamDur;
 
-	    		console.log("Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
-	    		_this.lockWait.state = true;
-	    		_this.lockWait.lockMember.dur = itemDur;
-	    		_this.mpegTsObj.demuxURL(itemURI);
-	    		console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> NEXT ");
+			    		console.warn("_onTsReady Vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv> ENTRY " + itemURI);
+			    		_this.lockWait.state = true;
+			    		_this.lockWait.lockMember.dur = itemDur;
+			    		_this.mpegTsObj.isLive = _this.hls.isLive();
+			    		_this.mpegTsObj.demuxURL(itemURI);
+
+			    	} else {
+			    		console.error("_onTsReady ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> WAITTTTTTTTTT ");
+			    	}
+		    	} catch (err) {
+		    		console.error("_onTsReady ERROR:", err);
+		    		alert("_onTsReady ERROR:");
+		    		alert(err);
+		    		_this.lockWait.state = false;
+		    	}
 	    	}
 	    }, 50);
 	}
