@@ -34,6 +34,7 @@ module.exports = options => {
 			appendType: options.appendType || def.APPEND_TYPE_STREAM,
 			playMode: options.playMode || def.AUDIO_MODE_SWAP,
 		},
+		// testdebug: 0,
 		sourceChannel: -1,
 		audioCtx: new AudioContext({
 			latencyHint : "interactive",
@@ -266,12 +267,21 @@ module.exports = options => {
 			return 0;
 		}
 
-		if (audioModule.nextBuffer == null || audioModule.nextBuffer.data.length < 1) {
+		if (audioModule.nextBuffer == null || audioModule.nextBuffer.data.length < 1) 
+		{
+			console.warn(
+						"2 audioModule.sourceList ctx state before", 
+						audioModule.sourceList[sourceIndex].context.state);
+
 			audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
 			audioModule.sourceList[sourceIndex].start();
 			audioModule.sourceList[sourceIndex].startState = true;
 			audioModule.sourceList[sourceIndex].stop();
 			// console.log("audioModule.nextBuffer is null, return 1");
+
+			console.warn(
+						"2 audioModule.sourceList ctx state after", 
+						audioModule.sourceList[sourceIndex].context.state);
 			return 1;
 		}
 
@@ -284,13 +294,32 @@ module.exports = options => {
 
 			audioModule.audioCtx.decodeAudioData(
 				inputArrayBuffer, function(buffer) {
+					// audioModule.testdebug ++;
+					// if (audioModule.sourceList[sourceIndex].context.state == "running") {
+						// try {
+						// 	audioModule.sourceList[sourceIndex].stop();
+						// } catch(error) {
+						// 	console.error("audio stop error", error);
+						// }
+					// }
+					// console.warn(
+					// 	"3 audioModule.sourceList ctx state before", 
+					// 	// audioModule.sourceList[sourceIndex],
+					// 	audioModule.sourceList[sourceIndex].context.state);
+
 					// if (audioModule.sourceList[sourceIndex] === null) {
 					// }
-					audioModule.sourceList[sourceIndex].buffer = buffer;
-					audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
-					audioModule.sourceList[sourceIndex].start();
-					audioModule.sourceList[sourceIndex].startState = true;
+					if (audioModule.sourceList[sourceIndex] !== null) {
+						audioModule.sourceList[sourceIndex].buffer = buffer;
+						audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
+						audioModule.sourceList[sourceIndex].start();
+						audioModule.sourceList[sourceIndex].startState = true;
+					}
 					// console.log(audioModule.sourceList[sourceIndex]);
+
+					// console.warn(
+					// 	"3 audioModule.sourceList ctx state after", 
+					// 	audioModule.sourceList[sourceIndex].context.state);
 		    	},
 				function(e) {
 					console.log("Error with decoding audio data", e);
@@ -382,11 +411,19 @@ module.exports = options => {
 		try {
 			audioModule.audioCtx.decodeAudioData(
 				inputArrayBuffer, function(buffer) {
+					console.warn(
+						"audioModule.sourceList ctx state before", 
+						audioModule.sourceList[sourceIndex].state);
+
 					audioModule.sourceList[sourceIndex].buffer = buffer;
 					audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
 					audioModule.sourceList[sourceIndex].start();
 					audioModule.sourceList[sourceIndex].startState = true;
 					// console.log(audioModule.sourceList[sourceIndex]);
+
+					console.warn(
+						"audioModule.sourceList ctx state after", 
+						audioModule.sourceList[sourceIndex].state);
 		    	},
 				function(e) {
 					"Error with decoding audio data" + e.err;
@@ -419,13 +456,22 @@ module.exports = options => {
 		console.log("=========> audio pause!");
 		audioModule.startStatus = false;
 		for (let i = 0; i < audioModule.sourceList.length; i++) {
-			if (audioModule.sourceList[i] != null) {
+			if (audioModule.sourceList[i] !== undefined 
+				&& audioModule.sourceList[i] !== null) 
+			{
+				console.warn("audio pause", audioModule.sourceList[i], audioModule.gainNode);
 				try {
-					audioModule.sourceList[i].stop();
-					audioModule.sourceList[i].disconnect(audioModule.gainNode);
+					if (audioModule.sourceList[i].buffer !== undefined 
+						&& audioModule.sourceList[i].buffer !== null) 
+					{
+						audioModule.sourceList[i].stop();
+						audioModule.sourceList[i].disconnect(audioModule.gainNode);
+					} else {
+						console.warn("audio pause buffer is null");
+					}
 					audioModule.sourceList[i] = null;
 				} catch (e) {
-					console.log("pause", e);
+					console.error("audio pause error ", e);
 				}
 			}
 		}
@@ -442,8 +488,12 @@ module.exports = options => {
 		audioModule.sampleQueue.length = 0;
 		for (let i = 0; i < audioModule.sourceList.length; i++) {
 			try {
-				audioModule.sourceList[i].stop();
-				audioModule.sourceList[i].disconnect(audioModule.gainNode);
+				if (audioModule.sourceList[i].buffer !== undefined 
+					&& audioModule.sourceList[i].buffer !== null) 
+				{
+					audioModule.sourceList[i].stop();
+					audioModule.sourceList[i].disconnect(audioModule.gainNode);
+				}
 				audioModule.sourceList[i] = null;
 			} catch (e) {
 				console.log("[SAVE cleanQueue]===>", e);

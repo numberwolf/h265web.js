@@ -372,7 +372,10 @@ module.exports = config => {
 
             let getPktObj = player.getNalu1Packet(false);
             // console.warn("getPktObj", getPktObj);
-            if (getPktObj == null) return;
+            if (getPktObj == null) {
+                // console.error("cacheThread ----> noNALU Packet");
+                return;
+            }
 
             let nalBuf = getPktObj.nalBuf;
             let pts = getPktObj.pts;
@@ -754,7 +757,7 @@ module.exports = config => {
         let yuvItemObj = player.cacheYuvBuf.vYuv();
         // console.warn("yuvItemObj", yuvItemObj);
         if (yuvItemObj == null) {
-            //console.log("cacheThread ----> noCacheFrame");
+            // console.error("cacheThread ----> noCacheFrame");
             player.noCacheFrame += 1;
 
             // 只有在播放时候才会触发cache事件

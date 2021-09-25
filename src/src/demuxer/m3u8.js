@@ -111,6 +111,7 @@ class M3u8ParserModule {
 		};
 
 		this.mpegTsObj.onDemuxed = () => {
+			console.warn("this.mpegTsObj.onDemuxed");
 			if (_this.mediaInfo == null) {
 				_this.mediaInfo = _this.mpegTsObj.readMediaInfo();
 				console.log("mediaInfo: ",_this.mediaInfo);
@@ -269,10 +270,10 @@ class M3u8ParserModule {
 			    		_this.mpegTsObj.demuxURL(itemURI);
 
 			    	} else {
-			    		console.error("_onTsReady ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^> WAITTTTTTTTTT ");
+			    		console.error("_onTsReady need wait ");
 			    	}
 		    	} catch (err) {
-		    		console.error("_onTsReady ERROR:", err);
+		    		console.error("onTsReady ERROR:", err);
 		    		alert("_onTsReady ERROR:");
 		    		alert(err);
 		    		_this.lockWait.state = false;

@@ -28,12 +28,22 @@ const Formats = [
 		core: def.PLAYER_CORE_TYPE_CNATIVE
 	},
 	{
+		format: 'mov',
+		value: 'mp4',
+		core: def.PLAYER_CORE_TYPE_CNATIVE
+	},
+	{
 		format: 'flv',
 		value: 'flv',
 		core: def.PLAYER_CORE_TYPE_CNATIVE
 	},
 	{
 		format: 'm3u8',
+		value: 'hls',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
+		format: 'm3u',
 		value: 'hls',
 		core: def.PLAYER_CORE_TYPE_DEFAULT
 	},

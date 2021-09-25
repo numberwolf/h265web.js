@@ -83,14 +83,14 @@ class MPEG_JS_Module {
 
             if (global.STATIC_MEM_wasmDecoderState === 1) {
                 _this.wasmState = 1;
-                console.log("TSDemuxer postRun onready!");
+                console.warn("TSDemuxer postRun onready!");
                 _this.onReady();
             } else {
                 ModuleTS["onRuntimeInitialized"] = () => {
                     console.log('TSDemuxer WASM initialized');
                     if (_this.onReady != null && _this.wasmState == 0) {
                         _this.wasmState = 1;
-                        console.log("TSDemuxer onready!");
+                        console.warn("TSDemuxer onready!");
                         _this.onReady();
                     }
                 };
@@ -100,7 +100,7 @@ class MPEG_JS_Module {
 
                     if (_this.onReady != null && _this.wasmState == 0) {
                         _this.wasmState = 1;
-                        console.log("TSDemuxer postRun onready!");
+                        console.warn("TSDemuxer postRun onready!");
                         _this.onReady();
                     }
                 };
@@ -140,12 +140,12 @@ class MPEG_JS_Module {
             if (streamUint8Buf !== undefined && streamUint8Buf !== null) {
                 _this._demuxCore(streamUint8Buf);
             } else {
-                console.error("_demuxerTsInit ERROR fetch res is null ==> ", videoURL);
+                console.error("demuxerTsInit ERROR fetch res is null ==> ", videoURL);
             }
             streamUint8Buf = null;
 		}).catch(error => {
             console.error("_demuxerTsInit ERROR fetch ERROR ==> ", error);
-            alert("_demuxerTsInit ERROR fetch ERROR ==> ");
+            alert("demuxerTsInit ERROR fetch ERROR ==> ");
             alert(error);
             _this._releaseOffset();
             _this.onDemuxedFailed && _this.onDemuxedFailed(error, videoURL);
