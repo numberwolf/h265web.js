@@ -131,6 +131,8 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/09/27 - Evening |
+| - | 0.M3u8/MpegTS performance optimizing of Seek operation(out of cache area) |
 | Time | 2021/09/25 - In the small hours |
 | - | 0.HLS Live Fixed: Crash by OOM |
 | - | 1.HLS Live Fixed: MPEG-TS full path |

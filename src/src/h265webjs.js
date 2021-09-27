@@ -111,7 +111,7 @@ class H265webjsModule {
         }; // configFormat
         this.mediaExtFormat = this.configFormat.type;
 
-        alert(this.configFormat.type);
+        // alert(this.configFormat.type);
 
         /*****************************************
          *
@@ -354,6 +354,22 @@ class H265webjsModule {
         };
     }
 
+    _seekHLS(clickedValue, _self, callback) {
+        // alert("seekHLS" + clickedValue);
+        setTimeout(function() {
+            console.warn("this.player.getCachePTS()", _self.player.getCachePTS());
+            if (_self.player.getCachePTS() > clickedValue) {
+                // alert("start seekHLS");
+                // this.hlsObj.onSamples = null;
+                // this.hlsObj.seek(clickedValue);
+                callback();
+                return;
+            } else {
+                _self._seekHLS(clickedValue, _self, callback);
+            }
+        }, 100);
+    }
+
     seek(clickedValue) {
         console.log("============DEBUG===========> SEEK TO:", clickedValue);
         let _this = this;
@@ -383,52 +399,56 @@ class H265webjsModule {
                     accurateSeek : _this.configFormat.accurateSeek
                 });
             } else { // default core
-                this.player.seek(
-                    () => { // call
-                        if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
-                            // _this.mp4Obj.seek(_this.seekTarget);
-                            _this.mp4Obj.seek(clickedValue);
-                        } else if (
-                            _this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
-                            _this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
-                        {
-                            // _this.mpegTsObj.seek(_this.seekTarget);
-                            _this.mpegTsObj.seek(clickedValue);
-                        } else if (_this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) 
-                        {
-                            /*
-                             * reset HLS INFO
-                             */
-                            // 这里去掉,不然append会影响
-                            _this.hlsObj.onSamples = null;
-                            // _this.hlsObj.onCacheProcess = null;
+                this._seekHLS(clickedValue, this, function() {
+                    _this.player.seek(
+                        () => { // call
+                            if (_this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
+                                // _this.mp4Obj.seek(_this.seekTarget);
+                                _this.mp4Obj.seek(clickedValue);
+                            } else if (
+                                _this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
+                                _this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
+                            {
+                                // _this.mpegTsObj.seek(_this.seekTarget);
+                                _this.mpegTsObj.seek(clickedValue);
+                            } else if (_this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) 
+                            {
+                                // alert("hls seek to" + clickedValue);
+                                // _this._seekHLS(clickedValue);
+                                /*
+                                 * reset HLS INFO
+                                 */
+                                // 这里去掉,不然append会影响
+                                _this.hlsObj.onSamples = null;
+                                // _this.hlsObj.onCacheProcess = null;
 
-                            // _this.hlsObj.seek(_this.seekTarget);
-                            _this.hlsObj.seek(clickedValue);
-                        }
-                        // seekPos
-                        let seekFeedTime = function() {
-                            let resTime = 0;
-                            if (_this.configFormat.accurateSeek) {
-                                resTime = clickedValue;
-                            } else {
-                                resTime = _this._getBoxBufSeekIDR();
+                                // _this.hlsObj.seek(_this.seekTarget);
+                                _this.hlsObj.seek(clickedValue);
                             }
-                            return parseInt(resTime);
-                        } ();
+                            // seekPos
+                            let seekFeedTime = function() {
+                                let resTime = 0;
+                                if (_this.configFormat.accurateSeek) {
+                                    resTime = clickedValue;
+                                } else {
+                                    resTime = _this._getBoxBufSeekIDR();
+                                }
+                                return parseInt(resTime);
+                            } ();
 
-                        // _this.feedMP4Data(_this._getBoxBufSeekIDR(), seekFeedTime);
-                        let seekVIdr = parseInt(_this._getBoxBufSeekIDR()) || 0;
-                        _this._avFeedMP4Data(
-                            seekVIdr, 
-                            seekFeedTime);
-                    },
-                    { // seek options
-                        seekTime : seekTime,
-                        mode : _this.playMode,
-                        accurateSeek : _this.configFormat.accurateSeek
-                    }
-                ); // end seek
+                            // _this.feedMP4Data(_this._getBoxBufSeekIDR(), seekFeedTime);
+                            let seekVIdr = parseInt(_this._getBoxBufSeekIDR()) || 0;
+                            _this._avFeedMP4Data(
+                                seekVIdr, 
+                                seekFeedTime);
+                        },
+                        { // seek options
+                            seekTime : seekTime,
+                            mode : _this.playMode,
+                            accurateSeek : _this.configFormat.accurateSeek
+                        }
+                    ); // end player.seek
+                }); // end seekHLS
             } // end default core
         }
         return true;
@@ -827,7 +847,7 @@ class H265webjsModule {
         /*
          * Switch Media
          */
-        alert("type: " + this.configFormat.type);
+        // alert("type: " + this.configFormat.type);
 
         if (this.configFormat.extInfo.core != undefined 
             && this.configFormat.extInfo.core !== null
@@ -1158,7 +1178,7 @@ class H265webjsModule {
      *
      */
     _cDemuxDecoderEntry() {
-        alert("_cDemuxDecoderEntry" + this.configFormat.type);
+        // alert("_cDemuxDecoderEntry" + this.configFormat.type);
         let _this = this;
         this.player = new CNativeCore.CNativeCore({
             width: this.configFormat.playerW,
@@ -1187,7 +1207,7 @@ class H265webjsModule {
 
             if (_this.player.duration < 0) { // @TODO LIVE
                 _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
-                alert("LIVE");
+                // alert("LIVE");
             }
 
             _this.playParam.sampleRate   = _this.player.config.sampleRate;
@@ -1292,7 +1312,7 @@ class H265webjsModule {
                 // default set 4096
                 _this.player && _this.player.setProbeSize(4096);
             }
-            alert("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type);
+            // alert("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type);
             let pump = function(reader) {
                 // console.log("start pump", reader);
                 return reader.read().then(function(result) {
