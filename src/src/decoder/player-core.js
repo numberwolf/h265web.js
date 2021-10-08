@@ -24,6 +24,7 @@
 // const YUVCanvas     = require('yuv-canvas');
 const AVModule      = require('./missile.js');
 // const Module        = require('./missile-all.js');
+const AVCommon      = require('./av-common');
 const AudioModule   = require('./audio-core');
 const CacheYUV      = require('./cache');
 const CacheYUVStruct = require('./cacheYuv');
@@ -41,9 +42,9 @@ const NO_CACHE_FRAME_LIMIT = 10;
 const FIXED_POC_ERROR_WAIT_FRAMES = 10;
 const CACHE_LENGTH = 30; // cache frame yuv length
 
-const getMsTime = () => {
-    return new Date().getTime();
-};
+// const AVCommon.GetMsTime = () => {
+//     return new Date().getTime();
+// };
 
 const copyUint8Array = (old) => {
     let newBuf = new Uint8Array(old.length);
@@ -441,11 +442,11 @@ module.exports = config => {
          */
         if (
             player.playParams.seekEvent 
-            || (getMsTime() - player.calcuteStartTime >= player.frameTime - player.preCostTime)
+            || (AVCommon.GetMsTime() - player.calcuteStartTime >= player.frameTime - player.preCostTime)
         ) {
             ret = true;
             let show = true;
-            player.calcuteStartTime = getMsTime();
+            player.calcuteStartTime = AVCommon.GetMsTime();
             // player.playFrameYUV(true, true);
 
             if (!player.config.audioNone) {
@@ -539,7 +540,7 @@ module.exports = config => {
          */
         player.playParams = playParams;
 
-        player.calcuteStartTime = getMsTime();
+        player.calcuteStartTime = AVCommon.GetMsTime();
         player.noCacheFrame = 0;
 
         // for understand
@@ -549,15 +550,15 @@ module.exports = config => {
 
         // @TODO false && 
         if (player.config.audioNone === true && player.playParams.mode == def.PLAYER_MODE_NOTIME_LIVE) {
-            player.liveStartMs = getMsTime();
+            player.liveStartMs = AVCommon.GetMsTime();
             player.frameTime = Math.floor(1000 / player.config.fps);
             player.frameTimeSec = player.frameTime / 1000;
 
             // loop
             let frameIdx = 0;
             player.loop = window.setInterval(() => {
-                // let test1time = getMsTime();
-                let spendMs = getMsTime() - player.liveStartMs;
+                // let test1time = AVCommon.GetMsTime();
+                let spendMs = AVCommon.GetMsTime() - player.liveStartMs;
                 let frameCount = spendMs / player.frameTime;
                 // console.log("player.loop====>", spendMs, frameCount, frameIdx);
 
@@ -565,19 +566,19 @@ module.exports = config => {
                     player.playFrameYUV(true, player.playParams.accurateSeek);
                     frameIdx += 1;
                 }
-                // player.preCostTime = getMsTime() - test1time;
+                // player.preCostTime = AVCommon.GetMsTime() - test1time;
                 // console.log("raw playFunc loop usage :", player.preCostTime);
                 // player.onPlayingTime && player.onPlayingTime(player.videoPTS);
             }, 1); // player.frameTime
 
             // loop
-            // let test1time = getMsTime();
+            // let test1time = AVCommon.GetMsTime();
             // player.loop = window.setInterval(() => {
-            //     // let test1time = getMsTime();
+            //     // let test1time = AVCommon.GetMsTime();
             //     let ret = player.playFunc();
             //     if (ret === true) {
-            //         player.preCostTime = getMsTime() - test1time;
-            //         test1time = getMsTime();
+            //         player.preCostTime = AVCommon.GetMsTime() - test1time;
+            //         test1time = AVCommon.GetMsTime();
             //     }
             //     console.log("playFunc loop usage :", player.preCostTime);
             // }, 1); // 5ms
@@ -600,9 +601,9 @@ module.exports = config => {
 
                 // loop
                 player.loop = window.setInterval(() => {
-                    let test1time = getMsTime();
+                    let test1time = AVCommon.GetMsTime();
                     player.playFunc();
-                    player.preCostTime = getMsTime() - test1time;
+                    player.preCostTime = AVCommon.GetMsTime() - test1time;
                     // console.log("playFunc loop usage :", player.preCostTime);
                 }, 1); // 5ms
 

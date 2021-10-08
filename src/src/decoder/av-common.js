@@ -145,8 +145,13 @@ function GetFormatPlayCore(inputFormat) {
 	return Formats[0].core;
 } // GetFormatPlayCore
 
+function GetMsTime() {
+    return new Date().getTime();
+};
+
 module.exports = {
     frameDataAlignCrop : frameDataAlignCrop,
     GetUriFormat : GetUriFormat,
-    GetFormatPlayCore : GetFormatPlayCore
+    GetFormatPlayCore : GetFormatPlayCore,
+    GetMsTime : GetMsTime,
 }; // module exports

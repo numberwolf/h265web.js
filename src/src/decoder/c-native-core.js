@@ -64,9 +64,9 @@ const CHECK_AU_SAMP_RETRY_MAX = 5;
 // const A_CODEC_NAME_MP3  = 113;
 // const A_CODEC_NAME_UNKN = 500;
 
-const getMsTime = () => {
-    return new Date().getTime();
-};
+// const AVCommon.GetMsTime = () => {
+//     return new Date().getTime();
+// };
 
 class CNativeVideoFrame {
 	constructor(data_y, data_u, data_v, 
@@ -385,7 +385,7 @@ class CNativeCoreModule {
                     //     nowTimestamp, calcuteStartTime, 
                     //     ">=", 
                     //     this.frameTime, playFrameCostTime);
-    				nowTimestamp = getMsTime();
+    				nowTimestamp = AVCommon.GetMsTime();
     				if (this._videoQueue.length > 0) {
 
     					/*
@@ -417,7 +417,7 @@ class CNativeCoreModule {
     						calcuteStartTime = nowTimestamp;
                             console.log("after set calcuteStartTime", calcuteStartTime);
 
-    						let startR = getMsTime();
+    						let startR = AVCommon.GetMsTime();
     						// console.warn("shift videoFrame.pts", 
     						// 	videoFrame.pts, this.seekTarget, this.isNewSeek);
     						this.playPTS = Math.max(videoFrame.pts, this.playPTS);
@@ -488,7 +488,7 @@ class CNativeCoreModule {
     							/*
     							 * Cost Time
     							 */
-    							playFrameCostTime = getMsTime() - nowTimestamp;
+    							playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp;
     							// console.log("shift videoFrame.pts 常规", playFrameCostTime);
     						} else if (!this.isNewSeek && this.audioWAudio) {
     							if (diff < 0 && diff * (-1) > this.frameTime) {

@@ -1,4 +1,4 @@
-# h265web.js - 即将支持HDR10!
+# h265web.js - 已支持HTTP-FLV 即将支持HDR10!
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
@@ -20,8 +20,8 @@
 | ---- | ---- | ---- | ---- |
 | HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
 | <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
-| M3u8(VOD) | HDR10(BT2020) | HTTP FLV(LIVE) | G711A |
-| <img src="resource/icon-m3u8.png" height="100"> | @TODO Support - <br>Before 2021/10/31 | @TODO Support - <br>Before 2021/10/31 | @TODO |
+| M3u8(VOD) | HTTP FLV(LIVE) | G711A | HDR10(BT2020) |
+| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO | @TODO Support - <br>Before 2021/10/31 |
 
 <br>
 
@@ -118,6 +118,8 @@
 - [3-其它](#3-其它)
 
 	- [捐赠](#捐赠)
+
+	- [FFmpeg支持265的HTTPFLV直播](#ffmpeg支持265的httpflv直播)
 	
 	- [FFmpeg转码265编码的视频](#ffmpeg转码265编码的视频)
 
@@ -131,6 +133,9 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/10/09 - 凌晨 |
+| - | 0.支持HTTP-FLV(HEVC) 直播播放 CodecID=12 |
+| - | 0.MP4/FLV(VOD) 优化缓存区域外Seek速度性能 |
 | 时间 | 2021/09/27 - 晚 |
 | - | 0.M3u8/MpegTS 优化缓存区域外Seek速度性能 |
 | 时间 | 2021/09/25 - 凌晨 |
@@ -236,7 +241,7 @@
 | hls | 直播 |  是  | ---- |
 | H.265 | 点播 |  是  | ---- |
 | H.265 | 直播 |  是  | ---- |
-| http-flv | 直播 |  否  | 待支持 |
+| http-flv | 直播 |  是  | CodecID=12 |
 | flv | 点播 |  是  | 备用播放内核模式,不需要填写 |
 
 * 能力
@@ -395,6 +400,7 @@ var config = {
 | \+ core  | Int | - | 否:默认0 | 0:默认播放内核 <br>1:备用播放内核 |
 | \+ coreProbePart  | Float32 | - | 否:默认1.0 | 探测Mp4媒体的属性，百分比 `0.0~1.0`,正常moov前置的文件都用0.1(10%)可以（只适用于备用播放内核) |
 | \+ ignoreAudio | Int | - | 否:默认0 | 0:带音频播放 <br>1:忽略音频播放 |
+| \+ probeSize | Int | - | 否:4096 | HTTP-FLV直播模式下的探测长度 |
 
 
 
@@ -916,6 +922,12 @@ player.release();
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
 | <img src="dist/assets/donate/wechat.JPG" height="500"> | <img src="dist/assets/donate/alipay.JPG" height="500"> | TODO |
+
+<br>
+
+### FFmpeg支持265的HTTPFLV直播 ###
+
+* Github地址: https://github.com/numberwolf/FFmpeg-QuQi-H265-FLV-RTMP
 
 <br>
 

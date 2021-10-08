@@ -204,6 +204,10 @@ global.makeH265webjs = (videoURL, config) => {
         showLabel.textContent = SHOW_DONE;
     };
 
+    playerObj.onNetworkError = (error) => {
+        alert("player - onNetworkError" + error.toString());
+    }; // onNetworkError
+
     playerObj.onLoadCache = () => {
         showLabel.textContent = "Caching...";
     };
@@ -259,7 +263,8 @@ global.makeH265webjs = (videoURL, config) => {
                 coverToast.removeAttribute('hidden');
                 coverBtn.onclick = () => {
                     // playBar.textContent = '||';
-                    playerObj.play();
+                    // playerObj.play();
+                    playAction();
                     coverToast.setAttribute('hidden', 'hidden');
                 };
             }
@@ -313,8 +318,8 @@ global.makeH265webjs = (videoURL, config) => {
  ***************************************************/
 var workerFetch = new Worker('./dist/worker-fetch-dist.js');
 var workerParse = new Worker('./dist/worker-parse-dist.js');
-console.log("workerFetch:", workerFetch);
-console.log("workerParse:", workerParse);
+// console.log("workerFetch:", workerFetch);
+// console.log("workerParse:", workerParse);
 /*
  * 创建265流播放器
  */

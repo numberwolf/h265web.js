@@ -22,10 +22,11 @@
 const AudioContext 	= window.AudioContext || window.webkitAudioContext;
 const AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame, 44100 -> 20ms 22050 40ms
 const def = require('../consts');
+const AVCommon = require('./av-common');
 
-const getMsTime = () => {
-	return new Date().getTime();
-};
+// const AVCommon.GetMsTime = () => {
+// 	return new Date().getTime();
+// };
 
 module.exports = options => {
 	let audioModule = {
@@ -57,6 +58,7 @@ module.exports = options => {
 	    playTimestamp: 0.0,
 	    playStartTime: 0,
 	    durationMs: 	-1,
+	    isLIVE: false,
 		// voice 0.0 ~ 1.0
 		voice: 1.0,
 		onLoadCache: null
@@ -83,12 +85,13 @@ module.exports = options => {
 		// 		+ audioModule.seekPos;
 		// console.log("audio pts:" + audioModule.audioCtx.currentTime);
 		// return pts;
-		return audioModule.playTimestamp + (getMsTime() - audioModule.playStartTime) / 1000;
+		return audioModule.playTimestamp + (AVCommon.GetMsTime() - audioModule.playStartTime) / 1000;
 	};
 	/**
 	 * @brief Swap SourceNode To Play When before node play end
 	 */
 	audioModule.swapSource = (sourceIndex = -1, dstIndex = -1) => {
+		console.log("audioModule.swapSource", sourceIndex, dstIndex);
 		if (audioModule.startStatus == false) {
 			return null;
 		}
@@ -107,7 +110,7 @@ module.exports = options => {
 				audioModule.sourceList[sourceIndex] = null;
 			}
 		} catch (e) {
-			console.log("[DEFINE ERROR]disconnect source Index:" + sourceIndex + " error happened!", e);
+			console.error("[DEFINE ERROR] audioModule disconnect source Index:" + sourceIndex + " error happened!", e);
 			// return null;
 		}
 
@@ -115,7 +118,7 @@ module.exports = options => {
 
 		let ret = audioModule.decodeSample(dstIndex, sourceIndex);
 		// console.log("in swapSource -> decodeSample ret", ret);
-		if (ret == -2) {
+		if (ret == -2 && audioModule.isLIVE) {
 			if (audioModule.getAlignVPTS() >= (audioModule.durationMs / 1000.0 - AUDIO_WAIT)) {
 				audioModule.pause();
 			} else {
@@ -227,11 +230,19 @@ module.exports = options => {
 		}
 
 		if (audioModule.sampleQueue.length == 0) {
-			console.log("audioModule.sampleQueue.length is 0, return -2");
 			// @todo
-			// audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
-			// audioModule.sourceList[sourceIndex].start();
-			// audioModule.sourceList[sourceIndex].stop();
+			if (audioModule.isLIVE) {
+				audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
+				audioModule.sourceList[sourceIndex].start();
+				audioModule.sourceList[sourceIndex].onended = function() {
+					audioModule.swapSource(sourceIndex, dstIndex);
+				};
+				audioModule.sourceList[sourceIndex].stop();
+				// audioModule.decodeSample(sourceIndex, dstIndex);
+				console.log("audioModule.sampleQueue.length is 0, return 0");
+				return 0;
+			}
+			console.log("audioModule.sampleQueue.length is 0, return -2");
 			return -2;
 		}
 
@@ -269,9 +280,9 @@ module.exports = options => {
 
 		if (audioModule.nextBuffer == null || audioModule.nextBuffer.data.length < 1) 
 		{
-			console.warn(
-						"2 audioModule.sourceList ctx state before", 
-						audioModule.sourceList[sourceIndex].context.state);
+			// console.warn(
+			// 			"2 audioModule.sourceList ctx state before", 
+			// 			audioModule.sourceList[sourceIndex].context.state);
 
 			audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
 			audioModule.sourceList[sourceIndex].start();
@@ -279,15 +290,15 @@ module.exports = options => {
 			audioModule.sourceList[sourceIndex].stop();
 			// console.log("audioModule.nextBuffer is null, return 1");
 
-			console.warn(
-						"2 audioModule.sourceList ctx state after", 
-						audioModule.sourceList[sourceIndex].context.state);
+			// console.warn(
+			// 			"2 audioModule.sourceList ctx state after", 
+			// 			audioModule.sourceList[sourceIndex].context.state);
 			return 1;
 		}
 
 		let inputArrayBuffer = audioModule.nextBuffer.data.buffer;
 		audioModule.playTimestamp = audioModule.nextBuffer.pts;
-		audioModule.playStartTime = getMsTime();
+		audioModule.playStartTime = AVCommon.GetMsTime();
 
 		// console.log("audioModule inputArrayBuffer.pts ", audioModule.playTimestamp);
 		try {
@@ -453,7 +464,7 @@ module.exports = options => {
 		}
 	};
 	audioModule.pause = () => {
-		console.log("=========> audio pause!");
+		console.log("____________________________________audioModule.pause");
 		audioModule.startStatus = false;
 		for (let i = 0; i < audioModule.sourceList.length; i++) {
 			if (audioModule.sourceList[i] !== undefined 

@@ -20,8 +20,8 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | ---- | ---- | ---- | ---- |
 | HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
 | <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
-| M3u8(VOD) | HDR10(BT2020) | HTTP FLV(LIVE) | G711A |
-| <img src="resource/icon-m3u8.png" height="100"> | @TODO Support - <br>Before 2021/10/31 | @TODO Support - <br>Before 2021/10/31 | @TODO |
+| M3u8(VOD) | HTTP FLV(LIVE) | G711A | HDR10(BT2020) |
+| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO | @TODO Support - <br>Before 2021/10/31 |
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -118,8 +118,10 @@ Notice：
 - [3、Others](#3others)
 
 	- [Donate](#donate)
+
+	- [FFmpeg Support H265 Live Encode](#ffmpegsupporth265liveencode)
 	
-	- [Transcode and get hevc media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
+	- [Transcode and get HEVC/H.265 media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
 
 	- [Update Log](upldatelog)
 
@@ -131,6 +133,9 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| 时间 | 2021/10/09 - In the small hours |
+| - | 0.Support HTTP-FLV(HEVC) LIVE, CodecID=12 |
+| - | 0.MP4/FLV(VOD) performance optimizing of Seek operation(out of cache area) |
 | Time | 2021/09/27 - Evening |
 | - | 0.M3u8/MpegTS performance optimizing of Seek operation(out of cache area) |
 | Time | 2021/09/25 - In the small hours |
@@ -234,7 +239,7 @@ Notice：
 | hls | Live |  Y  | ---- |
 | H.265 | Video on demand |  Y  | ---- |
 | H.265 | Live |  Y  | ---- |
-| http-flv | Live |  N  | TODO |
+| http-flv | Live |  Y  | CodecID=12 |
 | flv | Video on demand |  Y  | Bak player core mode |
 
 * Features
@@ -390,6 +395,7 @@ let config = {
 | \+ coreProbePart  | Float32 | - | N:Default is 1.0 | Probe Mp4 media info，interval: `0.0~1.0`, traditional mp4 file which moov box front of mdat box, use 0.1(10%) （only with Bak player core mode(beta)) |
 | \+ core  | Int | - | N:Default 0 | 0:Default Core <br>1:Bak Core |
 | \+ ignoreAudio | Int | - | N:Default is 0 | 0:Play with audio <br>1:Without audio |
+| \+ probeSize | Int | - | N:4096 | HTTP-FLV(LIVE) Mode's probe size, default is 4096 |
 
 
 <br>
@@ -907,6 +913,12 @@ player.release();
 |  Wechat | Alipay | PayPal |
 |  ---- | ----  | ---- |
 | <img src="dist/assets/donate/wechat.JPG" height="500"> | <img src="dist/assets/donate/alipay.JPG" height="500"> | TODO |
+
+<br>
+
+### FFmpegSupportH265LiveEncode ###
+
+* Github: https://github.com/numberwolf/FFmpeg-QuQi-H265-FLV-RTMP
 
 <br>
 
