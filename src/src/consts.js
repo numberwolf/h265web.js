@@ -49,7 +49,7 @@ module.exports = {
     APPEND_TYPE_SEQUENCE:  0x02, // sec
     DEFAULT_WIDTH:      600,
     DEFAULT_HEIGHT:     600,
-    DEFAULT_FPS:        25,
+    DEFAULT_FPS:        30,
     DEFAULT_FRAME_DUR:  40,
     DEFAULT_FIXED:      false,
     DEFAULT_SAMPLERATE: 44100,

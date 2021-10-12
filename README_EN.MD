@@ -133,7 +133,9 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
-| 时间 | 2021/10/09 - In the small hours |
+| Time | 2021/10/12 - Evening |
+| - | 0.Fixed: Support HTTP-FLV(HEVC) without fps param |
+| Time | 2021/10/09 - In the small hours |
 | - | 0.Support HTTP-FLV(HEVC) LIVE, CodecID=12 |
 | - | 0.MP4/FLV(VOD) performance optimizing of Seek operation(out of cache area) |
 | Time | 2021/09/27 - Evening |

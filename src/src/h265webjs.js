@@ -1225,6 +1225,7 @@ class H265webjsModule {
          *
          */
         this.player.onProbeFinish = () => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
+            console.log("first probe ", _this.player.mediaInfo, _this.player.config);
             _this.playParam.fps          = _this.player.config.fps;
             _this.playParam.durationMs   = GetRealDurationOfLastFramePTS(_this.playParam.fps, _this.player.duration * 1000.0);
 
@@ -1409,10 +1410,12 @@ class H265webjsModule {
 
             _this.playParam.sampleRate   = _this.player.mediaInfo.sampleRate;
             _this.playParam.size = {
-                width   : _this.player.width,
-                height  : _this.player.height
+                width   : _this.player.mediaInfo.width,
+                height  : _this.player.mediaInfo.height
             };
-            _this.playParam.audioNone = _this.player.audioNone;
+            _this.playParam.audioNone = _this.player.mediaInfo.audioNone;
+
+            console.log("_this.player.mediaInfo", _this.player.mediaInfo);
 
             if (_this.player.vCodecID === def.V_CODEC_NAME_HEVC) {
                 if (_this.playParam.audioIdx < 0) {
