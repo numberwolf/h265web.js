@@ -133,6 +133,8 @@
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/10/13 - 晚 |
+| - | 0.兼容VUE等框架IDE调试问题,剥离WASM模块单独Script引入 |
 | 时间 | 2021/10/12 - 晚 |
 | - | 0.支持HTTP-FLV(HEVC) 兼容无帧率参数视频,优化 |
 | 时间 | 2021/10/09 - 凌晨 |
@@ -330,6 +332,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 * 方式1.1：引入Github的本地文件 `require`形式 
 
 ```javascript
+// 引入wasm
+<script src="dist/missile-v20211013.js"></script>
 // 引入Github的本地文件
 require('./dist/h265webjs');
 ```
@@ -337,6 +341,8 @@ require('./dist/h265webjs');
 * 方式1.2：引入Github的本地文件 `import xxx from xxx`形式 （推荐）
 
 ```javascript
+// 引入wasm
+<script src="dist/missile-v20211013.js"></script>
 // 引入Github的本地文件
 import H265webjsModule from './dist/index';
 ```
@@ -356,11 +362,15 @@ import H265webjsModule from './dist/index';
 
 	* 1）require形式
 	```javascript
+	// 引入wasm
+	<script src="dist/missile-v20211013.js"></script>
 	require('./dist/h265webjs');
 	```
 
 	* 2）`import xxx from xxx`形式 （推荐）
 	```javascript
+	// 引入wasm
+	<script src="dist/missile-v20211013.js"></script>
 	// 引入Github的本地文件
 	import H265webjsModule from './dist/index';
 	```

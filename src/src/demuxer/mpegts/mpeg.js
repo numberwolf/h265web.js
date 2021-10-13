@@ -19,7 +19,7 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-const ModuleTS = require('../../decoder/missile.js');
+// const Module = require('../../decoder/missile.js');
 const AACDecoder = require('./decoder/aac');
 const def = require('./consts');
 
@@ -77,16 +77,16 @@ class MPEG_JS_Module {
         } else {
 			console.log("TSDemuxer to onRuntimeInitialized");
 
-            ModuleTS.run();
+            Module.run();
             console.log("run");
-            // ModuleTS.postRun();
+            // Module.postRun();
 
             if (global.STATIC_MEM_wasmDecoderState === 1) {
                 _this.wasmState = 1;
                 console.warn("TSDemuxer postRun onready!");
                 _this.onReady();
             } else {
-                ModuleTS["onRuntimeInitialized"] = () => {
+                Module["onRuntimeInitialized"] = () => {
                     console.log('TSDemuxer WASM initialized');
                     if (_this.onReady != null && _this.wasmState == 0) {
                         _this.wasmState = 1;
@@ -95,7 +95,7 @@ class MPEG_JS_Module {
                     }
                 };
 
-                ModuleTS["postRun"] = () => {
+                Module["postRun"] = () => {
                     console.log('TSDemuxer postRun WASM initialized');
 
                     if (_this.onReady != null && _this.wasmState == 0) {
@@ -155,7 +155,7 @@ class MPEG_JS_Module {
     _releaseOffset() {
         if (this.offsetDemux !== undefined && this.offsetDemux !== null) {
             console.warn("------------> _releaseOffset");
-            ModuleTS._free(this.offsetDemux);
+            Module._free(this.offsetDemux);
             this.offsetDemux = null;
         }
     }
@@ -171,15 +171,15 @@ class MPEG_JS_Module {
         // console.log(streamUint8Buf);
         // console.log(streamUint8Buf.length);
         
-        this.offsetDemux = ModuleTS._malloc(streamUint8Buf.length);
-        ModuleTS.HEAP8.set(streamUint8Buf, this.offsetDemux);
+        this.offsetDemux = Module._malloc(streamUint8Buf.length);
+        Module.HEAP8.set(streamUint8Buf, this.offsetDemux);
 
-        let decRet = ModuleTS.cwrap('demuxBox', 'number', 
+        let decRet = Module.cwrap('demuxBox', 'number', 
             ['number', 'number', 'number'])
         (this.offsetDemux, streamUint8Buf.length, this.isLive);
         console.warn('-----------Run demux box result : ' + decRet);
 
-        ModuleTS._free(this.offsetDemux);
+        Module._free(this.offsetDemux);
         this.offsetDemux = null;
 
         if (decRet >= 0) {
@@ -197,21 +197,21 @@ class MPEG_JS_Module {
         /*
          * Part 1 media
          */
-		let ptr = ModuleTS.cwrap('getMediaInfo', 'number', [])();
-		let a_sample_rate = ModuleTS.HEAPU32[ptr / 4];
-        let a_channel = ModuleTS.HEAPU32[ptr / 4 + 1];
+		let ptr = Module.cwrap('getMediaInfo', 'number', [])();
+		let a_sample_rate = Module.HEAPU32[ptr / 4];
+        let a_channel = Module.HEAPU32[ptr / 4 + 1];
 
-        let fps = ModuleTS.HEAPF64[ptr / 8 + 1];
+        let fps = Module.HEAPF64[ptr / 8 + 1];
 
-		let vDuration = ModuleTS.HEAPF64[ptr / 8 + 1 + 1];
-		let aDuration = ModuleTS.HEAPF64[ptr / 8 + 1 + 1 + 1];
-        let duration  = ModuleTS.HEAPF64[ptr / 8 + 1 + 1 + 1 + 1];
+		let vDuration = Module.HEAPF64[ptr / 8 + 1 + 1];
+		let aDuration = Module.HEAPF64[ptr / 8 + 1 + 1 + 1];
+        let duration  = Module.HEAPF64[ptr / 8 + 1 + 1 + 1 + 1];
 		console.log("a_channel:", a_channel);
 
-        let gop = ModuleTS.HEAPU32[ptr / 4 + 2 + 2 + 2 + 2 + 2];
+        let gop = Module.HEAPU32[ptr / 4 + 2 + 2 + 2 + 2 + 2];
 
-        // let width = ModuleTS.HEAPU32[ptr / 4 + 2 + 2 + 2 + 2 + 2 + 1];
-        // let height = ModuleTS.HEAPU32[ptr / 4 + 2 + 2 + 2 + 2 + 2 + 1 + 1];
+        // let width = Module.HEAPU32[ptr / 4 + 2 + 2 + 2 + 2 + 2 + 1];
+        // let height = Module.HEAPU32[ptr / 4 + 2 + 2 + 2 + 2 + 2 + 1 + 1];
 
 		// this.mediaAttr.sampleRate = a_sample_rate > 0 ?
 		// 	a_sample_rate : def.DEFAULT_SAMPLERATE;
@@ -231,7 +231,7 @@ class MPEG_JS_Module {
         /*
          * Part 2 Codec
          */
-        let audioCodecID = ModuleTS.cwrap('getAudioCodecID', 'number', [])();
+        let audioCodecID = Module.cwrap('getAudioCodecID', 'number', [])();
         if (audioCodecID >= 0) {
             this.mediaAttr.aCodec = def.CODEC_OFFSET_TABLE[audioCodecID];
             this.mediaAttr.sampleRate = a_sample_rate > 0 ?
@@ -245,7 +245,7 @@ class MPEG_JS_Module {
             this.mediaAttr.sampleChannel = 0;
             this.mediaAttr.audioNone = true;
         }
-        let videoCodecID = ModuleTS.cwrap('getVideoCodecID', 'number', [])();
+        let videoCodecID = Module.cwrap('getVideoCodecID', 'number', [])();
         if (videoCodecID >= 0) {
             this.mediaAttr.vCodec = def.CODEC_OFFSET_TABLE[videoCodecID];
         }
@@ -260,9 +260,9 @@ class MPEG_JS_Module {
 	}
 
     _setExtensionInfo() {
-        let ptr = ModuleTS.cwrap('getExtensionInfo', 'number', [])();
-        let width = ModuleTS.HEAPU32[ptr / 4];
-        let height = ModuleTS.HEAPU32[ptr / 4 + 1];
+        let ptr = Module.cwrap('getExtensionInfo', 'number', [])();
+        let width = Module.HEAPU32[ptr / 4];
+        let height = Module.HEAPU32[ptr / 4 + 1];
         this.extensionInfo.vWidth = width;
         this.extensionInfo.vHeight = height;
     }
@@ -297,36 +297,36 @@ class MPEG_JS_Module {
         };
 
         // nalu layer
-        let spsLen      = ModuleTS.cwrap('getSPSLen', 'number', [])();
-        let spsPtr      = ModuleTS.cwrap('getSPS', 'number', [])();
+        let spsLen      = Module.cwrap('getSPSLen', 'number', [])();
+        let spsPtr      = Module.cwrap('getSPS', 'number', [])();
         naluLayer.sps   = new Uint8Array(spsLen);
-        naluLayer.sps.set(ModuleTS.HEAPU8.subarray(spsPtr, spsPtr + spsLen), 0);
+        naluLayer.sps.set(Module.HEAPU8.subarray(spsPtr, spsPtr + spsLen), 0);
         // console.log(naluLayer.sps);
 
-        let ppsLen      = ModuleTS.cwrap('getPPSLen', 'number', [])();
-        let ppsPtr      = ModuleTS.cwrap('getPPS', 'number', [])();
+        let ppsLen      = Module.cwrap('getPPSLen', 'number', [])();
+        let ppsPtr      = Module.cwrap('getPPS', 'number', [])();
         naluLayer.pps   = new Uint8Array(ppsLen);
-        naluLayer.pps.set(ModuleTS.HEAPU8.subarray(ppsPtr, ppsPtr + ppsLen), 0);
+        naluLayer.pps.set(Module.HEAPU8.subarray(ppsPtr, ppsPtr + ppsLen), 0);
         // console.log(naluLayer.pps);
 
-        let seiLen      = ModuleTS.cwrap('getSEILen', 'number', [])();
-        let seiPtr      = ModuleTS.cwrap('getSEI', 'number', [])();
+        let seiLen      = Module.cwrap('getSEILen', 'number', [])();
+        let seiPtr      = Module.cwrap('getSEI', 'number', [])();
         naluLayer.sei   = new Uint8Array(seiLen);
-        naluLayer.sei.set(ModuleTS.HEAPU8.subarray(seiPtr, seiPtr + seiLen), 0);
+        naluLayer.sei.set(Module.HEAPU8.subarray(seiPtr, seiPtr + seiLen), 0);
         // console.log(naluLayer.sei);
 
         // vlc layer
-        let vlcLen      = ModuleTS.cwrap('getVLCLen', 'number', [])();
-        let vlcPtr      = ModuleTS.cwrap('getVLC', 'number', [])();
+        let vlcLen      = Module.cwrap('getVLCLen', 'number', [])();
+        let vlcPtr      = Module.cwrap('getVLC', 'number', [])();
         vlcLayer.vlc    = new Uint8Array(vlcLen);
-        vlcLayer.vlc.set(ModuleTS.HEAPU8.subarray(vlcPtr, vlcPtr + vlcLen), 0);
+        vlcLayer.vlc.set(Module.HEAPU8.subarray(vlcPtr, vlcPtr + vlcLen), 0);
         // console.log(vlcLayer.vlc);
 
         if (this.mediaAttr.vCodec == def.DEF_HEVC || this.mediaAttr.vCodec == def.DEF_H265) {
-            let vpsLen      = ModuleTS.cwrap('getVPSLen', 'number', [])();
-            let vpsPtr      = ModuleTS.cwrap('getVPS', 'number', [])();
+            let vpsLen      = Module.cwrap('getVPSLen', 'number', [])();
+            let vpsPtr      = Module.cwrap('getVPS', 'number', [])();
             naluLayer.vps   = new Uint8Array(vpsLen);
-            naluLayer.vps.set(ModuleTS.HEAPU8.subarray(vpsPtr, vpsPtr + vpsLen), 0);
+            naluLayer.vps.set(Module.HEAPU8.subarray(vpsPtr, vpsPtr + vpsLen), 0);
 
             // console.log(vpsLen, vps);
         } else if (this.mediaAttr.vCodec == def.DEF_AVC || this.mediaAttr.vCodec == def.DEF_H264) {
@@ -343,16 +343,16 @@ class MPEG_JS_Module {
 
 	// outside
 	readPacket() {
-		let ptr = ModuleTS.cwrap('getPacket', 'number', [])(); // 1bytes
+		let ptr = Module.cwrap('getPacket', 'number', [])(); // 1bytes
 
-		let type = ModuleTS.HEAPU32[ptr / 4]; // 0 video 1 audio
-        let size = ModuleTS.HEAPU32[ptr / 4 + 1]; // 4 bytes 32 bits
-        let ptime = ModuleTS.HEAPF64[ptr / 8 + 1]; // 8 bytes
-        let dtime = ModuleTS.HEAPF64[ptr / 8 + 1 + 1];
-        let keyframe = ModuleTS.HEAPU32[ptr / 4 + 1 + 1 + 2 + 2]; // 4 bytes 32 bits
+		let type = Module.HEAPU32[ptr / 4]; // 0 video 1 audio
+        let size = Module.HEAPU32[ptr / 4 + 1]; // 4 bytes 32 bits
+        let ptime = Module.HEAPF64[ptr / 8 + 1]; // 8 bytes
+        let dtime = Module.HEAPF64[ptr / 8 + 1 + 1];
+        let keyframe = Module.HEAPU32[ptr / 4 + 1 + 1 + 2 + 2]; // 4 bytes 32 bits
 
-        let dataPtr = ModuleTS.HEAPU32[ptr / 4 + 1 + 1 + 2 + 2 + 1]; // 4bytes ptr
-        let dataPacket = ModuleTS.HEAPU8.subarray(dataPtr, dataPtr + size);
+        let dataPtr = Module.HEAPU32[ptr / 4 + 1 + 1 + 2 + 2 + 1]; // 4bytes ptr
+        let dataPacket = Module.HEAPU8.subarray(dataPtr, dataPtr + size);
 
         let layer = this._readLayer();
         // console.log(layer);
@@ -393,17 +393,17 @@ class MPEG_JS_Module {
     }
 
     _initDemuxer() {
-        ModuleTS.cwrap('initTsMissile', 'number', [])();
+        Module.cwrap('initTsMissile', 'number', [])();
         console.log('Initialized initTsMissile');
 
-        // ModuleTS.cwrap('initializeDemuxer', 'number', ['number'])(0); // (0); 0 hevc
-        ModuleTS.cwrap('initializeDemuxer', 'number', [])();
+        // Module.cwrap('initializeDemuxer', 'number', ['number'])(0); // (0); 0 hevc
+        Module.cwrap('initializeDemuxer', 'number', [])();
         console.log('Initialized initializeDemuxer');
     }
 
 	// outside
 	_releaseDemuxer() {
-		ModuleTS.cwrap('exitTsMissile', 'number', [])();
+		Module.cwrap('exitTsMissile', 'number', [])();
 	}
 }
 

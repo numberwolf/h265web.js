@@ -22,7 +22,7 @@
 //TODO: separate out the canvas logic and the hevc decoder logic
 // const YUVBuffer     = require('yuv-buffer');
 // const YUVCanvas     = require('yuv-canvas');
-const AVModule      = require('./missile.js');
+// const Module      = require('./missile.js');
 // const Module        = require('./missile-all.js');
 const AVCommon      = require('./av-common');
 const AudioModule   = require('./audio-core');
@@ -291,14 +291,14 @@ module.exports = config => {
     }; // getNalu1Packet
     player.decodeNalu1Frame = (nalBuf, pts, hardcopy=false) => {
         // decode Frame
-        let offset = AVModule._malloc(nalBuf.length);
-        AVModule.HEAP8.set(nalBuf, offset);
+        let offset = Module._malloc(nalBuf.length);
+        Module.HEAP8.set(nalBuf, offset);
         // console.warn("decodeNalu1Frame===>", pts);
 
         let ptsMS = parseInt(pts * 1000);
 
 
-        let decRet = AVModule.cwrap('decodeCodecContext', 'number', 
+        let decRet = Module.cwrap('decodeCodecContext', 'number', 
             ['number', 'number', 'number', 'number', 'number'])(
                 player.vcodecerPtr, offset, nalBuf.length, ptsMS, player.flushDecoder);
         console.log("decRet:", decRet, pts);
@@ -307,19 +307,19 @@ module.exports = config => {
         
         // let maxRetry = 3;
         // while (decRet == 0 && maxRetry > 0) {
-        //     decRet = AVModule.cwrap('decodeCodecContext', 'number', ['number', 'number', 'number'])(player.vcodecerPtr, offset, nalBuf.length);
+        //     decRet = Module.cwrap('decodeCodecContext', 'number', ['number', 'number', 'number'])(player.vcodecerPtr, offset, nalBuf.length);
         //     maxRetry -= 1;
         // }
         // if (decRet < 0) {
-        //     AVModule._free(offset);
+        //     Module._free(offset);
         //     return false;
         // }
         // if (decRet > 0) {
         //     let cacheYuvStructObj = player.getDecodeFrameData(pts, hardcopy);
-        //     AVModule._free(offset);
+        //     Module._free(offset);
         //     return cacheYuvStructObj;
         // }
-        AVModule._free(offset);
+        Module._free(offset);
         return false;
     }; // decodeNalu1Frame
     /**
@@ -327,22 +327,22 @@ module.exports = config => {
      * @return cacheYuvStructObj
      */
     // player.getDecodeFrameData = (pts, hardcopy=false) => {
-    //     let ptr = AVModule.cwrap('getFrame', 'number', ['number'])(player.vcodecerPtr);
+    //     let ptr = Module.cwrap('getFrame', 'number', ['number'])(player.vcodecerPtr);
     //     if(!ptr) {
     //         throw new Error('ERROR ptr is not a Number!');
     //     }
-    //     let width = AVModule.HEAPU32[ptr / 4];
-    //     let height = AVModule.HEAPU32[ptr / 4 + 1];
+    //     let width = Module.HEAPU32[ptr / 4];
+    //     let height = Module.HEAPU32[ptr / 4 + 1];
     //     // //console.log(width, height);
 
-    //     let imgBufferPtr = AVModule.HEAPU32[ptr / 4 + 1 + 1];
+    //     let imgBufferPtr = Module.HEAPU32[ptr / 4 + 1 + 1];
     //     let sizeWH = width * height;
-    //     let imageBufferY = AVModule.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
-    //     let imageBufferB = AVModule.HEAPU8.subarray(
+    //     let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
+    //     let imageBufferB = Module.HEAPU8.subarray(
     //         imgBufferPtr + sizeWH + 8,
     //         imgBufferPtr + sizeWH + 8 + sizeWH / 4
     //     );
-    //     let imageBufferR = AVModule.HEAPU8.subarray(
+    //     let imageBufferR = Module.HEAPU8.subarray(
     //         imgBufferPtr + sizeWH + 8 + sizeWH / 4 + 8,
     //         imgBufferPtr + sizeWH + 8 + sizeWH / 2 + 8
     //     );
@@ -634,15 +634,15 @@ module.exports = config => {
         // player.loop && window.clearInterval(player.loop);
         // player.loop = null;
         // player.pause();
-        // AVModule.cwrap('release', 'number', ['number'])(player.vcodecerPtr);
-        // AVModule.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
+        // Module.cwrap('release', 'number', ['number'])(player.vcodecerPtr);
+        // Module.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
         // player.stream = new Uint8Array();
         // player.frameList.length = 0;
         // player.durationMs = -1.0;
         // player.videoPTS = 0;
         // player.isPlaying = false;
         player.release();
-        AVModule.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
+        Module.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
         player.stream = new Uint8Array();
     };
     player.release = () => { // 释放
@@ -654,7 +654,7 @@ module.exports = config => {
         player.loop = null;
         
         player.pause();
-        AVModule.cwrap('release', 'number', ['number'])(player.vcodecerPtr);
+        Module.cwrap('release', 'number', ['number'])(player.vcodecerPtr);
         player.stream = null;
         player.frameList.length = 0;
         player.durationMs = -1.0;
@@ -695,19 +695,19 @@ module.exports = config => {
     // @TODO
     player.decodeSendPacket = (nalBuf) => {
         // decode Frame
-        let offset = AVModule._malloc(nalBuf.length);
-        AVModule.HEAP8.set(nalBuf, offset);
+        let offset = Module._malloc(nalBuf.length);
+        Module.HEAP8.set(nalBuf, offset);
         //console.log(nalBuf);
 
-        let decRet = AVModule.cwrap('decodeSendPacket', 'number', ['number', 'number', 'number'])(player.vcodecerPtr, offset, nalBuf.length);
+        let decRet = Module.cwrap('decodeSendPacket', 'number', ['number', 'number', 'number'])(player.vcodecerPtr, offset, nalBuf.length);
 
         //console.log("SendPacket decRet:", decRet);
-        AVModule._free(offset);
+        Module._free(offset);
         return decRet;
     };
     // @TODO
     player.decodeRecvFrame = () => {
-        let decRet = AVModule.cwrap('decodeRecv', 'number', ['number'])(player.vcodecerPtr);
+        let decRet = Module.cwrap('decodeRecv', 'number', ['number'])(player.vcodecerPtr);
         //console.log("RecvFrame decRet:", decRet);
         return decRet;
     };
@@ -903,16 +903,16 @@ module.exports = config => {
             alert("请输入TOKEN！Please set token param!");
             return;
         }
-        player.vcodecerPtr = AVModule.cwrap('registerPlayer', 
+        player.vcodecerPtr = Module.cwrap('registerPlayer', 
             'number', 
             ['string', 'string'])(player.config.token, VersionModule.PLAYER_VERSION);
 
-        let videoCallback = AVModule.addFunction(function(addr_y, addr_u, addr_v, stride_y, stride_u, stride_v, width, height, pts) {
+        let videoCallback = Module.addFunction(function(addr_y, addr_u, addr_v, stride_y, stride_u, stride_v, width, height, pts) {
             // console.warn("In video callback, size = %d * %d, pts = %f", width, height, pts);
 
-            let out_y = AVModule.HEAPU8.subarray(addr_y, addr_y + stride_y * height);
-            let out_u = AVModule.HEAPU8.subarray(addr_u, addr_u + (stride_u * height) / 2);
-            let out_v = AVModule.HEAPU8.subarray(addr_v, addr_v + (stride_v * height) / 2);
+            let out_y = Module.HEAPU8.subarray(addr_y, addr_y + stride_y * height);
+            let out_u = Module.HEAPU8.subarray(addr_u, addr_u + (stride_u * height) / 2);
+            let out_v = Module.HEAPU8.subarray(addr_v, addr_v + (stride_v * height) / 2);
             let buf_y = new Uint8Array(out_y);
             let buf_u = new Uint8Array(out_u);
             let buf_v = new Uint8Array(out_v);
@@ -928,12 +928,12 @@ module.exports = config => {
             player.cacheYuvBuf.appendCacheByCacheYuv(cacheYuvStructObj);
         });
 
-        AVModule.cwrap('setCodecType', 'number', ['number', 'number', 'number'])(
+        Module.cwrap('setCodecType', 'number', ['number', 'number', 'number'])(
             player.vcodecerPtr, player.config.videoCodec, videoCallback);
         // WASM
-        let ret1 = AVModule.cwrap('initMissile', 'number', ['number'])(player.vcodecerPtr);
+        let ret1 = Module.cwrap('initMissile', 'number', ['number'])(player.vcodecerPtr);
         //console.log('initMissile ret:' + ret1);
-        ret1 = AVModule.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
+        ret1 = Module.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
         //console.log("initializeDecoder ret:" + ret1);
     };
     player.makeIt = () => {

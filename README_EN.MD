@@ -133,6 +133,8 @@ Notice：
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/10/13 - Evening |
+| - | 0.The player compatible with WebIDE develop, split wasm(js) and h265web.js, need include wasm(js) as single |
 | Time | 2021/10/12 - Evening |
 | - | 0.Fixed: Support HTTP-FLV(HEVC) without fps param |
 | Time | 2021/10/09 - In the small hours |
@@ -328,6 +330,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 * By github 1.1 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
 ```javascript
+// import wasm
+<script src="dist/missile-v20211013.js"></script>
 // import from local file
 require('./dist/h265webjs');
 ```
@@ -335,6 +339,9 @@ require('./dist/h265webjs');
 * `import xxx from xxx` （recommend）
 
 ```javascript
+// import wasm
+<script src="dist/missile-v20211013.js"></script>
+// import from local file
 import H265webjsModule from './dist/index';
 ```
 
@@ -352,11 +359,17 @@ import H265webjsModule from './dist/index';
 
 	* 1）require
 	```javascript
+	// import wasm
+	<script src="dist/missile-v20211013.js"></script>
+	// js
 	require('./dist/h265webjs');
 	```
 
 	* 2）`import xxx from xxx` （recommend）
 	```javascript
+	// import wasm
+	<script src="dist/missile-v20211013.js"></script>
+	// js
 	import H265webjsModule from './dist/index';
 	```
 

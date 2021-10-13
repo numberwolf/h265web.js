@@ -32,7 +32,7 @@ const def = require('./consts');
 const staticMem = require('./utils/static-mem');
 const UI = require('./utils/ui/ui');
 const CacheYUV = require('./decoder/cache');
-const AVModule = require('./decoder/missile.js');
+// const Module = require('./decoder/missile.js');
 // const RawParser = require('./decoder/raw-parser');
 // http://localhost:8080/h265webjs-roi/
 
@@ -59,10 +59,10 @@ const GetRealDurationOfLastFramePTS = (fps, duration) => {
     return duration - (1000.0 / fps);
 };
 
-AVModule.onRuntimeInitialized = () => {
+Module.onRuntimeInitialized = () => {
     global.STATIC_MEM_wasmDecoderState = 1;
     console.log('WASM initialized ' + global.STATIC_MEM_wasmDecoderState);
-    // AVModule['ENVIRONMENT_IS_PTHREAD'] = true;
+    // Module['ENVIRONMENT_IS_PTHREAD'] = true;
     // _this._makeMP4Player();
     // global.STATICE_MEM_playerIndexPtr += 1;
     // _this._playerUtilBuildMask(_this.configFormat.playIcon);
@@ -268,14 +268,14 @@ class H265webjsModule {
                         initInterval = null;
                     } else {
                         console.log("to onRuntimeInitialized");
-                        // AVModule.onRuntimeInitialized = () => {
+                        // Module.onRuntimeInitialized = () => {
                         //     global.STATIC_MEM_wasmDecoderState = 1;
 
                         //     console.log('WASM initialized ' + global.STATIC_MEM_wasmDecoderState);
-                        //     // let ret1 = AVModule.cwrap('initMissile', 'number', [])();
+                        //     // let ret1 = Module.cwrap('initMissile', 'number', [])();
                         //     // console.log(ret1);
                         //     // console.log('Initialized Decoder');
-                        //     // ret1 = AVModule.cwrap('initializeDecoder', 'number', [])();
+                        //     // ret1 = Module.cwrap('initializeDecoder', 'number', [])();
                         //     // console.log(ret1);
 
                         //     _this._makeMP4Player();

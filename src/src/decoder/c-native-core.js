@@ -27,7 +27,7 @@
 
 // const YUVBuffer     = require('yuv-buffer');
 // const YUVCanvas     = require('yuv-canvas');
-const AVModule      = require('./missile.js');
+// const Module      = require('./missile.js');
 const BUFF_FRAME	= require('../demuxer/bufferFrame');
 const BUFFMOD		= require('../demuxer/buffer');
 const CacheYUV      = require('./cache');
@@ -201,30 +201,30 @@ class CNativeCoreModule {
         this.onReadyShowDone    = null;
 
 		/*
-		 * Init AVModule
+		 * Init Module
 		 */
-		// AVModule['ENVIRONMENT_IS_PTHREAD'] = true;
-		this.corePtr = AVModule.cwrap('AVSniffStreamInit', 
+		// Module['ENVIRONMENT_IS_PTHREAD'] = true;
+		this.corePtr = Module.cwrap('AVSniffStreamInit', 
             'number', 
             ['string', 'string'])(this.config.token, VersionModule.PLAYER_VERSION);
 
         console.log("finish AVSniffStreamInit ,corePtr : ", this.corePtr);
 
         console.log("start add function probeCallback");
-        let probeCallback = AVModule.addFunction(this._probeFinCallback.bind(this));
+        let probeCallback = Module.addFunction(this._probeFinCallback.bind(this));
         console.log("start add function frameCallback");
-        let frameCallback = AVModule.addFunction(this._frameCallback.bind(this));
+        let frameCallback = Module.addFunction(this._frameCallback.bind(this));
         console.log("start add function naluCallback");
-        let naluCallback = AVModule.addFunction(this._naluCallback.bind(this));
+        let naluCallback = Module.addFunction(this._naluCallback.bind(this));
         console.log("start add function sampleCallback");
-        let sampleCallback = AVModule.addFunction(this._samplesCallback.bind(this));
+        let sampleCallback = Module.addFunction(this._samplesCallback.bind(this));
         console.log("start add function aacCallback");
-        let aacCallback = AVModule.addFunction(this._aacFrameCallback.bind(this));
+        let aacCallback = Module.addFunction(this._aacFrameCallback.bind(this));
 
         let mode = this.config.playMode === def.PLAYER_MODE_NOTIME_LIVE ? 1 : 0;
         console.log(
             "start add initializeSniffStreamModuleWithAOpt", this.config.ignoreAudio, this.config.playMode, mode);
-        let initRet = AVModule.cwrap('initializeSniffStreamModuleWithAOpt', 'number', 
+        let initRet = Module.cwrap('initializeSniffStreamModuleWithAOpt', 'number', 
         	['number', 'number', 'number', 'number', 'number'])(
             this.corePtr, probeCallback, frameCallback, naluCallback, sampleCallback, aacCallback, 
             this.config.ignoreAudio, mode);
@@ -253,7 +253,7 @@ class CNativeCoreModule {
             this.avRecvInterval = null;
         }
         this._clearDecInterval();
-    	let releaseRet = AVModule.cwrap(
+    	let releaseRet = Module.cwrap(
     		'releaseSniffStream', 'number', ['number'])(this.corePtr);
     	this.audioWAudio && this.audioWAudio.stop();
     	this.audioWAudio = null;
@@ -673,13 +673,13 @@ class CNativeCoreModule {
 		// 逻辑判断 性能优化
 		if (this.config.checkProbe === true) {
     		this.avRecvInterval = window.setInterval(() => {
-    			let decRet = AVModule.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
+    			let decRet = Module.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
 				// console.log("getSniffStreamPkg decRet : ", decRet);
 				this._avCheckRecvFinish();
     		}, 5);
     	} else {
     		this.avRecvInterval = window.setInterval(() => {
-    			let decRet = AVModule.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
+    			let decRet = Module.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
 				// console.log("getSniffStreamPkgNoCheckProbe decRet : ", decRet);
 				this._avCheckRecvFinish();
     		}, 5);
@@ -1070,7 +1070,7 @@ class CNativeCoreModule {
     	// 获取const char*的指针地址这里是, 没长度，但是按照编码规律 读取上10个顶天了
     	// eg fltp s16le s16be s32le s32be
     	// char = uint8 = 8bits = 1Byte
-    	const hex = AVModule.HEAPU8.subarray(sample_fmt, sample_fmt + AU_FMT_READ);
+    	const hex = Module.HEAPU8.subarray(sample_fmt, sample_fmt + AU_FMT_READ);
     	let sample_fmt_str = "";
     	for (let i = 0; i < hex.length; i++) {
     		let char = String.fromCharCode(hex[i]);
@@ -1170,7 +1170,7 @@ class CNativeCoreModule {
     	// let dtsFixed = this._ptsFixed2(dts);
     	console.warn("LIVE naluCallback => ", len, isKey, width, height, ptsFixed, dts);
 
-    	let outData = AVModule.HEAPU8.subarray(data, data + len);
+    	let outData = Module.HEAPU8.subarray(data, data + len);
         let bufData = new Uint8Array(outData);
     	this.bufObject.appendFrameWithDts(
     		ptsFixed, dts, bufData, true, isKey);
@@ -1189,7 +1189,7 @@ class CNativeCoreModule {
 
     // 不用了
     _samplesCallback(buffer, line1, channel, pts) {
-    	// let pcm_buf = AVModule.HEAPU8.subarray(buffer, buffer + line1);
+    	// let pcm_buf = Module.HEAPU8.subarray(buffer, buffer + line1);
 		// let pcm_buf_out = new Uint8Array(pcm_buf);
         // console.log("audio line1", line1);
     	// this.audioPlayer.pushBuffer(pcm_buf_out);
@@ -1201,11 +1201,11 @@ class CNativeCoreModule {
     	if (this.audioWAudio) {
 	    	let pcmFrame = new Uint8Array(7 + line1);
 
-	    	let adts_buf = AVModule.HEAPU8.subarray(adts, adts + 7);
+	    	let adts_buf = Module.HEAPU8.subarray(adts, adts + 7);
 	    	pcmFrame.set(adts_buf, 0);
 	    	// let adts_out = new Uint8Array(adts_buf);
 
-	    	let aac_buf = AVModule.HEAPU8.subarray(buffer, buffer + line1);
+	    	let aac_buf = Module.HEAPU8.subarray(buffer, buffer + line1);
 	    	pcmFrame.set(aac_buf, 7);
 
 	    	this.bufObject.appendFrame(ptsFixed, pcmFrame, false, true);
@@ -1242,13 +1242,13 @@ class CNativeCoreModule {
 
     	// tmp
     	if (this.config.checkProbe === true) {
-			let decRet = AVModule.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
+			let decRet = Module.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
 		    console.log("getSniffStreamPkg decRet : ", decRet);
 		    if (decRet == READ_EOF_CODE) {
 		    	this.readEOF = true;
 		    }
 		} else {
-    		let decRet = AVModule.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
+    		let decRet = Module.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
 		    console.log("getSniffStreamPkgNoCheckProbe decRet : ", decRet);
 		    if (decRet == READ_EOF_CODE) {
 		    	this.readEOF = true;
@@ -1270,13 +1270,13 @@ class CNativeCoreModule {
     			this.audioWAudio && console.log("play===>sampleQueue:", this.audioWAudio.sampleQueue.length);
     		} else {
 				// if (this.config.checkProbe === true) {
-				// 	let decRet = AVModule.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
+				// 	let decRet = Module.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
 				// 	// console.log("getSniffStreamPkg decRet : ", decRet);
 				// 	if (decRet == READ_EOF_CODE) {
 				// 		this.readEOF = true;
 				// 	}
 				// } else {
-				// 	let decRet = AVModule.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
+				// 	let decRet = Module.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
 				// 	// console.log("getSniffStreamPkgNoCheckProbe decRet : ", decRet);
 				// 	if (decRet == READ_EOF_CODE) {
 				// 		this.readEOF = true;
@@ -1297,15 +1297,15 @@ class CNativeCoreModule {
         			if (this.playVPipe.length > 0) {
         				let frame = this.playVPipe.shift(); // nal
         				let nalBuf = frame.data;
-        				let offset = AVModule._malloc(nalBuf.length);
-        				AVModule.HEAP8.set(nalBuf, offset);
+        				let offset = Module._malloc(nalBuf.length);
+        				Module.HEAP8.set(nalBuf, offset);
         				let ptsMS = parseInt(frame.pts * 1000, 10);
         				let dtsMS = parseInt(frame.dts * 1000, 10);
 
         				this.yuvMaxTime = Math.max(frame.pts, this.yuvMaxTime);
         				console.warn("+++++decVFrameRet : ", ptsMS, dtsMS);
 
-	    				let decVFrameRet = AVModule.cwrap('decodeVideoFrame', 
+	    				let decVFrameRet = Module.cwrap('decodeVideoFrame', 
 	    					'number', 
 	    					['number', 'number', 'number', 'number', 'number'])(
 	    					this.corePtr, 
@@ -1316,7 +1316,7 @@ class CNativeCoreModule {
 	    					this.frameCallTag);
 	    				// console.log("---------- to decVFrameRet:", decVFrameRet, ptsMS, this.frameCallTag);
 
-	    				AVModule._free(offset);
+	    				Module._free(offset);
 	    				offset = null;
     				}
     			} else {
@@ -1387,9 +1387,9 @@ class CNativeCoreModule {
     	// 	}
     	// }
 
-    	let out_y = AVModule.HEAPU8.subarray(data_y, data_y + line1 * height);
-        let out_u = AVModule.HEAPU8.subarray(data_u, data_u + (line2 * height) / 2);
-        let out_v = AVModule.HEAPU8.subarray(data_v, data_v + (line3 * height) / 2);
+    	let out_y = Module.HEAPU8.subarray(data_y, data_y + line1 * height);
+        let out_u = Module.HEAPU8.subarray(data_u, data_u + (line2 * height) / 2);
+        let out_v = Module.HEAPU8.subarray(data_v, data_v + (line3 * height) / 2);
         let buf_y = new Uint8Array(out_y);
         let buf_u = new Uint8Array(out_u);
         let buf_v = new Uint8Array(out_v);
@@ -1473,9 +1473,9 @@ class CNativeCoreModule {
      * @return
      */
     pushBuffer(buffer) {
-    	let offset = AVModule._malloc(buffer.length);
-    	AVModule.HEAP8.set(buffer, offset);
-    	let pushRet = AVModule.cwrap('pushSniffStreamData', 'number', 
+    	let offset = Module._malloc(buffer.length);
+    	Module.HEAP8.set(buffer, offset);
+    	let pushRet = Module.cwrap('pushSniffStreamData', 'number', 
         	['number', 'number', 'number', 'number'])(
             this.corePtr, offset, buffer.length, this.probeSize);
         console.log("cnative pushRet : ", pushRet);
