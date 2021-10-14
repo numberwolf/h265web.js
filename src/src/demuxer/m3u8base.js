@@ -68,6 +68,9 @@ const matchers = {
 
 class M3u8BaseParserModule {
 	constructor() {
+		this.initState = true;
+		this.controller = new AbortController();
+
 		this._slices = [];
 		// default is Live HLS
 		this._type = def.PLAYER_IN_TYPE_M3U8_LIVE;
@@ -90,8 +93,16 @@ class M3u8BaseParserModule {
 		return 0;
 	}
 
+	release() {
+		this.initState = false;
+	}
+
 	fetchM3u8(videoURL) {
 		let _this = this;
+		if (!this.initState) {
+			return;
+		}
+		// let signal = this.controller.signal;
 		// fetch('http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8')
 		fetch(videoURL)
   		.then(res => res.text())

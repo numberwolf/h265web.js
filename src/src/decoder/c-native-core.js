@@ -233,6 +233,11 @@ class CNativeCoreModule {
     }
 
     release() {
+        if (this.canvas !== undefined && this.canvas !== null) {
+            this.canvas.remove();
+            this.canvas = null;
+        }
+
         if (this.playFrameInterval !== null) {
             window.clearInterval(this.playFrameInterval);
             this.playFrameInterval = null;
@@ -1153,6 +1158,7 @@ class CNativeCoreModule {
 	    	this._decVFrameIntervalFunc();
     	} else {
     		// h264 native player
+            console.log("_probeFinCallback codec is 264!");
     	}
 
     	this.onProbeFinish && this.onProbeFinish();

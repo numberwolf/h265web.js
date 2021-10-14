@@ -107,7 +107,7 @@ Notice：
 
 		- [Volume Option](#volumeoption)
 
-		- [Get MediaInfo](#getmediainfo)
+		- [Get MediaInfo - and check is h265 video](#getmediainfo)
 
 		- [Open Fullscreen](#openfullscreen)
 
@@ -123,112 +123,15 @@ Notice：
 	
 	- [Transcode and get HEVC/H.265 media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
 
-	- [Update Log](upldatelog)
+	- [Update Log](#upldatelog)
 
 <hr>
 
 ### 0、README ###
 
-#### UpldateLog ####
-
-| Update | Content |
-| ---- | ---- |
-| Time | 2021/10/13 - Evening |
-| - | 0.The player compatible with WebIDE develop, split wasm(js) and h265web.js, need include wasm(js) as single |
-| Time | 2021/10/12 - Evening |
-| - | 0.Fixed: Support HTTP-FLV(HEVC) without fps param |
-| Time | 2021/10/09 - In the small hours |
-| - | 0.Support HTTP-FLV(HEVC) LIVE, CodecID=12 |
-| - | 0.MP4/FLV(VOD) performance optimizing of Seek operation(out of cache area) |
-| Time | 2021/09/27 - Evening |
-| - | 0.M3u8/MpegTS performance optimizing of Seek operation(out of cache area) |
-| Time | 2021/09/25 - In the small hours |
-| - | 0.HLS Live Fixed: Crash by OOM |
-| - | 1.HLS Live Fixed: MPEG-TS full path |
-| - | 2.HLS Live Fixed: Stop by lost stream a moment |
-| - | 3.HLS Live Fixed: Stop by unstable network |
-| Time | 2021/09/08 - Evening |
-| - | 0.Fixed: M3U8 Seek with Decode Failed |
-| - | 1.Fixed: Some MP4 Case |
-| - | 2.Config update, remove some options, make it auto set |
-| Time | 2021/09/07 - Evening |
-| - | 0.M3U8 Fixed: some error with parse mpegts file |
-| Time | 2021/09/07 - In the small hours |
-| - | 0.Bak Player Core - Fixed:MP4/FLV(VOD) Seek BUG can not seek to 0; And performance optimizing for play |
-| Time | 2021/08/15 |
-| - | 0.H265/HEVC Upgrade Raw Data Player for VOD/LIVE |
-| Time | 2021/07/18 |
-| - | 0.Upgrade: Player UI Style |
-| - | 1.Support: fullscreen & close fullscreen |
-| - | 2.Add Event: open/close fullscreen |
-| Time | 2021/07/11 |
-| - | 0.Fixed: The player compatible with ZLMediaKit + HUAWEI HoloSens Camera LIVE Stream |
-| Time | 2021/07/04 |
-| - | 0.Fixed: <a href="https://github.com/numberwolf/h265web.js/issues/58">`ISSUE#58`</a> (When default player-core's status is caching-frames, can not pause video) |
-| Time | 2021/07/01 |
-| - | 0.Add example and package.json file |
-| Time | 2021/06/27 |
-| - | 0.Open Source! |
-| - | 1.Support Seek in FLV |
-| - | 2.Fixed: Seek problems with bak player core mode |
-| - | 3.Add FLV type ,and do not need set player-core |
-| Time | 2021/05/30 |
-| - | 1.Fixed: Some problem with seek and play(Important) |
-| - | 2.Feature: Event/Callback of Video's cover image load finished |
-| Time | 2021/05/24 |
-| - | 1.FLV VOD Play(In the bak player core mode) |
-| Time | 2021/05/21 |
-| - | 1.HLS(LIVE:No audio)performance optimizing |
-| Time | 2021/05/18 |
-| - | 1.HLS(LIVE) performance optimizing and add Audio |
-| Time | 2021/05/16 |
-| - | 1.MP4(VOD) Fixed:BD265 Mp4 box badcase |
-| Time | 2021/05/15 |
-| - | 1.Fixed: HLS Play(LIVE) |
-| Time | 2021/04/27 |
-| - | 1.Fixed: Some video playing with gray block(mosic) |
-| - | 2.Fixed: Some video when playing first gop with gray block(mosic) |
-| Time | 2021/04/22 |
-| - | 1.Bak player core mode(test) support: seek |
-| - | 2.Bak player core mode(test) support: yuvj420p |
-| - | 3.Others |
-| Time | 2021/04/12 |
-| - | 1.Fixed bug: Some video(encode hev) play failed |
-| - | 2.Fixed bug: Some video(nalu unstandard) play failed |
-| - | 3.Fixed bug: Some video play error with mosic |
-| Time | 2021/04/07 |
-| - | 1.Fixed duration error |
-| Time | 2021/03/28 |
-| - | 1.Add cache process event |
-| - | 2.Fixed some bugs |
-| - | 3.Remove HLS Log |
-| - | 4.Play without audio optio(New Core) |
-| Time | 2021/03/14 |
-| - | 1.Bak player core mode: Fixed: render of bytes align |
-| Time | 2021/03/12 |
-| - | 1.Sorry my friends, I was too tired to make a mistake with hls feature... Now I have fixed it. ~_~! |
-| Time | 2021/03/06 |
-| - | 1.Bak player core mode, Fixed: multi-stream play badcase |
-| Time | 2021/02/28 |
-| - | 1.Add function to feed 265 nalu-frame `append265NaluFrame(nalBuf);` |
-| - | 2.Add new library to parse 265 stream [raw-parser.js](./dist/raw-parser.js) |
-| Time | 2021/02/21 |
-| - | 1.New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
-| Time | 2021/02/18 |
-| - | 1.Bak player core mode support play with audio |
-| Time | 2021/02/08 |
-| - | 1.Bak player core mode (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
-| Time | 2021/01/04 |
-| - | 1.Player Support Hevc file|
-| - | 2.Player Support Hevc stream|
-| - | 3.Remove Play/Pause Mask |
-| - | 4.Add Event:`onPlayFinish`, called when play video finished |
-
 | TODO | Content |
 | ---- | ---- |
-| 1 | Support Http-flv |
-| 2 | Vue Demo |
-| 3 | React Demo |
+| 1 | Support HDR10 BT.2020 |
 
 
 #### Supported ####
@@ -331,7 +234,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 ```javascript
 // import wasm
-<script src="dist/missile-v20211013.js"></script>
+<script src="dist/missile.js"></script>
 // import from local file
 require('./dist/h265webjs');
 ```
@@ -340,7 +243,7 @@ require('./dist/h265webjs');
 
 ```javascript
 // import wasm
-<script src="dist/missile-v20211013.js"></script>
+<script src="dist/missile.js"></script>
 // import from local file
 import H265webjsModule from './dist/index';
 ```
@@ -360,7 +263,7 @@ import H265webjsModule from './dist/index';
 	* 1）require
 	```javascript
 	// import wasm
-	<script src="dist/missile-v20211013.js"></script>
+	<script src="dist/missile.js"></script>
 	// js
 	require('./dist/h265webjs');
 	```
@@ -368,7 +271,7 @@ import H265webjsModule from './dist/index';
 	* 2）`import xxx from xxx` （recommend）
 	```javascript
 	// import wasm
-	<script src="dist/missile-v20211013.js"></script>
+	<script src="dist/missile.js"></script>
 	// js
 	import H265webjsModule from './dist/index';
 	```
@@ -869,7 +772,8 @@ meta:
 	size:
 		height: 720
 		width: 1280
-	videoCodec: 0
+	videoCodec: 0 // 0:HEVC/H.265 1:Others Codec
+	isHEVC: true // video is HEVC Codec
 videoType: "vod" // vod or live
 ```
 
@@ -977,6 +881,105 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 -pix_fmt yuv420p \
 -f mpegts -y ./res/veilside2.ts
 ```
+
+<br>
+
+### UpldateLog ###
+
+| Update | Content |
+| ---- | ---- |
+| 时间 | 2021/10/14 - Evening |
+| - | 0.Fixed: Mediainfo's codec fault value |
+| Time | 2021/10/13 - Evening |
+| - | 0.The player compatible with WebIDE develop, split wasm(js) and h265web.js, need include wasm(js) as single |
+| Time | 2021/10/12 - Evening |
+| - | 0.Fixed: Support HTTP-FLV(HEVC) without fps param |
+| Time | 2021/10/09 - In the small hours |
+| - | 0.Support HTTP-FLV(HEVC) LIVE, CodecID=12 |
+| - | 0.MP4/FLV(VOD) performance optimizing of Seek operation(out of cache area) |
+| Time | 2021/09/27 - Evening |
+| - | 0.M3u8/MpegTS performance optimizing of Seek operation(out of cache area) |
+| Time | 2021/09/25 - In the small hours |
+| - | 0.HLS Live Fixed: Crash by OOM |
+| - | 1.HLS Live Fixed: MPEG-TS full path |
+| - | 2.HLS Live Fixed: Stop by lost stream a moment |
+| - | 3.HLS Live Fixed: Stop by unstable network |
+| Time | 2021/09/08 - Evening |
+| - | 0.Fixed: M3U8 Seek with Decode Failed |
+| - | 1.Fixed: Some MP4 Case |
+| - | 2.Config update, remove some options, make it auto set |
+| Time | 2021/09/07 - Evening |
+| - | 0.M3U8 Fixed: some error with parse mpegts file |
+| Time | 2021/09/07 - In the small hours |
+| - | 0.Bak Player Core - Fixed:MP4/FLV(VOD) Seek BUG can not seek to 0; And performance optimizing for play |
+| Time | 2021/08/15 |
+| - | 0.H265/HEVC Upgrade Raw Data Player for VOD/LIVE |
+| Time | 2021/07/18 |
+| - | 0.Upgrade: Player UI Style |
+| - | 1.Support: fullscreen & close fullscreen |
+| - | 2.Add Event: open/close fullscreen |
+| Time | 2021/07/11 |
+| - | 0.Fixed: The player compatible with ZLMediaKit + HUAWEI HoloSens Camera LIVE Stream |
+| Time | 2021/07/04 |
+| - | 0.Fixed: <a href="https://github.com/numberwolf/h265web.js/issues/58">`ISSUE#58`</a> (When default player-core's status is caching-frames, can not pause video) |
+| Time | 2021/07/01 |
+| - | 0.Add example and package.json file |
+| Time | 2021/06/27 |
+| - | 0.Open Source! |
+| - | 1.Support Seek in FLV |
+| - | 2.Fixed: Seek problems with bak player core mode |
+| - | 3.Add FLV type ,and do not need set player-core |
+| Time | 2021/05/30 |
+| - | 1.Fixed: Some problem with seek and play(Important) |
+| - | 2.Feature: Event/Callback of Video's cover image load finished |
+| Time | 2021/05/24 |
+| - | 1.FLV VOD Play(In the bak player core mode) |
+| Time | 2021/05/21 |
+| - | 1.HLS(LIVE:No audio)performance optimizing |
+| Time | 2021/05/18 |
+| - | 1.HLS(LIVE) performance optimizing and add Audio |
+| Time | 2021/05/16 |
+| - | 1.MP4(VOD) Fixed:BD265 Mp4 box badcase |
+| Time | 2021/05/15 |
+| - | 1.Fixed: HLS Play(LIVE) |
+| Time | 2021/04/27 |
+| - | 1.Fixed: Some video playing with gray block(mosic) |
+| - | 2.Fixed: Some video when playing first gop with gray block(mosic) |
+| Time | 2021/04/22 |
+| - | 1.Bak player core mode(test) support: seek |
+| - | 2.Bak player core mode(test) support: yuvj420p |
+| - | 3.Others |
+| Time | 2021/04/12 |
+| - | 1.Fixed bug: Some video(encode hev) play failed |
+| - | 2.Fixed bug: Some video(nalu unstandard) play failed |
+| - | 3.Fixed bug: Some video play error with mosic |
+| Time | 2021/04/07 |
+| - | 1.Fixed duration error |
+| Time | 2021/03/28 |
+| - | 1.Add cache process event |
+| - | 2.Fixed some bugs |
+| - | 3.Remove HLS Log |
+| - | 4.Play without audio optio(New Core) |
+| Time | 2021/03/14 |
+| - | 1.Bak player core mode: Fixed: render of bytes align |
+| Time | 2021/03/12 |
+| - | 1.Sorry my friends, I was too tired to make a mistake with hls feature... Now I have fixed it. ~_~! |
+| Time | 2021/03/06 |
+| - | 1.Bak player core mode, Fixed: multi-stream play badcase |
+| Time | 2021/02/28 |
+| - | 1.Add function to feed 265 nalu-frame `append265NaluFrame(nalBuf);` |
+| - | 2.Add new library to parse 265 stream [raw-parser.js](./dist/raw-parser.js) |
+| Time | 2021/02/21 |
+| - | 1.New SDK Project for H.265/HEVC decoder - [https://github.com/numberwolf/h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) |
+| Time | 2021/02/18 |
+| - | 1.Bak player core mode support play with audio |
+| Time | 2021/02/08 |
+| - | 1.Bak player core mode (beta version , do not support play audio and seek. Make your mp4's moov box front of the mdat) |
+| Time | 2021/01/04 |
+| - | 1.Player Support Hevc file|
+| - | 2.Player Support Hevc stream|
+| - | 3.Remove Play/Pause Mask |
+| - | 4.Add Event:`onPlayFinish`, called when play video finished |
 
 
 <hr>

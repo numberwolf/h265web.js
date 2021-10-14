@@ -59,6 +59,10 @@ const GetRealDurationOfLastFramePTS = (fps, duration) => {
     return duration - (1000.0 / fps);
 };
 
+if (global.Module === undefined || global.Module === null) {
+    global.Module = {};
+} // Module check
+
 Module.onRuntimeInitialized = () => {
     global.STATIC_MEM_wasmDecoderState = 1;
     console.log('WASM initialized ' + global.STATIC_MEM_wasmDecoderState);
@@ -67,7 +71,7 @@ Module.onRuntimeInitialized = () => {
     // global.STATICE_MEM_playerIndexPtr += 1;
     // _this._playerUtilBuildMask(_this.configFormat.playIcon);
     // _this._playUtilShowMask();
-};
+}; // onRuntimeInitialized
 
 class H265webjsModule {
     // static myStaticProp = 42;
@@ -235,7 +239,7 @@ class H265webjsModule {
             },
             audioNone : audioNone,
             videoCodec : def.CODEC_H265
-        };
+        }; // end this.playParam
 
         UI.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
 
@@ -343,7 +347,7 @@ class H265webjsModule {
             return false;
         }
         this.volume = voice;
-        this.player.setVoice(voice);
+        this.player && this.player.setVoice(voice);
     }
 
     getVolume() {
@@ -351,10 +355,12 @@ class H265webjsModule {
     }
 
     mediaInfo() {
-        return {
+        let mediaInfoData = {
             meta : this.playParam,
             videoType : this.playMode
-        };
+        }; // end mediaInfoData
+        mediaInfoData.meta.isHEVC = this.playParam.videoCodec === 0;
+        return mediaInfoData;
     }
 
     _seekHLS(clickedValue, _self, callback) {
@@ -1033,14 +1039,15 @@ class H265webjsModule {
         };
 
         this.player.onPlayingFinish = () => {
-            if (this.onPlayFinish != null) {
-                this.onPlayFinish();
+            if (_this.onPlayFinish != null) {
+                _this.onPlayFinish();
             }
         };
 
-        if (this.onLoadFinish != null) {
-            this.onLoadFinish();
-        }
+        this.player.onLoadFinish = () => {
+            _this.playParam.durationMs = _this.player.duration * 1000;
+            _this.onLoadFinish && _this.onLoadFinish();
+        };
     }
 
     _initMp4BoxObject() {
@@ -1183,7 +1190,7 @@ class H265webjsModule {
                 });
             }
         }, 1);
-    }
+    } // end _mp4EntryVodStream
 
     /**
      *
@@ -1202,6 +1209,9 @@ class H265webjsModule {
         //     readyShow: this.configFormat.extInfo.readyShow,
         //     ignoreAudio : this.configFormat.extInfo.ignoreAudio,
         // };
+        let controller = new AbortController();
+        let signal = controller.signal;
+
         let playerConfig = {
             width: this.configFormat.playerW,
             height: this.configFormat.playerH,
@@ -1251,14 +1261,19 @@ class H265webjsModule {
             } else {
                 // @TODO need 264 codec, but do not use
                 _this.playParam.videoCodec   = def.CODEC_H264;
+                controller.abort(); // abort fetch http network
                 let releaseRet = _this.player.release();
-                console.log("releaseRet ===> ", releaseRet);
+                console.log("releaseRet 1 ===> ", releaseRet);
                 _this.player = null;
 
-                _this._makeNativePlayer(
-                    _this.playParam.durationMs, _this.playParam.fps, 
-                    _this.playParam.sampleRate, _this.playParam.size, 
-                    false, _this.playParam.videoCodec);
+                if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_MP4) {
+                    _this._makeNativePlayer(
+                        _this.playParam.durationMs, _this.playParam.fps, 
+                        _this.playParam.sampleRate, _this.playParam.size, 
+                        false, _this.playParam.videoCodec);
+                } else {
+                    _this.onLoadFinish && _this.onLoadFinish();
+                }
             }
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
@@ -1321,8 +1336,8 @@ class H265webjsModule {
          */
         let fetchFin = false;
         let fileSize = 0;
-        let controller = new AbortController();
-        let signal = controller.signal;
+        // let controller = new AbortController();
+        // let signal = controller.signal;
         fetch(this.videoURL, {signal}).then(function(response) {
             if (response.headers.has("Content-Length")) {
                 fileSize = response.headers.get("Content-Length");
@@ -1366,7 +1381,7 @@ class H265webjsModule {
                         let pushRet = _this.player.pushBuffer(chunk);
                         if (pushRet < 0) {
                             let releaseRet = _this.player.release();
-                            console.log("releaseRet ===> ", releaseRet);
+                            console.log("releaseRet ===> 2 ", releaseRet);
                             _this.player = null;
                             // _this._makeNativePlayer(
                             //     _this.playParam.durationMs, _this.playParam.fps, 
@@ -1384,7 +1399,9 @@ class H265webjsModule {
             return pump(response.body.getReader());
             // }, 10);
         }).catch(function(error) {
-            console.error(error);
+            if (!error.toString().includes('user aborted')) {
+                console.error("cdemuxdecoder error", error);
+            } // end check error
             // window.clearInterval(networkInterval);
             return;
         }); // end fetch
@@ -1468,24 +1485,35 @@ class H265webjsModule {
     _mpegTsEntry() {
         console.log("entry ts");
         let _this = this;
+
+        let controller = new AbortController();
+        let signal = controller.signal;
+
         this.timerFeed = null;
         this.mpegTsObj = new MpegTSParser.MpegTs();
         this.mpegTsObj.bindReady(_this);
 
-        this.mpegTsObj.onDemuxed = this._mpegTsEntryReady;
+        this.mpegTsObj.onDemuxed = this._mpegTsEntryReady.bind(this);
         this.mpegTsObj.onReady = () => {
             console.log("onReady");
             /*
              * start
              */
-            fetch(_this.videoURL).then(res => res.arrayBuffer()).then(streamBuffer => {
+            fetch(_this.videoURL, {signal}).then(res => res.arrayBuffer()).then(streamBuffer => {
+                if (_this.mpegTsObj === undefined 
+                    || _this.mpegTsObj === null) 
+                {
+                    controller.abort();
+                    return;
+                }
+
                 streamBuffer.fileStart = 0;
                 // array buffer to unit8array
                 let streamUint8Buf = new Uint8Array(streamBuffer);
                 // console.log(streamUint8Buf);
                 _this.mpegTsObj.demux(streamUint8Buf);
             });
-        };
+        }; // onReady
         this.mpegTsObj.initMPEG();
     }
 
@@ -1495,12 +1523,32 @@ class H265webjsModule {
     _mpegTsEntryReady (onReadyOBJ) {
         let _this = onReadyOBJ;
 
+        let vCodec      = _this.mpegTsObj.getVCodec();
         let aCodec      = _this.mpegTsObj.getACodec();
         let durationMs  = _this.mpegTsObj.getDurationMs();
         let fps         = _this.mpegTsObj.getFPS();
         let sampleRate  = _this.mpegTsObj.getSampleRate();
         let size        = _this.mpegTsObj.getSize();
-        console.log("aCodec:", aCodec);
+        console.log("vCodec:", vCodec, "aCodec:", aCodec);
+
+        let isHevcParam = this.mpegTsObj.isHEVC();
+        alert(isHevcParam);
+        if (!isHevcParam) {
+            this.mpegTsObj.releaseTsDemuxer();
+            this.mpegTsObj = null;
+
+            this.playParam.durationMs = durationMs;
+            this.playParam.fps = fps;
+            this.playParam.sampleRate = sampleRate;
+            this.playParam.size = size;
+            this.playParam.audioNone = aCodec == "";
+            this.playParam.videoCodec = isHevcParam ? 0 : 1;
+            console.log("this.playParam: ", this.playParam);
+            this.onLoadFinish && this.onLoadFinish();
+
+            // this.mpegTsObj
+            return;
+        }
 
         _this._makeMP4PlayerViewEvent(durationMs, fps, sampleRate, size, aCodec == "");
         // dur seconds
@@ -1544,7 +1592,9 @@ class H265webjsModule {
 
         this.hlsObj.onDemuxed = (readyObj) => {
             if (_this.player == null) {
-                let aCodec      = _this.hlsObj.getACodec();
+                let isHevcParam = _this.hlsObj.isHevcParam;
+                let vCodec      = _this.hlsObj.getVCodec(); // h265 h264 hevc
+                let aCodec      = _this.hlsObj.getACodec(); // aac mp3
                 let fps         = _this.hlsObj.getFPS();
                 let sampleRate  = _this.hlsObj.getSampleRate();
                 let size        = _this.hlsObj.getSize();
@@ -1555,6 +1605,29 @@ class H265webjsModule {
                 } else {
                     audioNone = aCodec === "";
                 }
+
+                alert("isHevcParam", isHevcParam);
+
+                if (!isHevcParam) {
+                    alert("is not hevc hls");
+                    // @TODO hls release add mpeg release
+                    _this.hlsObj.release();
+                    if (_this.hlsObj.mpegTsObj) {
+                        _this.hlsObj.mpegTsObj.releaseTsDemuxer();
+                    }
+                    _this.hlsObj = null;
+
+                    _this.playParam.durationMs = -1;
+                    _this.playParam.fps = fps;
+                    _this.playParam.sampleRate = sampleRate;
+                    _this.playParam.size = size;
+                    _this.playParam.audioNone = aCodec == "";
+                    _this.playParam.videoCodec = isHevcParam ? 0 : 1;
+                    console.log("this.playParam: ", _this.playParam);
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    return;
+                } // end is hevc
+
                 // console.log("sampleRate: " + sampleRate);
                 _this._makeMP4PlayerViewEvent(durationMs, fps, sampleRate, size, audioNone);
             };

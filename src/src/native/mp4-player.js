@@ -38,7 +38,10 @@ class Mp4PlayerModule {
 
         this.video = null;
         this.isPlaying = false;
+        this.duration = -1;
+        // this.fps = -1;
 
+        this.onLoadFinish = null;
         this.onPlayingTime = null;
         this.onPlayingFinish = null;
 
@@ -51,10 +54,6 @@ class Mp4PlayerModule {
 
         let canvasBox = document.querySelector('div#' + this.configFormat.playerId);
         this.video = document.createElement('video');
-        this.video.src = url;
-        this.video.style.width = '100%';
-        this.video.style.height = '100%';
-        canvasBox.appendChild(this.video);
 
         this.video.ontimeupdate = () => {
         	console.log("ontimeupdate");
@@ -65,6 +64,17 @@ class Mp4PlayerModule {
 			console.log("onended");
 			_this.onPlayingFinish && _this.onPlayingFinish();
 		};
+
+		this.video.onloadedmetadata = () => {
+			alert("loadedmetadata");
+			_this.duration = _this.video.duration;
+			_this.onLoadFinish && _this.onLoadFinish();
+		};
+
+        this.video.src = url;
+        this.video.style.width = '100%';
+        this.video.style.height = '100%';
+        canvasBox.appendChild(this.video);
 	}
 
 	play() {

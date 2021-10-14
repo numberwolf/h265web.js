@@ -50,6 +50,8 @@ class M3u8ParserModule {
 		this.aPreFramePTS	= 0;
 
 		this.audioNone		= false;
+		this.isHevcParam	= false;
+		this.vCodec			= false;
 		this.aCodec			= false;
 		this.aChannel		= 0;
 	    this.durationMs    	= -1.0;
@@ -116,6 +118,8 @@ class M3u8ParserModule {
 				_this.mediaInfo = _this.mpegTsObj.readMediaInfo();
 				console.log("mediaInfo: ",_this.mediaInfo);
 
+				_this.isHevcParam	= _this.mpegTsObj.isHEVC();
+				_this.vCodec		= _this.mpegTsObj.vCodec;
 				_this.aCodec		= _this.mediaInfo.aCodec;
 				_this.aChannel		= _this.mediaInfo.sampleChannel;
 				// _this.durationMs 	= _this.mediaInfo.duration * 1000;
@@ -145,6 +149,9 @@ class M3u8ParserModule {
             let firstPts = -1;
             let needIncrStart = false;
 	        while(1) {
+	        	if (_this.mpegTsObj === undefined || _this.mpegTsObj === null) {
+	        		break;
+	        	}
 	            let readData = _this.mpegTsObj.readPacket();
 	            console.log("readData=>", readData);
 	            if (readData.size <= 0) {
@@ -274,8 +281,6 @@ class M3u8ParserModule {
 			    	}
 		    	} catch (err) {
 		    		console.error("onTsReady ERROR:", err);
-		    		alert("_onTsReady ERROR:");
-		    		alert(err);
 		    		_this.lockWait.state = false;
 		    	}
 	    	}
@@ -283,8 +288,12 @@ class M3u8ParserModule {
 	}
 
 	release() {
+		this.hls && this.hls.release();
+		this.hls = null;
 		this.timerFeed && window.clearInterval(this.timerFeed);
+		this.timerFeed = null;
 		this.timerTsWasm && window.clearInterval(this.timerTsWasm);
+		this.timerTsWasm = null;
 	}
 
 	bindReady(bindObject) {
@@ -336,6 +345,10 @@ class M3u8ParserModule {
 
 	getACodec () {
     	return this.aCodec;
+	}
+
+	getVCodec () {
+    	return this.vCodec;
 	}
 
 	getDurationMs () {

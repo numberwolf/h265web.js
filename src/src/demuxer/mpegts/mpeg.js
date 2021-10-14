@@ -28,6 +28,8 @@ class MPEG_JS_Module {
         this.configFormat = {
         };
 
+        // this.initState = false;
+
         // this.testdebug = 0;
         this.isLive = 0;
 
@@ -52,6 +54,8 @@ class MPEG_JS_Module {
             vHeight : 0,
         };
 
+        this.controller = new AbortController();
+
         this.offsetDemux = null;
 
         this.wasmState = 0;
@@ -67,6 +71,7 @@ class MPEG_JS_Module {
 	// outside
 	initDemuxer() {
 		let _this = this;
+        // this.initState = true;
         if (!window.WebAssembly) {
             let tip = 'unsupport WASM!';
             if (/iPhone|iPad/.test(window.navigator.userAgent)) {
@@ -130,23 +135,26 @@ class MPEG_JS_Module {
         console.warn("_demuxerTsInit ==> ", videoURL);
 
         // OK
-		fetch(videoURL)
+        let signal = this.controller.signal;
+		fetch(videoURL, {signal})
 		.then(res => res.arrayBuffer())
 		.then(streamBuffer => {
-			streamBuffer.fileStart = 0;
+            // if (_this.initState) {
+    			streamBuffer.fileStart = 0;
 
-			// array buffer to unit8array
-			let streamUint8Buf = new Uint8Array(streamBuffer);
-            if (streamUint8Buf !== undefined && streamUint8Buf !== null) {
-                _this._demuxCore(streamUint8Buf);
-            } else {
-                console.error("demuxerTsInit ERROR fetch res is null ==> ", videoURL);
-            }
-            streamUint8Buf = null;
+    			// array buffer to unit8array
+    			let streamUint8Buf = new Uint8Array(streamBuffer);
+                if (streamUint8Buf !== undefined && streamUint8Buf !== null) {
+                    _this._demuxCore(streamUint8Buf);
+                } else {
+                    console.error("demuxerTsInit ERROR fetch res is null ==> ", videoURL);
+                }
+                streamUint8Buf = null;
+            // }
 		}).catch(error => {
-            console.error("_demuxerTsInit ERROR fetch ERROR ==> ", error);
-            alert("demuxerTsInit ERROR fetch ERROR ==> ");
-            alert(error);
+            console.error("demuxerTsInit ERROR fetch ERROR ==> ", error);
+            // alert("demuxerTsInit ERROR fetch ERROR ==> ");
+            // alert(error);
             _this._releaseOffset();
             _this.onDemuxedFailed && _this.onDemuxedFailed(error, videoURL);
         });
@@ -170,6 +178,10 @@ class MPEG_JS_Module {
 
         // console.log(streamUint8Buf);
         // console.log(streamUint8Buf.length);
+
+        if (streamUint8Buf.length <= 0) {
+            return;
+        }
         
         this.offsetDemux = Module._malloc(streamUint8Buf.length);
         Module.HEAP8.set(streamUint8Buf, this.offsetDemux);
@@ -299,6 +311,9 @@ class MPEG_JS_Module {
         // nalu layer
         let spsLen      = Module.cwrap('getSPSLen', 'number', [])();
         let spsPtr      = Module.cwrap('getSPS', 'number', [])();
+        if (spsLen < 0) {
+            return;
+        }
         naluLayer.sps   = new Uint8Array(spsLen);
         naluLayer.sps.set(Module.HEAPU8.subarray(spsPtr, spsPtr + spsLen), 0);
         // console.log(naluLayer.sps);
@@ -340,6 +355,14 @@ class MPEG_JS_Module {
             vlc : vlcLayer
         }
     }
+
+    isHEVC() {
+        if (this.mediaAttr.vCodec == def.DEF_HEVC || this.mediaAttr.vCodec == def.DEF_H265) 
+        {
+            return true;
+        }
+        return false;
+    } // isHEVC
 
 	// outside
 	readPacket() {
@@ -388,7 +411,7 @@ class MPEG_JS_Module {
 	}
 
     _refreshDemuxer() {
-        this._releaseDemuxer();
+        this.releaseTsDemuxer();
         this._initDemuxer();
     }
 
@@ -399,11 +422,15 @@ class MPEG_JS_Module {
         // Module.cwrap('initializeDemuxer', 'number', ['number'])(0); // (0); 0 hevc
         Module.cwrap('initializeDemuxer', 'number', [])();
         console.log('Initialized initializeDemuxer');
+
+        // this.initState = true;
     }
 
 	// outside
-	_releaseDemuxer() {
+	releaseTsDemuxer() {
 		Module.cwrap('exitTsMissile', 'number', [])();
+        // this.initState = false;
+        // this.controller.abort();
 	}
 }
 

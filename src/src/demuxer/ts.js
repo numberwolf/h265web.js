@@ -31,11 +31,13 @@ class TsParserModule {
 	    this.fps           = -1;
 	    this.sampleRate    = -1;
         this.aCodec        = "";
+        this.vCodec        = "";
 	    this.size          = {
 	        width   : -1,
 	        height  : -1
 	    };
 	    this.bufObject     = BUFFMOD();
+
 	    // _this.video_start_time = -1;
 	    // _this.audio_start_time = -1;
 
@@ -68,6 +70,7 @@ class TsParserModule {
             _this.extensionInfo = _this.mpegTsObj.readExtensionInfo();
             console.log(_this.extensionInfo);
 
+            _this.vCodec        = _this.mediaInfo.vCodec;
             _this.aCodec        = _this.mediaInfo.aCodec;
             _this.durationMs 	= _this.mediaInfo.duration * 1000;
             _this.fps 			= _this.mediaInfo.vFps;
@@ -181,6 +184,11 @@ class TsParserModule {
     	this.onReadyOBJ = bindObject;
     }
 
+    releaseTsDemuxer() {
+        this.mpegTsObj && this.mpegTsObj.releaseTsDemuxer();
+        this.mpegTsObj = null;
+    }
+
     // public
     demux(uint8buffer) {
     	this.mpegTsObj.demuxUint8Buf(uint8buffer);
@@ -203,8 +211,16 @@ class TsParserModule {
 	    } else {}
 	}
 
+    isHEVC() {
+        return this.mpegTsObj.isHEVC();
+    }
+
     getACodec() {
         return this.aCodec;
+    }
+
+    getVCodec() {
+        return this.vCodec;
     }
 
     getAudioNone() {

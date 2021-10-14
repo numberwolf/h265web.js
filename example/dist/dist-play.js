@@ -8,11 +8,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   function n(s, o) {
     if (!i[s]) {
       if (!t[s]) {
-        var h = "function" == typeof require && require;
-        if (!o && h) return h(s, !0);
+        var l = "function" == typeof require && require;
+        if (!o && l) return l(s, !0);
         if (a) return a(s, !0);
-        var l = new Error("Cannot find module '" + s + "'");
-        throw l.code = "MODULE_NOT_FOUND", l;
+        var h = new Error("Cannot find module '" + s + "'");
+        throw h.code = "MODULE_NOT_FOUND", h;
       }
 
       var u = i[s] = {
@@ -370,13 +370,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var a = String.fromCharCodeUint8.apply(null, [this.mapUint8Array(n)]);
       return null != e ? this.position += r - n : n != t && (this.position += 1), a;
     };
-    var h = Math.pow(2, 32);
+    var l = Math.pow(2, 32);
     o.prototype.readInt64 = function () {
-      return this.readInt32() * h + this.readUint32();
+      return this.readInt32() * l + this.readUint32();
     }, o.prototype.readUint64 = function () {
-      return this.readUint32() * h + this.readUint32();
+      return this.readUint32() * l + this.readUint32();
     }, o.prototype.readInt64 = function () {
-      return this.readUint32() * h + this.readUint32();
+      return this.readUint32() * l + this.readUint32();
     }, o.prototype.readUint24 = function () {
       return (this.readUint8() << 16) + (this.readUint8() << 8) + this.readUint8();
     }, void 0 !== i && (i.DataStream = o), o.prototype.save = function (e) {
@@ -608,8 +608,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         default:
           if (3 == e.length) {
-            for (var h = e[1], l = 0; l < t.length; l++) {
-              this.writeType(h, t[l]);
+            for (var l = e[1], h = 0; h < t.length; h++) {
+              this.writeType(l, t[h]);
             }
 
             break;
@@ -620,7 +620,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       null != n && (this.position = s, this._realloc(n), this.position = s + n);
     }, o.prototype.writeUint64 = function (e) {
-      var t = Math.floor(e / h);
+      var t = Math.floor(e / l);
       this.writeUint32(t), this.writeUint32(4294967295 & e);
     }, o.prototype.writeUint24 = function (e) {
       this.writeUint8((16711680 & e) >> 16), this.writeUint8((65280 & e) >> 8), this.writeUint8(255 & e);
@@ -664,21 +664,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return o.arrayToNative(i, null == t ? this.endianness : t), this.position += 4 * e, i;
     };
 
-    var l = function l(e) {
+    var h = function h(e) {
       this.buffers = [], this.bufferIndex = -1, e && (this.insertBuffer(e), this.bufferIndex = 0);
     };
 
-    (l.prototype = new o(new ArrayBuffer(), 0, o.BIG_ENDIAN)).initialized = function () {
+    (h.prototype = new o(new ArrayBuffer(), 0, o.BIG_ENDIAN)).initialized = function () {
       var e;
       return this.bufferIndex > -1 || (this.buffers.length > 0 ? 0 === (e = this.buffers[0]).fileStart ? (this.buffer = e, this.bufferIndex = 0, a.debug("MultiBufferStream", "Stream ready for parsing"), !0) : (a.warn("MultiBufferStream", "The first buffer should have a fileStart of 0"), this.logBufferLevel(), !1) : (a.warn("MultiBufferStream", "No buffer to start parsing from"), this.logBufferLevel(), !1));
     }, ArrayBuffer.concat = function (e, t) {
       a.debug("ArrayBuffer", "Trying to create a new buffer of size: " + (e.byteLength + t.byteLength));
       var i = new Uint8Array(e.byteLength + t.byteLength);
       return i.set(new Uint8Array(e), 0), i.set(new Uint8Array(t), e.byteLength), i.buffer;
-    }, l.prototype.reduceBuffer = function (e, t, i) {
+    }, h.prototype.reduceBuffer = function (e, t, i) {
       var r;
       return (r = new Uint8Array(i)).set(new Uint8Array(e, t, i)), r.buffer.fileStart = e.fileStart + t, r.buffer.usedBytes = 0, r.buffer;
-    }, l.prototype.insertBuffer = function (e) {
+    }, h.prototype.insertBuffer = function (e) {
       for (var t = !0, i = 0; i < this.buffers.length; i++) {
         var r = this.buffers[i];
 
@@ -710,29 +710,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       t && (a.debug("MultiBufferStream", "Appending new buffer (fileStart: " + e.fileStart + " - Length: " + e.byteLength + ")"), this.buffers.push(e), 0 === i && (this.buffer = e));
-    }, l.prototype.logBufferLevel = function (e) {
+    }, h.prototype.logBufferLevel = function (e) {
       var t,
           i,
           r,
           n,
           s,
           o = [],
-          h = "";
+          l = "";
 
       for (r = 0, n = 0, t = 0; t < this.buffers.length; t++) {
-        i = this.buffers[t], 0 === t ? (s = {}, o.push(s), s.start = i.fileStart, s.end = i.fileStart + i.byteLength, h += "[" + s.start + "-") : s.end === i.fileStart ? s.end = i.fileStart + i.byteLength : ((s = {}).start = i.fileStart, h += o[o.length - 1].end - 1 + "], [" + s.start + "-", s.end = i.fileStart + i.byteLength, o.push(s)), r += i.usedBytes, n += i.byteLength;
+        i = this.buffers[t], 0 === t ? (s = {}, o.push(s), s.start = i.fileStart, s.end = i.fileStart + i.byteLength, l += "[" + s.start + "-") : s.end === i.fileStart ? s.end = i.fileStart + i.byteLength : ((s = {}).start = i.fileStart, l += o[o.length - 1].end - 1 + "], [" + s.start + "-", s.end = i.fileStart + i.byteLength, o.push(s)), r += i.usedBytes, n += i.byteLength;
       }
 
-      o.length > 0 && (h += s.end - 1 + "]");
-      var l = e ? a.info : a.debug;
-      0 === this.buffers.length ? l("MultiBufferStream", "No more buffer in memory") : l("MultiBufferStream", this.buffers.length + " stored buffer(s) (" + r + "/" + n + " bytes): " + h);
-    }, l.prototype.cleanBuffers = function () {
+      o.length > 0 && (l += s.end - 1 + "]");
+      var h = e ? a.info : a.debug;
+      0 === this.buffers.length ? h("MultiBufferStream", "No more buffer in memory") : h("MultiBufferStream", this.buffers.length + " stored buffer(s) (" + r + "/" + n + " bytes): " + l);
+    }, h.prototype.cleanBuffers = function () {
       var e, t;
 
       for (e = 0; e < this.buffers.length; e++) {
         (t = this.buffers[e]).usedBytes === t.byteLength && (a.debug("MultiBufferStream", "Removing buffer #" + e), this.buffers.splice(e, 1), e--);
       }
-    }, l.prototype.mergeNextBuffer = function () {
+    }, h.prototype.mergeNextBuffer = function () {
       var e;
 
       if (this.bufferIndex + 1 < this.buffers.length) {
@@ -747,7 +747,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       return !1;
-    }, l.prototype.findPosition = function (e, t, i) {
+    }, h.prototype.findPosition = function (e, t, i) {
       var r,
           n = null,
           s = -1;
@@ -757,7 +757,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       return -1 !== s && (n = this.buffers[s]).fileStart + n.byteLength >= t ? (a.debug("MultiBufferStream", "Found position in existing buffer #" + s), s) : -1;
-    }, l.prototype.findEndContiguousBuf = function (e) {
+    }, h.prototype.findEndContiguousBuf = function (e) {
       var t,
           i,
           r,
@@ -766,25 +766,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         i = r;
       }
       return i.fileStart + i.byteLength;
-    }, l.prototype.getEndFilePositionAfter = function (e) {
+    }, h.prototype.getEndFilePositionAfter = function (e) {
       var t = this.findPosition(!0, e, !1);
       return -1 !== t ? this.findEndContiguousBuf(t) : e;
-    }, l.prototype.addUsedBytes = function (e) {
+    }, h.prototype.addUsedBytes = function (e) {
       this.buffer.usedBytes += e, this.logBufferLevel();
-    }, l.prototype.setAllUsedBytes = function () {
+    }, h.prototype.setAllUsedBytes = function () {
       this.buffer.usedBytes = this.buffer.byteLength, this.logBufferLevel();
-    }, l.prototype.seek = function (e, t, i) {
+    }, h.prototype.seek = function (e, t, i) {
       var r;
       return -1 !== (r = this.findPosition(t, e, i)) ? (this.buffer = this.buffers[r], this.bufferIndex = r, this.position = e - this.buffer.fileStart, a.debug("MultiBufferStream", "Repositioning parser at buffer position: " + this.position), !0) : (a.debug("MultiBufferStream", "Position " + e + " not found in buffered data"), !1);
-    }, l.prototype.getPosition = function () {
+    }, h.prototype.getPosition = function () {
       if (-1 === this.bufferIndex || null === this.buffers[this.bufferIndex]) throw "Error accessing position in the MultiBufferStream";
       return this.buffers[this.bufferIndex].fileStart + this.position;
-    }, l.prototype.getLength = function () {
+    }, h.prototype.getLength = function () {
       return this.byteLength;
-    }, l.prototype.getEndPosition = function () {
+    }, h.prototype.getEndPosition = function () {
       if (-1 === this.bufferIndex || null === this.buffers[this.bufferIndex]) throw "Error accessing position in the MultiBufferStream";
       return this.buffers[this.bufferIndex].fileStart + this.byteLength;
-    }, void 0 !== i && (i.MultiBufferStream = l);
+    }, void 0 !== i && (i.MultiBufferStream = h);
 
     var u = function u() {
       var e = [];
@@ -976,60 +976,60 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           n,
           s,
           o = e.getPosition(),
-          h = 0;
+          l = 0;
       if (e.getEndPosition() - o < 8) return a.debug("BoxParser", "Not enough data in stream to parse the type and size of the box"), {
         code: d.ERR_NOT_ENOUGH_DATA
       };
       if (i && i < 8) return a.debug("BoxParser", "Not enough bytes left in the parent box to parse a new box"), {
         code: d.ERR_NOT_ENOUGH_DATA
       };
-      var l = e.readUint32(),
+      var h = e.readUint32(),
           u = e.readString(4),
           f = u;
 
-      if (a.debug("BoxParser", "Found box of type '" + u + "' and size " + l + " at position " + o), h = 8, "uuid" == u) {
-        if (e.getEndPosition() - e.getPosition() < 16 || i - h < 16) return e.seek(o), a.debug("BoxParser", "Not enough bytes left in the parent box to parse a UUID box"), {
+      if (a.debug("BoxParser", "Found box of type '" + u + "' and size " + h + " at position " + o), l = 8, "uuid" == u) {
+        if (e.getEndPosition() - e.getPosition() < 16 || i - l < 16) return e.seek(o), a.debug("BoxParser", "Not enough bytes left in the parent box to parse a UUID box"), {
           code: d.ERR_NOT_ENOUGH_DATA
         };
-        h += 16, f = s = d.parseUUID(e);
+        l += 16, f = s = d.parseUUID(e);
       }
 
-      if (1 == l) {
-        if (e.getEndPosition() - e.getPosition() < 8 || i && i - h < 8) return e.seek(o), a.warn("BoxParser", 'Not enough data in stream to parse the extended size of the "' + u + '" box'), {
+      if (1 == h) {
+        if (e.getEndPosition() - e.getPosition() < 8 || i && i - l < 8) return e.seek(o), a.warn("BoxParser", 'Not enough data in stream to parse the extended size of the "' + u + '" box'), {
           code: d.ERR_NOT_ENOUGH_DATA
         };
-        l = e.readUint64(), h += 8;
-      } else if (0 === l) if (i) l = i;else if ("mdat" !== u) return a.error("BoxParser", "Unlimited box size not supported for type: '" + u + "'"), r = new d.Box(u, l), {
+        h = e.readUint64(), l += 8;
+      } else if (0 === h) if (i) h = i;else if ("mdat" !== u) return a.error("BoxParser", "Unlimited box size not supported for type: '" + u + "'"), r = new d.Box(u, h), {
         code: d.OK,
         box: r,
         size: r.size
       };
 
-      return l < h ? (a.error("BoxParser", "Box of type " + u + " has an invalid size " + l + " (too small to be a box)"), {
+      return h < l ? (a.error("BoxParser", "Box of type " + u + " has an invalid size " + h + " (too small to be a box)"), {
         code: d.ERR_NOT_ENOUGH_DATA,
         type: u,
-        size: l,
-        hdr_size: h,
+        size: h,
+        hdr_size: l,
         start: o
-      }) : i && l > i ? (a.error("BoxParser", "Box of type '" + u + "' has a size " + l + " greater than its container size " + i), {
+      }) : i && h > i ? (a.error("BoxParser", "Box of type '" + u + "' has a size " + h + " greater than its container size " + i), {
         code: d.ERR_NOT_ENOUGH_DATA,
         type: u,
-        size: l,
-        hdr_size: h,
+        size: h,
+        hdr_size: l,
         start: o
-      }) : o + l > e.getEndPosition() ? (e.seek(o), a.info("BoxParser", "Not enough data in stream to parse the entire '" + u + "' box"), {
+      }) : o + h > e.getEndPosition() ? (e.seek(o), a.info("BoxParser", "Not enough data in stream to parse the entire '" + u + "' box"), {
         code: d.ERR_NOT_ENOUGH_DATA,
         type: u,
-        size: l,
-        hdr_size: h,
+        size: h,
+        hdr_size: l,
         start: o
       }) : t ? {
         code: d.OK,
         type: u,
-        size: l,
-        hdr_size: h,
+        size: h,
+        hdr_size: l,
         start: o
-      } : (d[u + "Box"] ? r = new d[u + "Box"](l) : "uuid" !== u ? (a.warn("BoxParser", "Unknown box type: '" + u + "'"), (r = new d.Box(u, l)).has_unparsed_data = !0) : d.UUIDBoxes[s] ? r = new d.UUIDBoxes[s](l) : (a.warn("BoxParser", "Unknown uuid type: '" + s + "'"), (r = new d.Box(u, l)).uuid = s, r.has_unparsed_data = !0), r.hdr_size = h, r.start = o, r.write === d.Box.prototype.write && "mdat" !== r.type && (a.info("BoxParser", "'" + f + "' box writing not yet implemented, keeping unparsed data in memory for later write"), r.parseDataAndRewind(e)), r.parse(e), (n = e.getPosition() - (r.start + r.size)) < 0 ? (a.warn("BoxParser", "Parsing of box '" + f + "' did not read the entire indicated box data size (missing " + -n + " bytes), seeking forward"), e.seek(r.start + r.size)) : n > 0 && (a.error("BoxParser", "Parsing of box '" + f + "' read " + n + " more bytes than the indicated box data size, seeking backwards"), e.seek(r.start + r.size)), {
+      } : (d[u + "Box"] ? r = new d[u + "Box"](h) : "uuid" !== u ? (a.warn("BoxParser", "Unknown box type: '" + u + "'"), (r = new d.Box(u, h)).has_unparsed_data = !0) : d.UUIDBoxes[s] ? r = new d.UUIDBoxes[s](h) : (a.warn("BoxParser", "Unknown uuid type: '" + s + "'"), (r = new d.Box(u, h)).uuid = s, r.has_unparsed_data = !0), r.hdr_size = l, r.start = o, r.write === d.Box.prototype.write && "mdat" !== r.type && (a.info("BoxParser", "'" + f + "' box writing not yet implemented, keeping unparsed data in memory for later write"), r.parseDataAndRewind(e)), r.parse(e), (n = e.getPosition() - (r.start + r.size)) < 0 ? (a.warn("BoxParser", "Parsing of box '" + f + "' did not read the entire indicated box data size (missing " + -n + " bytes), seeking forward"), e.seek(r.start + r.size)) : n > 0 && (a.error("BoxParser", "Parsing of box '" + f + "' read " + n + " more bytes than the indicated box data size, seeking backwards"), e.seek(r.start + r.size)), {
         code: d.OK,
         box: r,
         size: r.size
@@ -1210,8 +1210,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var o = e.readUint16();
 
         for (i = 0; i < o; i++) {
-          var h = {};
-          s.push(h), r = e.readUint16(), h.data = e.readUint8Array(r);
+          var l = {};
+          s.push(l), r = e.readUint16(), l.data = e.readUint8Array(r);
         }
       }
     }), d.createFullBoxCtor("iinf", function (e) {
@@ -1915,7 +1915,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           t = d.SampleEntry.prototype.getCodec.call(this);
       return 2 === this.av1C.seq_profile && 1 === this.av1C.high_bitdepth ? e = 1 === this.av1C.twelve_bit ? "12" : "10" : this.av1C.seq_profile <= 2 && (e = 1 === this.av1C.high_bitdepth ? "10" : "08"), t + "." + this.av1C.seq_profile + "." + this.av1C.seq_level_idx_0 + (this.av1C.seq_tier_0 ? "H" : "M") + "." + e;
     }, d.Box.prototype.writeHeader = function (e, t) {
-      this.size += 8, this.size > h && (this.size += 8), "uuid" === this.type && (this.size += 16), a.debug("BoxWriter", "Writing box " + this.type + " of size: " + this.size + " at position " + e.getPosition() + (t || "")), this.size > h ? e.writeUint32(1) : (this.sizePosition = e.getPosition(), e.writeUint32(this.size)), e.writeString(this.type, null, 4), "uuid" === this.type && e.writeUint8Array(this.uuid), this.size > h && e.writeUint64(this.size);
+      this.size += 8, this.size > l && (this.size += 8), "uuid" === this.type && (this.size += 16), a.debug("BoxWriter", "Writing box " + this.type + " of size: " + this.size + " at position " + e.getPosition() + (t || "")), this.size > l ? e.writeUint32(1) : (this.sizePosition = e.getPosition(), e.writeUint32(this.size)), e.writeString(this.type, null, 4), "uuid" === this.type && e.writeUint8Array(this.uuid), this.size > l && e.writeUint64(this.size);
     }, d.FullBox.prototype.writeHeader = function (e) {
       this.size += 4, d.Box.prototype.writeHeader.call(this, e, " v=" + this.version + " f=" + this.flags), e.writeUint8(this.version), e.writeUint24(this.flags);
     }, d.Box.prototype.write = function (e) {
@@ -2190,8 +2190,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       for (var a = this.parseSample(i), s = "", o = 0; o < a.length; o++) {
-        var h = a[o];
-        s += n(e) + " --\x3e " + n(t) + "\r\n", s += h.payl.text;
+        var l = a[o];
+        s += n(e) + " --\x3e " + n(t) + "\r\n", s += l.payl.text;
       }
 
       return s;
@@ -2224,7 +2224,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }, void 0 !== i && (i.XMLSubtitlein4Parser = p, i.Textin4Parser = c);
 
     var m = function m(e) {
-      this.stream = e || new l(), this.boxes = [], this.mdats = [], this.moofs = [], this.isProgressive = !1, this.moovStartFound = !1, this.onMoovStart = null, this.moovStartSent = !1, this.onReady = null, this.readySent = !1, this.onSegment = null, this.onSamples = null, this.onError = null, this.sampleListBuilt = !1, this.fragmentedTracks = [], this.extractedTracks = [], this.isFragmentationInitialized = !1, this.sampleProcessingStarted = !1, this.nextMoofNumber = 0, this.itemListBuilt = !1, this.onSidx = null, this.sidxSent = !1;
+      this.stream = e || new h(), this.boxes = [], this.mdats = [], this.moofs = [], this.isProgressive = !1, this.moovStartFound = !1, this.onMoovStart = null, this.moovStartSent = !1, this.onReady = null, this.readySent = !1, this.onSegment = null, this.onSamples = null, this.onError = null, this.sampleListBuilt = !1, this.fragmentedTracks = [], this.extractedTracks = [], this.isFragmentationInitialized = !1, this.sampleProcessingStarted = !1, this.nextMoofNumber = 0, this.itemListBuilt = !1, this.onSidx = null, this.sidxSent = !1;
     };
 
     m.prototype.setSegmentOptions = function (e, t, i) {
@@ -2388,26 +2388,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           n,
           s,
           o,
-          h = 0,
-          l = 0;
+          l = 0,
+          h = 0;
       if (0 === i.samples.length) return a.info("ISOFile", "No sample in track, cannot seek! Using time " + a.getDurationString(0, 1) + " and offset: 0"), {
         offset: 0,
         time: 0
       };
 
       for (r = 0; r < i.samples.length; r++) {
-        if (n = i.samples[r], 0 === r) l = 0, o = n.timescale;else if (n.cts > e * n.timescale) {
-          l = r - 1;
+        if (n = i.samples[r], 0 === r) h = 0, o = n.timescale;else if (n.cts > e * n.timescale) {
+          h = r - 1;
           break;
         }
-        t && n.is_sync && (h = r);
+        t && n.is_sync && (l = r);
       }
 
-      for (t && (l = h), e = i.samples[l].cts, i.nextSample = l; i.samples[l].alreadyRead === i.samples[l].size && i.samples[l + 1];) {
-        l++;
+      for (t && (h = l), e = i.samples[h].cts, i.nextSample = h; i.samples[h].alreadyRead === i.samples[h].size && i.samples[h + 1];) {
+        h++;
       }
 
-      return s = i.samples[l].offset + i.samples[l].alreadyRead, a.info("ISOFile", "Seeking to " + (t ? "RAP" : "") + " sample #" + i.nextSample + " on track " + i.tkhd.track_id + ", time " + a.getDurationString(e, o) + " and offset: " + s), {
+      return s = i.samples[h].offset + i.samples[h].alreadyRead, a.info("ISOFile", "Seeking to " + (t ? "RAP" : "") + " sample #" + i.nextSample + " on track " + i.tkhd.track_id + ", time " + a.getDurationString(e, o) + " and offset: " + s), {
         offset: s,
         time: e / o
       };
@@ -2476,8 +2476,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var s = "";
 
         for (var o in d.sampleEntryCodes) {
-          for (var h = d.sampleEntryCodes[o], l = 0; l < h.length; l++) {
-            if (h.indexOf(t.type) > -1) {
+          for (var l = d.sampleEntryCodes[o], h = 0; h < l.length; h++) {
+            if (l.indexOf(t.type) > -1) {
               s = o;
               break;
             }
@@ -2544,14 +2544,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         -1 != s && (t.mdia.minf.stbl.boxes[s] = null);
       }
     }, m.initSampleGroups = function (e, t, i, r, n) {
-      var a, s, o, h;
+      var a, s, o, l;
 
-      function l(e, t, i) {
+      function h(e, t, i) {
         this.grouping_type = e, this.grouping_type_parameter = t, this.sbgp = i, this.last_sample_in_run = -1, this.entry_index = -1;
       }
 
       for (t && (t.sample_groups_info = []), e.sample_groups_info || (e.sample_groups_info = []), s = 0; s < i.length; s++) {
-        for (h = i[s].grouping_type + "/" + i[s].grouping_type_parameter, o = new l(i[s].grouping_type, i[s].grouping_type_parameter, i[s]), t && (t.sample_groups_info[h] = o), e.sample_groups_info[h] || (e.sample_groups_info[h] = o), a = 0; a < r.length; a++) {
+        for (l = i[s].grouping_type + "/" + i[s].grouping_type_parameter, o = new h(i[s].grouping_type, i[s].grouping_type_parameter, i[s]), t && (t.sample_groups_info[l] = o), e.sample_groups_info[l] || (e.sample_groups_info[l] = o), a = 0; a < r.length; a++) {
           r[a].grouping_type === i[s].grouping_type && (o.description = r[a], o.description.used = !0);
         }
 
@@ -2562,10 +2562,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (t) {
         if (n) for (s = 0; s < n.length; s++) {
-          !n[s].used && n[s].version >= 2 && (h = n[s].grouping_type + "/0", (o = new l(n[s].grouping_type, 0)).is_fragment = !0, t.sample_groups_info[h] || (t.sample_groups_info[h] = o));
+          !n[s].used && n[s].version >= 2 && (l = n[s].grouping_type + "/0", (o = new h(n[s].grouping_type, 0)).is_fragment = !0, t.sample_groups_info[l] || (t.sample_groups_info[l] = o));
         }
       } else for (s = 0; s < r.length; s++) {
-        !r[s].used && r[s].version >= 2 && (h = r[s].grouping_type + "/0", o = new l(r[s].grouping_type, 0), e.sample_groups_info[h] || (e.sample_groups_info[h] = o));
+        !r[s].used && r[s].version >= 2 && (l = r[s].grouping_type + "/0", o = new h(r[s].grouping_type, 0), e.sample_groups_info[l] || (e.sample_groups_info[l] = o));
       }
     }, m.setSampleGroupProperties = function (e, t, i, r) {
       var n, a;
@@ -2583,31 +2583,31 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         t = this.moov.traks[e], this.buildTrakSampleLists(t);
       }
     }, m.prototype.buildTrakSampleLists = function (e) {
-      var t, i, r, n, a, s, o, h, l, u, d, f, p, c, _, y, g, v, S, b, E, A, w, x;
+      var t, i, r, n, a, s, o, l, h, u, d, f, p, c, _, y, g, v, b, S, E, A, P, w;
 
-      if (e.samples = [], e.samples_duration = 0, e.samples_size = 0, i = e.mdia.minf.stbl.stco || e.mdia.minf.stbl.co64, r = e.mdia.minf.stbl.stsc, n = e.mdia.minf.stbl.stsz || e.mdia.minf.stbl.stz2, a = e.mdia.minf.stbl.stts, s = e.mdia.minf.stbl.ctts, o = e.mdia.minf.stbl.stss, h = e.mdia.minf.stbl.stsd, l = e.mdia.minf.stbl.subs, f = e.mdia.minf.stbl.stdp, u = e.mdia.minf.stbl.sbgps, d = e.mdia.minf.stbl.sgpds, v = -1, S = -1, b = -1, E = -1, A = 0, w = 0, x = 0, m.initSampleGroups(e, null, u, d), void 0 !== n) {
+      if (e.samples = [], e.samples_duration = 0, e.samples_size = 0, i = e.mdia.minf.stbl.stco || e.mdia.minf.stbl.co64, r = e.mdia.minf.stbl.stsc, n = e.mdia.minf.stbl.stsz || e.mdia.minf.stbl.stz2, a = e.mdia.minf.stbl.stts, s = e.mdia.minf.stbl.ctts, o = e.mdia.minf.stbl.stss, l = e.mdia.minf.stbl.stsd, h = e.mdia.minf.stbl.subs, f = e.mdia.minf.stbl.stdp, u = e.mdia.minf.stbl.sbgps, d = e.mdia.minf.stbl.sgpds, v = -1, b = -1, S = -1, E = -1, A = 0, P = 0, w = 0, m.initSampleGroups(e, null, u, d), void 0 !== n) {
         for (t = 0; t < n.sample_sizes.length; t++) {
-          var P = {};
-          P.number = t, P.track_id = e.tkhd.track_id, P.timescale = e.mdia.mdhd.timescale, P.alreadyRead = 0, e.samples[t] = P, P.size = n.sample_sizes[t], e.samples_size += P.size, 0 === t ? (c = 1, p = 0, P.chunk_index = c, P.chunk_run_index = p, g = r.samples_per_chunk[p], y = 0, _ = p + 1 < r.first_chunk.length ? r.first_chunk[p + 1] - 1 : 1 / 0) : t < g ? (P.chunk_index = c, P.chunk_run_index = p) : (c++, P.chunk_index = c, y = 0, c <= _ || (_ = ++p + 1 < r.first_chunk.length ? r.first_chunk[p + 1] - 1 : 1 / 0), P.chunk_run_index = p, g += r.samples_per_chunk[p]), P.description_index = r.sample_description_index[P.chunk_run_index] - 1, P.description = h.entries[P.description_index], P.offset = i.chunk_offsets[P.chunk_index - 1] + y, y += P.size, t > v && (S++, v < 0 && (v = 0), v += a.sample_counts[S]), t > 0 ? (e.samples[t - 1].duration = a.sample_deltas[S], e.samples_duration += e.samples[t - 1].duration, P.dts = e.samples[t - 1].dts + e.samples[t - 1].duration) : P.dts = 0, s ? (t >= b && (E++, b < 0 && (b = 0), b += s.sample_counts[E]), P.cts = e.samples[t].dts + s.sample_offsets[E]) : P.cts = P.dts, o ? (t == o.sample_numbers[A] - 1 ? (P.is_sync = !0, A++) : (P.is_sync = !1, P.degradation_priority = 0), l && l.entries[w].sample_delta + x == t + 1 && (P.subsamples = l.entries[w].subsamples, x += l.entries[w].sample_delta, w++)) : P.is_sync = !0, m.process_sdtp(e.mdia.minf.stbl.sdtp, P, P.number), P.degradation_priority = f ? f.priority[t] : 0, l && l.entries[w].sample_delta + x == t && (P.subsamples = l.entries[w].subsamples, x += l.entries[w].sample_delta), (u.length > 0 || d.length > 0) && m.setSampleGroupProperties(e, P, t, e.sample_groups_info);
+          var x = {};
+          x.number = t, x.track_id = e.tkhd.track_id, x.timescale = e.mdia.mdhd.timescale, x.alreadyRead = 0, e.samples[t] = x, x.size = n.sample_sizes[t], e.samples_size += x.size, 0 === t ? (c = 1, p = 0, x.chunk_index = c, x.chunk_run_index = p, g = r.samples_per_chunk[p], y = 0, _ = p + 1 < r.first_chunk.length ? r.first_chunk[p + 1] - 1 : 1 / 0) : t < g ? (x.chunk_index = c, x.chunk_run_index = p) : (c++, x.chunk_index = c, y = 0, c <= _ || (_ = ++p + 1 < r.first_chunk.length ? r.first_chunk[p + 1] - 1 : 1 / 0), x.chunk_run_index = p, g += r.samples_per_chunk[p]), x.description_index = r.sample_description_index[x.chunk_run_index] - 1, x.description = l.entries[x.description_index], x.offset = i.chunk_offsets[x.chunk_index - 1] + y, y += x.size, t > v && (b++, v < 0 && (v = 0), v += a.sample_counts[b]), t > 0 ? (e.samples[t - 1].duration = a.sample_deltas[b], e.samples_duration += e.samples[t - 1].duration, x.dts = e.samples[t - 1].dts + e.samples[t - 1].duration) : x.dts = 0, s ? (t >= S && (E++, S < 0 && (S = 0), S += s.sample_counts[E]), x.cts = e.samples[t].dts + s.sample_offsets[E]) : x.cts = x.dts, o ? (t == o.sample_numbers[A] - 1 ? (x.is_sync = !0, A++) : (x.is_sync = !1, x.degradation_priority = 0), h && h.entries[P].sample_delta + w == t + 1 && (x.subsamples = h.entries[P].subsamples, w += h.entries[P].sample_delta, P++)) : x.is_sync = !0, m.process_sdtp(e.mdia.minf.stbl.sdtp, x, x.number), x.degradation_priority = f ? f.priority[t] : 0, h && h.entries[P].sample_delta + w == t && (x.subsamples = h.entries[P].subsamples, w += h.entries[P].sample_delta), (u.length > 0 || d.length > 0) && m.setSampleGroupProperties(e, x, t, e.sample_groups_info);
         }
 
         t > 0 && (e.samples[t - 1].duration = Math.max(e.mdia.mdhd.duration - e.samples[t - 1].dts, 0), e.samples_duration += e.samples[t - 1].duration);
       }
     }, m.prototype.updateSampleLists = function () {
-      var e, t, i, r, n, a, s, o, h, l, u, f, p, c, _;
+      var e, t, i, r, n, a, s, o, l, h, u, f, p, c, _;
 
       if (void 0 !== this.moov) for (; this.lastMoofIndex < this.moofs.length;) {
-        if (h = this.moofs[this.lastMoofIndex], this.lastMoofIndex++, "moof" == h.type) for (l = h, e = 0; e < l.trafs.length; e++) {
-          for (u = l.trafs[e], f = this.getTrackById(u.tfhd.track_id), p = this.getTrexById(u.tfhd.track_id), r = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DESC ? u.tfhd.default_sample_description_index : p ? p.default_sample_description_index : 1, n = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DUR ? u.tfhd.default_sample_duration : p ? p.default_sample_duration : 0, a = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_SIZE ? u.tfhd.default_sample_size : p ? p.default_sample_size : 0, s = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_FLAGS ? u.tfhd.default_sample_flags : p ? p.default_sample_flags : 0, u.sample_number = 0, u.sbgps.length > 0 && m.initSampleGroups(f, u, u.sbgps, f.mdia.minf.stbl.sgpds, u.sgpds), t = 0; t < u.truns.length; t++) {
+        if (l = this.moofs[this.lastMoofIndex], this.lastMoofIndex++, "moof" == l.type) for (h = l, e = 0; e < h.trafs.length; e++) {
+          for (u = h.trafs[e], f = this.getTrackById(u.tfhd.track_id), p = this.getTrexById(u.tfhd.track_id), r = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DESC ? u.tfhd.default_sample_description_index : p ? p.default_sample_description_index : 1, n = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DUR ? u.tfhd.default_sample_duration : p ? p.default_sample_duration : 0, a = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_SIZE ? u.tfhd.default_sample_size : p ? p.default_sample_size : 0, s = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_FLAGS ? u.tfhd.default_sample_flags : p ? p.default_sample_flags : 0, u.sample_number = 0, u.sbgps.length > 0 && m.initSampleGroups(f, u, u.sbgps, f.mdia.minf.stbl.sgpds, u.sgpds), t = 0; t < u.truns.length; t++) {
             var y = u.truns[t];
 
             for (i = 0; i < y.sample_count; i++) {
               (c = {}).moof_number = this.lastMoofIndex, c.number_in_traf = u.sample_number, u.sample_number++, c.number = f.samples.length, u.first_sample_index = f.samples.length, f.samples.push(c), c.track_id = f.tkhd.track_id, c.timescale = f.mdia.mdhd.timescale, c.description_index = r - 1, c.description = f.mdia.minf.stbl.stsd.entries[c.description_index], c.size = a, y.flags & d.TRUN_FLAGS_SIZE && (c.size = y.sample_size[i]), f.samples_size += c.size, c.duration = n, y.flags & d.TRUN_FLAGS_DURATION && (c.duration = y.sample_duration[i]), f.samples_duration += c.duration, f.first_traf_merged || i > 0 ? c.dts = f.samples[f.samples.length - 2].dts + f.samples[f.samples.length - 2].duration : (u.tfdt ? c.dts = u.tfdt.baseMediaDecodeTime : c.dts = 0, f.first_traf_merged = !0), c.cts = c.dts, y.flags & d.TRUN_FLAGS_CTS_OFFSET && (c.cts = c.dts + y.sample_composition_time_offset[i]), _ = s, y.flags & d.TRUN_FLAGS_FLAGS ? _ = y.sample_flags[i] : 0 === i && y.flags & d.TRUN_FLAGS_FIRST_FLAG && (_ = y.first_sample_flags), c.is_sync = !(_ >> 16 & 1), c.is_leading = _ >> 26 & 3, c.depends_on = _ >> 24 & 3, c.is_depended_on = _ >> 22 & 3, c.has_redundancy = _ >> 20 & 3, c.degradation_priority = 65535 & _;
               var g = !!(u.tfhd.flags & d.TFHD_FLAG_BASE_DATA_OFFSET),
                   v = !!(u.tfhd.flags & d.TFHD_FLAG_DEFAULT_BASE_IS_MOOF),
-                  S = !!(y.flags & d.TRUN_FLAGS_DATA_OFFSET),
-                  b = 0;
-              b = g ? u.tfhd.base_data_offset : v || 0 === t ? l.start : o, c.offset = 0 === t && 0 === i ? S ? b + y.data_offset : b : o, o = c.offset + c.size, (u.sbgps.length > 0 || u.sgpds.length > 0 || f.mdia.minf.stbl.sbgps.length > 0 || f.mdia.minf.stbl.sgpds.length > 0) && m.setSampleGroupProperties(f, c, c.number_in_traf, u.sample_groups_info);
+                  b = !!(y.flags & d.TRUN_FLAGS_DATA_OFFSET),
+                  S = 0;
+              S = g ? u.tfhd.base_data_offset : v || 0 === t ? h.start : o, c.offset = 0 === t && 0 === i ? b ? S + y.data_offset : S : o, o = c.offset + c.size, (u.sbgps.length > 0 || u.sgpds.length > 0 || f.mdia.minf.stbl.sbgps.length > 0 || f.mdia.minf.stbl.sgpds.length > 0) && m.setSampleGroupProperties(f, c, c.number_in_traf, u.sample_groups_info);
             }
           }
 
@@ -2709,11 +2709,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             });
           }
         }
-        if (n.iprp) for (var h = 0; h < n.iprp.ipmas.length; h++) {
-          var l = n.iprp.ipmas[h];
+        if (n.iprp) for (var l = 0; l < n.iprp.ipmas.length; l++) {
+          var h = n.iprp.ipmas[l];
 
-          for (e = 0; e < l.associations.length; e++) {
-            var u = l.associations[e];
+          for (e = 0; e < h.associations.length; e++) {
+            var u = h.associations[e];
 
             for (void 0 === (i = r[u.id]).properties && (i.properties = {}, i.properties.boxes = []), t = 0; t < u.props.length; t++) {
               var d = u.props[t];
@@ -2737,8 +2737,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         if (n.alreadyRead !== n.length) {
           var s = this.stream.findPosition(!0, n.offset + n.alreadyRead, !1);
           if (!(s > -1)) return null;
-          var h = (t = this.stream.buffers[s]).byteLength - (n.offset + n.alreadyRead - t.fileStart);
-          if (!(n.length - n.alreadyRead <= h)) return a.debug("ISOFile", "Getting item #" + e + " extent #" + r + " partial data (alreadyRead: " + n.alreadyRead + " offset: " + (n.offset + n.alreadyRead - t.fileStart) + " read size: " + h + " full extent size: " + n.length + " full item size: " + i.size + ")"), o.memcpy(i.data.buffer, i.alreadyRead, t, n.offset + n.alreadyRead - t.fileStart, h), n.alreadyRead += h, i.alreadyRead += h, t.usedBytes += h, this.stream.logBufferLevel(), null;
+          var l = (t = this.stream.buffers[s]).byteLength - (n.offset + n.alreadyRead - t.fileStart);
+          if (!(n.length - n.alreadyRead <= l)) return a.debug("ISOFile", "Getting item #" + e + " extent #" + r + " partial data (alreadyRead: " + n.alreadyRead + " offset: " + (n.offset + n.alreadyRead - t.fileStart) + " read size: " + l + " full extent size: " + n.length + " full item size: " + i.size + ")"), o.memcpy(i.data.buffer, i.alreadyRead, t, n.offset + n.alreadyRead - t.fileStart, l), n.alreadyRead += l, i.alreadyRead += l, t.usedBytes += l, this.stream.logBufferLevel(), null;
           a.debug("ISOFile", "Getting item #" + e + " extent #" + r + " data (alreadyRead: " + n.alreadyRead + " offset: " + (n.offset + n.alreadyRead - t.fileStart) + " read size: " + (n.length - n.alreadyRead) + " full extent size: " + n.length + " full item size: " + i.size + ")"), o.memcpy(i.data.buffer, i.alreadyRead, t, n.offset + n.alreadyRead - t.fileStart, n.length - n.alreadyRead), t.usedBytes += n.length - n.alreadyRead, this.stream.logBufferLevel(), i.alreadyRead += n.length - n.alreadyRead, n.alreadyRead = n.length;
         }
       }
@@ -2797,19 +2797,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       if (null == n) return n = r.samples[t], this.nextSeekPosition ? this.nextSeekPosition = Math.min(n.offset + n.alreadyRead, this.nextSeekPosition) : this.nextSeekPosition = r.samples[t].offset + n.alreadyRead, null;
       var s = i || new o();
       s.endianness = o.BIG_ENDIAN;
-      var h = m.createSingleSampleMoof(n);
-      h.write(s), h.trafs[0].truns[0].data_offset = h.size + 8, a.debug("MP4Box", "Adjusting data_offset with new value " + h.trafs[0].truns[0].data_offset), s.adjustUint32(h.trafs[0].truns[0].data_offset_position, h.trafs[0].truns[0].data_offset);
-      var l = new d.mdatBox();
-      return l.data = n.data, l.write(s), s;
+      var l = m.createSingleSampleMoof(n);
+      l.write(s), l.trafs[0].truns[0].data_offset = l.size + 8, a.debug("MP4Box", "Adjusting data_offset with new value " + l.trafs[0].truns[0].data_offset), s.adjustUint32(l.trafs[0].truns[0].data_offset_position, l.trafs[0].truns[0].data_offset);
+      var h = new d.mdatBox();
+      return h.data = n.data, h.write(s), s;
     }, m.writeInitializationSegment = function (e, t, i, r) {
       var n;
       a.debug("ISOFile", "Generating initialization segment");
       var s = new o();
       s.endianness = o.BIG_ENDIAN, e.write(s);
-      var h = t.add("mvex");
+      var l = t.add("mvex");
 
-      for (i && h.add("mehd").set("fragment_duration", i), n = 0; n < t.traks.length; n++) {
-        h.add("trex").set("track_id", t.traks[n].tkhd.track_id).set("default_sample_description_index", 1).set("default_sample_duration", r).set("default_sample_size", 0).set("default_sample_flags", 65536);
+      for (i && l.add("mehd").set("fragment_duration", i), n = 0; n < t.traks.length; n++) {
+        l.add("trex").set("track_id", t.traks[n].tkhd.track_id).set("default_sample_description_index", 1).set("default_sample_duration", r).set("default_sample_size", 0).set("default_sample_flags", 65536);
       }
 
       return t.write(s), s.buffer;
@@ -2829,7 +2829,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return t;
     }, d.Box.prototype.printHeader = function (e) {
-      this.size += 8, this.size > h && (this.size += 8), "uuid" === this.type && (this.size += 16), e.log(e.indent + "size:" + this.size), e.log(e.indent + "type:" + this.type);
+      this.size += 8, this.size > l && (this.size += 8), "uuid" === this.type && (this.size += 16), e.log(e.indent + "size:" + this.size), e.log(e.indent + "type:" + this.type);
     }, d.FullBox.prototype.printHeader = function (e) {
       this.size += 4, d.Box.prototype.printHeader.call(this, e), e.log(e.indent + "version:" + this.version), e.log(e.indent + "flags:" + this.flags);
     }, d.Box.prototype.print = function (e) {
@@ -3037,12 +3037,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             r = null;
           }
 
-          var h = i;
-          if (null == h || h.length < 1) return t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].stop(), 1;
-          var l = h.buffer;
+          var l = i;
+          if (null == l || l.length < 1) return t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].stop(), 1;
+          var h = l.buffer;
 
           try {
-            t.audioCtx.decodeAudioData(l, function (i) {
+            t.audioCtx.decodeAudioData(h, function (i) {
               t.sourceList[e].state, t.sourceList[e].buffer = i, t.sourceList[e].connect(t.gainNode), t.sourceList[e].start(), t.sourceList[e].startState = !0, t.sourceList[e].state;
             }, function (e) {
               e.err;
@@ -3143,14 +3143,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var s = i.length / 2;
             a = new Float32Array(s);
 
-            for (var o = 0, h = 0; h < i.length; h += 2) {
-              a[o] = i[h], o++;
+            for (var o = 0, l = 0; l < i.length; l += 2) {
+              a[o] = i[l], o++;
             }
           } else a = new Float32Array(i);
 
           if (null === this._pcm_array_buf) this._pcm_array_buf = new Float32Array(a);else {
-            var l = new Float32Array(this._pcm_array_buf.length + a.length);
-            l.set(this._pcm_array_buf, 0), l.set(a, this._pcm_array_buf.length), this._pcm_array_buf = l;
+            var h = new Float32Array(this._pcm_array_buf.length + a.length);
+            h.set(this._pcm_array_buf, 0), h.set(a, this._pcm_array_buf.length), this._pcm_array_buf = h;
           }
           this._pcm_array_buf.length;
         }
@@ -3223,7 +3223,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       frameDataAlignCrop: function frameDataAlignCrop(e, t, i, r, n, a, s, o) {
         if (0 == e - r) return [a, s, o];
 
-        for (var h = r * n, l = h / 4, u = new Uint8Array(h), d = new Uint8Array(l), f = new Uint8Array(l), p = r, c = r / 2, m = 0; m < n; m++) {
+        for (var l = r * n, h = l / 4, u = new Uint8Array(l), d = new Uint8Array(h), f = new Uint8Array(h), p = r, c = r / 2, m = 0; m < n; m++) {
           u.set(a.subarray(m * e, p), m * n);
         }
 
@@ -3278,7 +3278,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         o = e("../consts");
     e("../version");
 
-    var h = function () {
+    var l = function () {
       function e(t) {
         !function (e, t) {
           if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
@@ -3305,7 +3305,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         this.totalLen = 0, this.pushPkg = 0, this.onProbeFinish = null, this.onLoadCache = null, this.onLoadCacheFinshed = null, this.onReadyShowDone = null, this.onNetworkError = null;
       }
 
-      var t, i, h;
+      var t, i, l;
       return t = e, (i = [{
         key: "_workerFetch_onmessage",
         value: function value(e, t) {
@@ -3338,10 +3338,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               a = t / this.config.width > i / this.config.height,
               s = (n / t).toFixed(2),
               o = (this.config.height / i).toFixed(2),
-              h = a ? s : o,
-              l = this.config.fixed,
-              u = l ? n : parseInt(t * h),
-              d = l ? this.config.height : parseInt(i * h);
+              l = a ? s : o,
+              h = this.config.fixed,
+              u = h ? n : parseInt(t * l),
+              d = h ? this.config.height : parseInt(i * l);
 
           if (this.CanvasObj.offsetWidth != u || this.CanvasObj.offsetHeight != d) {
             var f = parseInt((this.canvasBox.offsetHeight - d) / 2),
@@ -3358,22 +3358,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }, {
         key: "_callbackProbe",
-        value: function value(e, t, i, r, n, a, h, l, u) {
+        value: function value(e, t, i, r, n, a, l, h, u) {
           for (var d = Module.HEAPU8.subarray(u, u + 10), f = 0; f < d.length; f++) {
             String.fromCharCode(d[f]);
           }
 
           var p = r;
-          r > 100 && (p = o.DEFAULT_FPS, this.mediaInfo.noFPS = !0), this.vCodecID = l, this.config.fps = p, this.mediaInfo.fps = p, this.mediaInfo.size.width = t, this.mediaInfo.size.height = i, this.frameTime = Math.floor(1e3 / (this.mediaInfo.fps + 2)), this.CanvasObj.width == t && this.CanvasObj.height == i || (this.CanvasObj.width = t, this.CanvasObj.height = i, this.isCheckDisplay) || this._checkDisplaySize(t, t, i), n >= 0 && !1 === this.mediaInfo.noFPS ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.config.sampleRate = a, this.mediaInfo.sampleRate = a, this.audioWAudio = s({
+          r > 100 && (p = o.DEFAULT_FPS, this.mediaInfo.noFPS = !0), this.vCodecID = h, this.config.fps = p, this.mediaInfo.fps = p, this.mediaInfo.size.width = t, this.mediaInfo.size.height = i, this.frameTime = Math.floor(1e3 / (this.mediaInfo.fps + 2)), this.CanvasObj.width == t && this.CanvasObj.height == i || (this.CanvasObj.width = t, this.CanvasObj.height = i, this.isCheckDisplay) || this._checkDisplaySize(t, t, i), n >= 0 && !1 === this.mediaInfo.noFPS ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.config.sampleRate = a, this.mediaInfo.sampleRate = a, this.audioWAudio = s({
             sampleRate: this.mediaInfo.sampleRate,
             appendType: o.APPEND_TYPE_FRAME
           }), this.audioWAudio.isLIVE = !0) : this.mediaInfo.audioNone = !0, this.onProbeFinish && this.onProbeFinish();
         }
       }, {
         key: "_callbackYUV",
-        value: function value(e, t, i, r, n, a, s, o, h) {
-          var l = Module.HEAPU8.subarray(e, e + r * o),
-              u = new Uint8Array(l),
+        value: function value(e, t, i, r, n, a, s, o, l) {
+          var h = Module.HEAPU8.subarray(e, e + r * o),
+              u = new Uint8Array(h),
               d = Module.HEAPU8.subarray(t, t + n * o / 2),
               f = new Uint8Array(d),
               p = Module.HEAPU8.subarray(i, i + a * o / 2),
@@ -3383,9 +3383,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             bufV: new Uint8Array(p),
             line_y: r,
             h: o,
-            pts: h
+            pts: l
           };
-          this.YuvBuf.push(c), this.checkCacheState(), Module._free(l), l = null, Module._free(d), d = null, Module._free(p), p = null, !1 === this.readyShowDone && (this.playYUV(), this.readyShowDone = !0, this.onReadyShowDone && this.onReadyShowDone(), this.audioWAudio || this.play());
+          this.YuvBuf.push(c), this.checkCacheState(), Module._free(h), h = null, Module._free(d), d = null, Module._free(p), p = null, !1 === this.readyShowDone && (this.playYUV(), this.readyShowDone = !0, this.onReadyShowDone && this.onReadyShowDone(), this.audioWAudio || this.play());
         }
       }, {
         key: "_callbackNALU",
@@ -3396,9 +3396,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           var o = Module.HEAPU8.subarray(e, e + t),
-              h = new Uint8Array(o);
+              l = new Uint8Array(o);
           this.NaluBuf.push({
-            bufData: h,
+            bufData: l,
             len: t,
             isKey: i,
             w: r,
@@ -3419,13 +3419,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var s = new Uint8Array(7 + i),
                 o = Module.HEAPU8.subarray(e, e + 7);
             s.set(o, 0);
-            var h = Module.HEAPU8.subarray(t, t + i);
-            s.set(h, 7);
-            var l = {
+            var l = Module.HEAPU8.subarray(t, t + i);
+            s.set(l, 7);
+            var h = {
               pts: a,
               data: s
             };
-            this.audioWAudio.addSample(l), this.checkCacheState();
+            this.audioWAudio.addSample(h), this.checkCacheState();
           }
         }
       }, {
@@ -3581,10 +3581,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, this.workerFetch, this.AVSniffPtr = Module.cwrap("AVSniffHttpFlvInit", "number", ["string", "string"])("base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1", "0.0.0"), this.AVSniffPtr;
           var s = Module.addFunction(this._callbackProbe.bind(this)),
               o = Module.addFunction(this._callbackYUV.bind(this)),
-              h = Module.addFunction(this._callbackNALU.bind(this)),
-              l = Module.addFunction(this._callbackPCM.bind(this)),
+              l = Module.addFunction(this._callbackNALU.bind(this)),
+              h = Module.addFunction(this._callbackPCM.bind(this)),
               u = Module.addFunction(this._callbackAAC.bind(this));
-          Module.cwrap("initializeSniffHttpFlvModule", "number", ["number", "number", "number", "number", "number", "number"])(this.AVSniffPtr, s, o, h, l, u), this.AVGLObj = n.setupCanvas(this.CanvasObj, {
+          Module.cwrap("initializeSniffHttpFlvModule", "number", ["number", "number", "number", "number", "number", "number"])(this.AVSniffPtr, s, o, l, h, u), this.AVGLObj = n.setupCanvas(this.CanvasObj, {
             preserveDrawingBuffer: !1
           }), this.workerFetch.postMessage({
             cmd: "start",
@@ -3592,10 +3592,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             msg: "start"
           }), this._decode();
         }
-      }]) && r(t.prototype, i), h && r(t, h), e;
+      }]) && r(t.prototype, i), l && r(t, l), e;
     }();
 
-    i.CHttpLiveCore = h;
+    i.CHttpLiveCore = l;
   }, {
     "../consts": 2,
     "../demuxer/buffer": 13,
@@ -3625,12 +3625,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     var a = e("../demuxer/bufferFrame"),
         s = e("../demuxer/buffer"),
         o = (e("./cache"), e("./cacheYuv"), e("../render-engine/webgl-420p")),
-        h = e("./av-common"),
-        l = (e("./audio-native-core"), e("./audio-core")),
+        l = e("./av-common"),
+        h = (e("./audio-native-core"), e("./audio-core")),
         u = e("../consts"),
         d = e("../version"),
-        f = function e(t, i, r, a, s, o, h, l, u) {
-      n(this, e), this.pts = u, this.data_y = t, this.data_u = i, this.data_v = r, this.line1 = a, this.line2 = s, this.line3 = o, this.width = h, this.height = l, this.byteAlignIncr = this.line1 - this.width;
+        f = function e(t, i, r, a, s, o, l, h, u) {
+      n(this, e), this.pts = u, this.data_y = t, this.data_u = i, this.data_v = r, this.line1 = a, this.line2 = s, this.line3 = o, this.width = l, this.height = h, this.byteAlignIncr = this.line1 - this.width;
     },
         p = function () {
       function e(t) {
@@ -3650,17 +3650,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             r = Module.addFunction(this._frameCallback.bind(this)),
             a = Module.addFunction(this._naluCallback.bind(this)),
             o = Module.addFunction(this._samplesCallback.bind(this)),
-            h = Module.addFunction(this._aacFrameCallback.bind(this)),
-            l = this.config.playMode === u.PLAYER_MODE_NOTIME_LIVE ? 1 : 0;
+            l = Module.addFunction(this._aacFrameCallback.bind(this)),
+            h = this.config.playMode === u.PLAYER_MODE_NOTIME_LIVE ? 1 : 0;
         this.config.ignoreAudio, this.config.playMode;
-        Module.cwrap("initializeSniffStreamModuleWithAOpt", "number", ["number", "number", "number", "number", "number"])(this.corePtr, i, r, a, o, h, this.config.ignoreAudio, l);
+        Module.cwrap("initializeSniffStreamModuleWithAOpt", "number", ["number", "number", "number", "number", "number"])(this.corePtr, i, r, a, o, l, this.config.ignoreAudio, h);
       }
 
       var t, i, p;
       return t = e, (i = [{
         key: "release",
         value: function value() {
-          null !== this.playFrameInterval && (window.clearInterval(this.playFrameInterval), this.playFrameInterval = null), null !== this.avFeedVideoInterval && (window.clearInterval(this.avFeedVideoInterval), this.avFeedVideoInterval = null), null !== this.avFeedAudioInterval && (window.clearInterval(this.avFeedAudioInterval), this.avFeedAudioInterval = null), null !== this.avRecvInterval && (window.clearInterval(this.avRecvInterval), this.avRecvInterval = null), this._clearDecInterval();
+          void 0 !== this.canvas && null !== this.canvas && (this.canvas.remove(), this.canvas = null), null !== this.playFrameInterval && (window.clearInterval(this.playFrameInterval), this.playFrameInterval = null), null !== this.avFeedVideoInterval && (window.clearInterval(this.avFeedVideoInterval), this.avFeedVideoInterval = null), null !== this.avFeedAudioInterval && (window.clearInterval(this.avFeedAudioInterval), this.avFeedAudioInterval = null), null !== this.avRecvInterval && (window.clearInterval(this.avRecvInterval), this.avRecvInterval = null), this._clearDecInterval();
           var e = Module.cwrap("releaseSniffStream", "number", ["number"])(this.corePtr);
           return this.audioWAudio && this.audioWAudio.stop(), this.audioWAudio = null, this.bufRecvStat = !1, this.bufObject.cleanPipeline(), this.playVPipe.length = 0, e;
         }
@@ -3717,15 +3717,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 t.pts, o.renderFrame(e.yuv, t.data_y, t.data_u, t.data_v, t.line1, t.height);
               }
             }, 1e3 * this.frameDur) : this.playFrameInterval = window.setInterval(function () {
-              if (i = h.GetMsTime(), e._videoQueue.length > 0 && i - t >= e.frameTime - r) {
+              if (i = l.GetMsTime(), e._videoQueue.length > 0 && i - t >= e.frameTime - r) {
                 var n = e._videoQueue.shift(),
                     a = 0;
 
-                if (e.isNewSeek || null === e.audioWAudio || void 0 === e.audioWAudio || (a = 1e3 * (n.pts - e.audioWAudio.getAlignVPTS()), e.playPTS = Math.max(e.audioWAudio.getAlignVPTS(), e.playPTS)), t = i, h.GetMsTime(), e.playPTS = Math.max(n.pts, e.playPTS), e.isNewSeek && e.seekTarget - e.frameDur > n.pts) return void (r = e.frameTime);
+                if (e.isNewSeek || null === e.audioWAudio || void 0 === e.audioWAudio || (a = 1e3 * (n.pts - e.audioWAudio.getAlignVPTS()), e.playPTS = Math.max(e.audioWAudio.getAlignVPTS(), e.playPTS)), t = i, l.GetMsTime(), e.playPTS = Math.max(n.pts, e.playPTS), e.isNewSeek && e.seekTarget - e.frameDur > n.pts) return void (r = e.frameTime);
 
                 if (e.isNewSeek && (e.audioWAudio && e.audioWAudio.setVoice(e.audioVoice), e.audioWAudio && e.audioWAudio.play(), r = 0, e.isNewSeek = !1, e.seekTarget = 0), e.showScreen ? e.onRender && e.onRender(n.line1, n.height, n.data_y, n.data_u, n.data_v) : (n.pts, o.renderFrame(e.yuv, n.data_y, n.data_u, n.data_v, n.line1, n.height)), e.onPlayingTime && e.onPlayingTime(n.pts), !e.isNewSeek && e.audioWAudio && (a < 0 && -1 * a <= e.frameTime || a >= 0)) {
                   if (e.config.playMode === u.PLAYER_MODE_VOD) if (n.pts >= e.duration) e.onLoadCacheFinshed && e.onLoadCacheFinshed(), e.onPlayingFinish && e.onPlayingFinish(), e._clearDecInterval(), e.pause();else if (e._checkPlayFinished()) return;
-                  r = h.GetMsTime() - i;
+                  r = l.GetMsTime() - i;
                 } else !e.isNewSeek && e.audioWAudio && (a < 0 && e.frameTime, r = e.frameTime);
               }
 
@@ -3772,10 +3772,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               a = t / this.config.width > i / this.config.height,
               s = (n / t).toFixed(2),
               o = (this.config.height / i).toFixed(2),
-              h = a ? s : o,
-              l = this.config.fixed,
-              u = l ? n : parseInt(t * h),
-              d = l ? this.config.height : parseInt(i * h);
+              l = a ? s : o,
+              h = this.config.fixed,
+              u = h ? n : parseInt(t * l),
+              d = h ? this.config.height : parseInt(i * l);
 
           if (this.canvas.offsetWidth != u || this.canvas.offsetHeight != d) {
             var f = parseInt((this.canvasBox.offsetHeight - d) / 2),
@@ -3890,16 +3890,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
               t.avSeekVState && (t.getMaxPTS(), t.duration, t.config.playMode === u.PLAYER_MODE_VOD && (t._afterAvFeedSeekToStartWithUnFinBuffer(e), t.avSeekVState = !1));
             }, 5), this.audioWAudio && this.config.ignoreAudio < 1) {
-              var h = parseInt(e, 10);
+              var l = parseInt(e, 10);
               this.avFeedAudioInterval = window.setInterval(function () {
                 var e = t.bufObject.audioBuffer.length;
 
-                if (e - 1 > h || t.duration - t.getMaxPTS() < t.frameDur && e - 1 == h) {
-                  for (var i = t.bufObject.audioBuffer[h].length, r = 0; r < i; r++) {
-                    t.bufObject.audioBuffer[h][r].pts < t.seekTarget || t.audioWAudio.addSample(new a.BufferFrame(t.bufObject.audioBuffer[h][r].pts, t.bufObject.audioBuffer[h][r].isKey, t.bufObject.audioBuffer[h][r].data, !1));
+                if (e - 1 > l || t.duration - t.getMaxPTS() < t.frameDur && e - 1 == l) {
+                  for (var i = t.bufObject.audioBuffer[l].length, r = 0; r < i; r++) {
+                    t.bufObject.audioBuffer[l][r].pts < t.seekTarget || t.audioWAudio.addSample(new a.BufferFrame(t.bufObject.audioBuffer[l][r].pts, t.bufObject.audioBuffer[l][r].isKey, t.bufObject.audioBuffer[l][r].data, !1));
                   }
 
-                  h += 1, t.config.playMode === u.PLAYER_MODE_VOD && t.duration - t.getMaxPTS() < t.frameDur && t.audioWAudio.sampleQueue.length > 0 && t.audioWAudio.sampleQueue[t.audioWAudio.sampleQueue.length - 1].pts >= t.bufLastADTS && (window.clearInterval(t.avFeedAudioInterval), t.avFeedAudioInterval = null);
+                  l += 1, t.config.playMode === u.PLAYER_MODE_VOD && t.duration - t.getMaxPTS() < t.frameDur && t.audioWAudio.sampleQueue.length > 0 && t.audioWAudio.sampleQueue[t.audioWAudio.sampleQueue.length - 1].pts >= t.bufLastADTS && (window.clearInterval(t.avFeedAudioInterval), t.avFeedAudioInterval = null);
                 } else t.config.playMode === u.PLAYER_MODE_VOD && t.audioWAudio.sampleQueue.length > 0 && t.audioWAudio.sampleQueue[t.audioWAudio.sampleQueue.length - 1].pts >= t.duration && (window.clearInterval(t.avFeedAudioInterval), t.avFeedAudioInterval = null);
               }, 5);
             }
@@ -3907,15 +3907,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }, {
         key: "_probeFinCallback",
-        value: function value(e, t, i, r, n, a, s, o, h) {
+        value: function value(e, t, i, r, n, a, s, o, l) {
           var d = this;
           this._createYUVCanvas(), u.V_CODEC_NAME_HEVC, this.config.fps = 1 * r, this.frameTime = 1e3 / this.config.fps, this.width = t, this.height = i, this.frameDur = 1 / this.config.fps, this.duration = e - this.frameDur, this.vCodecID = o, this.config.sampleRate = a, this.channels = s, this.audioIdx = n, this.duration < 0 && (this.config.playMode = u.PLAYER_MODE_NOTIME_LIVE, this.frameTime, this.frameDur);
 
-          for (var f = Module.HEAPU8.subarray(h, h + 10), p = 0; p < f.length; p++) {
+          for (var f = Module.HEAPU8.subarray(l, l + 10), p = 0; p < f.length; p++) {
             String.fromCharCode(f[p]);
           }
 
-          u.V_CODEC_NAME_HEVC === this.vCodecID && (n >= 0 && this.config.ignoreAudio < 1 ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.audioWAudio = l({
+          u.V_CODEC_NAME_HEVC === this.vCodecID && (n >= 0 && this.config.ignoreAudio < 1 ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.audioWAudio = h({
             sampleRate: a,
             appendType: u.APPEND_TYPE_FRAME
           }), this.audioWAudio.setDurationMs(1e3 * e), this.onLoadCache && this.audioWAudio.setOnLoadCache(function () {
@@ -3936,10 +3936,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         key: "_naluCallback",
         value: function value(e, t, i, r, n, a, s) {
           var o = this._ptsFixed2(a),
-              h = Module.HEAPU8.subarray(e, e + t),
-              l = new Uint8Array(h);
+              l = Module.HEAPU8.subarray(e, e + t),
+              h = new Uint8Array(l);
 
-          this.bufObject.appendFrameWithDts(o, s, l, !0, i), this.bufLastVDTS = Math.max(s, this.bufLastVDTS), this.vCachePTS = Math.max(o, this.vCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
+          this.bufObject.appendFrameWithDts(o, s, h, !0, i), this.bufLastVDTS = Math.max(s, this.bufLastVDTS), this.vCachePTS = Math.max(o, this.vCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
         }
       }, {
         key: "_samplesCallback",
@@ -3953,8 +3953,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var s = new Uint8Array(7 + i),
                 o = Module.HEAPU8.subarray(e, e + 7);
             s.set(o, 0);
-            var h = Module.HEAPU8.subarray(t, t + i);
-            s.set(h, 7), this.bufObject.appendFrame(a, s, !1, !0), this.bufLastADTS = Math.max(a, this.bufLastADTS), this.aCachePTS = Math.max(a, this.aCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
+            var l = Module.HEAPU8.subarray(t, t + i);
+            s.set(l, 7), this.bufObject.appendFrame(a, s, !1, !0), this.bufLastADTS = Math.max(a, this.bufLastADTS), this.aCachePTS = Math.max(a, this.aCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
           }
         }
       }, {
@@ -3976,28 +3976,28 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }, {
         key: "_frameCallback",
-        value: function value(e, t, i, r, n, a, s, h, l, u) {
-          if (this._videoQueue.length, !(!1 === this.openFrameCall || u !== this.frameCallTag || l > this.yuvMaxTime + this.frameDur || this.isNewSeek && this.seekTarget - l > 3 * this.frameDur)) {
+        value: function value(e, t, i, r, n, a, s, l, h, u) {
+          if (this._videoQueue.length, !(!1 === this.openFrameCall || u !== this.frameCallTag || h > this.yuvMaxTime + this.frameDur || this.isNewSeek && this.seekTarget - h > 3 * this.frameDur)) {
             var d = this._videoQueue.length;
 
-            if (this.canvas.width == r && this.canvas.height == h || (this.canvas.width = r, this.canvas.height = h, this.isCheckDisplay) || this._checkDisplaySize(s, r, h), !(this.playPTS > l)) {
-              var p = Module.HEAPU8.subarray(e, e + r * h),
-                  c = Module.HEAPU8.subarray(t, t + n * h / 2),
-                  m = Module.HEAPU8.subarray(i, i + a * h / 2),
+            if (this.canvas.width == r && this.canvas.height == l || (this.canvas.width = r, this.canvas.height = l, this.isCheckDisplay) || this._checkDisplaySize(s, r, l), !(this.playPTS > h)) {
+              var p = Module.HEAPU8.subarray(e, e + r * l),
+                  c = Module.HEAPU8.subarray(t, t + n * l / 2),
+                  m = Module.HEAPU8.subarray(i, i + a * l / 2),
                   _ = new Uint8Array(p),
                   y = new Uint8Array(c),
                   g = new Uint8Array(m);
 
-              this.config.readyShow && (o.renderFrame(this.yuv, _, y, g, r, h), this.config.readyShow = !1, this.onReadyShowDone && this.onReadyShowDone());
-              var v = new f(_, y, g, r, n, a, s, h, l);
-              if (d <= 0 || l > this._videoQueue[d - 1].pts) this._videoQueue.push(v);else if (l < this._videoQueue[0].pts) this._videoQueue.splice(0, 0, v);else if (l < this._videoQueue[d - 1].pts) for (var S = 0; S < d; S++) {
-                if (l > this._videoQueue[S].pts && S + 1 < d && l < this._videoQueue[S + 1].pts) {
-                  this._videoQueue.splice(S + 1, 0, v);
+              this.config.readyShow && (o.renderFrame(this.yuv, _, y, g, r, l), this.config.readyShow = !1, this.onReadyShowDone && this.onReadyShowDone());
+              var v = new f(_, y, g, r, n, a, s, l, h);
+              if (d <= 0 || h > this._videoQueue[d - 1].pts) this._videoQueue.push(v);else if (h < this._videoQueue[0].pts) this._videoQueue.splice(0, 0, v);else if (h < this._videoQueue[d - 1].pts) for (var b = 0; b < d; b++) {
+                if (h > this._videoQueue[b].pts && b + 1 < d && h < this._videoQueue[b + 1].pts) {
+                  this._videoQueue.splice(b + 1, 0, v);
 
                   break;
                 }
               }
-              this._videoQueue, this.vCachePTS = Math.max(l, this.vCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
+              this._videoQueue, this.vCachePTS = Math.max(h, this.vCachePTS), this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
             }
           }
         }
@@ -4228,24 +4228,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         a = e("./audio-core"),
         s = e("./cache"),
         o = e("./cacheYuv"),
-        h = e("../render-engine/webgl-420p"),
-        l = e("../consts"),
+        l = e("../render-engine/webgl-420p"),
+        h = e("../consts"),
         u = e("../version");
 
     t.exports = function (e) {
       var t = {
         config: {
-          width: e.width || l.DEFAULT_WIDTH,
-          height: e.height || l.DEFAULT_HEIGHT,
-          fps: e.fps || l.DEFAULT_FPS,
-          fixed: e.fixed || l.DEFAULT_FIXED,
-          sampleRate: e.sampleRate || l.DEFAULT_SAMPLERATE,
-          appendHevcType: e.appendHevcType || l.APPEND_TYPE_STREAM,
-          frameDurMs: e.frameDur || l.DEFAULT_FRAME_DUR,
-          playerId: e.playerId || l.DEFAILT_WEBGL_PLAY_ID,
+          width: e.width || h.DEFAULT_WIDTH,
+          height: e.height || h.DEFAULT_HEIGHT,
+          fps: e.fps || h.DEFAULT_FPS,
+          fixed: e.fixed || h.DEFAULT_FIXED,
+          sampleRate: e.sampleRate || h.DEFAULT_SAMPLERATE,
+          appendHevcType: e.appendHevcType || h.APPEND_TYPE_STREAM,
+          frameDurMs: e.frameDur || h.DEFAULT_FRAME_DUR,
+          playerId: e.playerId || h.DEFAILT_WEBGL_PLAY_ID,
           audioNone: e.audioNone || !1,
           token: e.token || null,
-          videoCodec: e.videoCodec || l.CODEC_H265
+          videoCodec: e.videoCodec || h.CODEC_H265
         },
         vcodecerPtr: null,
         frameList: [],
@@ -4263,7 +4263,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         cacheLoop: null,
         playParams: {
           seekPos: -1,
-          mode: l.PLAYER_MODE_VOD,
+          mode: h.PLAYER_MODE_VOD,
           accurateSeek: !0,
           seekEvent: !1,
           realPlay: !0
@@ -4275,7 +4275,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         preCostTime: 0,
         realVolume: 1,
         isPlaying: !1,
-        isCaching: l.CACHE_NO_LOADCACHE,
+        isCaching: h.CACHE_NO_LOADCACHE,
         isNewSeek: !1,
         flushDecoder: 0,
         isCheckDisplay: !1,
@@ -4295,7 +4295,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           null != t && (t.showScreen = e, t.canvas && (e ? t.canvas.setAttribute("hidden", !0) : t.canvas.removeAttribute("hidden")));
         },
         setSize: function setSize(e, i) {
-          t.config.width = e || l.DEFAULT_WIDTH, t.config.height = i || l.DEFAULT_HEIGHT;
+          t.config.width = e || h.DEFAULT_WIDTH, t.config.height = i || h.DEFAULT_HEIGHT;
         },
         setFrameRate: function setFrameRate() {
           var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 25;
@@ -4312,14 +4312,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           t.realVolume = e, 0 == t.config.audioNone && t.audio.setVoice(t.realVolume);
         },
         isPlayingState: function isPlayingState() {
-          return t.isPlaying || t.isCaching === l.CACHE_WITH_PLAY_SIGN;
+          return t.isPlaying || t.isCaching === h.CACHE_WITH_PLAY_SIGN;
         },
         appendAACFrame: function appendAACFrame(e) {
           t.audio.addSample(e), t.aCachePTS = Math.max(e.pts, t.aCachePTS);
         },
         appendHevcFrame: function appendHevcFrame(e) {
           var i;
-          t.config.appendHevcType == l.APPEND_TYPE_STREAM ? t.stream = new Uint8Array((i = r(t.stream)).concat.apply(i, r(e))) : t.config.appendHevcType == l.APPEND_TYPE_FRAME && (t.frameList.push(e), t.vCachePTS = Math.max(e.pts, t.vCachePTS));
+          t.config.appendHevcType == h.APPEND_TYPE_STREAM ? t.stream = new Uint8Array((i = r(t.stream)).concat.apply(i, r(e))) : t.config.appendHevcType == h.APPEND_TYPE_FRAME && (t.frameList.push(e), t.vCachePTS = Math.max(e.pts, t.vCachePTS));
         },
         getCachePTS: function getCachePTS() {
           return Math.max(t.vCachePTS, t.aCachePTS);
@@ -4331,17 +4331,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           0 == t.config.audioNone && t.audio.cleanQueue();
         },
         cleanVideoQueue: function cleanVideoQueue() {
-          t.config.appendHevcType == l.APPEND_TYPE_STREAM ? t.stream = new Uint8Array() : t.config.appendHevcType == l.APPEND_TYPE_FRAME && (t.frameList = [], t.frameList.length = 0);
+          t.config.appendHevcType == h.APPEND_TYPE_STREAM ? t.stream = new Uint8Array() : t.config.appendHevcType == h.APPEND_TYPE_FRAME && (t.frameList = [], t.frameList.length = 0);
         },
         cleanCacheYUV: function cleanCacheYUV() {
           t.cacheYuvBuf.cleanPipeline();
         },
         pause: function pause() {
-          t.loop && window.clearInterval(t.loop), t.loop = null, 0 == t.config.audioNone && t.audio.pause(), t.isPlaying = !1, t.isCaching === l.CACHE_WITH_PLAY_SIGN && (t.isCaching = l.CACHE_WITH_NOPLAY_SIGN);
+          t.loop && window.clearInterval(t.loop), t.loop = null, 0 == t.config.audioNone && t.audio.pause(), t.isPlaying = !1, t.isCaching === h.CACHE_WITH_PLAY_SIGN && (t.isCaching = h.CACHE_WITH_NOPLAY_SIGN);
         },
         checkFinished: function checkFinished() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : l.PLAYER_MODE_VOD;
-          return e == l.PLAYER_MODE_VOD && t.cacheYuvBuf.yuvCache.length <= 0 && (t.videoPTS.toFixed(1) >= (t.durationMs - t.config.frameDurMs) / 1e3 || t.noCacheFrame >= 10) && (null != t.onPlayingFinish && (l.PLAYER_MODE_VOD, t.frameList.length, t.cacheYuvBuf.yuvCache.length, t.videoPTS.toFixed(1), t.durationMs, t.config.frameDurMs, t.noCacheFrame, t.onPlayingFinish()), !0);
+          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : h.PLAYER_MODE_VOD;
+          return e == h.PLAYER_MODE_VOD && t.cacheYuvBuf.yuvCache.length <= 0 && (t.videoPTS.toFixed(1) >= (t.durationMs - t.config.frameDurMs) / 1e3 || t.noCacheFrame >= 10) && (null != t.onPlayingFinish && (h.PLAYER_MODE_VOD, t.frameList.length, t.cacheYuvBuf.yuvCache.length, t.videoPTS.toFixed(1), t.durationMs, t.config.frameDurMs, t.noCacheFrame, t.onPlayingFinish()), !0);
         },
         clearAllCache: function clearAllCache() {
           t.nowPacket = null, t.vCachePTS = 0, t.aCachePTS = 0, t.cleanSample(), t.cleanVideoQueue(), t.cleanCacheYUV();
@@ -4352,7 +4352,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           t.pause(), t.stopCacheThread(), t.clearAllCache(), e && e(), t.isNewSeek = !0, t.flushDecoder = 1, t.videoPTS = parseInt(i.seekTime);
           var n = {
             seekPos: i.seekTime || -1,
-            mode: i.mode || l.PLAYER_MODE_VOD,
+            mode: i.mode || h.PLAYER_MODE_VOD,
             accurateSeek: i.accurateSeek || !0,
             seekEvent: i.seekEvent || !0,
             realPlay: r
@@ -4363,8 +4363,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0],
               i = null,
               r = -1;
-          if (t.config.appendHevcType == l.APPEND_TYPE_STREAM) i = t.nextNalu();else {
-            if (t.config.appendHevcType != l.APPEND_TYPE_FRAME) return null;
+          if (t.config.appendHevcType == h.APPEND_TYPE_STREAM) i = t.nextNalu();else {
+            if (t.config.appendHevcType != h.APPEND_TYPE_FRAME) return null;
             var n = t.frameList.shift();
             if (!n) return null;
             i = n.data, r = n.pts, e && (t.videoPTS = r);
@@ -4403,10 +4403,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var e = t.isPlaying;
 
             if (t.cacheYuvBuf.yuvCache.length <= 3) {
-              t.pause(), null != t.onLoadCache && t.onLoadCache(), t.isCaching = e ? l.CACHE_WITH_PLAY_SIGN : l.CACHE_WITH_NOPLAY_SIGN;
+              t.pause(), null != t.onLoadCache && t.onLoadCache(), t.isCaching = e ? h.CACHE_WITH_PLAY_SIGN : h.CACHE_WITH_NOPLAY_SIGN;
               var i = t.frameList.length > 30 ? 30 : t.frameList.length;
               null === t.cacheInterval && (t.cacheInterval = window.setInterval(function () {
-                t.cacheYuvBuf.yuvCache.length >= i && (null != t.onLoadCacheFinshed && t.onLoadCacheFinshed(), window.clearInterval(t.cacheInterval), t.cacheInterval = null, t.isCaching === l.CACHE_WITH_PLAY_SIGN && t.play(t.playParams), t.isCaching = l.CACHE_NO_LOADCACHE);
+                t.cacheYuvBuf.yuvCache.length >= i && (null != t.onLoadCacheFinshed && t.onLoadCacheFinshed(), window.clearInterval(t.cacheInterval), t.cacheInterval = null, t.isCaching === h.CACHE_WITH_PLAY_SIGN && t.play(t.playParams), t.isCaching = h.CACHE_NO_LOADCACHE);
               }, 40));
             }
           }
@@ -4439,7 +4439,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return t.playParams.seekEvent && (t.playParams.seekEvent = !1, t.onSeekFinish(), t.isPlaying || (t.playFrameYUV(!0, t.playParams.accurateSeek), t.pause()), t.config.audioNone || t.audio.setVoice(t.realVolume)), t.onPlayingTime && t.onPlayingTime(t.videoPTS), t.checkFinished(t.playParams.mode), e;
         },
         play: function play(e) {
-          if (t.playParams = e, t.calcuteStartTime = n.GetMsTime(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, !0 === t.config.audioNone && t.playParams.mode == l.PLAYER_MODE_NOTIME_LIVE) {
+          if (t.playParams = e, t.calcuteStartTime = n.GetMsTime(), t.noCacheFrame = 0, t.isPlaying = t.playParams.realPlay, !0 === t.config.audioNone && t.playParams.mode == h.PLAYER_MODE_NOTIME_LIVE) {
             t.liveStartMs = n.GetMsTime(), t.frameTime = Math.floor(1e3 / t.config.fps), t.frameTimeSec = t.frameTime / 1e3;
             var i = 0;
             t.loop = window.setInterval(function () {
@@ -4511,8 +4511,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             if (!t.isCheckDisplay) t.checkDisplaySize(e, i);
             var s = e * i,
                 o = e / 2 * (i / 2),
-                l = new Uint8Array(s + 2 * o);
-            l.set(r, 0), l.set(n, s), l.set(a, s + o), h.renderFrame(t.yuv, r, n, a, e, i);
+                h = new Uint8Array(s + 2 * o);
+            h.set(r, 0), h.set(n, s), h.set(a, s + o), l.renderFrame(t.yuv, r, n, a, e, i);
           }
         },
         debugYUV: function debugYUV(e) {
@@ -4524,29 +4524,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               a = (t.config.height / i).toFixed(2),
               s = r ? n : a,
               o = t.config.fixed,
-              h = o ? t.config.width : parseInt(e * s),
-              l = o ? t.config.height : parseInt(i * s);
+              l = o ? t.config.width : parseInt(e * s),
+              h = o ? t.config.height : parseInt(i * s);
 
-          if (t.canvas.offsetWidth != h || t.canvas.offsetHeight != l) {
-            var u = parseInt((t.canvasBox.offsetHeight - l) / 2),
-                d = parseInt((t.canvasBox.offsetWidth - h) / 2);
-            t.canvas.style.marginTop = u + "px", t.canvas.style.marginLeft = d + "px", t.canvas.style.width = h + "px", t.canvas.style.height = l + "px";
+          if (t.canvas.offsetWidth != l || t.canvas.offsetHeight != h) {
+            var u = parseInt((t.canvasBox.offsetHeight - h) / 2),
+                d = parseInt((t.canvasBox.offsetWidth - l) / 2);
+            t.canvas.style.marginTop = u + "px", t.canvas.style.marginLeft = d + "px", t.canvas.style.width = l + "px", t.canvas.style.height = h + "px";
           }
 
-          return t.isCheckDisplay = !0, [h, l];
+          return t.isCheckDisplay = !0, [l, h];
         },
         makeWasm: function makeWasm() {
           if (null != t.config.token) {
             t.vcodecerPtr = Module.cwrap("registerPlayer", "number", ["string", "string"])(t.config.token, u.PLAYER_VERSION);
-            var e = Module.addFunction(function (e, i, r, n, a, s, h, l, u) {
-              var d = Module.HEAPU8.subarray(e, e + n * l),
-                  f = Module.HEAPU8.subarray(i, i + a * l / 2),
-                  p = Module.HEAPU8.subarray(r, r + s * l / 2),
+            var e = Module.addFunction(function (e, i, r, n, a, s, l, h, u) {
+              var d = Module.HEAPU8.subarray(e, e + n * h),
+                  f = Module.HEAPU8.subarray(i, i + a * h / 2),
+                  p = Module.HEAPU8.subarray(r, r + s * h / 2),
                   c = new Uint8Array(d),
                   m = new Uint8Array(f),
                   _ = new Uint8Array(p),
                   y = 1 * u / 1e3,
-                  g = new o.CacheYuvStruct(y, n, l, c, m, _);
+                  g = new o.CacheYuvStruct(y, n, h, c, m, _);
 
               t.cacheYuvBuf.appendCacheByCacheYuv(g);
             });
@@ -4558,7 +4558,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         makeIt: function makeIt() {
           var e = document.querySelector("div#" + t.config.playerId),
               i = document.createElement("canvas");
-          i.style.width = e.clientWidth + "px", i.style.height = e.clientHeight + "px", i.style.top = "0px", i.style.left = "0px", e.appendChild(i), t.canvasBox = e, t.canvas = i, t.yuv = h.setupCanvas(i, {
+          i.style.width = e.clientWidth + "px", i.style.height = e.clientHeight + "px", i.style.top = "0px", i.style.left = "0px", e.appendChild(i), t.canvasBox = e, t.canvas = i, t.yuv = l.setupCanvas(i, {
             preserveDrawingBuffer: !1
           }), 0 == t.config.audioNone && (t.audio = a({
             sampleRate: t.config.sampleRate,
@@ -4598,8 +4598,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var a = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3],
               s = arguments.length > 4 && void 0 !== arguments[4] && arguments[4],
               o = r.ConstructWithDts(t, i, s, n, a),
-              h = parseInt(i);
-          return a ? (e.videoBuffer.length - 1 >= h ? e.videoBuffer[h].push(o) : e.videoBuffer.push([o]), s && !e.idrIdxBuffer.includes(i) && e.idrIdxBuffer.push(i)) : e.audioBuffer.length - 1 >= h && null != e.audioBuffer[h] && null != e.audioBuffer[h] ? e.audioBuffer[h] && e.audioBuffer[h].push(o) : e.audioBuffer.push([o]), !0;
+              l = parseInt(i);
+          return a ? (e.videoBuffer.length - 1 >= l ? e.videoBuffer[l].push(o) : e.videoBuffer.push([o]), s && !e.idrIdxBuffer.includes(i) && e.idrIdxBuffer.push(i)) : e.audioBuffer.length - 1 >= l && null != e.audioBuffer[l] && null != e.audioBuffer[l] ? e.audioBuffer[l] && e.audioBuffer[l].push(o) : e.audioBuffer.push([o]), !0;
         },
         appendFrameByBufferFrame: function appendFrameByBufferFrame(t) {
           var i = t.pts,
@@ -4684,8 +4684,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         a = e("./mpegts/mpeg.js"),
         s = e("./bufferFrame"),
         o = e("./buffer"),
-        h = e("../decoder/hevc-imp"),
-        l = e("../consts"),
+        l = e("../decoder/hevc-imp"),
+        h = e("../consts"),
         u = function () {
       function e() {
         !function (e, t) {
@@ -4695,7 +4695,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           lockMember: {
             dur: 0
           }
-        }, this.timerFeed = null, this.timerTsWasm = null, this.seekPos = -1, this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.audioNone = !1, this.aCodec = !1, this.aChannel = 0, this.durationMs = -1, this.bufObject = o(), this.fps = -1, this.sampleRate = -1, this.size = {
+        }, this.timerFeed = null, this.timerTsWasm = null, this.seekPos = -1, this.vPreFramePTS = 0, this.aPreFramePTS = 0, this.audioNone = !1, this.isHevcParam = !1, this.vCodec = !1, this.aCodec = !1, this.aChannel = 0, this.durationMs = -1, this.bufObject = o(), this.fps = -1, this.sampleRate = -1, this.size = {
           width: -1,
           height: -1
         }, this.mediaInfo = null, this.extensionInfo = null, this.onReadyOBJ = null, this.onFinished = null, this.onDemuxed = null, this.onSamples = null, this.onCacheProcess = null;
@@ -4718,13 +4718,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               streamDur: t
             });
           }, this.hls.onFinished = function (e) {
-            e.type == l.PLAYER_IN_TYPE_M3U8_VOD ? i.durationMs = 1e3 * e.duration : i.durationMs = -1, null != i.onFinished && i.onFinished(i.onReadyOBJ, e);
+            e.type == h.PLAYER_IN_TYPE_M3U8_VOD ? i.durationMs = 1e3 * e.duration : i.durationMs = -1, null != i.onFinished && i.onFinished(i.onReadyOBJ, e);
           }, this.mpegTsObj.onDemuxedFailed = function (e, t) {
             console.error("onDemuxedFailed: ", e, t), i.lockWait.state = !1;
           }, this.mpegTsObj.onDemuxed = function () {
-            null == i.mediaInfo && (i.mediaInfo = i.mpegTsObj.readMediaInfo(), i.mediaInfo, i.aCodec = i.mediaInfo.aCodec, i.aChannel = i.mediaInfo.sampleChannel, i.fps = i.mediaInfo.vFps, i.sampleRate = i.mediaInfo.sampleRate, (null === i.aCodec || "" === i.aCodec || i.aChannel <= 0) && (i.audioNone = !0)), null == i.extensionInfo && (i.extensionInfo = i.mpegTsObj.readExtensionInfo(), i.extensionInfo.vWidth > 0 && i.extensionInfo.vHeight > 0 && (i.size.width = i.extensionInfo.vWidth, i.size.height = i.extensionInfo.vHeight)), i.mediaInfo.duration, null != i.onDemuxed && i.onDemuxed(i.onReadyOBJ);
+            null == i.mediaInfo && (i.mediaInfo = i.mpegTsObj.readMediaInfo(), i.mediaInfo, i.isHevcParam = i.mpegTsObj.isHEVC(), i.vCodec = i.mpegTsObj.vCodec, i.aCodec = i.mediaInfo.aCodec, i.aChannel = i.mediaInfo.sampleChannel, i.fps = i.mediaInfo.vFps, i.sampleRate = i.mediaInfo.sampleRate, (null === i.aCodec || "" === i.aCodec || i.aChannel <= 0) && (i.audioNone = !0)), null == i.extensionInfo && (i.extensionInfo = i.mpegTsObj.readExtensionInfo(), i.extensionInfo.vWidth > 0 && i.extensionInfo.vHeight > 0 && (i.size.width = i.extensionInfo.vWidth, i.size.height = i.extensionInfo.vHeight)), i.mediaInfo.duration, null != i.onDemuxed && i.onDemuxed(i.onReadyOBJ);
 
-            for (var e = !1;;) {
+            for (var e = !1; void 0 !== i.mpegTsObj && null !== i.mpegTsObj;) {
               var r = i.mpegTsObj.readPacket();
               if (r.size <= 0) break;
               var n = r.dtime > 0 ? r.dtime : r.ptime;
@@ -4732,11 +4732,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (!(n < 0)) {
                 if (0 == r.type) {
                   n <= i.vPreFramePTS && (e = !0);
-                  var a = h.PACK_NALU(r.layer),
+                  var a = l.PACK_NALU(r.layer),
                       o = 1 == r.keyframe,
-                      l = 1 == e ? n + i.vStartTime : n,
-                      u = new s.BufferFrame(l, o, a, !0);
-                  i.bufObject.appendFrame(u.pts, u.data, !0, u.isKey), i.vPreFramePTS = l, null != i.onSamples && i.onSamples(i.onReadyOBJ, u);
+                      h = 1 == e ? n + i.vStartTime : n,
+                      u = new s.BufferFrame(h, o, a, !0);
+                  i.bufObject.appendFrame(u.pts, u.data, !0, u.isKey), i.vPreFramePTS = h, null != i.onSamples && i.onSamples(i.onReadyOBJ, u);
                 } else if (n <= i.aPreFramePTS && (e = !0), "aac" == i.mediaInfo.aCodec) for (var d = r.data, f = 0; f < d.length; f++) {
                   var p = d[f],
                       c = 1 == e ? p.ptime + i.vStartTime : n,
@@ -4781,7 +4781,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "release",
         value: function value() {
-          this.timerFeed && window.clearInterval(this.timerFeed), this.timerTsWasm && window.clearInterval(this.timerTsWasm);
+          this.hls && this.hls.release(), this.hls = null, this.timerFeed && window.clearInterval(this.timerFeed), this.timerFeed = null, this.timerTsWasm && window.clearInterval(this.timerTsWasm), this.timerTsWasm = null;
         }
       }, {
         key: "bindReady",
@@ -4819,6 +4819,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         key: "getACodec",
         value: function value() {
           return this.aCodec;
+        }
+      }, {
+        key: "getVCodec",
+        value: function value() {
+          return this.vCodec;
         }
       }, {
         key: "getDurationMs",
@@ -4908,7 +4913,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       function e() {
         !function (e, t) {
           if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-        }(this, e), this._slices = [], this._type = n.PLAYER_IN_TYPE_M3U8_LIVE, this._preURI = "", this.duration = -1, this.onTransportStream = null, this.onFinished = null;
+        }(this, e), this.initState = !0, this.controller = new AbortController(), this._slices = [], this._type = n.PLAYER_IN_TYPE_M3U8_LIVE, this._preURI = "", this.duration = -1, this.onTransportStream = null, this.onFinished = null;
       }
 
       var t, i, o;
@@ -4918,11 +4923,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return this._type === n.PLAYER_IN_TYPE_M3U8_LIVE ? 1 : 0;
         }
       }, {
+        key: "release",
+        value: function value() {
+          this.initState = !1;
+        }
+      }, {
         key: "fetchM3u8",
         value: function value(e) {
           var t = this,
               i = this;
-          fetch(e).then(function (e) {
+          this.initState && fetch(e).then(function (e) {
             return e.text();
           }).then(function (t) {
             return 1 == i._uriParse(e) ? i._m3u8Parse(t) : null;
@@ -4959,11 +4969,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             t = e.replace(a[i], "");
           }
 
-          for (var r = t.split(s.lineDelimiter), o = s.defaultMinDur, h = "", l = 0; l < r.length; l++) {
-            var u = r[l];
+          for (var r = t.split(s.lineDelimiter), o = s.defaultMinDur, l = "", h = 0; h < r.length; h++) {
+            var u = r[h];
 
             if (!(u.length < 1)) {
-              if (null != h && "" !== h) switch (h) {
+              if (null != l && "" !== l) switch (l) {
                 case s.version:
                 case s.mediaSequence:
                 case s.allowCache:
@@ -4978,7 +4988,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
               var d = this._readTag(u);
 
-              if (null != d) switch (h = d.key, d.key) {
+              if (null != d) switch (l = d.key, d.key) {
                 case s.version:
                 case s.mediaSequence:
                 case s.allowCache:
@@ -5007,7 +5017,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               if (null != p) {
                 var c = p[1];
                 this.duration += parseFloat(p[1]), o > c && (o = c);
-                var m = r[l += 1],
+                var m = r[h += 1],
                     _ = null;
                 _ = m.indexOf("http") >= 0 ? m : this._preURI + m, this._slices.indexOf(_) < 0 && (this._slices.push(_), this._slices[this._slices.length - 1], null != this.onTransportStream && this.onTransportStream(_, c));
               }
@@ -5048,7 +5058,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         a = e("../decoder/hevc-imp"),
         s = e("./buffer"),
         o = e("../consts"),
-        h = {
+        l = {
       96e3: 0,
       88200: 1,
       64e3: 2,
@@ -5065,7 +5075,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       Reserved: 13,
       "frequency is written explictly": 15
     },
-        l = function l(e) {
+        h = function h(e) {
       for (var t = [], i = 0; i < e.length; i++) {
         t.push(e[i].toString(16));
       }
@@ -5082,7 +5092,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }, u.prototype.setAACAdts = function (e) {
       var t = null,
           i = this.aacProfile,
-          r = h[this.sampleRate],
+          r = l[this.sampleRate],
           n = new Uint8Array(7),
           a = n.length + e.length;
       return n[0] = 255, n[1] = 241, n[2] = (i - 1 << 6) + (r << 2) + 0, n[3] = 128 + (a >> 11), n[4] = (2047 & a) >> 3, n[5] = 31 + ((7 & a) << 5), n[6] = 252, (t = new Uint8Array(a)).set(n, 0), t.set(e, n.length), t;
@@ -5113,22 +5123,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, e.mp4boxfile.onSamples = function (t, i, r) {
         var s = window.setInterval(function () {
           for (var i = 0; i < r.length; i++) {
-            var h = r[i],
-                u = h.data,
+            var l = r[i],
+                u = l.data,
                 d = null;
 
             if (!(null == u || u.length < 4) && u) {
-              var f = h.dts / h.timescale;
+              var f = l.dts / l.timescale;
 
               if (1 === t) {
                 var p = null,
-                    c = h.is_sync;
+                    c = l.is_sync;
 
                 if (e.videoCodec === o.CODEC_H265) {
-                  p = h.description.hvcC;
+                  p = l.description.hvcC;
                   var m = a.GET_NALU_TYPE(u[4]);
-                  c || (c = m == n.DEFINE_KEY_FRAME || h.is_sync);
-                } else e.videoCodec === o.CODEC_H264 && (p = h.description.avcC);
+                  c || (c = m == n.DEFINE_KEY_FRAME || l.is_sync);
+                } else e.videoCodec === o.CODEC_H264 && (p = l.description.avcC);
 
                 if (c) {
                   if (e.videoCodec == o.CODEC_H265) {
@@ -5136,44 +5146,44 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                     e.naluHeader.vps = e.setStartCode(_[0][0].data, !1), e.naluHeader.sps = e.setStartCode(_[1][0].data, !1), e.naluHeader.pps = e.setStartCode(_[2][0].data, !1), _.length > 3 ? e.naluHeader.sei = e.setStartCode(_[3][0].data, !1) : e.naluHeader.sei = new Uint8Array(), e.naluHeader;
                   } else e.videoCodec == o.CODEC_H264 && (e.naluHeader.vps = new Uint8Array(), e.naluHeader.sps = e.setStartCode(p.SPS[0].nalu, !1), e.naluHeader.pps = e.setStartCode(p.PPS[0].nalu, !1), e.naluHeader.sei = new Uint8Array());
 
-                  u[4].toString(16), e.naluHeader.vps[4].toString(16), l(e.naluHeader.vps), l(u);
+                  u[4].toString(16), e.naluHeader.vps[4].toString(16), h(e.naluHeader.vps), h(u);
                   var y = e.setStartCode(u.subarray(0, e.naluHeader.vps.length), !0);
 
-                  if (l(y), u[4] === e.naluHeader.vps[4]) {
+                  if (h(y), u[4] === e.naluHeader.vps[4]) {
                     var g = e.naluHeader.vps.length + 4,
                         v = e.naluHeader.vps.length + e.naluHeader.sps.length + 4,
-                        S = e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + 4;
+                        b = e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + 4;
 
-                    if (e.naluHeader.sei.length <= 0 && e.naluHeader.sps.length > 0 && u[g] === e.naluHeader.sps[4] && e.naluHeader.pps.length > 0 && u[v] === e.naluHeader.pps[4] && 78 === u[S]) {
+                    if (e.naluHeader.sei.length <= 0 && e.naluHeader.sps.length > 0 && u[g] === e.naluHeader.sps[4] && e.naluHeader.pps.length > 0 && u[v] === e.naluHeader.pps[4] && 78 === u[b]) {
                       u[e.naluHeader.vps.length + 4], e.naluHeader.sps[4], u[e.naluHeader.vps.length + e.naluHeader.sps.length + 4], e.naluHeader.pps[4], u[e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + 4];
 
-                      for (var b = 0, E = 0; E < u.length; E++) {
+                      for (var S = 0, E = 0; E < u.length; E++) {
                         if (u[E] === n.SOURCE_CODE_SEI_END && a.GET_NALU_TYPE(u[E + 5]) === n.DEFINE_KEY_FRAME) {
-                          b = E;
+                          S = E;
                           break;
                         }
                       }
 
-                      u[3] = 1, u[g - 1] = 1, u[v - 1] = 1, u[S - 1] = 1, u[2] = 0, u[g - 2] = 0, u[v - 2] = 0, u[S - 2] = 0, u[1] = 0, u[g - 3] = 0, u[v - 3] = 0, u[S - 3] = 0, u[b + 1] = 0, u[b + 2] = 0, u[b + 3] = 0, u[b + 4] = 1, e.naluHeader.vps = null, e.naluHeader.sps = null, e.naluHeader.pps = null, e.naluHeader.vps = new Uint8Array(), e.naluHeader.sps = new Uint8Array(), e.naluHeader.pps = new Uint8Array();
-                    } else u[4].toString(16), e.naluHeader.vps[4].toString(16), l(e.naluHeader.vps), l(u), u = u.subarray(e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length);
+                      u[3] = 1, u[g - 1] = 1, u[v - 1] = 1, u[b - 1] = 1, u[2] = 0, u[g - 2] = 0, u[v - 2] = 0, u[b - 2] = 0, u[1] = 0, u[g - 3] = 0, u[v - 3] = 0, u[b - 3] = 0, u[S + 1] = 0, u[S + 2] = 0, u[S + 3] = 0, u[S + 4] = 1, e.naluHeader.vps = null, e.naluHeader.sps = null, e.naluHeader.pps = null, e.naluHeader.vps = new Uint8Array(), e.naluHeader.sps = new Uint8Array(), e.naluHeader.pps = new Uint8Array();
+                    } else u[4].toString(16), e.naluHeader.vps[4].toString(16), h(e.naluHeader.vps), h(u), u = u.subarray(e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length);
                   } else if (e.naluHeader.sei.length > 4 && u[4] === e.naluHeader.sei[4]) {
                     var A = u.subarray(0, 10),
-                        w = new Uint8Array(e.naluHeader.vps.length + A.length);
-                    w.set(A, 0), w.set(e.naluHeader.vps, A.length), w[3] = 1, e.naluHeader.vps = null, e.naluHeader.vps = new Uint8Array(w), w = null, A = null, (u = u.subarray(10))[4], e.naluHeader.vps[4], e.naluHeader.vps;
+                        P = new Uint8Array(e.naluHeader.vps.length + A.length);
+                    P.set(A, 0), P.set(e.naluHeader.vps, A.length), P[3] = 1, e.naluHeader.vps = null, e.naluHeader.vps = new Uint8Array(P), P = null, A = null, (u = u.subarray(10))[4], e.naluHeader.vps[4], e.naluHeader.vps;
                   } else if (0 === e.naluHeader.sei.length && 78 === u[4]) {
                     u = e.setStartCode(u, !0);
 
-                    for (var x = 0, P = 0; P < u.length; P++) {
-                      if (u[P] === n.SOURCE_CODE_SEI_END && a.GET_NALU_TYPE(u[P + 5]) === n.DEFINE_KEY_FRAME) {
-                        x = P;
+                    for (var w = 0, x = 0; x < u.length; x++) {
+                      if (u[x] === n.SOURCE_CODE_SEI_END && a.GET_NALU_TYPE(u[x + 5]) === n.DEFINE_KEY_FRAME) {
+                        w = x;
                         break;
                       }
                     }
 
-                    e.naluHeader.sei = u.subarray(0, x + 1), u = new Uint8Array(u.subarray(x + 1)), e.naluHeader.sei;
+                    e.naluHeader.sei = u.subarray(0, w + 1), u = new Uint8Array(u.subarray(w + 1)), e.naluHeader.sei;
                   }
 
-                  l(e.naluHeader.vps), l(e.naluHeader.sps), l(e.naluHeader.pps), l(e.naluHeader.sei), l(u), (d = new Uint8Array(e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length + u.length)).set(e.naluHeader.vps, 0), d.set(e.naluHeader.sps, e.naluHeader.vps.length), d.set(e.naluHeader.pps, e.naluHeader.vps.length + e.naluHeader.sps.length), d.set(e.naluHeader.sei, e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length), d.set(e.setStartCode(u, !0), e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length);
+                  h(e.naluHeader.vps), h(e.naluHeader.sps), h(e.naluHeader.pps), h(e.naluHeader.sei), h(u), (d = new Uint8Array(e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length + u.length)).set(e.naluHeader.vps, 0), d.set(e.naluHeader.sps, e.naluHeader.vps.length), d.set(e.naluHeader.pps, e.naluHeader.vps.length + e.naluHeader.sps.length), d.set(e.naluHeader.sei, e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length), d.set(e.setStartCode(u, !0), e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length);
                 } else d = e.setStartCode(u, !0);
 
                 e.bufObject.appendFrame(f, d, !0, c);
@@ -5336,7 +5346,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }, this.extensionInfo = {
             vWidth: 0,
             vHeight: 0
-          }, this.offsetDemux = null, this.wasmState = 0, this.onReady = null, this.onDemuxed = null, this.onDemuxedFailed = null, this.aacDec = null;
+          }, this.controller = new AbortController(), this.offsetDemux = null, this.wasmState = 0, this.onReady = null, this.onDemuxed = null, this.onDemuxedFailed = null, this.aacDec = null;
         }
 
         var i, s, o;
@@ -5363,15 +5373,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "_demuxerTsInit",
           value: function value(e) {
-            var t = this;
-            fetch(e).then(function (e) {
+            var t = this,
+                i = this.controller.signal;
+            fetch(e, {
+              signal: i
+            }).then(function (e) {
               return e.arrayBuffer();
             }).then(function (i) {
               i.fileStart = 0;
               var r = new Uint8Array(i);
               null != r ? t._demuxCore(r) : console.error("demuxerTsInit ERROR fetch res is null ==> ", e), r = null;
             })["catch"](function (i) {
-              console.error("_demuxerTsInit ERROR fetch ERROR ==> ", i), t._releaseOffset(), t.onDemuxedFailed && t.onDemuxedFailed(i, e);
+              console.error("demuxerTsInit ERROR fetch ERROR ==> ", i), t._releaseOffset(), t.onDemuxedFailed && t.onDemuxedFailed(i, e);
             });
           }
         }, {
@@ -5382,9 +5395,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "_demuxCore",
           value: function value(e) {
-            this._releaseOffset(), this._refreshDemuxer(), this.offsetDemux = Module._malloc(e.length), Module.HEAP8.set(e, this.offsetDemux);
-            var t = Module.cwrap("demuxBox", "number", ["number", "number", "number"])(this.offsetDemux, e.length, this.isLive);
-            Module._free(this.offsetDemux), this.offsetDemux = null, t >= 0 && (this._setMediaInfo(), this._setExtensionInfo(), null != this.onDemuxed && this.onDemuxed());
+            if (this._releaseOffset(), this._refreshDemuxer(), !(e.length <= 0)) {
+              this.offsetDemux = Module._malloc(e.length), Module.HEAP8.set(e, this.offsetDemux);
+              var t = Module.cwrap("demuxBox", "number", ["number", "number", "number"])(this.offsetDemux, e.length, this.isLive);
+              Module._free(this.offsetDemux), this.offsetDemux = null, t >= 0 && (this._setMediaInfo(), this._setExtensionInfo(), null != this.onDemuxed && this.onDemuxed());
+            }
           }
         }, {
           key: "_setMediaInfo",
@@ -5395,9 +5410,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 r = Module.HEAPF64[e / 8 + 1],
                 s = Module.HEAPF64[e / 8 + 1 + 1],
                 o = Module.HEAPF64[e / 8 + 1 + 1 + 1],
-                h = Module.HEAPF64[e / 8 + 1 + 1 + 1 + 1],
-                l = Module.HEAPU32[e / 4 + 2 + 2 + 2 + 2 + 2];
-            this.mediaAttr.vFps = r, this.mediaAttr.vGop = l, this.mediaAttr.vDuration = s, this.mediaAttr.aDuration = o, this.mediaAttr.duration = h;
+                l = Module.HEAPF64[e / 8 + 1 + 1 + 1 + 1],
+                h = Module.HEAPU32[e / 4 + 2 + 2 + 2 + 2 + 2];
+            this.mediaAttr.vFps = r, this.mediaAttr.vGop = h, this.mediaAttr.vDuration = s, this.mediaAttr.aDuration = o, this.mediaAttr.duration = l;
             var u = Module.cwrap("getAudioCodecID", "number", [])();
             u >= 0 ? (this.mediaAttr.aCodec = a.CODEC_OFFSET_TABLE[u], this.mediaAttr.sampleRate = t > 0 ? t : a.DEFAULT_SAMPLERATE, this.mediaAttr.sampleChannel = i >= 0 ? i : a.DEFAULT_CHANNEL) : (this.mediaAttr.sampleRate = 0, this.mediaAttr.sampleChannel = 0, this.mediaAttr.audioNone = !0);
             var d = Module.cwrap("getVideoCodecID", "number", [])();
@@ -5440,26 +5455,34 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             },
                 i = Module.cwrap("getSPSLen", "number", [])(),
                 r = Module.cwrap("getSPS", "number", [])();
-            e.sps = new Uint8Array(i), e.sps.set(Module.HEAPU8.subarray(r, r + i), 0);
-            var n = Module.cwrap("getPPSLen", "number", [])(),
-                s = Module.cwrap("getPPS", "number", [])();
-            e.pps = new Uint8Array(n), e.pps.set(Module.HEAPU8.subarray(s, s + n), 0);
-            var o = Module.cwrap("getSEILen", "number", [])(),
-                h = Module.cwrap("getSEI", "number", [])();
-            e.sei = new Uint8Array(o), e.sei.set(Module.HEAPU8.subarray(h, h + o), 0);
-            var l = Module.cwrap("getVLCLen", "number", [])(),
-                u = Module.cwrap("getVLC", "number", [])();
 
-            if (t.vlc = new Uint8Array(l), t.vlc.set(Module.HEAPU8.subarray(u, u + l), 0), this.mediaAttr.vCodec == a.DEF_HEVC || this.mediaAttr.vCodec == a.DEF_H265) {
-              var d = Module.cwrap("getVPSLen", "number", [])(),
-                  f = Module.cwrap("getVPS", "number", [])();
-              e.vps = new Uint8Array(d), e.vps.set(Module.HEAPU8.subarray(f, f + d), 0);
-            } else this.mediaAttr.vCodec == a.DEF_AVC || (this.mediaAttr.vCodec, a.DEF_H264);
+            if (!(i < 0)) {
+              e.sps = new Uint8Array(i), e.sps.set(Module.HEAPU8.subarray(r, r + i), 0);
+              var n = Module.cwrap("getPPSLen", "number", [])(),
+                  s = Module.cwrap("getPPS", "number", [])();
+              e.pps = new Uint8Array(n), e.pps.set(Module.HEAPU8.subarray(s, s + n), 0);
+              var o = Module.cwrap("getSEILen", "number", [])(),
+                  l = Module.cwrap("getSEI", "number", [])();
+              e.sei = new Uint8Array(o), e.sei.set(Module.HEAPU8.subarray(l, l + o), 0);
+              var h = Module.cwrap("getVLCLen", "number", [])(),
+                  u = Module.cwrap("getVLC", "number", [])();
 
-            return {
-              nalu: e,
-              vlc: t
-            };
+              if (t.vlc = new Uint8Array(h), t.vlc.set(Module.HEAPU8.subarray(u, u + h), 0), this.mediaAttr.vCodec == a.DEF_HEVC || this.mediaAttr.vCodec == a.DEF_H265) {
+                var d = Module.cwrap("getVPSLen", "number", [])(),
+                    f = Module.cwrap("getVPS", "number", [])();
+                e.vps = new Uint8Array(d), e.vps.set(Module.HEAPU8.subarray(f, f + d), 0);
+              } else this.mediaAttr.vCodec == a.DEF_AVC || (this.mediaAttr.vCodec, a.DEF_H264);
+
+              return {
+                nalu: e,
+                vlc: t
+              };
+            }
+          }
+        }, {
+          key: "isHEVC",
+          value: function value() {
+            return this.mediaAttr.vCodec == a.DEF_HEVC || this.mediaAttr.vCodec == a.DEF_H265;
           }
         }, {
           key: "readPacket",
@@ -5471,8 +5494,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 n = Module.HEAPF64[e / 8 + 1 + 1],
                 s = Module.HEAPU32[e / 4 + 1 + 1 + 2 + 2],
                 o = Module.HEAPU32[e / 4 + 1 + 1 + 2 + 2 + 1],
-                h = Module.HEAPU8.subarray(o, o + i),
-                l = this._readLayer();
+                l = Module.HEAPU8.subarray(o, o + i),
+                h = this._readLayer();
 
             return {
               type: t,
@@ -5480,15 +5503,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               ptime: r,
               dtime: n,
               keyframe: s,
-              src: h,
-              data: 1 == t && this.mediaAttr.aCodec == a.DEF_AAC ? this.aacDec.sliceAACFrames(r, h) : h,
-              layer: l
+              src: l,
+              data: 1 == t && this.mediaAttr.aCodec == a.DEF_AAC ? this.aacDec.sliceAACFrames(r, l) : l,
+              layer: h
             };
           }
         }, {
           key: "_refreshDemuxer",
           value: function value() {
-            this._releaseDemuxer(), this._initDemuxer();
+            this.releaseTsDemuxer(), this._initDemuxer();
           }
         }, {
           key: "_initDemuxer",
@@ -5496,7 +5519,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             Module.cwrap("initTsMissile", "number", [])(), Module.cwrap("initializeDemuxer", "number", [])();
           }
         }, {
-          key: "_releaseDemuxer",
+          key: "releaseTsDemuxer",
           value: function value() {
             Module.cwrap("exitTsMissile", "number", [])();
           }
@@ -5526,7 +5549,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       function e() {
         !function (e, t) {
           if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-        }(this, e), this.seekPos = -1, this.durationMs = -1, this.fps = -1, this.sampleRate = -1, this.aCodec = "", this.size = {
+        }(this, e), this.seekPos = -1, this.durationMs = -1, this.fps = -1, this.sampleRate = -1, this.aCodec = "", this.vCodec = "", this.size = {
           width: -1,
           height: -1
         }, this.bufObject = a(), this.mpegTsObj = null, this.bufObject = a(), this.mediaInfo = {}, this.extensionInfo = {}, this.onReady = null, this.onDemuxed = null, this.onReadyOBJ = null;
@@ -5538,7 +5561,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         value: function value() {
           var e = this;
           this.mpegTsObj = new n.MPEG_JS({}), this.mpegTsObj.onDemuxed = function () {
-            e.mediaInfo = e.mpegTsObj.readMediaInfo(), e.mediaInfo, e.extensionInfo = e.mpegTsObj.readExtensionInfo(), e.extensionInfo, e.aCodec = e.mediaInfo.aCodec, e.durationMs = 1e3 * e.mediaInfo.duration, e.fps = e.mediaInfo.vFps, e.sampleRate = e.mediaInfo.sampleRate, e.extensionInfo.vWidth > 0 && e.extensionInfo.vHeight > 0 && (e.size.width = e.extensionInfo.vWidth, e.size.height = e.extensionInfo.vHeight);
+            e.mediaInfo = e.mpegTsObj.readMediaInfo(), e.mediaInfo, e.extensionInfo = e.mpegTsObj.readExtensionInfo(), e.extensionInfo, e.vCodec = e.mediaInfo.vCodec, e.aCodec = e.mediaInfo.aCodec, e.durationMs = 1e3 * e.mediaInfo.duration, e.fps = e.mediaInfo.vFps, e.sampleRate = e.mediaInfo.sampleRate, e.extensionInfo.vWidth > 0 && e.extensionInfo.vHeight > 0 && (e.size.width = e.extensionInfo.vWidth, e.size.height = e.extensionInfo.vHeight);
 
             for (var t = null; !((t = e.mpegTsObj.readPacket()).size <= 0);) {
               var i = t.dtime;
@@ -5548,8 +5571,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                     n = 1 == t.keyframe;
                 e.bufObject.appendFrame(i, r, !0, n);
               } else if ("aac" == e.mediaInfo.aCodec) for (var a = t.data, o = 0; o < a.length; o++) {
-                var h = a[o];
-                e.bufObject.appendFrame(h.ptime, h.data, !1, !0);
+                var l = a[o];
+                e.bufObject.appendFrame(l.ptime, l.data, !1, !0);
               } else e.bufObject.appendFrame(i, t.data, !1, !0);
             }
 
@@ -5564,6 +5587,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           this.onReadyOBJ = e;
         }
       }, {
+        key: "releaseTsDemuxer",
+        value: function value() {
+          this.mpegTsObj && this.mpegTsObj.releaseTsDemuxer(), this.mpegTsObj = null;
+        }
+      }, {
         key: "demux",
         value: function value(e) {
           this.mpegTsObj.demuxUint8Buf(e);
@@ -5576,9 +5604,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return t < 0 ? null : 1 == e ? this.bufObject.vFrame(t) : 2 == e ? this.bufObject.aFrame(t) : void 0;
         }
       }, {
+        key: "isHEVC",
+        value: function value() {
+          return this.mpegTsObj.isHEVC();
+        }
+      }, {
         key: "getACodec",
         value: function value() {
           return this.aCodec;
+        }
+      }, {
+        key: "getVCodec",
+        value: function value() {
+          return this.vCodec;
         }
       }, {
         key: "getAudioNone",
@@ -5637,8 +5675,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           a = e("./native/mp4-player"),
           s = e("./decoder/c-native-core"),
           o = e("./decoder/c-httplive-core"),
-          h = e("./decoder/av-common"),
-          l = (e("./demuxer/mpegts/mpeg.js"), e("./demuxer/mp4")),
+          l = e("./decoder/av-common"),
+          h = (e("./demuxer/mpegts/mpeg.js"), e("./demuxer/mp4")),
           u = e("./demuxer/ts"),
           d = e("./demuxer/m3u8"),
           f = e("./consts"),
@@ -5658,7 +5696,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return t - 1e3 / e;
       };
 
-      Module.onRuntimeInitialized = function () {
+      void 0 !== t.Module && null !== t.Module || (t.Module = {}), Module.onRuntimeInitialized = function () {
         t.STATIC_MEM_wasmDecoderState = 1, t.STATIC_MEM_wasmDecoderState;
       };
 
@@ -5672,14 +5710,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             playerId: r.player || f.DEFAILT_WEBGL_PLAY_ID,
             playerW: r.width || f.DEFAULT_WIDTH,
             playerH: r.height || f.DEFAULT_HEIGHT,
-            type: r.type || h.GetUriFormat(this.videoURL),
+            type: r.type || l.GetUriFormat(this.videoURL),
             accurateSeek: r.accurateSeek || !0,
             playIcon: r.playIcon || "assets/icon-play@300.png",
             loadIcon: r.loadIcon || "assets/icon-loading.gif",
             token: r.token || null,
             extInfo: c
           }, this.mediaExtFormat = this.configFormat.type, null != this.configFormat.token) {
-            for (var n in this.configFormat.extInfo.core = h.GetFormatPlayCore(this.configFormat.type), r.extInfo) {
+            for (var n in this.configFormat.extInfo.core = l.GetFormatPlayCore(this.configFormat.type), r.extInfo) {
               n in this.configFormat.extInfo && (this.configFormat.extInfo[n] = r.extInfo[n]);
             }
 
@@ -5764,7 +5802,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           key: "setVoice",
           value: function value(e) {
             if (e < 0) return !1;
-            this.volume = e, this.player.setVoice(e);
+            this.volume = e, this.player && this.player.setVoice(e);
           }
         }, {
           key: "getVolume",
@@ -5774,10 +5812,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "mediaInfo",
           value: function value() {
-            return {
+            var e = {
               meta: this.playParam,
               videoType: this.playMode
             };
+            return e.meta.isHEVC = 0 === this.playParam.videoCodec, e;
           }
         }, {
           key: "_seekHLS",
@@ -5847,9 +5886,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 a = (e / i).toFixed(2),
                 s = (t / r).toFixed(2),
                 o = n ? a : s,
-                h = this.fixed ? e : parseInt(i * o),
-                l = this.fixed ? t : parseInt(r * o);
-            return [parseInt((t - l) / 2), parseInt((e - h) / 2), h, l];
+                l = this.fixed ? e : parseInt(i * o),
+                h = this.fixed ? t : parseInt(r * o);
+            return [parseInt((t - h) / 2), parseInt((e - l) / 2), l, h];
           }
         }, {
           key: "_isFullScreen",
@@ -5901,14 +5940,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               var a = null,
                   s = null,
                   o = !0,
-                  h = !0;
-              if (e.configFormat.type == f.PLAYER_IN_TYPE_MP4 ? (a = e.mp4Obj.popBuffer(1, t), s = e.mp4Obj.audioNone ? null : e.mp4Obj.popBuffer(2, i)) : e.configFormat.type == f.PLAYER_IN_TYPE_TS || e.configFormat.type == f.PLAYER_IN_TYPE_MPEGTS ? (a = e.mpegTsObj.popBuffer(1, t), s = e.mpegTsObj.getAudioNone() ? null : e.mpegTsObj.popBuffer(2, i)) : e.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && (a = e.hlsObj.popBuffer(1, t), s = e.hlsObj.audioNone ? null : e.hlsObj.popBuffer(2, i), t < n - 1 && t >= e.hlsObj.getLastIdx() && (o = !1), i < n - 1 && i >= e.hlsObj.getALastIdx() && (h = !1)), !0 === o && null != a) for (var l = 0; l < a.length; l++) {
-                e.player.appendHevcFrame(a[l]);
+                  l = !0;
+              if (e.configFormat.type == f.PLAYER_IN_TYPE_MP4 ? (a = e.mp4Obj.popBuffer(1, t), s = e.mp4Obj.audioNone ? null : e.mp4Obj.popBuffer(2, i)) : e.configFormat.type == f.PLAYER_IN_TYPE_TS || e.configFormat.type == f.PLAYER_IN_TYPE_MPEGTS ? (a = e.mpegTsObj.popBuffer(1, t), s = e.mpegTsObj.getAudioNone() ? null : e.mpegTsObj.popBuffer(2, i)) : e.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && (a = e.hlsObj.popBuffer(1, t), s = e.hlsObj.audioNone ? null : e.hlsObj.popBuffer(2, i), t < n - 1 && t >= e.hlsObj.getLastIdx() && (o = !1), i < n - 1 && i >= e.hlsObj.getALastIdx() && (l = !1)), !0 === o && null != a) for (var h = 0; h < a.length; h++) {
+                e.player.appendHevcFrame(a[h]);
               }
-              if (!0 === h && null != s) for (var u = 0; u < s.length; u++) {
+              if (!0 === l && null != s) for (var u = 0; u < s.length; u++) {
                 e.player.appendAACFrame(s[u]);
               }
-              if (e.playMode !== f.PLAYER_MODE_NOTIME_LIVE && e.configFormat.type !== f.PLAYER_IN_TYPE_M3U8 && e.onCacheProcess && e.onCacheProcess(e.player.getCachePTS()), !0 === o && null != a && (a.length, e.configFormat.extInfo.readyShow && (e.configFormat.type === f.PLAYER_IN_TYPE_M3U8 ? e.configFormat.extInfo.readyShow = !1 : e.configFormat.extInfo.core === f.PLAYER_CORE_TYPE_CNATIVE || e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1, e.onReadyShowDone && e.onReadyShowDone())), t++), !0 === h && null != s && i++, t > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, e.player.vCachePTS, e.player.aCachePTS, void (null != r && r());
+              if (e.playMode !== f.PLAYER_MODE_NOTIME_LIVE && e.configFormat.type !== f.PLAYER_IN_TYPE_M3U8 && e.onCacheProcess && e.onCacheProcess(e.player.getCachePTS()), !0 === o && null != a && (a.length, e.configFormat.extInfo.readyShow && (e.configFormat.type === f.PLAYER_IN_TYPE_M3U8 ? e.configFormat.extInfo.readyShow = !1 : e.configFormat.extInfo.core === f.PLAYER_CORE_TYPE_CNATIVE || e.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL && (e.player.playFrameYUV(!0, !0), e.configFormat.extInfo.readyShow = !1, e.onReadyShowDone && e.onReadyShowDone())), t++), !0 === l && null != s && i++, t > n) return window.clearInterval(e.timerFeed), e.timerFeed = null, e.player.vCachePTS, e.player.aCachePTS, void (null != r && r());
             }, 5);
           }
         }, {
@@ -5922,13 +5961,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var a = this,
                 s = arguments.length > 4 && void 0 !== arguments[4] && arguments[4],
                 o = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : null,
-                h = this;
+                l = this;
 
-            if (this.playParam.durationMs = e, this.playParam.fps = t, this.playParam.sampleRate = i, this.playParam.size = r, this.playParam.audioNone = s, this.playParam.videoCodec = o || f.CODEC_H265, this.playParam, (this.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && this.hlsConf.hlsType == f.PLAYER_IN_TYPE_M3U8_LIVE || this.configFormat.type == f.PLAYER_IN_TYPE_RAW_265) && (this.playMode = f.PLAYER_MODE_NOTIME_LIVE), h.configFormat.extInfo.autoCrop) {
-              var l = document.querySelector("#" + this.configFormat.playerId),
+            if (this.playParam.durationMs = e, this.playParam.fps = t, this.playParam.sampleRate = i, this.playParam.size = r, this.playParam.audioNone = s, this.playParam.videoCodec = o || f.CODEC_H265, this.playParam, (this.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && this.hlsConf.hlsType == f.PLAYER_IN_TYPE_M3U8_LIVE || this.configFormat.type == f.PLAYER_IN_TYPE_RAW_265) && (this.playMode = f.PLAYER_MODE_NOTIME_LIVE), l.configFormat.extInfo.autoCrop) {
+              var h = document.querySelector("#" + this.configFormat.playerId),
                   u = r.width / r.height,
                   d = this.configFormat.playerW / this.configFormat.playerH;
-              u > d ? l.style.height = this.configFormat.playerW / u + "px" : u < d && (l.style.width = this.configFormat.playerH * u + "px");
+              u > d ? h.style.height = this.configFormat.playerW / u + "px" : u < d && (h.style.width = this.configFormat.playerH * u + "px");
             }
 
             this.player = n({
@@ -5943,24 +5982,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               token: this.configFormat.token,
               videoCodec: o
             }), this.player.onPlayingTime = function (t) {
-              h._durationText(t), h._durationText(e / 1e3), null != h.onPlayTime && h.onPlayTime(t);
+              l._durationText(t), l._durationText(e / 1e3), null != l.onPlayTime && l.onPlayTime(t);
             }, this.player.onPlayingFinish = function () {
               a.pause(), a.seek(0), null != a.onPlayFinish && a.onPlayFinish();
             }, this.player.onSeekFinish = function () {
-              null != h.onSeekFinish && h.onSeekFinish();
+              null != l.onSeekFinish && l.onSeekFinish();
             }, this.player.onRender = function (e, t, i, r, n) {
               null != a.onRender && a.onRender(e, t, i, r, n);
             }, this.player.onLoadCache = function () {
               null != a.onLoadCache && a.onLoadCache();
             }, this.player.onLoadCacheFinshed = function () {
               null != a.onLoadCacheFinshed && a.onLoadCacheFinshed();
-            }, h.player.setDurationMs(e), h.player.setFrameRate(t), null != h.onLoadFinish && (h.onLoadFinish(), h.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && h.onReadyShowDone && h.onReadyShowDone());
+            }, l.player.setDurationMs(e), l.player.setFrameRate(t), null != l.onLoadFinish && (l.onLoadFinish(), l.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && l.onReadyShowDone && l.onReadyShowDone());
           }
         }, {
           key: "_makeNativePlayer",
           value: function value(e, t, i, r, n, s) {
-            var o = this,
-                h = this;
+            var o = this;
             this.playParam.durationMs = e, this.playParam.fps = t, this.playParam.sampleRate = i, this.playParam.size = r, this.playParam.audioNone = n, this.playParam.videoCodec = s || f.CODEC_H264, this.configFormat.type == f.PLAYER_IN_TYPE_M3U8 && this.hlsConf.hlsType == f.PLAYER_IN_TYPE_M3U8_LIVE && (this.playMode = f.PLAYER_MODE_NOTIME_LIVE), this.player = new a.Mp4Player({
               width: this.configFormat.playerW,
               height: this.configFormat.playerH,
@@ -5973,16 +6011,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               token: this.configFormat.token,
               videoCodec: s
             }), this.player.makeIt(this.videoURL), this.player.onPlayingTime = function (t) {
-              h._durationText(t), h._durationText(e / 1e3), null != h.onPlayTime && h.onPlayTime(t);
+              o._durationText(t), o._durationText(e / 1e3), null != o.onPlayTime && o.onPlayTime(t);
             }, this.player.onPlayingFinish = function () {
               null != o.onPlayFinish && o.onPlayFinish();
-            }, null != this.onLoadFinish && this.onLoadFinish();
+            }, this.player.onLoadFinish = function () {
+              o.playParam.durationMs = 1e3 * o.player.duration, o.onLoadFinish && o.onLoadFinish();
+            };
           }
         }, {
           key: "_initMp4BoxObject",
           value: function value() {
             var e = this;
-            this.timerFeed = null, this.mp4Obj = new l(), this.mp4Obj.onMp4BoxReady = function (t) {
+            this.timerFeed = null, this.mp4Obj = new h(), this.mp4Obj.onMp4BoxReady = function (t) {
               var i = e.mp4Obj.getFPS(),
                   r = m(i, e.mp4Obj.getDurationMs()),
                   n = e.mp4Obj.getSampleRate(),
@@ -6007,7 +6047,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           value: function value() {
             var e = this,
                 t = this;
-            this.timerFeed = null, this.mp4Obj = new l(), this._initMp4BoxObject(), this.mp4Obj.demux();
+            this.timerFeed = null, this.mp4Obj = new h(), this._initMp4BoxObject(), this.mp4Obj.demux();
             var i = 0,
                 r = !1,
                 n = window.setInterval(function () {
@@ -6027,7 +6067,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           value: function value() {
             var e = this,
                 t = this,
-                i = {
+                i = new AbortController(),
+                r = i.signal,
+                n = {
               width: this.configFormat.playerW,
               height: this.configFormat.playerH,
               playerId: this.configFormat.playerId,
@@ -6037,13 +6079,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               ignoreAudio: this.configFormat.extInfo.ignoreAudio,
               playMode: this.playMode
             };
-            this.player = new s.CNativeCore(i), this.player.onReadyShowDone = function () {
+            this.player = new s.CNativeCore(n), this.player.onReadyShowDone = function () {
               t.configFormat.extInfo.readyShow = !1, t.onReadyShowDone && t.onReadyShowDone();
             }, this.player.onProbeFinish = function () {
               t.player.mediaInfo, t.player.config, t.playParam.fps = t.player.config.fps, t.playParam.durationMs = m(t.playParam.fps, 1e3 * t.player.duration), t.player.duration < 0 && (t.playMode = f.PLAYER_MODE_NOTIME_LIVE), t.playParam.sampleRate = t.player.config.sampleRate, t.playParam.size = {
                 width: t.player.width,
                 height: t.player.height
-              }, t.playParam.audioNone = t.player.audioNone, t.player.vCodecID === f.V_CODEC_NAME_HEVC ? (t.playParam.audioIdx < 0 && (t.playParam.audioNone = !0), t.playParam.videoCodec = f.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = f.CODEC_H264, t.player.release(), t.player = null, t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec));
+              }, t.playParam.audioNone = t.player.audioNone, t.player.vCodecID === f.V_CODEC_NAME_HEVC ? (t.playParam.audioIdx < 0 && (t.playParam.audioNone = !0), t.playParam.videoCodec = f.CODEC_H265, t.onLoadFinish && t.onLoadFinish()) : (t.playParam.videoCodec = f.CODEC_H264, i.abort(), t.player.release(), t.player = null, t.mediaExtFormat === f.PLAYER_IN_TYPE_MP4 ? t._makeNativePlayer(t.playParam.durationMs, t.playParam.fps, t.playParam.sampleRate, t.playParam.size, !1, t.playParam.videoCodec) : t.onLoadFinish && t.onLoadFinish());
             }, this.player.onPlayingTime = function (e) {
               t._durationText(e), t._durationText(t.player.duration), null != t.onPlayTime && t.onPlayTime(e);
             }, this.player.onPlayingFinish = function () {
@@ -6059,14 +6101,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             }, this.player.onSeekFinish = function () {
               null != e.onSeekFinish && e.onSeekFinish();
             };
-            var r = 0,
-                n = new AbortController(),
-                a = n.signal;
+            var a = 0;
             fetch(this.videoURL, {
-              signal: a
+              signal: r
             }).then(function (e) {
-              if (e.headers.has("Content-Length")) r = e.headers.get("Content-Length"), t.player && t.player.setProbeSize(r * t.configFormat.extInfo.coreProbePart);else {
-                if (t.mediaExtFormat === f.PLAYER_IN_TYPE_FLV) return n.abort(), t.player.release(), t.player = null, t._cLiveFLVDecoderEntry(i), !0;
+              if (e.headers.has("Content-Length")) a = e.headers.get("Content-Length"), t.player && t.player.setProbeSize(a * t.configFormat.extInfo.coreProbePart);else {
+                if (t.mediaExtFormat === f.PLAYER_IN_TYPE_FLV) return i.abort(), t.player.release(), t.player = null, t._cLiveFLVDecoderEntry(n), !0;
                 t.player && t.player.setProbeSize(4096);
               }
               return function e(i) {
@@ -6081,7 +6121,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 });
               }(e.body.getReader());
             })["catch"](function (e) {
-              console.error(e);
+              e.toString().includes("user aborted") || console.error("cdemuxdecoder error", e);
             });
           }
         }, {
@@ -6107,14 +6147,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, {
           key: "_mpegTsEntry",
           value: function value() {
-            var e = this;
-            this.timerFeed = null, this.mpegTsObj = new u.MpegTs(), this.mpegTsObj.bindReady(e), this.mpegTsObj.onDemuxed = this._mpegTsEntryReady, this.mpegTsObj.onReady = function () {
-              fetch(e.videoURL).then(function (e) {
+            var e = this,
+                t = new AbortController(),
+                i = t.signal;
+            this.timerFeed = null, this.mpegTsObj = new u.MpegTs(), this.mpegTsObj.bindReady(e), this.mpegTsObj.onDemuxed = this._mpegTsEntryReady.bind(this), this.mpegTsObj.onReady = function () {
+              fetch(e.videoURL, {
+                signal: i
+              }).then(function (e) {
                 return e.arrayBuffer();
-              }).then(function (t) {
-                t.fileStart = 0;
-                var i = new Uint8Array(t);
-                e.mpegTsObj.demux(i);
+              }).then(function (i) {
+                if (void 0 !== e.mpegTsObj && null !== e.mpegTsObj) {
+                  i.fileStart = 0;
+                  var r = new Uint8Array(i);
+                  e.mpegTsObj.demux(r);
+                } else t.abort();
               });
             }, this.mpegTsObj.initMPEG();
           }
@@ -6122,11 +6168,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           key: "_mpegTsEntryReady",
           value: function value(e) {
             var t = e,
-                i = t.mpegTsObj.getACodec(),
+                i = (t.mpegTsObj.getVCodec(), t.mpegTsObj.getACodec()),
                 r = t.mpegTsObj.getDurationMs(),
                 n = t.mpegTsObj.getFPS(),
                 a = t.mpegTsObj.getSampleRate(),
-                s = t.mpegTsObj.getSize();
+                s = t.mpegTsObj.getSize(),
+                o = this.mpegTsObj.isHEVC();
+            if (!o) return this.mpegTsObj.releaseTsDemuxer(), this.mpegTsObj = null, this.playParam.durationMs = r, this.playParam.fps = n, this.playParam.sampleRate = a, this.playParam.size = s, this.playParam.audioNone = "" == i, this.playParam.videoCodec = o ? 0 : 1, this.playParam, void (this.onLoadFinish && this.onLoadFinish());
             t._makeMP4PlayerViewEvent(r, n, a, s, "" == i), parseInt(r / 1e3), t._avFeedMP4Data(0, 0);
           }
         }, {
@@ -6142,12 +6190,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               e.playMode !== f.PLAYER_MODE_NOTIME_LIVE && e.onCacheProcess && e.onCacheProcess(t);
             }, this.hlsObj.onDemuxed = function (e) {
               if (null == t.player) {
-                var i = t.hlsObj.getACodec(),
-                    n = t.hlsObj.getFPS(),
-                    a = t.hlsObj.getSampleRate(),
-                    s = t.hlsObj.getSize(),
-                    o = !1;
-                o = t.hlsObj.getSampleChannel() <= 0 || "" === i, t._makeMP4PlayerViewEvent(r, n, a, s, o);
+                var i = t.hlsObj.isHevcParam,
+                    n = (t.hlsObj.getVCodec(), t.hlsObj.getACodec()),
+                    a = t.hlsObj.getFPS(),
+                    s = t.hlsObj.getSampleRate(),
+                    o = t.hlsObj.getSize(),
+                    l = !1;
+                if (l = t.hlsObj.getSampleChannel() <= 0 || "" === n, !i) return t.hlsObj.release(), t.hlsObj.mpegTsObj && t.hlsObj.mpegTsObj.releaseTsDemuxer(), t.hlsObj = null, t.playParam.durationMs = -1, t.playParam.fps = a, t.playParam.sampleRate = s, t.playParam.size = o, t.playParam.audioNone = "" == n, t.playParam.videoCodec = i ? 0 : 1, t.playParam, void (t.onLoadFinish && t.onLoadFinish());
+
+                t._makeMP4PlayerViewEvent(r, a, s, o, l);
               }
             }, this.hlsObj.onSamples = this._hlsOnSamples.bind(this), this.hlsObj.demux(this.videoURL);
           }
@@ -6222,7 +6273,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           audioNone: t.audioNone || !1,
           token: t.token || null,
           videoCodec: t.videoCodec || n.CODEC_H265
-        }, this.video = null, this.isPlaying = !1, this.onPlayingTime = null, this.onPlayingFinish = null;
+        }, this.video = null, this.isPlaying = !1, this.duration = -1, this.onLoadFinish = null, this.onPlayingTime = null, this.onPlayingFinish = null;
       }
 
       var t, i, a;
@@ -6231,11 +6282,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         value: function value(e) {
           var t = this,
               i = document.querySelector("div#" + this.configFormat.playerId);
-          this.video = document.createElement("video"), this.video.src = e, this.video.style.width = "100%", this.video.style.height = "100%", i.appendChild(this.video), this.video.ontimeupdate = function () {
+          this.video = document.createElement("video"), this.video.ontimeupdate = function () {
             t.onPlayingTime && t.onPlayingTime(t.video.currentTime);
           }, this.video.onended = function () {
             t.onPlayingFinish && t.onPlayingFinish();
-          };
+          }, this.video.onloadedmetadata = function () {
+            t.duration = t.video.duration, t.onLoadFinish && t.onLoadFinish();
+          }, this.video.src = e, this.video.style.width = "100%", this.video.style.height = "100%", i.appendChild(this.video);
         }
       }, {
         key: "play",
@@ -6294,14 +6347,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             s = i.createShader(i.VERTEX_SHADER);
         i.shaderSource(s, a), i.compileShader(s);
         var o = ["precision highp float;", "varying lowp vec2 vTextureCoord;", "uniform sampler2D YTexture;", "uniform sampler2D UTexture;", "uniform sampler2D VTexture;", "const mat4 YUV2RGB = mat4", "(", " 1.1643828125, 0, 1.59602734375, -.87078515625,", " 1.1643828125, -.39176171875, -.81296875, .52959375,", " 1.1643828125, 2.017234375, 0, -1.081390625,", " 0, 0, 0, 1", ");", "void main(void) {", " gl_FragColor = vec4( texture2D(YTexture, vTextureCoord).x, texture2D(UTexture, vTextureCoord).x, texture2D(VTexture, vTextureCoord).x, 1) * YUV2RGB;", "}"].join("\n"),
-            h = i.createShader(i.FRAGMENT_SHADER);
-        i.shaderSource(h, o), i.compileShader(h), i.attachShader(n, s), i.attachShader(n, h), i.linkProgram(n), i.useProgram(n), i.getProgramParameter(n, i.LINK_STATUS);
-        var l = i.getAttribLocation(n, "aVertexPosition");
-        i.enableVertexAttribArray(l);
+            l = i.createShader(i.FRAGMENT_SHADER);
+        i.shaderSource(l, o), i.compileShader(l), i.attachShader(n, s), i.attachShader(n, l), i.linkProgram(n), i.useProgram(n), i.getProgramParameter(n, i.LINK_STATUS);
+        var h = i.getAttribLocation(n, "aVertexPosition");
+        i.enableVertexAttribArray(h);
         var u = i.getAttribLocation(n, "aTextureCoord");
         i.enableVertexAttribArray(u);
         var d = i.createBuffer();
-        i.bindBuffer(i.ARRAY_BUFFER, d), i.bufferData(i.ARRAY_BUFFER, new Float32Array([1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0]), i.STATIC_DRAW), i.vertexAttribPointer(l, 3, i.FLOAT, !1, 0, 0);
+        i.bindBuffer(i.ARRAY_BUFFER, d), i.bufferData(i.ARRAY_BUFFER, new Float32Array([1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0]), i.STATIC_DRAW), i.vertexAttribPointer(h, 3, i.FLOAT, !1, 0, 0);
         var f = i.createBuffer();
         return i.bindBuffer(i.ARRAY_BUFFER, f), i.bufferData(i.ARRAY_BUFFER, new Float32Array([1, 0, 0, 0, 1, 1, 0, 1]), i.STATIC_DRAW), i.vertexAttribPointer(u, 2, i.FLOAT, !1, 0, 0), i.y = new r(i), i.u = new r(i), i.v = new r(i), i.y.bind(0, n, "YTexture"), i.u.bind(1, n, "UTexture"), i.v.bind(2, n, "VTexture"), i;
       }
@@ -6389,7 +6442,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20211013');
+require('./h265webjs-v20211014');
 
 var h265webjs =
 /*#__PURE__*/
@@ -6417,7 +6470,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20211013":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20211014":1}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
