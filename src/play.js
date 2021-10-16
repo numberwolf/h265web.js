@@ -225,6 +225,16 @@ global.makeH265webjs = (videoURL, config) => {
         playerObj.setVoice(1.0);
         mediaInfo = playerObj.mediaInfo();
         console.log("mediaInfo===========>", mediaInfo);
+
+        if (mediaInfo.meta.isHEVC === false) {
+            console.log("is not HEVC/H.265 media!");
+            coverToast.removeAttribute('hidden');
+            coverBtn.style.width = '100%';
+            coverBtn.style.fontSize = '50px';
+            coverBtn.innerHTML = 'is not HEVC/H.265 media!';
+            return;
+        }
+        console.log("is HEVC/H.265 media.");
         /*
         meta:
             durationMs: 144400

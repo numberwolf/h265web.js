@@ -679,13 +679,13 @@ class CNativeCoreModule {
 		if (this.config.checkProbe === true) {
     		this.avRecvInterval = window.setInterval(() => {
     			let decRet = Module.cwrap('getSniffStreamPkg', 'number', ['number'])(this.corePtr);
-				// console.log("getSniffStreamPkg decRet : ", decRet);
+				console.log("getSniffStreamPkg decRet : ", decRet);
 				this._avCheckRecvFinish();
     		}, 5);
     	} else {
     		this.avRecvInterval = window.setInterval(() => {
     			let decRet = Module.cwrap('getSniffStreamPkgNoCheckProbe', 'number', ['number'])(this.corePtr);
-				// console.log("getSniffStreamPkgNoCheckProbe decRet : ", decRet);
+				console.log("getSniffStreamPkgNoCheckProbe decRet : ", decRet);
 				this._avCheckRecvFinish();
     		}, 5);
     	}

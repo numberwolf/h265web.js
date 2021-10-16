@@ -888,7 +888,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
-| 时间 | 2021/10/14 - Evening |
+| Time | 2021/10/16 - Evening |
+| - | 0.Fixed: HTTP-FLV: Mediainfo's codec fault value |
+| - | 1.Update example |
+| Time | 2021/10/14 - Evening |
 | - | 0.Fixed: Mediainfo's codec fault value |
 | Time | 2021/10/13 - Evening |
 | - | 0.The player compatible with WebIDE develop, split wasm(js) and h265web.js, need include wasm(js) as single |

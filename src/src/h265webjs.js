@@ -1439,7 +1439,7 @@ class H265webjsModule {
                     _this.playParam.audioNone = true;
                 }
                 _this.playParam.videoCodec = def.CODEC_H265;
-                _this.onLoadFinish && _this.onLoadFinish();
+                // _this.onLoadFinish && _this.onLoadFinish();
 
             } else {
                 // @TODO need 264 codec, but do not use
@@ -1448,12 +1448,12 @@ class H265webjsModule {
                 console.log("releaseRet ===> ", releaseRet);
                 _this.player = null;
 
-                _this._makeNativePlayer(
-                    _this.playParam.durationMs, _this.playParam.fps, 
-                    _this.playParam.sampleRate, _this.playParam.size, 
-                    false, _this.playParam.videoCodec);
+                // _this._makeNativePlayer(
+                //     _this.playParam.durationMs, _this.playParam.fps, 
+                //     _this.playParam.sampleRate, _this.playParam.size, 
+                //     false, _this.playParam.videoCodec);
             }
-            // _this.onLoadFinish && _this.onLoadFinish();
+            _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
 
         this.player.onNetworkError = (error) => {

@@ -2197,9 +2197,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return s;
     };
 
-    var p = function p() {};
+    var c = function c() {};
 
-    p.prototype.parseSample = function (e) {
+    c.prototype.parseSample = function (e) {
       var t,
           i = {};
       i.resources = [];
@@ -2214,14 +2214,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       return "undefined" != typeof DOMParser && (i.document = new DOMParser().parseFromString(i.documentString, "application/xml")), i;
     };
 
-    var c = function c() {};
+    var p = function p() {};
 
-    c.prototype.parseSample = function (e) {
+    p.prototype.parseSample = function (e) {
       return new s(e.data.buffer).readString(e.data.length);
-    }, c.prototype.parseConfig = function (e) {
+    }, p.prototype.parseConfig = function (e) {
       var t = new s(e.buffer);
       return t.readUint32(), t.readCString();
-    }, void 0 !== i && (i.XMLSubtitlein4Parser = p, i.Textin4Parser = c);
+    }, void 0 !== i && (i.XMLSubtitlein4Parser = c, i.Textin4Parser = p);
 
     var m = function m(e) {
       this.stream = e || new h(), this.boxes = [], this.mdats = [], this.moofs = [], this.isProgressive = !1, this.moovStartFound = !1, this.onMoovStart = null, this.moovStartSent = !1, this.onReady = null, this.readySent = !1, this.onSegment = null, this.onSamples = null, this.onError = null, this.sampleListBuilt = !1, this.fragmentedTracks = [], this.extractedTracks = [], this.isFragmentationInitialized = !1, this.sampleProcessingStarted = !1, this.nextMoofNumber = 0, this.itemListBuilt = !1, this.onSidx = null, this.sidxSent = !1;
@@ -2583,31 +2583,31 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         t = this.moov.traks[e], this.buildTrakSampleLists(t);
       }
     }, m.prototype.buildTrakSampleLists = function (e) {
-      var t, i, r, n, a, s, o, l, h, u, d, f, p, c, _, y, g, v, b, S, E, A, P, w;
+      var t, i, r, n, a, s, o, l, h, u, d, f, c, p, _, y, g, v, b, S, E, A, P, w;
 
       if (e.samples = [], e.samples_duration = 0, e.samples_size = 0, i = e.mdia.minf.stbl.stco || e.mdia.minf.stbl.co64, r = e.mdia.minf.stbl.stsc, n = e.mdia.minf.stbl.stsz || e.mdia.minf.stbl.stz2, a = e.mdia.minf.stbl.stts, s = e.mdia.minf.stbl.ctts, o = e.mdia.minf.stbl.stss, l = e.mdia.minf.stbl.stsd, h = e.mdia.minf.stbl.subs, f = e.mdia.minf.stbl.stdp, u = e.mdia.minf.stbl.sbgps, d = e.mdia.minf.stbl.sgpds, v = -1, b = -1, S = -1, E = -1, A = 0, P = 0, w = 0, m.initSampleGroups(e, null, u, d), void 0 !== n) {
         for (t = 0; t < n.sample_sizes.length; t++) {
           var x = {};
-          x.number = t, x.track_id = e.tkhd.track_id, x.timescale = e.mdia.mdhd.timescale, x.alreadyRead = 0, e.samples[t] = x, x.size = n.sample_sizes[t], e.samples_size += x.size, 0 === t ? (c = 1, p = 0, x.chunk_index = c, x.chunk_run_index = p, g = r.samples_per_chunk[p], y = 0, _ = p + 1 < r.first_chunk.length ? r.first_chunk[p + 1] - 1 : 1 / 0) : t < g ? (x.chunk_index = c, x.chunk_run_index = p) : (c++, x.chunk_index = c, y = 0, c <= _ || (_ = ++p + 1 < r.first_chunk.length ? r.first_chunk[p + 1] - 1 : 1 / 0), x.chunk_run_index = p, g += r.samples_per_chunk[p]), x.description_index = r.sample_description_index[x.chunk_run_index] - 1, x.description = l.entries[x.description_index], x.offset = i.chunk_offsets[x.chunk_index - 1] + y, y += x.size, t > v && (b++, v < 0 && (v = 0), v += a.sample_counts[b]), t > 0 ? (e.samples[t - 1].duration = a.sample_deltas[b], e.samples_duration += e.samples[t - 1].duration, x.dts = e.samples[t - 1].dts + e.samples[t - 1].duration) : x.dts = 0, s ? (t >= S && (E++, S < 0 && (S = 0), S += s.sample_counts[E]), x.cts = e.samples[t].dts + s.sample_offsets[E]) : x.cts = x.dts, o ? (t == o.sample_numbers[A] - 1 ? (x.is_sync = !0, A++) : (x.is_sync = !1, x.degradation_priority = 0), h && h.entries[P].sample_delta + w == t + 1 && (x.subsamples = h.entries[P].subsamples, w += h.entries[P].sample_delta, P++)) : x.is_sync = !0, m.process_sdtp(e.mdia.minf.stbl.sdtp, x, x.number), x.degradation_priority = f ? f.priority[t] : 0, h && h.entries[P].sample_delta + w == t && (x.subsamples = h.entries[P].subsamples, w += h.entries[P].sample_delta), (u.length > 0 || d.length > 0) && m.setSampleGroupProperties(e, x, t, e.sample_groups_info);
+          x.number = t, x.track_id = e.tkhd.track_id, x.timescale = e.mdia.mdhd.timescale, x.alreadyRead = 0, e.samples[t] = x, x.size = n.sample_sizes[t], e.samples_size += x.size, 0 === t ? (p = 1, c = 0, x.chunk_index = p, x.chunk_run_index = c, g = r.samples_per_chunk[c], y = 0, _ = c + 1 < r.first_chunk.length ? r.first_chunk[c + 1] - 1 : 1 / 0) : t < g ? (x.chunk_index = p, x.chunk_run_index = c) : (p++, x.chunk_index = p, y = 0, p <= _ || (_ = ++c + 1 < r.first_chunk.length ? r.first_chunk[c + 1] - 1 : 1 / 0), x.chunk_run_index = c, g += r.samples_per_chunk[c]), x.description_index = r.sample_description_index[x.chunk_run_index] - 1, x.description = l.entries[x.description_index], x.offset = i.chunk_offsets[x.chunk_index - 1] + y, y += x.size, t > v && (b++, v < 0 && (v = 0), v += a.sample_counts[b]), t > 0 ? (e.samples[t - 1].duration = a.sample_deltas[b], e.samples_duration += e.samples[t - 1].duration, x.dts = e.samples[t - 1].dts + e.samples[t - 1].duration) : x.dts = 0, s ? (t >= S && (E++, S < 0 && (S = 0), S += s.sample_counts[E]), x.cts = e.samples[t].dts + s.sample_offsets[E]) : x.cts = x.dts, o ? (t == o.sample_numbers[A] - 1 ? (x.is_sync = !0, A++) : (x.is_sync = !1, x.degradation_priority = 0), h && h.entries[P].sample_delta + w == t + 1 && (x.subsamples = h.entries[P].subsamples, w += h.entries[P].sample_delta, P++)) : x.is_sync = !0, m.process_sdtp(e.mdia.minf.stbl.sdtp, x, x.number), x.degradation_priority = f ? f.priority[t] : 0, h && h.entries[P].sample_delta + w == t && (x.subsamples = h.entries[P].subsamples, w += h.entries[P].sample_delta), (u.length > 0 || d.length > 0) && m.setSampleGroupProperties(e, x, t, e.sample_groups_info);
         }
 
         t > 0 && (e.samples[t - 1].duration = Math.max(e.mdia.mdhd.duration - e.samples[t - 1].dts, 0), e.samples_duration += e.samples[t - 1].duration);
       }
     }, m.prototype.updateSampleLists = function () {
-      var e, t, i, r, n, a, s, o, l, h, u, f, p, c, _;
+      var e, t, i, r, n, a, s, o, l, h, u, f, c, p, _;
 
       if (void 0 !== this.moov) for (; this.lastMoofIndex < this.moofs.length;) {
         if (l = this.moofs[this.lastMoofIndex], this.lastMoofIndex++, "moof" == l.type) for (h = l, e = 0; e < h.trafs.length; e++) {
-          for (u = h.trafs[e], f = this.getTrackById(u.tfhd.track_id), p = this.getTrexById(u.tfhd.track_id), r = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DESC ? u.tfhd.default_sample_description_index : p ? p.default_sample_description_index : 1, n = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DUR ? u.tfhd.default_sample_duration : p ? p.default_sample_duration : 0, a = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_SIZE ? u.tfhd.default_sample_size : p ? p.default_sample_size : 0, s = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_FLAGS ? u.tfhd.default_sample_flags : p ? p.default_sample_flags : 0, u.sample_number = 0, u.sbgps.length > 0 && m.initSampleGroups(f, u, u.sbgps, f.mdia.minf.stbl.sgpds, u.sgpds), t = 0; t < u.truns.length; t++) {
+          for (u = h.trafs[e], f = this.getTrackById(u.tfhd.track_id), c = this.getTrexById(u.tfhd.track_id), r = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DESC ? u.tfhd.default_sample_description_index : c ? c.default_sample_description_index : 1, n = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_DUR ? u.tfhd.default_sample_duration : c ? c.default_sample_duration : 0, a = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_SIZE ? u.tfhd.default_sample_size : c ? c.default_sample_size : 0, s = u.tfhd.flags & d.TFHD_FLAG_SAMPLE_FLAGS ? u.tfhd.default_sample_flags : c ? c.default_sample_flags : 0, u.sample_number = 0, u.sbgps.length > 0 && m.initSampleGroups(f, u, u.sbgps, f.mdia.minf.stbl.sgpds, u.sgpds), t = 0; t < u.truns.length; t++) {
             var y = u.truns[t];
 
             for (i = 0; i < y.sample_count; i++) {
-              (c = {}).moof_number = this.lastMoofIndex, c.number_in_traf = u.sample_number, u.sample_number++, c.number = f.samples.length, u.first_sample_index = f.samples.length, f.samples.push(c), c.track_id = f.tkhd.track_id, c.timescale = f.mdia.mdhd.timescale, c.description_index = r - 1, c.description = f.mdia.minf.stbl.stsd.entries[c.description_index], c.size = a, y.flags & d.TRUN_FLAGS_SIZE && (c.size = y.sample_size[i]), f.samples_size += c.size, c.duration = n, y.flags & d.TRUN_FLAGS_DURATION && (c.duration = y.sample_duration[i]), f.samples_duration += c.duration, f.first_traf_merged || i > 0 ? c.dts = f.samples[f.samples.length - 2].dts + f.samples[f.samples.length - 2].duration : (u.tfdt ? c.dts = u.tfdt.baseMediaDecodeTime : c.dts = 0, f.first_traf_merged = !0), c.cts = c.dts, y.flags & d.TRUN_FLAGS_CTS_OFFSET && (c.cts = c.dts + y.sample_composition_time_offset[i]), _ = s, y.flags & d.TRUN_FLAGS_FLAGS ? _ = y.sample_flags[i] : 0 === i && y.flags & d.TRUN_FLAGS_FIRST_FLAG && (_ = y.first_sample_flags), c.is_sync = !(_ >> 16 & 1), c.is_leading = _ >> 26 & 3, c.depends_on = _ >> 24 & 3, c.is_depended_on = _ >> 22 & 3, c.has_redundancy = _ >> 20 & 3, c.degradation_priority = 65535 & _;
+              (p = {}).moof_number = this.lastMoofIndex, p.number_in_traf = u.sample_number, u.sample_number++, p.number = f.samples.length, u.first_sample_index = f.samples.length, f.samples.push(p), p.track_id = f.tkhd.track_id, p.timescale = f.mdia.mdhd.timescale, p.description_index = r - 1, p.description = f.mdia.minf.stbl.stsd.entries[p.description_index], p.size = a, y.flags & d.TRUN_FLAGS_SIZE && (p.size = y.sample_size[i]), f.samples_size += p.size, p.duration = n, y.flags & d.TRUN_FLAGS_DURATION && (p.duration = y.sample_duration[i]), f.samples_duration += p.duration, f.first_traf_merged || i > 0 ? p.dts = f.samples[f.samples.length - 2].dts + f.samples[f.samples.length - 2].duration : (u.tfdt ? p.dts = u.tfdt.baseMediaDecodeTime : p.dts = 0, f.first_traf_merged = !0), p.cts = p.dts, y.flags & d.TRUN_FLAGS_CTS_OFFSET && (p.cts = p.dts + y.sample_composition_time_offset[i]), _ = s, y.flags & d.TRUN_FLAGS_FLAGS ? _ = y.sample_flags[i] : 0 === i && y.flags & d.TRUN_FLAGS_FIRST_FLAG && (_ = y.first_sample_flags), p.is_sync = !(_ >> 16 & 1), p.is_leading = _ >> 26 & 3, p.depends_on = _ >> 24 & 3, p.is_depended_on = _ >> 22 & 3, p.has_redundancy = _ >> 20 & 3, p.degradation_priority = 65535 & _;
               var g = !!(u.tfhd.flags & d.TFHD_FLAG_BASE_DATA_OFFSET),
                   v = !!(u.tfhd.flags & d.TFHD_FLAG_DEFAULT_BASE_IS_MOOF),
                   b = !!(y.flags & d.TRUN_FLAGS_DATA_OFFSET),
                   S = 0;
-              S = g ? u.tfhd.base_data_offset : v || 0 === t ? h.start : o, c.offset = 0 === t && 0 === i ? b ? S + y.data_offset : S : o, o = c.offset + c.size, (u.sbgps.length > 0 || u.sgpds.length > 0 || f.mdia.minf.stbl.sbgps.length > 0 || f.mdia.minf.stbl.sgpds.length > 0) && m.setSampleGroupProperties(f, c, c.number_in_traf, u.sample_groups_info);
+              S = g ? u.tfhd.base_data_offset : v || 0 === t ? h.start : o, p.offset = 0 === t && 0 === i ? b ? S + y.data_offset : S : o, o = p.offset + p.size, (u.sbgps.length > 0 || u.sgpds.length > 0 || f.mdia.minf.stbl.sbgps.length > 0 || f.mdia.minf.stbl.sgpds.length > 0) && m.setSampleGroupProperties(f, p, p.number_in_traf, u.sample_groups_info);
             }
           }
 
@@ -2616,7 +2616,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var E = u.first_sample_index;
 
             for (t = 0; t < u.subs.entries.length; t++) {
-              E += u.subs.entries[t].sample_delta, (c = f.samples[E - 1]).subsamples = u.subs.entries[t].subsamples;
+              E += u.subs.entries[t].sample_delta, (p = f.samples[E - 1]).subsamples = u.subs.entries[t].subsamples;
             }
           }
         }
@@ -3223,16 +3223,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       frameDataAlignCrop: function frameDataAlignCrop(e, t, i, r, n, a, s, o) {
         if (0 == e - r) return [a, s, o];
 
-        for (var l = r * n, h = l / 4, u = new Uint8Array(l), d = new Uint8Array(h), f = new Uint8Array(h), p = r, c = r / 2, m = 0; m < n; m++) {
-          u.set(a.subarray(m * e, p), m * n);
+        for (var l = r * n, h = l / 4, u = new Uint8Array(l), d = new Uint8Array(h), f = new Uint8Array(h), c = r, p = r / 2, m = 0; m < n; m++) {
+          u.set(a.subarray(m * e, c), m * n);
         }
 
         for (var _ = 0; _ < n / 2; _++) {
-          d.set(s.subarray(_ * t, c), _ * n / 2);
+          d.set(s.subarray(_ * t, p), _ * n / 2);
         }
 
         for (var y = 0; y < n / 2; y++) {
-          f.set(o.subarray(y * i, c), y * n / 2);
+          f.set(o.subarray(y * i, p), y * n / 2);
         }
 
         return [u, d, f];
@@ -3323,6 +3323,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               }, 5));
               break;
 
+            case "close":
+              t.AVGetInterval && clearInterval(t.AVGetInterval), t.AVGetInterval = null;
+
             case "fetch-fin":
               break;
 
@@ -3345,8 +3348,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           if (this.CanvasObj.offsetWidth != u || this.CanvasObj.offsetHeight != d) {
             var f = parseInt((this.canvasBox.offsetHeight - d) / 2),
-                p = parseInt((this.canvasBox.offsetWidth - u) / 2);
-            f = f < 0 ? 0 : f, p = p < 0 ? 0 : p, this.CanvasObj.style.marginTop = f + "px", this.CanvasObj.style.marginLeft = p + "px", this.CanvasObj.style.width = u + "px", this.CanvasObj.style.height = d + "px";
+                c = parseInt((this.canvasBox.offsetWidth - u) / 2);
+            f = f < 0 ? 0 : f, c = c < 0 ? 0 : c, this.CanvasObj.style.marginTop = f + "px", this.CanvasObj.style.marginLeft = c + "px", this.CanvasObj.style.width = u + "px", this.CanvasObj.style.height = d + "px";
           }
 
           return this.isCheckDisplay = !0, [u, d];
@@ -3363,8 +3366,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             String.fromCharCode(d[f]);
           }
 
-          var p = r;
-          r > 100 && (p = o.DEFAULT_FPS, this.mediaInfo.noFPS = !0), this.vCodecID = h, this.config.fps = p, this.mediaInfo.fps = p, this.mediaInfo.size.width = t, this.mediaInfo.size.height = i, this.frameTime = Math.floor(1e3 / (this.mediaInfo.fps + 2)), this.CanvasObj.width == t && this.CanvasObj.height == i || (this.CanvasObj.width = t, this.CanvasObj.height = i, this.isCheckDisplay) || this._checkDisplaySize(t, t, i), n >= 0 && !1 === this.mediaInfo.noFPS ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.config.sampleRate = a, this.mediaInfo.sampleRate = a, this.audioWAudio = s({
+          var c = r;
+          r > 100 && (c = o.DEFAULT_FPS, this.mediaInfo.noFPS = !0), this.vCodecID = h, this.config.fps = c, this.mediaInfo.fps = c, this.mediaInfo.size.width = t, this.mediaInfo.size.height = i, this.frameTime = Math.floor(1e3 / (this.mediaInfo.fps + 2)), this.CanvasObj.width == t && this.CanvasObj.height == i || (this.CanvasObj.width = t, this.CanvasObj.height = i, this.isCheckDisplay) || this._checkDisplaySize(t, t, i), n >= 0 && !1 === this.mediaInfo.noFPS ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.config.sampleRate = a, this.mediaInfo.sampleRate = a, this.audioWAudio = s({
             sampleRate: this.mediaInfo.sampleRate,
             appendType: o.APPEND_TYPE_FRAME
           }), this.audioWAudio.isLIVE = !0) : this.mediaInfo.audioNone = !0, this.onProbeFinish && this.onProbeFinish();
@@ -3376,16 +3379,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               u = new Uint8Array(h),
               d = Module.HEAPU8.subarray(t, t + n * o / 2),
               f = new Uint8Array(d),
-              p = Module.HEAPU8.subarray(i, i + a * o / 2),
-              c = {
+              c = Module.HEAPU8.subarray(i, i + a * o / 2),
+              p = {
             bufY: u,
             bufU: f,
-            bufV: new Uint8Array(p),
+            bufV: new Uint8Array(c),
             line_y: r,
             h: o,
             pts: l
           };
-          this.YuvBuf.push(c), this.checkCacheState(), Module._free(h), h = null, Module._free(d), d = null, Module._free(p), p = null, !1 === this.readyShowDone && (this.playYUV(), this.readyShowDone = !0, this.onReadyShowDone && this.onReadyShowDone(), this.audioWAudio || this.play());
+          this.YuvBuf.push(p), this.checkCacheState(), Module._free(h), h = null, Module._free(d), d = null, Module._free(c), c = null, !1 === this.readyShowDone && (this.playYUV(), this.readyShowDone = !0, this.onReadyShowDone && this.onReadyShowDone(), this.audioWAudio || this.play());
         }
       }, {
         key: "_callbackNALU",
@@ -3460,11 +3463,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, {
         key: "release",
         value: function value() {
-          this.pause(), this.NaluBuf.length = 0, this.YuvBuf.length = 0, void 0 !== this.workerFetch && null !== this.workerFetch && this.workerFetch.postMessage({
+          return this.pause(), this.NaluBuf.length = 0, this.YuvBuf.length = 0, void 0 !== this.workerFetch && null !== this.workerFetch && this.workerFetch.postMessage({
             cmd: "stop",
             data: "stop",
             msg: "stop"
-          }), this.workerFetch = null, Module.cwrap("releaseHttpFLV", "number", ["number"])(this.AVSniffPtr), this.playInterval && clearInterval(this.playInterval), this.playInterval = null, this.audioWAudio && this.audioWAudio.stop(), this.audioWAudio = null;
+          }), this.workerFetch = null, this.AVGetInterval && clearInterval(this.AVGetInterval), this.AVGetInterval = null, Module.cwrap("releaseHttpFLV", "number", ["number"])(this.AVSniffPtr), this.playInterval && clearInterval(this.playInterval), this.playInterval = null, this.audioWAudio && this.audioWAudio.stop(), this.audioWAudio = null, 0;
         }
       }, {
         key: "isPlayingState",
@@ -3571,7 +3574,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   break;
 
                 case "stop":
-                  e.abort(), self.close();
+                  e.abort(), self.close(), self.postMessage({
+                    cmd: "close",
+                    data: "close",
+                    msg: "close"
+                  });
               }
             };
           }.toString(), i = t.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/), r = [i[1]], window.URL.createObjectURL(new Blob(r, {
@@ -3632,7 +3639,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         f = function e(t, i, r, a, s, o, l, h, u) {
       n(this, e), this.pts = u, this.data_y = t, this.data_u = i, this.data_v = r, this.line1 = a, this.line2 = s, this.line3 = o, this.width = l, this.height = h, this.byteAlignIncr = this.line1 - this.width;
     },
-        p = function () {
+        c = function () {
       function e(t) {
         n(this, e), this.config = {
           width: t.width || u.DEFAULT_WIDTH,
@@ -3656,7 +3663,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         Module.cwrap("initializeSniffStreamModuleWithAOpt", "number", ["number", "number", "number", "number", "number"])(this.corePtr, i, r, a, o, l, this.config.ignoreAudio, h);
       }
 
-      var t, i, p;
+      var t, i, c;
       return t = e, (i = [{
         key: "release",
         value: function value() {
@@ -3779,8 +3786,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           if (this.canvas.offsetWidth != u || this.canvas.offsetHeight != d) {
             var f = parseInt((this.canvasBox.offsetHeight - d) / 2),
-                p = parseInt((this.canvasBox.offsetWidth - u) / 2);
-            f = f < 0 ? 0 : f, p = p < 0 ? 0 : p, this.canvas.style.marginTop = f + "px", this.canvas.style.marginLeft = p + "px", this.canvas.style.width = u + "px", this.canvas.style.height = d + "px";
+                c = parseInt((this.canvasBox.offsetWidth - u) / 2);
+            f = f < 0 ? 0 : f, c = c < 0 ? 0 : c, this.canvas.style.marginTop = f + "px", this.canvas.style.marginLeft = c + "px", this.canvas.style.width = u + "px", this.canvas.style.height = d + "px";
           }
 
           return this.isCheckDisplay = !0, [u, d];
@@ -3911,8 +3918,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var d = this;
           this._createYUVCanvas(), u.V_CODEC_NAME_HEVC, this.config.fps = 1 * r, this.frameTime = 1e3 / this.config.fps, this.width = t, this.height = i, this.frameDur = 1 / this.config.fps, this.duration = e - this.frameDur, this.vCodecID = o, this.config.sampleRate = a, this.channels = s, this.audioIdx = n, this.duration < 0 && (this.config.playMode = u.PLAYER_MODE_NOTIME_LIVE, this.frameTime, this.frameDur);
 
-          for (var f = Module.HEAPU8.subarray(l, l + 10), p = 0; p < f.length; p++) {
-            String.fromCharCode(f[p]);
+          for (var f = Module.HEAPU8.subarray(l, l + 10), c = 0; c < f.length; c++) {
+            String.fromCharCode(f[c]);
           }
 
           u.V_CODEC_NAME_HEVC === this.vCodecID && (n >= 0 && this.config.ignoreAudio < 1 ? (void 0 !== this.audioWAudio && null !== this.audioWAudio && (this.audioWAudio.stop(), this.audioWAudio = null), this.audioWAudio = h({
@@ -3981,11 +3988,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var d = this._videoQueue.length;
 
             if (this.canvas.width == r && this.canvas.height == l || (this.canvas.width = r, this.canvas.height = l, this.isCheckDisplay) || this._checkDisplaySize(s, r, l), !(this.playPTS > h)) {
-              var p = Module.HEAPU8.subarray(e, e + r * l),
-                  c = Module.HEAPU8.subarray(t, t + n * l / 2),
+              var c = Module.HEAPU8.subarray(e, e + r * l),
+                  p = Module.HEAPU8.subarray(t, t + n * l / 2),
                   m = Module.HEAPU8.subarray(i, i + a * l / 2),
-                  _ = new Uint8Array(p),
-                  y = new Uint8Array(c),
+                  _ = new Uint8Array(c),
+                  y = new Uint8Array(p),
                   g = new Uint8Array(m);
 
               this.config.readyShow && (o.renderFrame(this.yuv, _, y, g, r, l), this.config.readyShow = !1, this.onReadyShowDone && this.onReadyShowDone());
@@ -4015,10 +4022,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var i = Module.cwrap("pushSniffStreamData", "number", ["number", "number", "number", "number"])(this.corePtr, t, e.length, this.probeSize);
           return i;
         }
-      }]) && r(t.prototype, i), p && r(t, p), e;
+      }]) && r(t.prototype, i), c && r(t, c), e;
     }();
 
-    i.CNativeCore = p;
+    i.CNativeCore = c;
   }, {
     "../consts": 2,
     "../demuxer/buffer": 13,
@@ -4541,12 +4548,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var e = Module.addFunction(function (e, i, r, n, a, s, l, h, u) {
               var d = Module.HEAPU8.subarray(e, e + n * h),
                   f = Module.HEAPU8.subarray(i, i + a * h / 2),
-                  p = Module.HEAPU8.subarray(r, r + s * h / 2),
-                  c = new Uint8Array(d),
+                  c = Module.HEAPU8.subarray(r, r + s * h / 2),
+                  p = new Uint8Array(d),
                   m = new Uint8Array(f),
-                  _ = new Uint8Array(p),
+                  _ = new Uint8Array(c),
                   y = 1 * u / 1e3,
-                  g = new o.CacheYuvStruct(y, n, h, c, m, _);
+                  g = new o.CacheYuvStruct(y, n, h, p, m, _);
 
               t.cacheYuvBuf.appendCacheByCacheYuv(g);
             });
@@ -4738,10 +4745,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                       u = new s.BufferFrame(h, o, a, !0);
                   i.bufObject.appendFrame(u.pts, u.data, !0, u.isKey), i.vPreFramePTS = h, null != i.onSamples && i.onSamples(i.onReadyOBJ, u);
                 } else if (n <= i.aPreFramePTS && (e = !0), "aac" == i.mediaInfo.aCodec) for (var d = r.data, f = 0; f < d.length; f++) {
-                  var p = d[f],
-                      c = 1 == e ? p.ptime + i.vStartTime : n,
-                      m = new s.BufferFrame(c, !0, p.data, !1);
-                  i.bufObject.appendFrameByBufferFrame(m), i.aPreFramePTS = c, null != i.onSamples && i.onSamples(i.onReadyOBJ, m);
+                  var c = d[f],
+                      p = 1 == e ? c.ptime + i.vStartTime : n,
+                      m = new s.BufferFrame(p, !0, c.data, !1);
+                  i.bufObject.appendFrameByBufferFrame(m), i.aPreFramePTS = p, null != i.onSamples && i.onSamples(i.onReadyOBJ, m);
                 } else {
                   var _ = 1 == e ? n + i.vStartTime : n,
                       y = new s.BufferFrame(_, !0, r.data, !1);
@@ -5012,14 +5019,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 default:
                   d.key;
               }
-              var p = s.segmentParse.exec(u);
+              var c = s.segmentParse.exec(u);
 
-              if (null != p) {
-                var c = p[1];
-                this.duration += parseFloat(p[1]), o > c && (o = c);
+              if (null != c) {
+                var p = c[1];
+                this.duration += parseFloat(c[1]), o > p && (o = p);
                 var m = r[h += 1],
                     _ = null;
-                _ = m.indexOf("http") >= 0 ? m : this._preURI + m, this._slices.indexOf(_) < 0 && (this._slices.push(_), this._slices[this._slices.length - 1], null != this.onTransportStream && this.onTransportStream(_, c));
+                _ = m.indexOf("http") >= 0 ? m : this._preURI + m, this._slices.indexOf(_) < 0 && (this._slices.push(_), this._slices[this._slices.length - 1], null != this.onTransportStream && this.onTransportStream(_, p));
               }
             }
           }
@@ -5131,20 +5138,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               var f = l.dts / l.timescale;
 
               if (1 === t) {
-                var p = null,
-                    c = l.is_sync;
+                var c = null,
+                    p = l.is_sync;
 
                 if (e.videoCodec === o.CODEC_H265) {
-                  p = l.description.hvcC;
+                  c = l.description.hvcC;
                   var m = a.GET_NALU_TYPE(u[4]);
-                  c || (c = m == n.DEFINE_KEY_FRAME || l.is_sync);
-                } else e.videoCodec === o.CODEC_H264 && (p = l.description.avcC);
+                  p || (p = m == n.DEFINE_KEY_FRAME || l.is_sync);
+                } else e.videoCodec === o.CODEC_H264 && (c = l.description.avcC);
 
-                if (c) {
+                if (p) {
                   if (e.videoCodec == o.CODEC_H265) {
-                    var _ = p.nalu_arrays;
+                    var _ = c.nalu_arrays;
                     e.naluHeader.vps = e.setStartCode(_[0][0].data, !1), e.naluHeader.sps = e.setStartCode(_[1][0].data, !1), e.naluHeader.pps = e.setStartCode(_[2][0].data, !1), _.length > 3 ? e.naluHeader.sei = e.setStartCode(_[3][0].data, !1) : e.naluHeader.sei = new Uint8Array(), e.naluHeader;
-                  } else e.videoCodec == o.CODEC_H264 && (e.naluHeader.vps = new Uint8Array(), e.naluHeader.sps = e.setStartCode(p.SPS[0].nalu, !1), e.naluHeader.pps = e.setStartCode(p.PPS[0].nalu, !1), e.naluHeader.sei = new Uint8Array());
+                  } else e.videoCodec == o.CODEC_H264 && (e.naluHeader.vps = new Uint8Array(), e.naluHeader.sps = e.setStartCode(c.SPS[0].nalu, !1), e.naluHeader.pps = e.setStartCode(c.PPS[0].nalu, !1), e.naluHeader.sei = new Uint8Array());
 
                   u[4].toString(16), e.naluHeader.vps[4].toString(16), h(e.naluHeader.vps), h(u);
                   var y = e.setStartCode(u.subarray(0, e.naluHeader.vps.length), !0);
@@ -5186,7 +5193,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   h(e.naluHeader.vps), h(e.naluHeader.sps), h(e.naluHeader.pps), h(e.naluHeader.sei), h(u), (d = new Uint8Array(e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length + u.length)).set(e.naluHeader.vps, 0), d.set(e.naluHeader.sps, e.naluHeader.vps.length), d.set(e.naluHeader.pps, e.naluHeader.vps.length + e.naluHeader.sps.length), d.set(e.naluHeader.sei, e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length), d.set(e.setStartCode(u, !0), e.naluHeader.vps.length + e.naluHeader.sps.length + e.naluHeader.pps.length + e.naluHeader.sei.length);
                 } else d = e.setStartCode(u, !0);
 
-                e.bufObject.appendFrame(f, d, !0, c);
+                e.bufObject.appendFrame(f, d, !0, p);
               } else 2 == t && (d = e.setAACAdts(u), e.bufObject.appendFrame(f, d, !1, !0));
             }
           }
@@ -5680,8 +5687,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           u = e("./demuxer/ts"),
           d = e("./demuxer/m3u8"),
           f = e("./consts"),
-          p = (e("./utils/static-mem"), e("./utils/ui/ui")),
-          c = (e("./decoder/cache"), {
+          c = (e("./utils/static-mem"), e("./utils/ui/ui")),
+          p = (e("./decoder/cache"), {
         moovStartFlag: !0,
         readyShow: !0,
         rawFps: 24,
@@ -5715,7 +5722,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             playIcon: r.playIcon || "assets/icon-play@300.png",
             loadIcon: r.loadIcon || "assets/icon-loading.gif",
             token: r.token || null,
-            extInfo: c
+            extInfo: p
           }, this.mediaExtFormat = this.configFormat.type, null != this.configFormat.token) {
             for (var n in this.configFormat.extInfo.core = l.GetFormatPlayCore(this.configFormat.type), r.extInfo) {
               n in this.configFormat.extInfo && (this.configFormat.extInfo[n] = r.extInfo[n]);
@@ -5751,7 +5758,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               },
               audioNone: i,
               videoCodec: f.CODEC_H265
-            }, p.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
+            }, c.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
             var r = window.setInterval(function () {
               t.STATICE_MEM_playerIndexPtr === e.playerIndex && (t.STATICE_MEM_playerIndexPtr, e.playerIndex, window.WebAssembly ? (t.STATIC_MEM_wasmDecoderState, 1 == t.STATIC_MEM_wasmDecoderState && (e._makeMP4Player(), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(r), r = null)) : (/iPhone|iPad/.test(window.navigator.userAgent), t.STATICE_MEM_playerIndexPtr += 1, window.clearInterval(r), r = null));
             }, 500);
@@ -6133,7 +6140,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               i.playParam.fps = i.player.mediaInfo.fps, i.playParam.durationMs = -1, i.playMode = f.PLAYER_MODE_NOTIME_LIVE, i.playParam.sampleRate = i.player.mediaInfo.sampleRate, i.playParam.size = {
                 width: i.player.mediaInfo.width,
                 height: i.player.mediaInfo.height
-              }, i.playParam.audioNone = i.player.mediaInfo.audioNone, i.player.mediaInfo, i.player.vCodecID === f.V_CODEC_NAME_HEVC ? (i.playParam.audioIdx < 0 && (i.playParam.audioNone = !0), i.playParam.videoCodec = f.CODEC_H265, i.onLoadFinish && i.onLoadFinish()) : (i.playParam.videoCodec = f.CODEC_H264, i.player.release(), i.player = null, i._makeNativePlayer(i.playParam.durationMs, i.playParam.fps, i.playParam.sampleRate, i.playParam.size, !1, i.playParam.videoCodec));
+              }, i.playParam.audioNone = i.player.mediaInfo.audioNone, i.player.mediaInfo, i.player.vCodecID === f.V_CODEC_NAME_HEVC ? (i.playParam.audioIdx < 0 && (i.playParam.audioNone = !0), i.playParam.videoCodec = f.CODEC_H265) : (i.playParam.videoCodec = f.CODEC_H264, i.player.release(), i.player = null), i.onLoadFinish && i.onLoadFinish();
             }, this.player.onNetworkError = function (e) {
               i.onNetworkError && i.onNetworkError(e);
             }, this.player.onReadyShowDone = function () {
@@ -6442,7 +6449,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20211014');
+require('./h265webjs-v20211016');
 
 var h265webjs =
 /*#__PURE__*/
@@ -6470,7 +6477,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20211014":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20211016":1}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -6713,6 +6720,16 @@ global.makeH265webjs = function (videoURL, config) {
     videoType: "vod"
     */
 
+    if (mediaInfo.meta.isHEVC === false) {
+      console.log("is not HEVC/H.265 media!");
+      coverToast.removeAttribute('hidden');
+      coverBtn.style.width = '100%';
+      coverBtn.style.fontSize = '50px';
+      coverBtn.innerHTML = 'is not HEVC/H.265 media!';
+      return;
+    }
+
+    console.log("is HEVC/H.265 media.");
     playBtn.disabled = false;
 
     if (mediaInfo.meta.audioNone) {

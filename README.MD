@@ -893,6 +893,9 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/10/16 - 晚 |
+| - | 0.修复HTTP-FLV返回Mediainfo的Codec参数不准的问题 |
+| - | 1.更新Demo |
 | 时间 | 2021/10/14 - 晚 |
 | - | 0.修复返回Mediainfo的Codec参数不准的问题 |
 | 时间 | 2021/10/13 - 晚 |

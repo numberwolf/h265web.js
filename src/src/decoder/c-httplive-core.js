@@ -279,6 +279,9 @@ class CHttpLiveCoreModule { // export default
                     }, 5);
                 } // end if AVGetInterval
                 break;
+            case 'close':
+                _this.AVGetInterval && clearInterval(_this.AVGetInterval);
+                _this.AVGetInterval = null;
             case 'fetch-fin':
                 // fetchFinished = true;
                 /*
@@ -652,15 +655,19 @@ class CHttpLiveCoreModule { // export default
         }
         this.workerFetch = null;
 
+        this.AVGetInterval && clearInterval(this.AVGetInterval);
+        this.AVGetInterval = null;
+
         let releaseRet = Module.cwrap(
             'releaseHttpFLV', 'number', ['number'])(this.AVSniffPtr);
 
-        
         this.playInterval && clearInterval(this.playInterval);
         this.playInterval = null;
 
         this.audioWAudio && this.audioWAudio.stop();
         this.audioWAudio = null;
+
+        return 0;
     }
 
     isPlayingState() {
@@ -924,6 +931,11 @@ class CHttpLiveCoreModule { // export default
                         // postMessage('WORKER STOPPED: ' + body);
                         controller.abort();
                         self.close(); // Terminates the worker.
+                        self.postMessage({
+                            cmd: 'close',
+                            data: 'close',
+                            msg: 'close'
+                        });
                         break;
                     default:
                         // console.log("worker default");
