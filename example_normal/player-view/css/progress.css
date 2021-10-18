@@ -1,0 +1,42 @@
+.progress-common {
+    height: 10px; /** same as progress-contaniner **/
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 2px;
+}
+
+.progress-contaniner {
+    z-index: 1000;
+	width: 100%;
+    background-color: #666666;
+}
+
+.cachePts {
+	position: absolute;
+	z-index: 1001;
+    width: 0px;
+    /*margin-top: 0.125rem;*/
+    background-color: #d9d9d9;
+}
+/*.cachePts::-moz-progress-bar {
+    background-color: #e9e9e9;
+}
+.cachePts::-webkit-progress-value {
+    background-color: #e9e9e9;
+}*/
+
+.progressPts {
+	position: absolute;
+	z-index: 1002;
+    width: 0px;
+    /*margin-top: 0.125rem;*/
+    background-color: rgba(246, 79, 30, 255);
+}
+/*.progressPts::-moz-progress-bar {
+    background-color: yellow;
+}
+.progressPts::-webkit-progress-value {
+    background-color: yellow;
+}*/

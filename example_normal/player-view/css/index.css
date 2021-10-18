@@ -1,0 +1,151 @@
+body {
+    background-color: #eeeeee;
+}
+
+#player-container {
+	position: absolute;
+	margin:auto;
+    left: 0;
+    right: 0;
+	/*width: 960px;
+	height: 540px;*/
+	/*overflow: hidden;*/
+}
+
+.bottom-container {
+	margin-top: 600px;
+}
+
+.controller {
+    background-color: black;
+    /*background-image: linear-gradient(
+        to right, red 50px, yellow, blue, green);*/
+    /*background-position: 100% 50%;*/
+    width: 960px;
+    min-height: 50px;
+    position: absolute; 
+    /*float: bottom;*/
+    z-index: 99999;
+    left: 0;
+    bottom: 0;
+}
+
+/*.controller:hover {
+	background-color: white;
+}*/
+
+.operate-container {
+	min-height: 20px;
+	padding: 3px;
+	/*position: relative;
+    top: 50%;
+    transform: translateY(-50%);*/
+}
+
+.muteBtn {
+	color: white;
+}
+
+.progressVoice {
+    float: left;
+    width: 50%;
+    margin-top: 0.2rem;
+    /*border: 10px solid rgba(255,255,255,0);*/
+    color: #d9d9d9;
+    height: 10px;
+
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: none;
+}
+.progressVoice::-moz-progress-bar {
+    background-color:#d9d9d9;
+}
+
+.progressVoice::-webkit-progress-value {
+    background-color:#d9d9d9;
+}
+
+#coverLayer {
+    width: 100%;
+    height: 100%;
+    padding-top: 300px;
+    z-index: 10000;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#coverLayerBtn {
+    width: 20%;
+    height: 200px;
+    border-radius: 50px;
+}
+
+
+.ptsLabel {
+	font-size: 15px;
+    color: white;
+    background: rgb(0, 0, 0);
+    /*border: 1px solid white;*/
+    float: left;
+    /*border-radius: 7px;*/
+    padding: 1px;
+    margin-top: 4px;
+    margin-left: 5px;
+}
+
+.voice-div {
+    color: white;
+    /*background: rgb(0, 0, 0);
+    border: 2px solid white;
+    border-radius: 7px;
+    padding-left: 20px;*/
+    width: 18%;
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+
+    /*position: relative;*/
+    /*margin-top: 50%;*/
+    /*transform: translateY(-50%);*/
+}
+.voice-div > span {
+	/*font-size: 15px;*/
+    float: left;
+    color: white;
+    margin-right: 5px;
+}
+.voice-div > progress {
+    margin-top: 8px;
+}
+
+.fullScreenBtn {
+	/*font-size: 10px;*/
+    float: right;
+    margin-top: 3px;
+    margin-right: 5px;
+    color: white;
+    /*background: #ffffff;*/
+    /*border: 2px solid white;*/
+    /*text-align: center;*/
+    /*line-height: 20px;*/
+    height: 24px;
+    /*font-weight: bold;*/
+    /*border-radius: 7px;*/
+}
+.showLabel {
+	height: 18px;
+	font-size: 8px;
+    color: white;
+    background: rgb(0, 0, 0);
+    border-bottom: 1px solid #666666;
+    /*border-radius: 7px;*/
+    padding-top: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}

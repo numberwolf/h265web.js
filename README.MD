@@ -231,24 +231,36 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 #### 1）引入包
 
-* 方式1.1：引入Github的本地文件 `require`形式 
+* 用普通js(不编译)直接引入原始js文件
 
-```javascript
-// 引入wasm
-<script src="dist/missile.js"></script>
-// 引入Github的本地文件
-require('./dist/h265webjs');
-```
+	* demo: <a href="./example_normal">example_normal</a>
 
-* 方式1.2：引入Github的本地文件 `import xxx from xxx`形式 （推荐）
+	```javascript
+	<script src="dist/missile.js"></script>
+	<script src="dist/h265webjs-v20211016.js"></script>
+	```
 
-```javascript
-// 引入wasm
-<script src="dist/missile.js"></script>
-// 引入Github的本地文件
-import H265webjsModule from './dist/index';
-```
+* 用ES编译引入的语法
 
+	* demo: <a href="./example">example</a>
+
+	* 方式1.1：引入Github的本地文件 `require`形式 
+
+	```javascript
+	// 在index.html引入wasm
+	<script src="dist/missile.js"></script>
+	// 在js文件引入Github的本地文件
+	require('./dist/h265webjs');
+	```
+
+	* 方式1.2：引入Github的本地文件 `import xxx from xxx`形式 （推荐）
+
+	```javascript
+	// 在index.html引入wasm
+	<script src="dist/missile.js"></script>
+	// 在js文件 引入Github的本地文件
+	import H265webjsModule from './dist/index';
+	```
 
 <br>
 
@@ -261,21 +273,6 @@ import H265webjsModule from './dist/index';
 #### 3）引入h265web.js到你的项目
 
 * 本地引入（从Github <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>）
-
-	* 1）require形式
-	```javascript
-	// 引入wasm
-	<script src="dist/missile.js"></script>
-	require('./dist/h265webjs');
-	```
-
-	* 2）`import xxx from xxx`形式 （推荐）
-	```javascript
-	// 引入wasm
-	<script src="dist/missile.js"></script>
-	// 引入Github的本地文件
-	import H265webjsModule from './dist/index';
-	```
 
 <br>
 
@@ -330,7 +327,7 @@ var config = {
 
 ```c
 	./dist/你最终编译产出.js
-	./dist/missile.wasm
+	./dist/sdk file
 	./index.html
 ```
 
@@ -394,6 +391,13 @@ var config = {
 		````
 
 	* 2）创建播放器
+
+		* 0. 以普通script src方式引入
+
+		示例:
+		```javascript
+		let player = window.new265webjs(url, config);
+		```
 
 		* 1. 以`require('./src/h265webjs');`引入为前提
 
@@ -893,6 +897,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/10/18 - 晚 |
+| - | 0.新增DEMO |
 | 时间 | 2021/10/16 - 晚 |
 | - | 0.修复HTTP-FLV返回Mediainfo的Codec参数不准的问题 |
 | - | 1.更新Demo |

@@ -232,21 +232,29 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 * By github 1.1 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
-```javascript
-// import wasm
-<script src="dist/missile.js"></script>
-// import from local file
-require('./dist/h265webjs');
-```
+* demo: <a href="./example_normal">example_normal</a> （recommend）
+	```javascript
+	<script src="dist/missile.js"></script>
+	<script src="dist/h265webjs-v20211016.js"></script>
+	```
 
-* `import xxx from xxx` （recommend）
+* demo: <a href="./example">example</a>
+	```javascript
+	// import wasm in html file
+	<script src="dist/missile.js"></script>
+	// import from local file in your es js file
+	require('./dist/h265webjs');
+	```
 
-```javascript
-// import wasm
-<script src="dist/missile.js"></script>
-// import from local file
-import H265webjsModule from './dist/index';
-```
+* demo: <a href="./example">example</a>
+	* `import xxx from xxx`
+
+	```javascript
+	// import wasm in html file
+	<script src="dist/missile.js"></script>
+	// import from local file in your es js file
+	import H265webjsModule from './dist/index';
+	```
 
 <br>
 
@@ -258,23 +266,7 @@ import H265webjsModule from './dist/index';
 
 #### 3）Include h265web.js to project
 
-* Local include
-
-	* 1）require
-	```javascript
-	// import wasm
-	<script src="dist/missile.js"></script>
-	// js
-	require('./dist/h265webjs');
-	```
-
-	* 2）`import xxx from xxx` （recommend）
-	```javascript
-	// import wasm
-	<script src="dist/missile.js"></script>
-	// js
-	import H265webjsModule from './dist/index';
-	```
+* Github <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
 
 <br>
@@ -327,8 +319,8 @@ let config = {
 * Example
 
 ```c
-	./dist/after-compile-dist.js
-	./dist/missile.wasm
+	./dist/your dist play file
+	./dist/sdk files
 	./index.html
 ```
 
@@ -344,6 +336,7 @@ let config = {
 * Example
 
 	* 1）URI and Config
+
 		* Example 1 Create `mp4/hls/ts` Player
 
 		```javascript
@@ -401,6 +394,12 @@ let config = {
 		````
 
 	* 2）Player
+		* 0. Example 0 Create by normal js without compile
+		Example:
+		```javascript
+		let player = window.new265webjs(url, config);
+		```
+
 		* 1. If `require('./src/h265webjs');`
 
 		Example:
@@ -888,6 +887,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/10/18 - Evening |
+| - | 0.Add new example |
 | Time | 2021/10/16 - Evening |
 | - | 0.Fixed: HTTP-FLV: Mediainfo's codec fault value |
 | - | 1.Update example |
