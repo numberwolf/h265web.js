@@ -29,6 +29,7 @@
     "@babel/preset-env": "^7.12.11",
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
+    "flv.js": "^1.6.2",
     "mp4box": "^0.4.1",
     "webpack": "^4.44.1"
   },
@@ -47,7 +48,8 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
     "nodemon": "^2.0.4",
-    "terser-webpack-plugin": "^4.1.0"
+    "terser-webpack-plugin": "^4.1.0",
+    "video.js": "^7.15.4"
   },
   "bugs": {
     "url": "https://github.com/numberwolf/h265web.js/issues"

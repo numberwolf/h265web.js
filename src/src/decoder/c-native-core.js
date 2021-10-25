@@ -188,7 +188,7 @@ class CNativeCoreModule {
         this.playFrameInterval 	= null;
 
         /*
-         * Event @todo
+         * Event
          */
         this.onProbeFinish		= null;
         this.onPlayingTime 		= null;

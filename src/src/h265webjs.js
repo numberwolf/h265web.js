@@ -23,6 +23,8 @@ const Player = require('./decoder/player-core');
 const PlayerNative = require('./native/mp4-player');
 const CNativeCore = require('./decoder/c-native-core');
 const CHttpLiveCore = require('./decoder/c-httplive-core');
+const NvVideoJSCore = require('./native/nv-videojs-core');
+const NvFlvJSCore = require('./native/nv-flvjs-core');
 const AVCOMMON = require('./decoder/av-common');
 const MPEG_JS = require('./demuxer/mpegts/mpeg.js');
 const Mp4Parser = require('./demuxer/mp4');
@@ -301,6 +303,8 @@ class H265webjsModule {
                 this.hlsObj.release();
             }
             this.player.release();
+        } else {
+            this.player.release(); // keep
         }
     }
 
@@ -393,8 +397,8 @@ class H265webjsModule {
 
         // accurateSeek or not ,check it and give time's pos
         let seekTime = this._getSeekTarget();
-        if (this.playParam.videoCodec === def.CODEC_H264 
-            && this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
+        if (this.playParam.videoCodec === def.CODEC_H264) {
+            // && this.configFormat.type == def.PLAYER_IN_TYPE_MP4
             this.player.seek(clickedValue);
             this.onSeekFinish && this.onSeekFinish();
         } else {
@@ -477,24 +481,28 @@ class H265webjsModule {
     fullScreen() {
         this.autoScreenClose = true;
 
-        let glCanvasBox = document
-            .querySelector('#' + this.configFormat.playerId);
-        let glCanvas = glCanvasBox
-            .getElementsByTagName('canvas')[0];
+        if (this.player.vCodecID === def.V_CODEC_NAME_HEVC) {
+            let glCanvasBox = document
+                .querySelector('#' + this.configFormat.playerId);
+            let glCanvas = glCanvasBox
+                .getElementsByTagName('canvas')[0];
 
-        glCanvasBox.style.width = this.screenW + 'px';
-        glCanvasBox.style.height = this.screenH + 'px';
+            glCanvasBox.style.width = this.screenW + 'px';
+            glCanvasBox.style.height = this.screenH + 'px';
 
-        let displayInfo = this._checkScreenDisplaySize(
-            this.screenW, this.screenH,
-            this.playParam.size.width, this.playParam.size.height);
+            let displayInfo = this._checkScreenDisplaySize(
+                this.screenW, this.screenH,
+                this.playParam.size.width, this.playParam.size.height);
 
-        glCanvas.style.marginTop = displayInfo[0] + 'px';
-        glCanvas.style.marginLeft = displayInfo[1] + 'px';
-        glCanvas.style.width = displayInfo[2] + 'px';
-        glCanvas.style.height = displayInfo[3] + 'px';
+            glCanvas.style.marginTop = displayInfo[0] + 'px';
+            glCanvas.style.marginLeft = displayInfo[1] + 'px';
+            glCanvas.style.width = displayInfo[2] + 'px';
+            glCanvas.style.height = displayInfo[3] + 'px';
 
-        this._requestFullScreen(glCanvasBox);
+            this._requestFullScreen(glCanvasBox);
+        } else {
+            this._requestFullScreen(this.player.videoTag);
+        }
     }
 
     closeFullScreen(escClick = false) {
@@ -503,22 +511,24 @@ class H265webjsModule {
             this._exitFull();
         }
 
-        let glCanvasBox = document
-            .querySelector('#' + this.configFormat.playerId);
-        let glCanvas = glCanvasBox
-            .getElementsByTagName('canvas')[0];
+        if (this.player.vCodecID === def.V_CODEC_NAME_HEVC) {
+            let glCanvasBox = document
+                .querySelector('#' + this.configFormat.playerId);
+            let glCanvas = glCanvasBox
+                .getElementsByTagName('canvas')[0];
 
-        glCanvasBox.style.width = this.configFormat.playerW + 'px';
-        glCanvasBox.style.height = this.configFormat.playerH + 'px';
+            glCanvasBox.style.width = this.configFormat.playerW + 'px';
+            glCanvasBox.style.height = this.configFormat.playerH + 'px';
 
-        let displayInfo = this._checkScreenDisplaySize(
-            this.configFormat.playerW, this.configFormat.playerH,
-            this.playParam.size.width, this.playParam.size.height);
+            let displayInfo = this._checkScreenDisplaySize(
+                this.configFormat.playerW, this.configFormat.playerH,
+                this.playParam.size.width, this.playParam.size.height);
 
-        glCanvas.style.marginTop = displayInfo[0] + 'px';
-        glCanvas.style.marginLeft = displayInfo[1] + 'px';
-        glCanvas.style.width = displayInfo[2] + 'px';
-        glCanvas.style.height = displayInfo[3] + 'px';
+            glCanvas.style.marginTop = displayInfo[0] + 'px';
+            glCanvas.style.marginLeft = displayInfo[1] + 'px';
+            glCanvas.style.width = displayInfo[2] + 'px';
+            glCanvas.style.height = displayInfo[3] + 'px';
+        }
 
         // this.autoScreenClose = true;
     }
@@ -1259,7 +1269,7 @@ class H265webjsModule {
                 _this.onLoadFinish && _this.onLoadFinish();
 
             } else {
-                // @TODO need 264 codec, but do not use
+                // need 264 codec, but do not use
                 _this.playParam.videoCodec   = def.CODEC_H264;
                 controller.abort(); // abort fetch http network
                 let releaseRet = _this.player.release();
@@ -1271,6 +1281,9 @@ class H265webjsModule {
                         _this.playParam.durationMs, _this.playParam.fps, 
                         _this.playParam.sampleRate, _this.playParam.size, 
                         false, _this.playParam.videoCodec);
+                } else if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_FLV) {
+                    // todo flvjs
+                    _this._flvJsPlayer(); // @TODO flvjs
                 } else {
                     _this.onLoadFinish && _this.onLoadFinish();
                 }
@@ -1439,7 +1452,7 @@ class H265webjsModule {
                     _this.playParam.audioNone = true;
                 }
                 _this.playParam.videoCodec = def.CODEC_H265;
-                // _this.onLoadFinish && _this.onLoadFinish();
+                _this.onLoadFinish && _this.onLoadFinish();
 
             } else {
                 // @TODO need 264 codec, but do not use
@@ -1447,13 +1460,9 @@ class H265webjsModule {
                 let releaseRet = _this.player.release();
                 console.log("releaseRet ===> ", releaseRet);
                 _this.player = null;
-
-                // _this._makeNativePlayer(
-                //     _this.playParam.durationMs, _this.playParam.fps, 
-                //     _this.playParam.sampleRate, _this.playParam.size, 
-                //     false, _this.playParam.videoCodec);
+                _this._flvJsPlayer();
             }
-            _this.onLoadFinish && _this.onLoadFinish();
+            // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
 
         this.player.onNetworkError = (error) => {
@@ -1624,7 +1633,8 @@ class H265webjsModule {
                     _this.playParam.audioNone = aCodec == "";
                     _this.playParam.videoCodec = isHevcParam ? 0 : 1;
                     console.log("this.playParam: ", _this.playParam);
-                    _this.onLoadFinish && _this.onLoadFinish();
+                    // _this.onLoadFinish && _this.onLoadFinish();
+                    _this._videoJsPlayer(); // @TODO videojs
                     return;
                 } // end is hevc
 
@@ -1651,6 +1661,107 @@ class H265webjsModule {
         }
 
     }; // end onSamples
+
+    // videojs
+    _videoJsPlayer() {
+        let _this = this;
+        let playerConfig = {
+            width: this.configFormat.playerW,
+            height: this.configFormat.playerH,
+            playerId: this.configFormat.playerId,
+            ignoreAudio : this.configFormat.extInfo.ignoreAudio,
+        }; // playerConfig
+        this.player = new NvVideoJSCore.NvVideojsCore(playerConfig);
+        this.player.onLoadFinish = () => {
+            alert("_videoJsPlayer onLoadFinish");
+
+            // getSize
+            _this.playParam.size = _this.player.getSize();
+
+            if (_this.player.duration === Infinity || _this.player.duration < 0) {
+                _this.playParam.durationMs = -1;
+                _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+            } else {
+                _this.playParam.durationMs = _this.player.duration * 1000;
+                _this.playMode = def.PLAYER_MODE_VOD
+            }
+
+            _this.onLoadFinish && _this.onLoadFinish();
+        }; // onLoadFinish
+        this.player.onReadyShowDone = () => {
+            _this.onReadyShowDone && _this.onReadyShowDone();
+        };
+        this.player.onPlayingFinish = () => {
+            _this.pause();
+            console.log("================> DEBUG this.seek(0)");
+            _this.seek(0);
+
+            if (_this.onPlayFinish != null) {
+                _this.onPlayFinish();
+            }
+        }; // onPlayingFinish
+        this.player.onPlayingTime = videoPTS => {
+            let now = _this._durationText(videoPTS);
+            let total = _this._durationText(_this.player.duration);
+            // event
+            if (_this.onPlayTime != null) _this.onPlayTime(videoPTS);
+        }; // onPlayingTime
+        this.player.onSeekFinish = () => {
+            _this.onSeekFinish && _this.onSeekFinish();
+        }; // onSeekFinish
+        this.player.makeIt(this.videoURL);
+
+    } // _videoJsPlayer
+
+    _flvJsPlayer() {
+        console.log("_flvJsPlayer");
+        let _this = this;
+        let playerConfig = {
+            width: this.configFormat.playerW,
+            height: this.configFormat.playerH,
+            playerId: this.configFormat.playerId,
+            ignoreAudio : this.configFormat.extInfo.ignoreAudio,
+        }; // playerConfig
+        this.player = new NvFlvJSCore.NvFlvjsCore(playerConfig);
+        this.player.onLoadFinish = () => {
+            alert("_videoJsPlayer onLoadFinish");
+
+            // getSize
+            _this.playParam.size = _this.player.getSize();
+
+            if (!_this.player.duration || _this.player.duration === NaN || _this.player.duration === Infinity || _this.player.duration < 0) {
+                _this.playParam.durationMs = -1;
+                _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+            } else {
+                _this.playParam.durationMs = _this.player.duration * 1000;
+                _this.playMode = def.PLAYER_MODE_VOD
+            }
+
+            _this.onLoadFinish && _this.onLoadFinish();
+        }; // onLoadFinish
+        this.player.onReadyShowDone = () => {
+            _this.onReadyShowDone && _this.onReadyShowDone();
+        }; // onReadyShowDone
+        this.player.onPlayingTime = videoPTS => {
+            let now = _this._durationText(videoPTS);
+            let total = _this._durationText(_this.player.duration);
+            // event
+            if (_this.onPlayTime != null) _this.onPlayTime(videoPTS);
+        }; // onPlayingTime
+        this.player.onPlayingFinish = () => {
+            _this.pause();
+            console.log("================> DEBUG this.seek(0)");
+            _this.seek(0);
+
+            if (_this.onPlayFinish != null) {
+                _this.onPlayFinish();
+            }
+        }; // onPlayingFinish
+        // this.player.onSeekFinish = () => {
+        //     _this.onSeekFinish && _this.onSeekFinish();
+        // }; // onSeekFinish
+        this.player.makeIt(this.videoURL);
+    } // _videoJsPlayer
 
     /**
      * 265流媒体

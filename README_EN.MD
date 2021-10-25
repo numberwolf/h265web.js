@@ -144,8 +144,10 @@ Notice：
 | mpeg-ts | Video on demand |  Y  | ---- |
 | m3u8 | Video on demand |  Y  | ---- |
 | hls | Live |  Y  | ---- |
-| H.265 | Video on demand |  Y  | ---- |
-| H.265 | Live |  Y  | ---- |
+| HEVC/H.265 | Video on demand |  Y  | ---- |
+| HEVC/H.265 | Live |  Y  | ---- |
+| AVC/H.264 | Video on demand |  Y  | ---- |
+| AVC/H.264 | Live |  Y  | ---- |
 | http-flv | Live |  Y  | CodecID=12 |
 | flv | Video on demand |  Y  | Bak player core mode |
 
@@ -887,6 +889,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/10/24 - Evening |
+| - | 0.Support Codec of AVC/H.264's MP4/HLS/M3u8/FLV/HTTP-FLV play |
 | Time | 2021/10/18 - Evening |
 | - | 0.Add new example |
 | Time | 2021/10/16 - Evening |

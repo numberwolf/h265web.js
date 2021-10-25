@@ -248,13 +248,13 @@ window.onload = function() {
         */
         if (mediaInfo.meta.isHEVC === false) {
             console.log("is not HEVC/H.265 media!");
-            coverToast.removeAttribute('hidden');
-            coverBtn.style.width = '100%';
-            coverBtn.style.fontSize = '50px';
-            coverBtn.innerHTML = 'is not HEVC/H.265 media!';
-            return;
+            //coverToast.removeAttribute('hidden');
+            //coverBtn.style.width = '100%';
+            //coverBtn.style.fontSize = '50px';
+            //coverBtn.innerHTML = 'is not HEVC/H.265 media!';
+            //return;
         }
-        console.log("is HEVC/H.265 media.");
+        //console.log("is HEVC/H.265 media.");
 
         playBtn.disabled = false;
 
