@@ -180,6 +180,7 @@ class H265webjsModule {
         this.onOpenFullScreen = null;
         this.onCloseFullScreen = null;
         this.onNetworkError = null;
+        this.onMakeItReady = null;
 
         this.filterConfigParams();
         console.log("configFormat ==> ", this.configFormat);
@@ -1672,6 +1673,9 @@ class H265webjsModule {
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
         }; // playerConfig
         this.player = new NvVideoJSCore.NvVideojsCore(playerConfig);
+        this.player.onMakeItReady = () => {
+            _this.onMakeItReady && _this.onMakeItReady();
+        }; // onMakeItReady
         this.player.onLoadFinish = () => {
             alert("_videoJsPlayer onLoadFinish");
 

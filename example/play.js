@@ -269,7 +269,7 @@ global.makeH265webjs = (videoURL, config) => {
                 coverToast.removeAttribute('hidden');
                 coverBtn.onclick = () => {
                     // playBar.textContent = '||';
-                    playerObj.play();
+                    playAction();
                     coverToast.setAttribute('hidden', 'hidden');
                 };
             }

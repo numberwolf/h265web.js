@@ -282,7 +282,7 @@ window.onload = function() {
                 coverToast.removeAttribute('hidden');
                 coverBtn.onclick = () => {
                     // playBar.textContent = '||';
-                    playerObj.play();
+                    playAction();
                     coverToast.setAttribute('hidden', 'hidden');
                 };
             }

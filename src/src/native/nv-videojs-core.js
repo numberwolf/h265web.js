@@ -55,6 +55,7 @@ class NvVideojsCoreModule {
         /*
          * Event @todo
          */
+        this.onMakeItReady      = null;
         this.onLoadFinish       = null;
         this.onPlayingTime 		= null;
         this.onPlayingFinish 	= null;
@@ -98,8 +99,8 @@ class NvVideojsCoreModule {
         this.duration = this.myPlayer.duration();
         alert("duration:" + this.duration === Infinity);
 
-        this.onLoadFinish && this.onLoadFinish();
-        this.onReadyShowDone && this.onReadyShowDone();
+        // this.onLoadFinish && this.onLoadFinish();
+        // this.onReadyShowDone && this.onReadyShowDone();
 
         // if (this.duration === Infinity) {
         //     this.play();
@@ -130,6 +131,7 @@ class NvVideojsCoreModule {
             errorDisplay : false,
             controlBar : false,
             preload : 'auto',
+            // autoplay : 'any',
             autoplay : false,
             sources: [
                 {
@@ -149,12 +151,13 @@ class NvVideojsCoreModule {
         h265Container.appendChild(proVjsDom);
 
         this.myPlayer = videojs(this.myPlayerID, options, function() {
-            alert("load");
+            alert("load vjs");
             _this.myPlayer.on("canplaythrough", function() {
                 console.log("视频源数据加载完成");
             });
             //myPlayer.play();
             _this.myPlayer.on("loadedmetadata", function() {
+                console.log("vjs loadedmetadata");
                 _this._onVideoJsReady();
             });
             _this.myPlayer.on("ended", function() {
@@ -169,8 +172,12 @@ class NvVideojsCoreModule {
                 _this.onSeekFinish && _this.onSeekFinish();
             });
             // _this.play();
+            _this.onMakeItReady && _this.onMakeItReady();
+            _this.onLoadFinish && _this.onLoadFinish();
+            _this.onReadyShowDone && _this.onReadyShowDone();
         });
         this.myPlayer.options.controls = false;
+        // this.myPlayer.options.autoplay = 'any';
         this.myPlayer.options.autoplay = false;
         this._hiddenUnusedPlugins();
     } // makeIt

@@ -93,8 +93,8 @@ class M3u8ParserModule {
 		};
 
 		this.hls.onFinished = (callFinData) => {
-			// console.log("onFinished : ");
-			// console.log(callFinData);
+			console.log("onFinished : ");
+			console.log(callFinData);
 
 			if (callFinData.type == def.PLAYER_IN_TYPE_M3U8_VOD) {
 				_this.durationMs = callFinData.duration * 1000;
