@@ -68,6 +68,7 @@ module.exports = config => {
             videoCodec: config.videoCodec || def.CODEC_H265
         },
         vcodecerPtr: null,
+        videoCallback: null,
         /*
          * frame.data
          * frame.pts
@@ -654,6 +655,11 @@ module.exports = config => {
         player.loop = null;
         
         player.pause();
+        // func call ptr
+        if (player.videoCallback !== null) 
+            Module.removeFunction(player.videoCallback);
+        player.videoCallback = null;
+
         Module.cwrap('release', 'number', ['number'])(player.vcodecerPtr);
         player.stream = null;
         player.frameList.length = 0;
@@ -907,7 +913,7 @@ module.exports = config => {
             'number', 
             ['string', 'string'])(player.config.token, VersionModule.PLAYER_VERSION);
 
-        let videoCallback = Module.addFunction(function(addr_y, addr_u, addr_v, stride_y, stride_u, stride_v, width, height, pts) {
+        player.videoCallback = Module.addFunction(function(addr_y, addr_u, addr_v, stride_y, stride_u, stride_v, width, height, pts) {
             // console.warn("In video callback, size = %d * %d, pts = %f", width, height, pts);
 
             let out_y = Module.HEAPU8.subarray(addr_y, addr_y + stride_y * height);
@@ -929,7 +935,7 @@ module.exports = config => {
         });
 
         Module.cwrap('setCodecType', 'number', ['number', 'number', 'number'])(
-            player.vcodecerPtr, player.config.videoCodec, videoCallback);
+            player.vcodecerPtr, player.config.videoCodec, player.videoCallback);
         // WASM
         let ret1 = Module.cwrap('initMissile', 'number', ['number'])(player.vcodecerPtr);
         //console.log('initMissile ret:' + ret1);

@@ -149,6 +149,15 @@ class CNativeCoreModule {
         this._videoQueue = [];
 
         /*
+         * func ptr
+         */
+        this._ptr_probeCallback     = null;
+        this._ptr_frameCallback     = null;
+        this._ptr_naluCallback      = null;
+        this._ptr_sampleCallback    = null;
+        this._ptr_aacCallback       = null;
+
+        /*
 		 * Attribute
 		 */
 		this.duration		= -1;
@@ -211,25 +220,47 @@ class CNativeCoreModule {
         console.log("finish AVSniffStreamInit ,corePtr : ", this.corePtr);
 
         console.log("start add function probeCallback");
-        let probeCallback = Module.addFunction(this._probeFinCallback.bind(this));
+        this._ptr_probeCallback = Module.addFunction(this._probeFinCallback.bind(this));
         console.log("start add function frameCallback");
-        let frameCallback = Module.addFunction(this._frameCallback.bind(this));
+        this._ptr_frameCallback = Module.addFunction(this._frameCallback.bind(this));
         console.log("start add function naluCallback");
-        let naluCallback = Module.addFunction(this._naluCallback.bind(this));
+        this._ptr_naluCallback = Module.addFunction(this._naluCallback.bind(this));
         console.log("start add function sampleCallback");
-        let sampleCallback = Module.addFunction(this._samplesCallback.bind(this));
+        this._ptr_sampleCallback = Module.addFunction(this._samplesCallback.bind(this));
         console.log("start add function aacCallback");
-        let aacCallback = Module.addFunction(this._aacFrameCallback.bind(this));
+        this._ptr_aacCallback = Module.addFunction(this._aacFrameCallback.bind(this));
 
         let mode = this.config.playMode === def.PLAYER_MODE_NOTIME_LIVE ? 1 : 0;
         console.log(
             "start add initializeSniffStreamModuleWithAOpt", this.config.ignoreAudio, this.config.playMode, mode);
         let initRet = Module.cwrap('initializeSniffStreamModuleWithAOpt', 'number', 
         	['number', 'number', 'number', 'number', 'number'])(
-            this.corePtr, probeCallback, frameCallback, naluCallback, sampleCallback, aacCallback, 
+            this.corePtr, 
+            this._ptr_probeCallback, 
+            this._ptr_frameCallback, this._ptr_naluCallback, 
+            this._ptr_sampleCallback, this._ptr_aacCallback, 
             this.config.ignoreAudio, mode);
 
         console.log("initRet : ", initRet);
+    }
+
+    _removeBindFuncPtr() {
+        if (this._ptr_probeCallback !== null) 
+            Module.removeFunction(this._ptr_probeCallback);
+        if (this._ptr_frameCallback !== null) 
+            Module.removeFunction(this._ptr_frameCallback);
+        if (this._ptr_naluCallback !== null) 
+            Module.removeFunction(this._ptr_naluCallback);
+        if (this._ptr_sampleCallback !== null) 
+            Module.removeFunction(this._ptr_sampleCallback);
+        if (this._ptr_aacCallback !== null) 
+            Module.removeFunction(this._ptr_aacCallback);
+
+        this._ptr_probeCallback = null;
+        this._ptr_frameCallback = null;
+        this._ptr_naluCallback = null;
+        this._ptr_sampleCallback = null;
+        this._ptr_aacCallback = null;
     }
 
     release() {
@@ -258,6 +289,7 @@ class CNativeCoreModule {
             this.avRecvInterval = null;
         }
         this._clearDecInterval();
+        this._removeBindFuncPtr(); // @TODO
     	let releaseRet = Module.cwrap(
     		'releaseSniffStream', 'number', ['number'])(this.corePtr);
     	this.audioWAudio && this.audioWAudio.stop();

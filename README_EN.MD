@@ -889,6 +889,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/04 - Evening |
+| - | 0.Fixed: release many times with crash |
 | Time | 2021/10/26 - Evening |
 | - | 0.Fixed some bugs |
 | Time | 2021/10/24 - Evening |

@@ -133,6 +133,15 @@ class CHttpLiveCoreModule { // export default
         this.workerFetch = null;
         this.playInterval = null;
 
+        /*
+         * ptr func
+         */
+        this._ptr_probeCallback = null;
+        this._ptr_frameCallback = null;
+        this._ptr_naluCallback = null;
+        this._ptr_sampleCallback = null;
+        this._ptr_aacCallback = null;
+
         // fetch worker
         let _this = this;
         // console.warn("_this before AVSniffPtr:", _this);
@@ -660,6 +669,25 @@ class CHttpLiveCoreModule { // export default
         this.audioWAudio && this.audioWAudio.setVoice(voice);
     }
 
+    _removeBindFuncPtr() {
+        if (this._ptr_probeCallback !== null) 
+            Module.removeFunction(this._ptr_probeCallback);
+        if (this._ptr_frameCallback !== null) 
+            Module.removeFunction(this._ptr_frameCallback);
+        if (this._ptr_naluCallback !== null) 
+            Module.removeFunction(this._ptr_naluCallback);
+        if (this._ptr_sampleCallback !== null) 
+            Module.removeFunction(this._ptr_sampleCallback);
+        if (this._ptr_aacCallback !== null) 
+            Module.removeFunction(this._ptr_aacCallback);
+
+        this._ptr_probeCallback = null;
+        this._ptr_frameCallback = null;
+        this._ptr_naluCallback = null;
+        this._ptr_sampleCallback = null;
+        this._ptr_aacCallback = null;
+    }
+
     release() {
         this.pause();
         // @todo
@@ -678,6 +706,7 @@ class CHttpLiveCoreModule { // export default
         this.AVGetInterval && clearInterval(this.AVGetInterval);
         this.AVGetInterval = null;
 
+        this._removeBindFuncPtr();
         let releaseRet = Module.cwrap(
             'releaseHttpFLV', 'number', ['number'])(this.AVSniffPtr);
 
@@ -983,26 +1012,28 @@ class CHttpLiveCoreModule { // export default
         console.log("wasmHttpFLVLoaded!!", this.AVSniffPtr);
 
         console.log("start add function probeCallback");
-        let probeCallback   = Module.addFunction(this._callbackProbe.bind(this));
+        this._ptr_probeCallback   = Module.addFunction(this._callbackProbe.bind(this));
 
         console.log("start add function yuvCallback");
-        let yuvCallback     = Module.addFunction(this._callbackYUV.bind(this));
+        this._ptr_yuvCallback     = Module.addFunction(this._callbackYUV.bind(this));
 
         console.log("start add function naluCallback");
-        let naluCallback    = Module.addFunction(this._callbackNALU.bind(this));
+        this._ptr_naluCallback    = Module.addFunction(this._callbackNALU.bind(this));
 
         console.log("start add function sampleCallback");
-        let sampleCallback  = Module.addFunction(this._callbackPCM.bind(this));
+        this._ptr_sampleCallback  = Module.addFunction(this._callbackPCM.bind(this));
 
         console.log("start add function aacCallback");
-        let aacCallback     = Module.addFunction(this._callbackAAC.bind(this)); 
+        this._ptr_aacCallback     = Module.addFunction(this._callbackAAC.bind(this)); 
 
         let callbackRet = Module.cwrap(
             "initializeSniffHttpFlvModule",
             "number",
             ["number", "number", "number", "number", "number", "number"])
             (this.AVSniffPtr, 
-                probeCallback, yuvCallback, naluCallback, sampleCallback, aacCallback);
+                this._ptr_probeCallback, 
+                this._ptr_yuvCallback, this._ptr_naluCallback, 
+                this._ptr_sampleCallback, this._ptr_aacCallback);
         console.log("create_media_processor callbackRet: ", callbackRet);
 
         this.AVGLObj = RenderEngine420P.setupCanvas(this.CanvasObj, {preserveDrawingBuffer: false})
