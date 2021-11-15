@@ -298,7 +298,7 @@ class H265webjsModule {
     }
 
     release() {
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
         console.log("===>", this.player);
@@ -318,7 +318,7 @@ class H265webjsModule {
     }
 
     setRenderScreen(setVal = false) {
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
         this.player.setScreen(setVal);
@@ -326,7 +326,7 @@ class H265webjsModule {
     }
 
     play() {
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
 
@@ -347,7 +347,7 @@ class H265webjsModule {
     }
 
     pause() {
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
         console.log("=====================PAUSE====================");
@@ -358,7 +358,7 @@ class H265webjsModule {
     }
 
     isPlaying() {
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
         return this.player.isPlayingState();
@@ -369,7 +369,7 @@ class H265webjsModule {
             console.log("voice must larger than 0.0!");
             return false;
         }
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
         this.volume = voice;
@@ -409,7 +409,7 @@ class H265webjsModule {
     seek(clickedValue) {
         console.log("============DEBUG===========> SEEK TO:", clickedValue);
 
-        if (this.player === undefined && this.player === null) {
+        if (this.player === undefined || this.player === null) {
             return false;
         }
 
