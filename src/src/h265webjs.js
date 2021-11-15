@@ -1371,7 +1371,7 @@ class H265webjsModule {
                 // default set 4096
                 _this.player && _this.player.setProbeSize(4096);
             }
-            // alert("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type);
+            console.log("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type + _this.mediaExtFormat);
             let pump = function(reader) {
                 console.log("start pump", reader);
                 return reader.read().then(function(result) {
@@ -1416,6 +1416,7 @@ class H265webjsModule {
             if (!error.toString().includes('user aborted')) {
                 console.error("cdemuxdecoder error", error);
             } // end check error
+            console.warn("error", error);
             // window.clearInterval(networkInterval);
             return;
         }); // end fetch

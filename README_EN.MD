@@ -889,6 +889,11 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/15 - Evening |
+| - | 0.HTTP-FLV auto retry when timeout with out packet.(7s) |
+| Time | 2021/11/14 - Evening |
+| - | 0.Add wasm file of 265mb version(can memory auto grow) |
+| - | 1.Add wasm file of 512mb version(can memory auto grow) |
 | Time | 2021/11/04 - Evening |
 | - | 0.Fixed: release many times with crash |
 | Time | 2021/10/26 - Evening |

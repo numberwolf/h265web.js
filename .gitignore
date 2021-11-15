@@ -33,3 +33,8 @@ node_modules.bak/
 
 resource/demo3.png
 resource/demo1.png
+
+example/dist/missile-512mb*
+example/dist/missile-256mb*
+example_normal/dist/missile-512mb*
+example_normal/dist/missile-256mb*

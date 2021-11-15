@@ -19,7 +19,7 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20211104');
+require('./h265webjs-v20211115');
 export default class h265webjs {
 	static createPlayer(videoURL, config) {
 		return window.new265webjs(videoURL, config);

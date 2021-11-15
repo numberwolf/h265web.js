@@ -130,6 +130,8 @@ class CHttpLiveCoreModule { // export default
         this.YuvBuf = [];
         // this.AACBuf = [];
 
+        this.getPackageTimeMS = 0;
+
         this.workerFetch = null;
         this.playInterval = null;
 
@@ -145,90 +147,6 @@ class CHttpLiveCoreModule { // export default
         // fetch worker
         let _this = this;
         // console.warn("_this before AVSniffPtr:", _this);
-        // this.workerFetch = new Worker('./worker-fetch-flv.js');
-        // this.workerFetch = new Worker(getScriptPath(function () {
-        //     let _self = self;
-        //     let fetchData = (url265) => {
-        //         let fetchFinished = false;
-        //         let startFetch = false;
-
-        //         if (!startFetch) {
-        //             startFetch = true;
-        //             fetch(url265).then(function(response) {
-        //                 let pump = function(reader) {
-        //                     return reader.read().then(function(result) {
-        //                         if (result.done) {
-        //                             console.log("========== RESULT DONE ===========");
-        //                             fetchFinished = true;
-        //                             self.postMessage({
-        //                                 cmd: 'fetch-fin',
-        //                                 data: null, 
-        //                                 msg: 'fetch-fin'
-        //                             });
-        //                             // window.clearInterval(networkInterval);
-        //                             // networkInterval = null;
-        //                             return;
-        //                         }
-
-        //                         let chunk = result.value;
-        //                         self.postMessage({
-        //                             cmd: 'fetch-chunk',
-        //                             data: chunk, 
-        //                             msg: 'fetch-chunk'
-        //                         });
-        //                         console.log("call chunk", chunk.length);
-        //                         // rawParser.appendStreamRet(chunk);
-        //                         return pump(reader);
-        //                     });
-        //                 }
-        //                 return pump(response.body.getReader());
-        //             })
-        //             .catch(function(error) {
-        //                 console.log(error);
-        //             });
-        //         }
-        //     };
-
-        //     self.onmessage = (event) => {
-        //         // console.log("worker.onmessage", event);
-        //         let body = event.data;
-        //         let cmd = null;
-        //         if (body.cmd === undefined || body.cmd === null) {
-        //             cmd = '';
-        //         } else {
-        //             cmd = body.cmd;
-        //         }
-
-        //         // console.log("worker recv cmd:", cmd);
-
-        //         switch (cmd) {
-        //             case 'start':
-        //                 // console.log("worker start");
-        //                 let url = body.data;
-        //                 fetchData(url);
-        //                 self.postMessage({
-        //                     cmd: 'default',
-        //                     data: 'WORKER STARTED', 
-        //                     msg: 'default'
-        //                 });
-        //                 break;
-        //             case 'stop':
-        //                 // console.log("worker stop");
-        //                 // postMessage('WORKER STOPPED: ' + body);
-        //                 close(); // Terminates the worker.
-        //                 break;
-        //             default:
-        //                 // console.log("worker default");
-        //                 // console.log("worker.body -> default: ", body);
-        //                 // worker.postMessage('Unknown command: ' + data.msg);
-        //                 break;
-        //         };
-        //     };
-        // })); // end this.workerFetch
-
-        // this.workerFetch.onmessage = function(event) {
-        //     _this._workerFetch_onmessage(event, _this);
-        // };
 
         this.totalLen = 0;
         this.pushPkg = 0;
@@ -288,6 +206,9 @@ class CHttpLiveCoreModule { // export default
 
                 _this.totalLen += chunk.length;
                 //console.log("play -> workerFetch append chunk ret: ", push_ret, chunk.length, totalLen);
+                if (chunk.length > 0) {
+                    _this.getPackageTimeMS = AVCommon.GetMsTime();
+                }
                 _this.pushPkg++;
 
                 // /*
@@ -304,6 +225,18 @@ class CHttpLiveCoreModule { // export default
                             _this.pushPkg -= 1;
                             // _this.ready_now = 1;
                         // }
+                        } else {
+                            if (_this.getPackageTimeMS > 0 &&
+                                AVCommon.GetMsTime() - _this.getPackageTimeMS >= def.FETCH_HTTP_FLV_TIMEOUT_MS
+                            ) {
+                                console.warn("retry!");
+                                _this.getPackageTimeMS = AVCommon.GetMsTime();
+                                _this.workerFetch.postMessage({
+                                    cmd: 'retry',
+                                    data: null,
+                                    msg: 'retry'
+                                });
+                            }
                         } // end if buf len check
                     }, 5);
                 } // end if AVGetInterval
@@ -894,9 +827,10 @@ class CHttpLiveCoreModule { // export default
 
     start(url265) {
         let _this = this;
+        console.warn("start fetch httpflv");
         
-
         this.workerFetch = new Worker(getScriptPath(function() {
+            let urlpath = null;
             let controller = new AbortController();
             let signal = controller.signal;
 
@@ -942,10 +876,14 @@ class CHttpLiveCoreModule { // export default
                     })
                     .catch(function(error) {
                         if (!error.toString().includes('user aborted')) {
-                            console.error("httplive error", error);
+                            const errMsg = 
+                                ' httplive request error:' + 
+                                error + 
+                                ' start to retry';
+                            console.error(errMsg);
                             self.postMessage({
                                 cmd: 'fetch-error',
-                                data: error, 
+                                data: errMsg, 
                                 msg: 'fetch-error'
                             });
                         } // end check error
@@ -969,8 +907,8 @@ class CHttpLiveCoreModule { // export default
                 switch (cmd) {
                     case 'start':
                         // console.log("worker start");
-                        let url = body.data;
-                        fetchData(url);
+                        urlpath = body.data;
+                        fetchData(urlpath);
                         self.postMessage({
                             cmd: 'default',
                             data: 'WORKER STARTED', 
@@ -989,6 +927,16 @@ class CHttpLiveCoreModule { // export default
                             msg: 'close'
                         });
                         break;
+                    case 'retry':
+                        console.warn("workerInterval retry"); // @TODO
+                        controller.abort();
+                        controller = null;
+                        signal = null;
+                        controller = new AbortController();
+                        signal = controller.signal;
+                        setTimeout(function() {
+                            fetchData(urlpath);
+                        }, 3000);
                     default:
                         // console.log("worker default");
                         // console.log("worker.body -> default: ", body);
