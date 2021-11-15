@@ -298,6 +298,9 @@ class H265webjsModule {
     }
 
     release() {
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
         console.log("===>", this.player);
         if (this.playParam.videoCodec === def.CODEC_H265 && this.player) {
             if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
@@ -307,6 +310,7 @@ class H265webjsModule {
         } else {
             this.player.release(); // keep
         }
+        return true;
     }
 
     debugYUV(debugID) {
@@ -314,10 +318,18 @@ class H265webjsModule {
     }
 
     setRenderScreen(setVal = false) {
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
         this.player.setScreen(setVal);
+        return true;
     }
 
     play() {
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
+
         // this._playUtilHiddenMask();
         if (this.playParam.videoCodec === def.CODEC_H265) {
             let playParams = {
@@ -335,6 +347,9 @@ class H265webjsModule {
     }
 
     pause() {
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
         console.log("=====================PAUSE====================");
         // this._playerUtilBuildMask(this.configFormat.playIcon);
         // this._playUtilShowMask();
@@ -343,6 +358,9 @@ class H265webjsModule {
     }
 
     isPlaying() {
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
         return this.player.isPlayingState();
     }
 
@@ -351,8 +369,12 @@ class H265webjsModule {
             console.log("voice must larger than 0.0!");
             return false;
         }
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
         this.volume = voice;
         this.player && this.player.setVoice(voice);
+        return true;
     }
 
     getVolume() {
@@ -386,6 +408,11 @@ class H265webjsModule {
 
     seek(clickedValue) {
         console.log("============DEBUG===========> SEEK TO:", clickedValue);
+
+        if (this.player === undefined && this.player === null) {
+            return false;
+        }
+
         let _this = this;
         this.seekTarget = clickedValue;
 
