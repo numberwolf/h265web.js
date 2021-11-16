@@ -392,6 +392,9 @@ class H265webjsModule {
 
     _seekHLS(clickedValue, _self, callback) {
         // alert("seekHLS" + clickedValue);
+        if (this.player === undefined || this.player === null) {
+            return false;
+        }
         setTimeout(function() {
             console.warn("this.player.getCachePTS()", _self.player.getCachePTS());
             if (_self.player.getCachePTS() > clickedValue) {
@@ -758,6 +761,10 @@ class H265webjsModule {
     _avFeedMP4Data(secVideoIdx=0, secAudioIdx=0, call=null) {
         let _this = this;
         console.warn("SEEK feedMP4Data:", secVideoIdx, secAudioIdx);
+
+        if (this.player === undefined || this.player === null) {
+            return false;
+        }
 
         let durationSec = parseInt(this.playParam.durationMs / 1000);
 
