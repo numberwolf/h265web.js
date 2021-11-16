@@ -3,9 +3,9 @@
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
 <hr>
-<img src="./resource/logo@300x300.png" width="300px" />
+<img src="./resource/logo@300x300.png" height="250px" />
 <a href="./resource/demo.png">
-<img src="./resource/demo.png" height="300px" />
+<img src="./resource/demo.png" height="220px" />
 </a>
 <hr>
 
@@ -21,7 +21,7 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
 | <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
 | M3u8(VOD) | HTTP FLV(LIVE) | G711A | HDR10(BT2020) |
-| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO | @TODO Support - <br>Before 2021/10/31 |
+| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO - <br> I get cold recently, so I am not sure upgrade on which time | @TODO Support - <br> I get cold recently, so I am not sure upgrade on which time |
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -44,6 +44,8 @@ Notice：
 
 
 ## Index
+
+- [Update Log](#upldatelog)
 
 - [0、README](#0readme)
 
@@ -122,8 +124,6 @@ Notice：
 	- [FFmpeg Support H265 Live Encode](#ffmpegsupporth265liveencode)
 	
 	- [Transcode and get HEVC/H.265 media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
-
-	- [Update Log](#upldatelog)
 
 <hr>
 
@@ -885,10 +885,12 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 <br>
 
-### UpldateLog ###
+# UpldateLog #
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/16 - Evening |
+| - | 0.First request, if no response and timeout, then retry 5 times |
 | Time | 2021/11/15 - Evening |
 | - | 0.HTTP-FLV auto retry when timeout with out packet.(7s) |
 | Time | 2021/11/14 - Evening |

@@ -3,9 +3,9 @@
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
 <hr>
-<img src="./resource/logo@300x300.png" width="300px" />
+<img src="./resource/logo@300x300.png" height="250px" />
 <a href="./resource/demo.png">
-<img src="./resource/demo.png" height="300px" />
+<img src="./resource/demo.png" height="220px" />
 </a>
 <hr>
 一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的HEVC播放器 
@@ -21,7 +21,7 @@
 | HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
 | <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
 | M3u8(VOD) | HTTP FLV(LIVE) | G711A | HDR10(BT2020) |
-| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO | @TODO Support - <br>Before 2021/10/31 |
+| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO - <br>我最近感冒了,暂缓  | @TODO Support - <br>我最近感冒了,暂缓 |
 
 <br>
 
@@ -44,6 +44,8 @@
 	* 建议：300~600kbps (HEVC/H.265可提供较高的压缩率)
 
 ## 目录
+
+- [更新日志](#更新日志)
 
 - [0-说明](#0-说明)
 
@@ -122,8 +124,6 @@
 	- [FFmpeg支持265的HTTPFLV直播](#ffmpeg支持265的httpflv直播)
 	
 	- [FFmpeg转码265编码的视频](#ffmpeg转码265编码的视频)
-
-	- [更新日志](#更新日志)
 
 <hr>
 
@@ -895,10 +895,12 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 <br>
 
-### 更新日志 ###
+# 更新日志 #
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/11/16 - 晚 |
+| - | 0.视频流首次请求无数据返回则进行重试5次 |
 | 时间 | 2021/11/15 - 晚 |
 | - | 0.HTTP-FLV直播断流retry重试 7s一次 |
 | 时间 | 2021/11/14 - 晚 |

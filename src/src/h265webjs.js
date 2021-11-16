@@ -1378,25 +1378,26 @@ class H265webjsModule {
         let fetchGetResp = false;
         let fetchFin = false;
         let fileSize = 0;
-        // setTimeout(function() {
-        //     if (fetchGetResp === false) {
-        //         console.warn("start retry");
-        //         controller.abort();
-        //     }
-        // }, def.FETCH_HTTP_FLV_TIMEOUT_MS);
-        // let controller = new AbortController();
-        // let signal = controller.signal;
 
-        let fetchFuncInner = function() {
+        let fetchFuncInner = function(times) {
             setTimeout(function() {
                 if (fetchGetResp === false) {
-                    console.warn("start retry");
+                    
                     controller.abort();
                     controller = null;
                     signal = null;
+
+                    if (times >= def.FETCH_FIRST_MAX_TIMES) {
+                        console.warn("stop retry", times);
+                        return;
+                    }
+
+                    console.warn("start retry", times);
+
                     controller = new AbortController();
                     signal = controller.signal;
-                    fetchFuncInner();
+                    let newTimes = times + 1;
+                    fetchFuncInner(newTimes);
                 }
             }, def.FETCH_HTTP_FLV_TIMEOUT_MS);
 
@@ -1471,7 +1472,7 @@ class H265webjsModule {
             }); // end fetch
         }; // end fetchFuncInner
 
-        fetchFuncInner();
+        fetchFuncInner(0);
 
     } // _cDemuxDecoderEntry
 
