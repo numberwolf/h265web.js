@@ -828,6 +828,7 @@ class CHttpLiveCoreModule { // export default
     start(url265) {
         let _this = this;
         console.warn("start fetch httpflv");
+        // this.getPackageTimeMS = AVCommon.GetMsTime();
         
         this.workerFetch = new Worker(getScriptPath(function() {
             let urlpath = null;

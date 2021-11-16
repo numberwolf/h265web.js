@@ -1237,7 +1237,7 @@ class H265webjsModule {
      *
      */
     _cDemuxDecoderEntry() {
-        // alert("_cDemuxDecoderEntry" + this.configFormat.type);
+        alert("_cDemuxDecoderEntry" + this.configFormat.type);
         let _this = this;
         // let playerConfBase = {
         //     width: this.configFormat.playerW,
@@ -1375,78 +1375,103 @@ class H265webjsModule {
          * Start Execute Fetch
          *
          */
+        let fetchGetResp = false;
         let fetchFin = false;
         let fileSize = 0;
+        // setTimeout(function() {
+        //     if (fetchGetResp === false) {
+        //         console.warn("start retry");
+        //         controller.abort();
+        //     }
+        // }, def.FETCH_HTTP_FLV_TIMEOUT_MS);
         // let controller = new AbortController();
         // let signal = controller.signal;
-        fetch(this.videoURL, {signal}).then(function(response) {
-            if (response.headers.has("Content-Length")) {
-                fileSize = response.headers.get("Content-Length");
-                // alert("==========setProbeSize:" + 
-                //     fileSize + ',' + _this.configFormat.extInfo.coreProbePart)
-                _this.player && _this.player.setProbeSize(fileSize * _this.configFormat.extInfo.coreProbePart);
-            } else if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_FLV) {
-                // null is live module @TODO LIVE
-                // _this.player && _this.player.setProbeSize(4096);
-                controller.abort();
-                alert("FLV FIND");
-                _this.player.release();
-                _this.player = null;
-                _this._cLiveFLVDecoderEntry(playerConfig);
-                return true;
-            } else {
-                // default set 4096
-                _this.player && _this.player.setProbeSize(4096);
-            }
-            console.log("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type + _this.mediaExtFormat);
-            let pump = function(reader) {
-                console.log("start pump", reader);
-                return reader.read().then(function(result) {
-                    if (result.done) {
-                        // alert("========== RESULT DONE ===========");
-                        fetchFin = true;
-                        _this.player && _this.player.pushDone();
-                        // window.clearInterval(networkInterval);
-                        // 一切结束后启动定时器
-                        // playInterval = window.setInterval(() => {
-                        //     console.log("---------------- loop", new Date());
-                        //     readingLoopWithF32();
-                        // }, 50);
-                        return;
-                    }
 
-                    // array buffer
-                    let res_arr_buf = result.value.buffer;
-                    let chunk = new Uint8Array(result.value.buffer);
-                    if (_this.player) {
-                        let pushRet = _this.player.pushBuffer(chunk);
-                        if (pushRet < 0) {
-                            let releaseRet = _this.player.release();
-                            console.log("releaseRet ===> 2 ", releaseRet);
-                            _this.player = null;
-                            // _this._makeNativePlayer(
-                            //     _this.playParam.durationMs, _this.playParam.fps, 
-                            //     _this.playParam.sampleRate, _this.playParam.size, 
-                            //     false, _this.playParam.videoCodec);
-                            _this._mp4EntryVodStream();
-                            return false;
+        let fetchFuncInner = function() {
+            setTimeout(function() {
+                if (fetchGetResp === false) {
+                    console.warn("start retry");
+                    controller.abort();
+                    controller = null;
+                    signal = null;
+                    controller = new AbortController();
+                    signal = controller.signal;
+                    fetchFuncInner();
+                }
+            }, def.FETCH_HTTP_FLV_TIMEOUT_MS);
+
+            fetch(_this.videoURL, {signal}).then(function(response) {
+                fetchGetResp = true;
+                if (response.headers.has("Content-Length")) {
+                    fileSize = response.headers.get("Content-Length");
+                    // alert("==========setProbeSize:" + 
+                    //     fileSize + ',' + _this.configFormat.extInfo.coreProbePart)
+                    _this.player && _this.player.setProbeSize(fileSize * _this.configFormat.extInfo.coreProbePart);
+                } else if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_FLV) {
+                    // null is live module @TODO LIVE
+                    // _this.player && _this.player.setProbeSize(4096);
+                    controller.abort();
+                    alert("FLV FIND");
+                    _this.player.release();
+                    _this.player = null;
+                    _this._cLiveFLVDecoderEntry(playerConfig);
+                    return true;
+                } else {
+                    // default set 4096
+                    _this.player && _this.player.setProbeSize(4096);
+                }
+                console.log("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type + _this.mediaExtFormat);
+                let pump = function(reader) {
+                    console.log("start pump", reader);
+                    return reader.read().then(function(result) {
+                        if (result.done) {
+                            // alert("========== RESULT DONE ===========");
+                            fetchFin = true;
+                            _this.player && _this.player.pushDone();
+                            // window.clearInterval(networkInterval);
+                            // 一切结束后启动定时器
+                            // playInterval = window.setInterval(() => {
+                            //     console.log("---------------- loop", new Date());
+                            //     readingLoopWithF32();
+                            // }, 50);
+                            return;
                         }
-                    }
-                    return pump(reader);
-                });
-            }; // end pump
 
-            // window.setTimeout(() => {
-            return pump(response.body.getReader());
-            // }, 10);
-        }).catch(function(error) {
-            if (!error.toString().includes('user aborted')) {
-                console.error("cdemuxdecoder error", error);
-            } // end check error
-            console.warn("error", error);
-            // window.clearInterval(networkInterval);
-            return;
-        }); // end fetch
+                        // array buffer
+                        let res_arr_buf = result.value.buffer;
+                        let chunk = new Uint8Array(result.value.buffer);
+                        if (_this.player) {
+                            let pushRet = _this.player.pushBuffer(chunk);
+                            if (pushRet < 0) {
+                                let releaseRet = _this.player.release();
+                                console.log("releaseRet ===> 2 ", releaseRet);
+                                _this.player = null;
+                                // _this._makeNativePlayer(
+                                //     _this.playParam.durationMs, _this.playParam.fps, 
+                                //     _this.playParam.sampleRate, _this.playParam.size, 
+                                //     false, _this.playParam.videoCodec);
+                                _this._mp4EntryVodStream();
+                                return false;
+                            }
+                        }
+                        return pump(reader);
+                    });
+                }; // end pump
+
+                // window.setTimeout(() => {
+                return pump(response.body.getReader());
+                // }, 10);
+            }).catch(function(error) {
+                if (!error.toString().includes('user aborted')) {
+                    console.error("cdemuxdecoder error", error);
+                } // end check error
+                console.warn("error", error);
+                // window.clearInterval(networkInterval);
+                return;
+            }); // end fetch
+        }; // end fetchFuncInner
+
+        fetchFuncInner();
 
     } // _cDemuxDecoderEntry
 
