@@ -36,7 +36,7 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 </font>
 </strong>
 
-#### Contact ####
+#### Contact
 
 * Github: https://github.com/numberwolf/h265web.js
 * Email: porschegt23@foxmail.com
@@ -76,8 +76,6 @@ Notice：
 	- [Support what?](#supported)
 
 	- [Free token](#freetoken)
-
-	- [Contact me](#contact)
 
 	- [Demo](#demo)
 
