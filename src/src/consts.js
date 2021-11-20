@@ -65,6 +65,11 @@ module.exports = {
     PLAYER_CORE_TYPE_DEFAULT: 0, // 默认播放器
     PLAYER_CORE_TYPE_CNATIVE: 1, // 包括demuxer decoder全部走C FFmpeg Native的
 
+    URI_PROTOCOL_WEBSOCKET: 'ws',
+    URI_PROTOCOL_WEBSOCKET_DESC: 'websocket',
+    URI_PROTOCOL_HTTP: 'http',
+    URI_PROTOCOL_HTTP_DESC: 'http',
+
     FETCH_FIRST_MAX_TIMES: 5,
     FETCH_HTTP_FLV_TIMEOUT_MS: 7 * 1000,
 

@@ -9,19 +9,43 @@
 </a>
 <hr>
 
-A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web</a> helped you, please `star` it~
+<strong>
+<font color="red">H265web.js is the best HEVC/H.265 web player you can find.</font>
+</strong>
 
-#### demo <a href="https://www.zzsin.com/h265webjs.html"> https://www.zzsin.com/h265webjs.html
-</a>
+A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web</a> helped you, please `star` it~
 
 <hr>
 
-| Feature | Feature | Feature | Feature |
+<h3>All Features</h3>
+
+<strong>
+<font color="black">
+
+| <font color="gray">Feature</font> | <font color="gray">Feature</font> | <font color="gray">Feature</font> | <font color="gray">Feature</font> |
 | ---- | ---- | ---- | ---- |
-| HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
-| <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
-| M3u8(VOD) | HTTP FLV(LIVE) | G711A | HDR10(BT2020) |
-| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO - <br> I get cold recently, so I am not sure upgrade on which time | @TODO Support - <br> I get cold recently, so I am not sure upgrade on which time |
+| <img src="resource/icon-hls.png" width="100"> | <img src="resource/icon-m3u8.png" width="100"> | <img src="resource/icon-mp4.png" width="100"> | <img src="resource/icon-flv.png" width="100"> | 
+| HLS(LIVE)| M3u8(VOD) | MP4(VOD) | FLV(VOD) | 
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
+| HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"> |  . |
+| MPEG-TS(VOD) | G711A | HDR10(BT2020) | . |
+
+</font>
+</strong>
+
+#### Contact ####
+
+* Github: https://github.com/numberwolf/h265web.js
+* Email: porschegt23@foxmail.com
+* <strong><font color="red">QQ: 531365872</font></strong>
+* Discord:numberwolf#8694
+* Wechat:numberwolf11
+
+#### DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (Demo is not newest version, you need to download from github and get newest version)
+</a>
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -150,6 +174,9 @@ Notice：
 | AVC/H.264 | Live |  Y  | ---- |
 | http-flv | Live |  Y  | CodecID=12 |
 | flv | Video on demand |  Y  | Bak player core mode |
+| websocket-flv | Live |  Y  | ---- |
+| websocket-ts | Live |  Y  | ---- |
+| http-ts | Live |  Y  | ---- |
 
 * Features
 
@@ -182,16 +209,6 @@ Notice：
 ```javascript
 token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
 ```
-
-<br>
-
-#### Contact ####
-
-* Github: https://github.com/numberwolf/h265web.js
-* Email(porschegt23@foxmail.com)
-* QQ: 531365872
-* Discord:numberwolf#8694
-* Wechat:numberwolf11
 
 <br>
 
@@ -889,6 +906,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/21 - In the small hours |
+| - | 0.Support Websocket-FLV (HEVC/H.265) |
+| - | 1.Support Websocket-TS (HEVC/H.265) |
+| - | 2.Support HTTP-TS (HEVC/H.265) |
 | Time | 2021/11/16 - Evening |
 | - | 0.First request, if no response and timeout, then retry 5 times |
 | Time | 2021/11/15 - Evening |

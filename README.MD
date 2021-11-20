@@ -8,20 +8,44 @@
 <img src="./resource/demo.png" height="220px" />
 </a>
 <hr>
+<strong>
+<font color="red">市场上能找到的支持的能力最多的HEVC/H.265网页播放器.</font>
+</strong>
+<br>
 一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的HEVC播放器 
 <br>
 
-#### demo <a href="https://www.zzsin.com/h265webjs.html"> https://www.zzsin.com/h265webjs.html
+<hr>
+<h3>能力矩阵</h3>
+
+<strong>
+<font color="black">
+
+| <font color="gray">Feature</font> | <font color="gray">Feature</font> | <font color="gray">Feature</font> | <font color="gray">Feature</font> |
+| ---- | ---- | ---- | ---- |
+| <img src="resource/icon-hls.png" width="100"> | <img src="resource/icon-m3u8.png" width="100"> | <img src="resource/icon-mp4.png" width="100"> | <img src="resource/icon-flv.png" width="100"> | 
+| HLS(LIVE)| M3u8(VOD) | MP4(VOD) | FLV(VOD) | 
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
+| HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br>商业化 |  . |
+| MPEG-TS(VOD) | G711A | HDR10(BT2020) | . |
+
+</font>
+</strong>
+
+#### 联系我
+
+* <strong><font color="red">QQ技术支持群: 925466059</font></strong>
+* <strong><font color="red">微信: numberwolf11(私聊咨询付费, 免费技术咨询请加QQ群)</font></strong>
+* Github: https://github.com/numberwolf
+* Email: porschegt23@foxmail.com
+* Discord:numberwolf#8694
+
+#### DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (请以Github最新为准,在线Demo已长时间未更新)
 </a>
 
-<hr>
-
-| Feature | Feature | Feature | Feature |
-| ---- | ---- | ---- | ---- |
-| HLS(LIVE) | MP4(VOD) | FLV(VOD) | MPEG2 TS(VOD) |
-| <img src="resource/icon-hls.png" height="100"> | <img src="resource/icon-mp4.png" height="100"> | <img src="resource/icon-flv.png" height="100"> | <img src="resource/icon-ts.png" height="100"> |
-| M3u8(VOD) | HTTP FLV(LIVE) | G711A | HDR10(BT2020) |
-| <img src="resource/icon-m3u8.png" height="100"> | <img src="resource/icon-httpflv.png" height="100"> | @TODO - <br>我最近感冒了,暂缓  | @TODO Support - <br>我最近感冒了,暂缓 |
 
 <br>
 
@@ -52,8 +76,6 @@
 	- [当前能力](#当前能力)
 
 	- [当前版本token](#当前版本的token)
-
-	- [联系我](#联系我)
 
 	- [线上demo](#线上demo)
 
@@ -139,10 +161,10 @@
 
 * 协议
 
-|  协议 | 模式 | 是否支持 | 说明 |
+| 协议  | 模式 | 是否支持 | 说明 |
 | ---- | ---- |  ----  | ---- |
 | mp4 | 点播 |  是  | ---- |
-| mpeg-ts | 点播 |  是  | ---- |
+| ts | 点播 |  是  | ---- |
 | m3u8 | 点播 |  是  | ---- |
 | hls | 直播 |  是  | ---- |
 | HEVC/H.265 | 点播 |  是  | ---- |
@@ -151,6 +173,9 @@
 | AVC/H.264 | 直播 |  是  | ---- |
 | http-flv | 直播 |  是  | CodecID=12 |
 | flv | 点播 |  是  | 备用播放内核模式,不需要填写 |
+| websocket-flv | 直播 |  是  | ---- |
+| websocket-ts | 直播 |  是  | ---- |
+| http-ts | 直播 |  是  | ---- |
 
 * 能力
 
@@ -182,17 +207,6 @@
 ```javascript
 token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
 ```
-
-<br>
-
-#### 联系我 ####
-
-* Github: https://github.com/numberwolf/h265web.js
-* Email(porschegt23@foxmail.com)
-* QQ: 531365872
-* QQ技术支持群: 925466059
-* Discord:numberwolf#8694
-* 微信:numberwolf11
 
 <br>
 
@@ -899,6 +913,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/11/21 - 凌晨 |
+| - | 0.支持 Websocket-FLV播放 (HEVC/H.265) |
+| - | 1.支持 Websocket-TS播放 (HEVC/H.265) |
+| - | 2.支持 HTTP-TS播放 (HEVC/H.265) |
 | 时间 | 2021/11/16 - 晚 |
 | - | 0.视频流首次请求无数据返回则进行重试5次 |
 | 时间 | 2021/11/15 - 晚 |

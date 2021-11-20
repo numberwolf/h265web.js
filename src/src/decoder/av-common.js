@@ -23,7 +23,7 @@
 const def = require('../consts');
 const Formats = [
 	{
-		format: 'mp4',
+		format: 'mp4', // regex match
 		value: 'mp4',
 		core: def.PLAYER_CORE_TYPE_CNATIVE
 	},
@@ -68,6 +68,17 @@ const Formats = [
 		core: def.PLAYER_CORE_TYPE_DEFAULT
 	}
 ]; // httpflv
+
+const Protocols = [
+	{
+		format: def.URI_PROTOCOL_HTTP, // regex match
+		value: def.URI_PROTOCOL_HTTP_DESC,
+	},
+	{
+		format: def.URI_PROTOCOL_WEBSOCKET,
+		value: def.URI_PROTOCOL_WEBSOCKET_DESC,
+	}
+]; // Protocols
 
 /**
  * I420 420P
@@ -145,6 +156,24 @@ function GetFormatPlayCore(inputFormat) {
 	return Formats[0].core;
 } // GetFormatPlayCore
 
+// @TODO
+function GetUriProtocol(uri) {
+	for (let i = 0; i < Protocols.length; i++) {
+		const formatTag = Protocols[i];
+		const formatRegex = formatTag.format + '[s]{0,}:\/\/';
+
+		let patt = formatRegex;
+		let n = uri.search(patt);
+
+		if (n >= 0) {
+			// alert(formatTag.value);
+			return formatTag.value;
+		} // end if
+	} // end for
+
+	return Protocols[0].value;
+} // GetUriFormat
+
 function GetMsTime() {
     return new Date().getTime();
 };
@@ -153,5 +182,6 @@ module.exports = {
     frameDataAlignCrop : frameDataAlignCrop,
     GetUriFormat : GetUriFormat,
     GetFormatPlayCore : GetFormatPlayCore,
+    GetUriProtocol : GetUriProtocol,
     GetMsTime : GetMsTime,
 }; // module exports

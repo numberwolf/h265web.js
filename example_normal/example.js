@@ -66,7 +66,20 @@ clear();
 window.onload = function() {
     //var token = "============>>>>>>>>>>>>>>Author:changyanlong|numberwolf,Github:https://github.com/numberwolf,Email:porschegt23@foxmail.com,QQ:531365872,HomePage:http://xvideo.video,Discord:numberwolf#8694,Beijing,WorkIn:Baidu<<<<<<<<<<<<===========";
     var token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
+    /******** Test Cases *******/
     var url = "hevc_test_moov_set_head_16s.mp4";
+    //var url = "res/hls/veilside.m3u8";
+    //var url = "res/hls1/test.m3u8";
+    //var url = "http://182.61.31.911:8080/live/livestream.flv";
+
+    /******** Websocket FLV/TS ********/
+    // var url = "ws://127.0.0.1/live/test.flv";
+    // var url = "ws://127.0.0.1/live/test.live.ts";
+
+    /******** HTTP FLV/TS/HLS ********/
+    // var url = "http://127.0.0.1/live/test.flv";
+    // var url = "http://127.0.0.1/live/test.live.ts";
+    // var url = "http://127.0.0.1/live/test/hls.m3u8";
     var config = {
         player: "glplayer",
         width: 960,

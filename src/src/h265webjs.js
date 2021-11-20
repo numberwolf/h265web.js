@@ -23,6 +23,7 @@ const Player = require('./decoder/player-core');
 const PlayerNative = require('./native/mp4-player');
 const CNativeCore = require('./decoder/c-native-core');
 const CHttpLiveCore = require('./decoder/c-httplive-core');
+const CWsLiveCore = require('./decoder/c-wslive-core');
 const NvVideoJSCore = require('./native/nv-videojs-core');
 const NvFlvJSCore = require('./native/nv-flvjs-core');
 const AVCOMMON = require('./decoder/av-common');
@@ -118,6 +119,9 @@ class H265webjsModule {
             extInfo : DEFAULT_CONFIG_EXT
         }; // configFormat
         this.mediaExtFormat = this.configFormat.type;
+        this.mediaExtProtocol = AVCOMMON.GetUriProtocol(this.videoURL);
+
+        console.log("GetUriProtocol", this.mediaExtProtocol, this.mediaExtFormat);
 
         // alert(this.configFormat.type);
 
@@ -209,7 +213,7 @@ class H265webjsModule {
 
         if (this.configFormat.type === def.PLAYER_IN_TYPE_FLV) {
             this.configFormat.extInfo.core  = def.PLAYER_CORE_TYPE_CNATIVE;
-            this.configFormat.type          = def.PLAYER_IN_TYPE_MP4; // @TODO LIVE
+            this.configFormat.type          = def.PLAYER_IN_TYPE_MP4; // LIVE
 
         } else if (this.configFormat.type === def.PLAYER_IN_TYPE_HTTPFLV) {
             this.configFormat.extInfo.core  = def.PLAYER_CORE_TYPE_CNATIVE;
@@ -914,9 +918,15 @@ class H265webjsModule {
          */
         // alert("type: " + this.configFormat.type);
 
+        if (this.mediaExtProtocol === def.URI_PROTOCOL_WEBSOCKET_DESC) {
+            this._cWsFLVDecoderEntry();
+            return 0;
+        }
+
         if (this.configFormat.extInfo.core != undefined 
             && this.configFormat.extInfo.core !== null
-            && this.configFormat.extInfo.core === def.PLAYER_CORE_TYPE_CNATIVE) {
+            && this.configFormat.extInfo.core === def.PLAYER_CORE_TYPE_CNATIVE
+        ) { // @TODO make http-ts add here
             /*
              * PLAYER_CORE_TYPE_CNATIVE c demuxer decoder
              */
@@ -944,6 +954,7 @@ class H265webjsModule {
             }
         }
 
+        return 0;
     } // end
 
     /**
@@ -1041,7 +1052,6 @@ class H265webjsModule {
             _this.onLoadFinish();
             if (
                 _this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
-                // @TODO
                 _this.onReadyShowDone && _this.onReadyShowDone();
             }
         }
@@ -1284,7 +1294,7 @@ class H265webjsModule {
             _this.playParam.fps          = _this.player.config.fps;
             _this.playParam.durationMs   = GetRealDurationOfLastFramePTS(_this.playParam.fps, _this.player.duration * 1000.0);
 
-            if (_this.player.duration < 0) { // @TODO LIVE
+            if (_this.player.duration < 0) { // LIVE
                 _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
                 alert("HTTP FLV LIVE");
             }
@@ -1318,7 +1328,7 @@ class H265webjsModule {
                         false, _this.playParam.videoCodec);
                 } else if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_FLV) {
                     // todo flvjs
-                    _this._flvJsPlayer(); // @TODO flvjs
+                    _this._flvJsPlayer(); // flvjs
                 } else {
                     _this.onLoadFinish && _this.onLoadFinish();
                 }
@@ -1416,7 +1426,8 @@ class H265webjsModule {
                     //     fileSize + ',' + _this.configFormat.extInfo.coreProbePart)
                     _this.player && _this.player.setProbeSize(fileSize * _this.configFormat.extInfo.coreProbePart);
                 } else if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_FLV) {
-                    // null is live module @TODO LIVE
+                    // @TODO make http-ts here
+                    // null is live module LIVE
                     // _this.player && _this.player.setProbeSize(4096);
                     controller.abort();
                     alert("FLV FIND");
@@ -1490,7 +1501,7 @@ class H265webjsModule {
         alert("probeSize" + playerConfig.probeSize);
         /*
          *
-         * Set Events @TODO
+         * Set Events
          *
          */
         this.player.onProbeFinish = () => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
@@ -1517,7 +1528,7 @@ class H265webjsModule {
                 _this.onLoadFinish && _this.onLoadFinish();
 
             } else {
-                // @TODO need 264 codec, but do not use
+                // need 264 codec, but do not use
                 _this.playParam.videoCodec = def.CODEC_H264;
                 let releaseRet = _this.player.release();
                 console.log("releaseRet ===> ", releaseRet);
@@ -1553,6 +1564,87 @@ class H265webjsModule {
         // this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
     } // _cLiveFLVDecoderEntry
 
+    _cWsFLVDecoderEntry() {
+        let _this = this;
+        let playerConfig = {
+            width: this.configFormat.playerW,
+            height: this.configFormat.playerH,
+            playerId: this.configFormat.playerId,
+            token: this.configFormat.token,
+            readyShow: this.configFormat.extInfo.readyShow,
+            checkProbe: this.configFormat.extInfo.checkProbe,
+            ignoreAudio : this.configFormat.extInfo.ignoreAudio,
+            playMode: this.playMode,
+        };
+        playerConfig.probeSize = this.configFormat.extInfo.probeSize;
+        this.player = new CWsLiveCore.CWsLiveCore(playerConfig);
+        alert("_cWsFLVDecoderEntry probeSize" + playerConfig.probeSize);
+        console.log("_cWsFLVDecoderEntry playerConfig", playerConfig);
+        /*
+         *
+         * Set Events
+         *
+         */
+        this.player.onProbeFinish = () => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
+            _this.playParam.fps          = _this.player.mediaInfo.fps;
+            _this.playParam.durationMs   = -1;
+
+            _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+            // alert("HTTP FLV LIVE");
+
+            _this.playParam.sampleRate   = _this.player.mediaInfo.sampleRate;
+            _this.playParam.size = {
+                width   : _this.player.mediaInfo.width,
+                height  : _this.player.mediaInfo.height
+            };
+            _this.playParam.audioNone = _this.player.mediaInfo.audioNone;
+
+            console.log("_this.player.mediaInfo", _this.player.mediaInfo);
+
+            if (_this.player.vCodecID === def.V_CODEC_NAME_HEVC) {
+                if (_this.playParam.audioIdx < 0) {
+                    _this.playParam.audioNone = true;
+                }
+                _this.playParam.videoCodec = def.CODEC_H265;
+                _this.onLoadFinish && _this.onLoadFinish();
+
+            } else {
+                // need 264 codec, but do not use
+                _this.playParam.videoCodec = def.CODEC_H264;
+                let releaseRet = _this.player.release();
+                console.log("releaseRet ===> ", releaseRet);
+                _this.player = null;
+                _this._flvJsPlayer();
+            }
+            // _this.onLoadFinish && _this.onLoadFinish();
+        }; // onProbeFinish
+
+        this.player.onNetworkError = (error) => {
+            // alert("onNetworkError" + error.toString());
+            _this.onNetworkError && _this.onNetworkError(error);
+        }; // onNetworkError
+
+        this.player.onReadyShowDone = () => {
+            _this.configFormat.extInfo.readyShow = false;
+            _this.onReadyShowDone && _this.onReadyShowDone();
+        }; // onReadyShowDone
+
+        this.player.onLoadCache = () => {
+            // this._playerUtilBuildMask(this.configFormat.loadIcon);
+            // this._playUtilShowMask();
+            if (this.onLoadCache != null) this.onLoadCache();
+        }; // onLoadCache
+
+        this.player.onLoadCacheFinshed = () => {
+            // this._playUtilHiddenMask();
+            if (this.onLoadCacheFinshed != null) this.onLoadCacheFinshed();
+        }; // onLoadCacheFinshed
+
+        // boot
+        this.player.start(this.videoURL);
+        // this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+    } // _cWsFLVDecoderEntry
+
     _mpegTsEntry() {
         console.log("entry ts");
         let _this = this;
@@ -1570,20 +1662,88 @@ class H265webjsModule {
             /*
              * start
              */
-            fetch(_this.videoURL, {signal}).then(res => res.arrayBuffer()).then(streamBuffer => {
-                if (_this.mpegTsObj === undefined 
-                    || _this.mpegTsObj === null) 
-                {
+            // fetch(_this.videoURL, {signal}).then(res => res.arrayBuffer()).then(streamBuffer => {
+            //     if (_this.mpegTsObj === undefined 
+            //         || _this.mpegTsObj === null) 
+            //     {
+            //         controller.abort();
+            //         return;
+            //     }
+
+            //     streamBuffer.fileStart = 0;
+            //     // array buffer to unit8array
+            //     let streamUint8Buf = new Uint8Array(streamBuffer);
+            //     // console.log(streamUint8Buf);
+            //     _this.mpegTsObj.demux(streamUint8Buf);
+            // });
+            let totalData = null;
+            fetch(_this.videoURL, {signal}).then(function(response) {
+                if (!response.headers.has("Content-Length")) {
+                    // fileSize = response.headers.get("Content-Length");
                     controller.abort();
+                    signal = null;
+                    controller = null;
+
+                    // _this.player.release();
+                    // _this.player = null;
+
+                    let playerConfig = {
+                        width: _this.configFormat.playerW,
+                        height: _this.configFormat.playerH,
+                        playerId: _this.configFormat.playerId,
+                        token: _this.configFormat.token,
+                        readyShow: _this.configFormat.extInfo.readyShow,
+                        checkProbe: _this.configFormat.extInfo.checkProbe,
+                        ignoreAudio : _this.configFormat.extInfo.ignoreAudio,
+                        playMode: _this.playMode,
+                    };
+                    _this._cLiveFLVDecoderEntry(playerConfig);
+
                     return;
                 }
 
-                streamBuffer.fileStart = 0;
-                // array buffer to unit8array
-                let streamUint8Buf = new Uint8Array(streamBuffer);
-                // console.log(streamUint8Buf);
-                _this.mpegTsObj.demux(streamUint8Buf);
-            });
+                let pump = function(reader) {
+                    return reader.read().then(function(result) {
+                        if (result.done) {
+                            console.log("========== mpegts RESULT DONE ===========");
+                            // fetchFinished = true;
+                            _this.mpegTsObj.demux(totalData);
+                            // window.clearInterval(networkInterval);
+                            // networkInterval = null;
+                            return;
+                        }
+                        
+                        let chunk = result.value;
+                        if (totalData === null) {
+                            totalData = chunk;
+                        } else {
+                            var tmpBuf = chunk;
+                            var newLen = totalData.length + tmpBuf.length;
+                            var newData = new Uint8Array(newLen);
+                            newData.set(totalData);
+                            newData.set(tmpBuf, totalData.length);
+                            totalData = new Uint8Array(newData);
+
+                            tmpBuf = null;
+                            newData = null;
+                        }
+
+                        // console.log("call chunk", chunk.length);
+                        // rawParser.appendStreamRet(chunk);
+                        return pump(reader);
+                    });
+                }
+                return pump(response.body.getReader());
+            })
+            .catch(function(error) {
+                if (!error.toString().includes('user aborted')) {
+                    const errMsg = 
+                        ' mpegts request error:' + error;
+                    console.error(errMsg);
+                } // end check error
+                
+            }); // end fetch
+
         }; // onReady
         this.mpegTsObj.initMPEG();
     }
@@ -1681,7 +1841,7 @@ class H265webjsModule {
 
                 if (!isHevcParam) {
                     alert("is not hevc hls");
-                    // @TODO hls release add mpeg release
+                    // hls release add mpeg release
                     _this.hlsObj.release();
                     if (_this.hlsObj.mpegTsObj) {
                         _this.hlsObj.mpegTsObj.releaseTsDemuxer();
@@ -1696,7 +1856,7 @@ class H265webjsModule {
                     _this.playParam.videoCodec = isHevcParam ? 0 : 1;
                     console.log("this.playParam: ", _this.playParam);
                     // _this.onLoadFinish && _this.onLoadFinish();
-                    _this._videoJsPlayer(); // @TODO videojs
+                    _this._videoJsPlayer(); // videojs
                     return;
                 } // end is hevc
 
@@ -1901,7 +2061,7 @@ class H265webjsModule {
         // }, 1);
     }
 
-    // @TODO append raw 265 nalu frame
+    // append raw 265 nalu frame
     /**
      * @brief append frame when 265 raw mode
      * @param Uint8Array frame
