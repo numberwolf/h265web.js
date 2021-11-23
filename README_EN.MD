@@ -36,7 +36,7 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 </font>
 </strong>
 
-#### Contact
+#### Contact ####
 
 * Github: https://github.com/numberwolf/h265web.js
 * Email: porschegt23@foxmail.com
@@ -904,6 +904,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/23 - Night |
+| - | 0.Fixed https://github.com/numberwolf/h265web.js/issues/90 |
 | Time | 2021/11/21 - In the small hours |
 | - | 0.Support Websocket-FLV (HEVC/H.265) |
 | - | 1.Support Websocket-TS (HEVC/H.265) |

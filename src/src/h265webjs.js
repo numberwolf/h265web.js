@@ -119,7 +119,10 @@ class H265webjsModule {
             extInfo : DEFAULT_CONFIG_EXT
         }; // configFormat
         this.mediaExtFormat = this.configFormat.type;
-        this.mediaExtProtocol = AVCOMMON.GetUriProtocol(this.videoURL);
+        this.mediaExtProtocol = null;
+        if (this.videoURL !== undefined && this.videoURL !== null) {
+            this.mediaExtProtocol = AVCOMMON.GetUriProtocol(this.videoURL);
+        }
 
         console.log("GetUriProtocol", this.mediaExtProtocol, this.mediaExtFormat);
 
@@ -1712,7 +1715,7 @@ class H265webjsModule {
                             // networkInterval = null;
                             return;
                         }
-                        
+
                         let chunk = result.value;
                         if (totalData === null) {
                             totalData = chunk;
