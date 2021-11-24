@@ -10,6 +10,8 @@
 <hr>
 <strong>
 <font color="red">市场上能找到的支持的能力最多的HEVC/H.265网页播放器.</font>
+<br>
+<font color="blue">流媒体服务推荐用 <a href="https://github.com/ZLMediaKit/ZLMediaKit">ZLMediaKit(https://github.com/ZLMediaKit/ZLMediaKit) - 更好用的流媒体服务</a></font>
 </strong>
 <br>
 一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的HEVC播放器 

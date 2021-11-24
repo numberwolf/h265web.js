@@ -11,6 +11,8 @@
 
 <strong>
 <font color="red">H265web.js is the best HEVC/H.265 web player you can find.</font>
+<br>
+<font color="blue">Video Stream Server recommand use <a href="https://github.com/ZLMediaKit/ZLMediaKit">ZLMediaKit(https://github.com/ZLMediaKit/ZLMediaKit) - Pretty good video live stream server/framework</a></font>
 </strong>
 
 A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web</a> helped you, please `star` it~
