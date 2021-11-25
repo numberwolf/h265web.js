@@ -80,9 +80,10 @@ class CWsLiveCoreModule { // export default
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
             token: config.token || null,
             probeSize: config.probeSize || 4096,
+            ignoreAudio : config.ignoreAudio || 0
         }; // end this.config
 
-        alert("this.config.probeSize" + this.config.probeSize);
+        alert("this.config.probeSize" + this.config.probeSize + " ignoreAudio:" + this.config.ignoreAudio);
 
         this.mediaInfo = {
             noFPS : false,
@@ -340,7 +341,8 @@ class CWsLiveCoreModule { // export default
             }
         } // end set canvas size
 
-        if (audioIdx >= 0 && this.mediaInfo.noFPS === false) {
+        if (audioIdx >= 0 && this.mediaInfo.noFPS === false && this.config.ignoreAudio < 1) 
+        {
             if (undefined !== this.audioWAudio && null !== this.audioWAudio) {
                 this.audioWAudio.stop();
                 this.audioWAudio = null;

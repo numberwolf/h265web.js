@@ -906,6 +906,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/25 - Night |
+| - | 0.Fixed httpflv/ws LIVE ignoreAudio problem |
 | Time | 2021/11/23 - Night |
 | - | 0.Fixed https://github.com/numberwolf/h265web.js/issues/90 |
 | Time | 2021/11/21 - In the small hours |

@@ -915,6 +915,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/11/25 - 夜 |
+| - | 0.修复 httpflv/ws直播 ignoreAudio配置失效问题 |
 | 时间 | 2021/11/23 - 夜 |
 | - | 0.修复 https://github.com/numberwolf/h265web.js/issues/90 |
 | 时间 | 2021/11/21 - 凌晨 |

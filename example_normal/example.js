@@ -77,7 +77,7 @@ window.onload = function() {
     // var url = "ws://127.0.0.1/live/test.live.ts";
 
     /******** HTTP FLV/TS/HLS ********/
-    // var url = "http://127.0.0.1/live/test.flv";
+    var url = "http://127.0.0.1/live/test.flv";
     // var url = "http://127.0.0.1/live/test.live.ts";
     // var url = "http://127.0.0.1/live/test/hls.m3u8";
     var config = {
@@ -87,7 +87,8 @@ window.onload = function() {
         token : token,
         extInfo : {
             coreProbePart : 0.4,
-            probeSize : 8192
+            probeSize : 8192,
+            ignoreAudio : 0
         }
     }; // config
     let playerId        = config.player;
