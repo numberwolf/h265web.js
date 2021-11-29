@@ -68,7 +68,7 @@ class MPEG_JS_Module {
 
 	}
 
-	// outside
+	// @TODO outside
 	initDemuxer() {
 		let _this = this;
         // this.initState = true;

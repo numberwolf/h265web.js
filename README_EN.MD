@@ -906,6 +906,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/11/29 - 夜 |
+| - | 0.Fixed http-flv retry case and some bugs |
 | Time | 2021/11/25 - Night |
 | - | 0.Fixed httpflv/ws LIVE ignoreAudio problem |
 | Time | 2021/11/23 - Night |

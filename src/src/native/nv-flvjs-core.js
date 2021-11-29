@@ -142,9 +142,11 @@ class NvFlvjsCoreModule {
     } // makeIt
 
     getSize() {
+        const width = this.videoTag.videoWidth > 0 ? this.videoTag.videoWidth : this.width;
+        const height = this.videoTag.videoHeight > 0 ? this.videoTag.videoHeight : this.height;
         return {
-            width: this.videoTag.videoWidth,
-            height: this.videoTag.videoHeight,
+            width: width,
+            height: height
         };
     } // getSize
 

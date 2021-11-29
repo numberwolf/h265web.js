@@ -129,47 +129,52 @@ function frameDataAlignCrop(
 
 
 function GetUriFormat(uri) {
-	for (let i = 0; i < Formats.length; i++) {
-		const formatTag = Formats[i];
-		const formatRegex = '\.' + formatTag.format;
+	if (uri !== undefined && uri !== null) {
+		for (let i = 0; i < Formats.length; i++) {
+			const formatTag = Formats[i];
+			const formatRegex = '\.' + formatTag.format;
 
-		let patt = formatRegex;
-		let n = uri.search(patt);
+			let patt = formatRegex;
+			let n = uri.search(patt);
 
-		if (n >= 0) {
-			// alert(formatTag.value);
-			return formatTag.value;
-		} // end if
-	} // end for
+			if (n >= 0) {
+				// alert(formatTag.value);
+				return formatTag.value;
+			} // end if
+		} // end for
+	}
 
 	return Formats[0].value;
 } // GetUriFormat
 
 function GetFormatPlayCore(inputFormat) {
-	for (let i = 0; i < Formats.length; i++) {
-		const formatTag = Formats[i];
-		if (formatTag.value === inputFormat) {
-			return formatTag.core;
-		} // end if
-	} // end for
+	if (inputFormat !== undefined && inputFormat !== null) { 
+		for (let i = 0; i < Formats.length; i++) {
+			const formatTag = Formats[i];
+			if (formatTag.value === inputFormat) {
+				return formatTag.core;
+			} // end if
+		} // end for
+	}
 
 	return Formats[0].core;
 } // GetFormatPlayCore
 
-// @TODO
 function GetUriProtocol(uri) {
-	for (let i = 0; i < Protocols.length; i++) {
-		const formatTag = Protocols[i];
-		const formatRegex = formatTag.format + '[s]{0,}:\/\/';
+	if (uri !== undefined && uri !== null) {
+		for (let i = 0; i < Protocols.length; i++) {
+			const formatTag = Protocols[i];
+			const formatRegex = formatTag.format + '[s]{0,}:\/\/';
 
-		let patt = formatRegex;
-		let n = uri.search(patt);
+			let patt = formatRegex;
+			let n = uri.search(patt);
 
-		if (n >= 0) {
-			// alert(formatTag.value);
-			return formatTag.value;
-		} // end if
-	} // end for
+			if (n >= 0) {
+				// alert(formatTag.value);
+				return formatTag.value;
+			} // end if
+		} // end for
+	}
 
 	return Protocols[0].value;
 } // GetUriFormat

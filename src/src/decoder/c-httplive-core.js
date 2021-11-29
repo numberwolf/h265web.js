@@ -185,33 +185,9 @@ class CHttpLiveCoreModule { // export default
         }
         // console.log("play -> workerFetch recv cmd:", cmd);
         switch (cmd) {
-            case 'fetch-chunk':
-                //console.log("play -> workerFetch append chunk");
-                let chunk = body.data;
-                _this.download_length += chunk.length;
-
-                let push_ret = 0;
-                setTimeout(function() {
-                    let offset_video = Module._malloc(chunk.length);
-                    Module.HEAP8.set(chunk, offset_video);
-
-                    // console.warn("_this.AVSniffPtr:", _this);
-                    push_ret = Module.cwrap("pushSniffHttpFlvData", "number", ["number", "number", "number", "number"])(
-                        _this.AVSniffPtr, offset_video, chunk.length, _this.config.probeSize
-                    );
-                    // console.warn("pushRet:", push_ret);
-
-                    Module._free(offset_video);
-                    offset_video = null;
-                }, 0); // end setTimeout
-
-                _this.totalLen += chunk.length;
-                //console.log("play -> workerFetch append chunk ret: ", push_ret, chunk.length, totalLen);
-                if (chunk.length > 0) {
-                    _this.getPackageTimeMS = AVCommon.GetMsTime();
-                }
-                _this.pushPkg++;
-
+            case 'startok':
+                alert("startok");
+                _this.getPackageTimeMS = AVCommon.GetMsTime();
                 // /*
                 if (_this.AVGetInterval === undefined 
                     || _this.AVGetInterval === null) 
@@ -241,6 +217,63 @@ class CHttpLiveCoreModule { // export default
                         } // end if buf len check
                     }, 5);
                 } // end if AVGetInterval
+                break;
+            case 'fetch-chunk':
+                //console.log("play -> workerFetch append chunk");
+                let chunk = body.data;
+                _this.download_length += chunk.length;
+
+                let push_ret = 0;
+                setTimeout(function() {
+                    let offset_video = Module._malloc(chunk.length);
+                    Module.HEAP8.set(chunk, offset_video);
+
+                    // console.warn("_this.AVSniffPtr:", _this);
+                    push_ret = Module.cwrap("pushSniffHttpFlvData", "number", ["number", "number", "number", "number"])(
+                        _this.AVSniffPtr, offset_video, chunk.length, _this.config.probeSize
+                    );
+                    // console.warn("pushRet:", push_ret);
+
+                    Module._free(offset_video);
+                    offset_video = null;
+                }, 0); // end setTimeout
+
+                _this.totalLen += chunk.length;
+                //console.log("play -> workerFetch append chunk ret: ", push_ret, chunk.length, totalLen);
+                if (chunk.length > 0) {
+                    _this.getPackageTimeMS = AVCommon.GetMsTime();
+                }
+                _this.pushPkg++;
+
+                // // /*
+                // if (_this.AVGetInterval === undefined 
+                //     || _this.AVGetInterval === null) 
+                // {
+                //     _this.AVGetInterval = window.setInterval(function() {
+                //         let bufLen = Module.cwrap("getBufferLengthApi", "number", ["number"])(_this.AVSniffPtr);
+                //         // console.log("play -> workerFetch last buf len: ", bufLen);
+                //         if (bufLen > _this.config.probeSize) {
+                //         // if (pushPkg > READY_PUSH_COUNT_LIMIT) {
+                //             let get_ret = Module.cwrap("getSniffHttpFlvPkg", "number", ["number"])(_this.AVSniffPtr);
+                //             // console.log("play -> workerFetch get nalu ret: ", get_ret, _this.pushPkg);
+                //             _this.pushPkg -= 1;
+                //             // _this.ready_now = 1;
+                //         // }
+                //         } else {
+                //             if (_this.getPackageTimeMS > 0 &&
+                //                 AVCommon.GetMsTime() - _this.getPackageTimeMS >= def.FETCH_HTTP_FLV_TIMEOUT_MS
+                //             ) {
+                //                 console.warn("retry!");
+                //                 _this.getPackageTimeMS = AVCommon.GetMsTime();
+                //                 _this.workerFetch.postMessage({
+                //                     cmd: 'retry',
+                //                     data: null,
+                //                     msg: 'retry'
+                //                 });
+                //             }
+                //         } // end if buf len check
+                //     }, 5);
+                // } // end if AVGetInterval
                 break;
             case 'close':
                 _this.AVGetInterval && clearInterval(_this.AVGetInterval);
@@ -912,9 +945,9 @@ class CHttpLiveCoreModule { // export default
                         urlpath = body.data;
                         fetchData(urlpath);
                         self.postMessage({
-                            cmd: 'default',
+                            cmd: 'startok',
                             data: 'WORKER STARTED', 
-                            msg: 'default'
+                            msg: 'startok'
                         });
                         break;
                     case 'stop':
