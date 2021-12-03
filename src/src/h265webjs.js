@@ -317,6 +317,7 @@ class H265webjsModule {
         } else {
             this.player.release(); // keep
         }
+        this.configFormat.extInfo.readyShow = true;
         return true;
     }
 
@@ -1269,6 +1270,7 @@ class H265webjsModule {
         // };
         let controller = new AbortController();
         let signal = controller.signal;
+        // let isReportNetworkErr = true;
 
         let playerConfig = {
             width: this.configFormat.playerW,
@@ -1286,6 +1288,11 @@ class H265webjsModule {
             _this.configFormat.extInfo.readyShow = false;
             _this.onReadyShowDone && _this.onReadyShowDone();
         }; // onReadyShowDone
+
+        this.player.onRelease = () => {
+            // isReportNetworkErr = false;
+            controller.abort();
+        };
 
         /*
          *

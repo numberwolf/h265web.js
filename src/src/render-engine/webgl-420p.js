@@ -154,6 +154,27 @@ function renderFrame(gl,
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 }
 
+// release
+function releaseContext(gl) {
+    // gl.y = new Texture(gl);
+    // gl.u = new Texture(gl);
+    // gl.v = new Texture(gl);
+    // gl.y.bind(0, program, "YTexture");
+    // gl.u.bind(1, program, "UTexture");
+    // gl.v.bind(2, program, "VTexture");
+
+    // this.texture = gl.createTexture();
+    // gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
+    gl.deleteTexture(gl.y.texture); 
+    gl.deleteTexture(gl.u.texture);
+    gl.deleteTexture(gl.v.texture); 
+    // gl.deleteBuffer(someBuffer); 
+    // gl.deleteBuffer(someOtherBuffer); 
+    // gl.deleteRenderbuffer(someRenderbuffer); 
+    // gl.deleteFramebuffer(someFramebuffer); 
+}
+
 
 /* Player controls Start Here */
 
@@ -204,7 +225,8 @@ function fullscreen() {
 
 module.exports = {
     renderFrame : renderFrame,
-    setupCanvas : setupCanvas
+    setupCanvas : setupCanvas,
+    releaseContext : releaseContext
 };
 
 /* Player controls Ends Here */

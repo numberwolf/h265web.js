@@ -906,7 +906,11 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
-| Time | 2021/11/29 - 夜 |
+| Time | 2021/12/04 - In the small hours |
+| - | 0.Fixed http-flv 265 Render With crash |
+| - | 1.Fixed hls problem of fullscreen |
+| - | 2.Fixed some bugs |
+| Time | 2021/11/29 - Night |
 | - | 0.Fixed http-flv retry case and some bugs |
 | Time | 2021/11/25 - Night |
 | - | 0.Fixed httpflv/ws LIVE ignoreAudio problem |

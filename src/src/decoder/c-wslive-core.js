@@ -651,6 +651,11 @@ class CWsLiveCoreModule { // export default
         this.audioWAudio && this.audioWAudio.stop();
         this.audioWAudio = null;
 
+        if (this.AVGLObj !== undefined && this.AVGLObj !== null) {
+            RenderEngine420P.releaseContext(this.AVGLObj);
+            this.AVGLObj = null;
+        }
+        
         this.CanvasObj && this.CanvasObj.remove();
         this.CanvasObj = null;
 

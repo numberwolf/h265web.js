@@ -69,6 +69,7 @@ module.exports = config => {
         },
         vcodecerPtr: null,
         videoCallback: null,
+        vCodecID: def.V_CODEC_NAME_HEVC,
         /*
          * frame.data
          * frame.pts
@@ -647,6 +648,11 @@ module.exports = config => {
         player.stream = new Uint8Array();
     };
     player.release = () => { // 释放
+        if (player.yuv !== undefined && player.yuv !== null) {
+            RenderEngine420P.releaseContext(player.yuv);
+            player.yuv = null;
+        }
+
         player.endAudio();
         player.cacheLoop && window.clearInterval(player.cacheLoop);
         player.cacheLoop = null;
@@ -666,6 +672,9 @@ module.exports = config => {
         player.durationMs = -1.0;
         player.videoPTS = 0;
         player.isPlaying = false;
+
+        player.canvas.remove();
+        player.canvas = null;
         return true;
     };
     player.nextNalu = (onceGetNalCount=1) => {

@@ -208,6 +208,7 @@ class CNativeCoreModule {
         this.onRender 			= null;
         this.onCacheProcess		= null;
         this.onReadyShowDone    = null;
+        this.onRelease          = null;
 
 		/*
 		 * Init Module
@@ -264,11 +265,6 @@ class CNativeCoreModule {
     }
 
     release() {
-        if (this.canvas !== undefined && this.canvas !== null) {
-            this.canvas.remove();
-            this.canvas = null;
-        }
-
         if (this.playFrameInterval !== null) {
             window.clearInterval(this.playFrameInterval);
             this.playFrameInterval = null;
@@ -290,8 +286,12 @@ class CNativeCoreModule {
         }
         this._clearDecInterval();
         this._removeBindFuncPtr(); // @TODO
-    	let releaseRet = Module.cwrap(
-    		'releaseSniffStream', 'number', ['number'])(this.corePtr);
+        let releaseRet = -1;
+        if (this.corePtr !== undefined && this.corePtr !== null) {
+        	releaseRet = Module.cwrap(
+        		'releaseSniffStream', 'number', ['number'])(this.corePtr);
+            this.corePtr = null;
+        }
     	this.audioWAudio && this.audioWAudio.stop();
     	this.audioWAudio = null;
 
@@ -301,6 +301,20 @@ class CNativeCoreModule {
 
     	this.playVPipe.length = 0;
     	// this.playAPipe.length = 0;
+
+        if (this.yuv !== undefined && this.yuv !== null) {
+            RenderEngine420P.releaseContext(this.yuv);
+            this.yuv = null;
+        }
+
+        if (this.canvas !== undefined && this.canvas !== null) {
+            this.canvas.remove();
+            this.canvas = null;
+        }
+
+        this.config.readyShow = true;
+
+        this.onRelease && this.onRelease();
     	return releaseRet;
     }
 
@@ -1511,6 +1525,9 @@ class CNativeCoreModule {
      * @return
      */
     pushBuffer(buffer) {
+        if (this.corePtr === undefined || this.corePtr === null) {
+            return -1;
+        }
     	let offset = Module._malloc(buffer.length);
     	Module.HEAP8.set(buffer, offset);
     	let pushRet = Module.cwrap('pushSniffStreamData', 'number', 
