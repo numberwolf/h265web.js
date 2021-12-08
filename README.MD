@@ -915,6 +915,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2021/12/08 |
+| - | 0.修复 H.264 MP4 onReadyShowDone回调问题 |
 | 时间 | 2021/12/04 - 凌晨 |
 | - | 0.修复 http-flv 265 渲染上下文Crash问题 |
 | - | 1.修复 hls播放全屏错误 |

@@ -1106,6 +1106,7 @@ class H265webjsModule {
         this.player.onLoadFinish = () => {
             _this.playParam.durationMs = _this.player.duration * 1000;
             _this.onLoadFinish && _this.onLoadFinish();
+            _this.onReadyShowDone && _this.onReadyShowDone();
         };
     }
 
