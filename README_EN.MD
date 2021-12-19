@@ -906,6 +906,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/12/19 |
+| - | 0.Fixed H.264 HLS Callback's problem |
 | Time | 2021/12/08 |
 | - | 0.Fixed Problem of H.264 MP4 onReadyShowDone Event |
 | Time | 2021/12/04 - In the small hours |

@@ -520,6 +520,7 @@ class H265webjsModule {
     fullScreen() {
         this.autoScreenClose = true;
 
+        console.log("js debug fullScreen => ", this.player.vCodecID, this.player);
         if (this.player.vCodecID === def.V_CODEC_NAME_HEVC) {
             let glCanvasBox = document
                 .querySelector('#' + this.configFormat.playerId);
@@ -1271,7 +1272,6 @@ class H265webjsModule {
         // };
         let controller = new AbortController();
         let signal = controller.signal;
-        // let isReportNetworkErr = true;
 
         let playerConfig = {
             width: this.configFormat.playerW,
@@ -1859,15 +1859,15 @@ class H265webjsModule {
                     }
                     _this.hlsObj = null;
 
-                    _this.playParam.durationMs = -1;
+                    _this.playParam.durationMs = durationMs;
                     _this.playParam.fps = fps;
                     _this.playParam.sampleRate = sampleRate;
                     _this.playParam.size = size;
                     _this.playParam.audioNone = aCodec == "";
                     _this.playParam.videoCodec = isHevcParam ? 0 : 1;
-                    console.log("this.playParam: ", _this.playParam);
+                    console.log("this.playParam: ", _this.playParam, durationMs);
                     // _this.onLoadFinish && _this.onLoadFinish();
-                    _this._videoJsPlayer(); // videojs
+                    _this._videoJsPlayer(durationMs); // videojs
                     return;
                 } // end is hevc
 
@@ -1896,9 +1896,10 @@ class H265webjsModule {
     }; // end onSamples
 
     // videojs
-    _videoJsPlayer() {
+    _videoJsPlayer(probeDurationMS=-1) {
         let _this = this;
         let playerConfig = {
+            probeDurationMS: probeDurationMS,
             width: this.configFormat.playerW,
             height: this.configFormat.playerH,
             playerId: this.configFormat.playerId,
@@ -1921,6 +1922,8 @@ class H265webjsModule {
                 _this.playParam.durationMs = _this.player.duration * 1000;
                 _this.playMode = def.PLAYER_MODE_VOD
             }
+
+            console.log("vjs _this.playParam.", _this.playParam, _this.player.duration, _this.player.getSize());
 
             _this.onLoadFinish && _this.onLoadFinish();
         }; // onLoadFinish

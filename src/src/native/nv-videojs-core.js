@@ -27,6 +27,7 @@ const videojs 		= require('video.js');
 class NvVideojsCoreModule {
 	constructor(config) {
 		this.configFormat = {
+            probeDurationMS: config.probeDurationMS || -1,
 			width: config.width || def.DEFAULT_WIDTH,
             height: config.height || def.DEFAULT_HEIGHT,
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
@@ -94,10 +95,10 @@ class NvVideojsCoreModule {
         this.videoTag.style.width = this.configFormat.width + 'px';
         this.videoTag.style.height = this.configFormat.height + 'px';
 
-        console.log("this.videoTag==>", this.videoTag);
+        
 
         this.duration = this.myPlayer.duration();
-        alert("duration:" + this.duration === Infinity);
+        console.log("this.videoTag==>", this.videoTag, this.duration);
 
         // this.onLoadFinish && this.onLoadFinish();
         // this.onReadyShowDone && this.onReadyShowDone();
@@ -154,11 +155,19 @@ class NvVideojsCoreModule {
             alert("load vjs");
             _this.myPlayer.on("canplaythrough", function() {
                 console.log("视频源数据加载完成");
+                // if (_this.configFormat.probeDurationMS > 0) {
+                //     _this.onLoadFinish && _this.onLoadFinish();
+                //     _this.onReadyShowDone && _this.onReadyShowDone();
+                // }
             });
             //myPlayer.play();
             _this.myPlayer.on("loadedmetadata", function() {
                 console.log("vjs loadedmetadata");
                 _this._onVideoJsReady();
+                if (_this.configFormat.probeDurationMS > 0) {
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    _this.onReadyShowDone && _this.onReadyShowDone();
+                }
             });
             _this.myPlayer.on("ended", function() {
                 _this.pause();
@@ -173,8 +182,10 @@ class NvVideojsCoreModule {
             });
             // _this.play();
             _this.onMakeItReady && _this.onMakeItReady();
-            _this.onLoadFinish && _this.onLoadFinish();
-            _this.onReadyShowDone && _this.onReadyShowDone();
+            if (_this.configFormat.probeDurationMS < 0) {
+                _this.onLoadFinish && _this.onLoadFinish();
+                _this.onReadyShowDone && _this.onReadyShowDone();
+            }
         });
         this.myPlayer.options.controls = false;
         // this.myPlayer.options.autoplay = 'any';
