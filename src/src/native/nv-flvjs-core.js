@@ -100,12 +100,36 @@ class NvFlvjsCoreModule {
         // native
         let _this = this;
         if (flvjs.isSupported()) {
+            console.log("flvjs-core flvjs.isSupported");
         	let h265Container = document.querySelector('#' + this.configFormat.playerId);
 	        this.videoTag = document.createElement('video');
 	        this.videoTag.id = this.myPlayerID;
 	        this.videoTag.style.width = this.configFormat.width + 'px';
         	this.videoTag.style.height = this.configFormat.height + 'px';
 	        h265Container.appendChild(this.videoTag);
+
+            this.videoTag.onloadedmetadata = () => {
+                alert("this.videoTag.onloadedmetadata");
+                if (isInitDecodeFrames === false && _this.videoTag.videoWidth > 0 && _this.videoTag.videoHeight > 0) 
+                {
+                    isInitDecodeFrames = true;
+                    _this.width = _this.videoTag.videoWidth;
+                    _this.height = _this.videoTag.videoHeight;
+                    _this.duration =  _this.videoTag.duration;
+                    alert(_this.duration);
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    _this.onReadyShowDone && _this.onReadyShowDone();
+
+                    _this.videoTag.ontimeupdate = () => {
+                        console.log("ontimeupdate");
+                        _this.onPlayingTime && _this.onPlayingTime(_this.videoTag.currentTime);
+                    }; // ontimeupdate
+                    _this.videoTag.onended = () => {
+                        console.log("onended");
+                        _this.onPlayingFinish && _this.onPlayingFinish();
+                    }; // onended
+                }
+            }; // onloadedmetadata
 
 	        let options = {
 	            type: 'flv',
@@ -114,25 +138,67 @@ class NvFlvjsCoreModule {
 	            url: url,
 	        }; // options
 	        this.myPlayer = flvjs.createPlayer(options);
-	        this.myPlayer.on(flvjs.Events.METADATA_ARRIVED, function(res) {
-	        	alert("METADATA_ARRIVED");
-	        	console.log("METADATA_ARRIVED", res);
-	        	_this.duration = res.duration;
-	        	_this.width = res.width;
-	        	_this.height = res.height;
-	        	alert(_this.duration);
-	        	_this.onLoadFinish && _this.onLoadFinish();
-        		_this.onReadyShowDone && _this.onReadyShowDone();
 
-        		_this.videoTag.ontimeupdate = () => {
-		        	console.log("ontimeupdate");
-					_this.onPlayingTime && _this.onPlayingTime(_this.videoTag.currentTime);
-				}; // ontimeupdate
-				_this.videoTag.onended = () => {
-					console.log("onended");
-					_this.onPlayingFinish && _this.onPlayingFinish();
-				}; // onended
+            let isInitDecodeFrames = false;
+
+            this.myPlayer.on(flvjs.Events.MEDIA_INFO, function(res) {
+                console.log("Events.MEDIA_INFO", res);
+            });
+            this.myPlayer.on(flvjs.Events.STATISTICS_INFO, function(res) {
+                console.log("Events.STATISTICS_INFO", 
+                    res, 
+                    _this.videoTag.videoWidth, _this.videoTag.videoHeight,
+                    _this.videoTag.duration);
+                if (isInitDecodeFrames === false && _this.videoTag.videoWidth > 0 && _this.videoTag.videoHeight > 0) 
+                {
+                    isInitDecodeFrames = true;
+                    _this.width = _this.videoTag.videoWidth;
+                    _this.height = _this.videoTag.videoHeight;
+                    _this.duration =  _this.videoTag.duration;
+                    alert(_this.duration);
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    _this.onReadyShowDone && _this.onReadyShowDone();
+
+                    _this.videoTag.ontimeupdate = () => {
+                        console.log("ontimeupdate");
+                        _this.onPlayingTime && _this.onPlayingTime(_this.videoTag.currentTime);
+                    }; // ontimeupdate
+                    _this.videoTag.onended = () => {
+                        console.log("onended");
+                        _this.onPlayingFinish && _this.onPlayingFinish();
+                    }; // onended
+                }
+            });
+            this.myPlayer.on(flvjs.Events.SCRIPTDATA_ARRIVED, function(res) {
+                console.log("Events.SCRIPTDATA_ARRIVED", res);
+            });
+	        this.myPlayer.on(flvjs.Events.METADATA_ARRIVED, function(res) {
+                if (isInitDecodeFrames === false) 
+                {
+                    isInitDecodeFrames = true;
+    	        	alert("METADATA_ARRIVED");
+    	        	console.log("Events.METADATA_ARRIVED", res);
+    	        	_this.duration = res.duration;
+    	        	_this.width = res.width;
+    	        	_this.height = res.height;
+    	        	alert(_this.duration);
+    	        	_this.onLoadFinish && _this.onLoadFinish();
+            		_this.onReadyShowDone && _this.onReadyShowDone();
+
+            		_this.videoTag.ontimeupdate = () => {
+    		        	console.log("ontimeupdate");
+    					_this.onPlayingTime && _this.onPlayingTime(_this.videoTag.currentTime);
+    				}; // ontimeupdate
+    				_this.videoTag.onended = () => {
+    					console.log("onended");
+    					_this.onPlayingFinish && _this.onPlayingFinish();
+    				}; // onended
+                }
 	        }); // METADATA_ARRIVED
+            this.myPlayer.on(flvjs.Events.ERROR, function(res) {
+                console.log("Events.ERROR", res);
+            });
+
 	        this.myPlayer.attachMediaElement(this.videoTag);
 	        this.myPlayer.load();
 	    } else {

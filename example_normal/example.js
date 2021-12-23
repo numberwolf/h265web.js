@@ -71,14 +71,14 @@ window.onload = function() {
     //var url = "res/hls/veilside.m3u8";
     //var url = "res/hls1/test.m3u8";
     //var url = "http://182.61.31.911:8080/live/livestream.flv";
-    var url = "http://127.0.0.1/live/test/hls.m3u8";
+    //var url = "http://127.0.0.1/live/test/hls.m3u8";
 
     /******** Websocket FLV/TS ********/
     // var url = "ws://127.0.0.1/live/test.flv";
     // var url = "ws://127.0.0.1/live/test.live.ts";
 
     /******** HTTP FLV/TS/HLS ********/
-    var url = "http://127.0.0.1/live/test.flv";
+    // var url = "http://127.0.0.1/live/test.flv";
     // var url = "http://127.0.0.1/live/test.live.ts";
     // var url = "http://127.0.0.1/live/test/hls.m3u8";
     var config = {

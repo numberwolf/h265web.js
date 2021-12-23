@@ -906,6 +906,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/12/24 |
+| - | 0.Fixed H.264 HTTP-FLV Some Badcase with callback |
 | Time | 2021/12/19 |
 | - | 0.Fixed H.264 HLS Callback's problem |
 | Time | 2021/12/08 |
