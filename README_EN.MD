@@ -906,6 +906,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2021/12/31 |
+| - | 0.Add H.264 HTTP-FLV Retry after error |
 | Time | 2021/12/24 |
 | - | 0.Fixed H.264 HTTP-FLV Some Badcase with callback |
 | Time | 2021/12/19 |
