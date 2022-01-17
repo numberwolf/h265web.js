@@ -916,6 +916,7 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 | - | 0.Fixed ISSUE of HLS 265 OOM Case https://github.com/numberwolf/h265web.js/issues/108  <img src="resource/mem-hls.jpg" width="300px"> |
 | - | 1.Fixed ISSUE of HLS Split Rules https://github.com/numberwolf/h265web.js/issues/105 |
 | - | 2.Add New Demo <a href="index-debug.html">index-debug.html</a> |
+| - | 3.Fixed 10+playes of 264 play failed, stack overflow |
 | Time | 2021/12/31 |
 | - | 0.Add H.264 HTTP-FLV Retry after error |
 | Time | 2021/12/24 |

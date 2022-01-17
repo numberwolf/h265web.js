@@ -927,6 +927,7 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 | - | 0.解决ISSUE HLS 265内存泄露问题 https://github.com/numberwolf/h265web.js/issues/108  <img src="resource/mem-hls.jpg" width="300px"> |
 | - | 1.解决ISSUE HLS Split Rules https://github.com/numberwolf/h265web.js/issues/105 |
 | - | 2.增加新Demo <a href="index-debug.html">index-debug.html</a> |
+| - | 3.解决10+窗口264播放引起堆栈异常 |
 | 时间 | 2021/12/31 |
 | - | 0.增加 H.264 HTTP-FLV 失败后Retry |
 | 时间 | 2021/12/24 |
