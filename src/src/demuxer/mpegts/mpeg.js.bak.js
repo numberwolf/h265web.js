@@ -60,9 +60,6 @@ class MPEG_JS_Module {
 
         this.wasmState = 0;
 
-        this.naluLayer = null;
-        this.vlcLayer  = null;
-
         this.onReady = null;
         this.onDemuxed = null;
         this.onDemuxedFailed = null;
@@ -301,27 +298,15 @@ class MPEG_JS_Module {
      *        Include : Nalu Layer/VLC Layer
      */
     _readLayer() {
-        if (this.naluLayer === null) {
-            this.naluLayer = {
-                vps : null,
-                sps : null,
-                pps : null,
-                sei : null
-            };
-        } else {
-            this.naluLayer.vps = null;
-            this.naluLayer.sps = null;
-            this.naluLayer.pps = null;
-            this.naluLayer.sei = null;
-        }
-
-        if (this.vlcLayer === null) {
-            this.vlcLayer = {
-                vlc : null
-            };
-        } else {
-            this.vlcLayer.vlc = null;
-        }
+        let naluLayer = {
+            vps : null,
+            sps : null,
+            pps : null,
+            sei : null
+        };
+        let vlcLayer = {
+            vlc : null
+        };
 
         // nalu layer
         let spsLen      = Module.cwrap('getSPSLen', 'number', [])();
@@ -329,42 +314,34 @@ class MPEG_JS_Module {
         if (spsLen < 0) {
             return;
         }
-        let spsSubPtr   = Module.HEAPU8.subarray(spsPtr, spsPtr + spsLen);
-        this.naluLayer.sps   = new Uint8Array(spsLen);
-        this.naluLayer.sps.set(spsSubPtr, 0);
+        naluLayer.sps   = new Uint8Array(spsLen);
+        naluLayer.sps.set(Module.HEAPU8.subarray(spsPtr, spsPtr + spsLen), 0);
         // console.log(naluLayer.sps);
 
         let ppsLen      = Module.cwrap('getPPSLen', 'number', [])();
         let ppsPtr      = Module.cwrap('getPPS', 'number', [])();
-        let ppsSubPtr   = Module.HEAPU8.subarray(ppsPtr, ppsPtr + ppsLen);
-        this.naluLayer.pps   = new Uint8Array(ppsLen);
-        this.naluLayer.pps.set(ppsSubPtr, 0);
+        naluLayer.pps   = new Uint8Array(ppsLen);
+        naluLayer.pps.set(Module.HEAPU8.subarray(ppsPtr, ppsPtr + ppsLen), 0);
         // console.log(naluLayer.pps);
 
         let seiLen      = Module.cwrap('getSEILen', 'number', [])();
         let seiPtr      = Module.cwrap('getSEI', 'number', [])();
-        let seiSubPtr   = Module.HEAPU8.subarray(seiPtr, seiPtr + seiLen);
-        this.naluLayer.sei   = new Uint8Array(seiLen);
-        this.naluLayer.sei.set(seiSubPtr, 0);
+        naluLayer.sei   = new Uint8Array(seiLen);
+        naluLayer.sei.set(Module.HEAPU8.subarray(seiPtr, seiPtr + seiLen), 0);
         // console.log(naluLayer.sei);
 
         // vlc layer
         let vlcLen      = Module.cwrap('getVLCLen', 'number', [])();
         let vlcPtr      = Module.cwrap('getVLC', 'number', [])();
-        let vlcSubPtr   = Module.HEAPU8.subarray(vlcPtr, vlcPtr + vlcLen);
-        this.vlcLayer.vlc    = new Uint8Array(vlcLen);
-        this.vlcLayer.vlc.set(vlcSubPtr, 0);
+        vlcLayer.vlc    = new Uint8Array(vlcLen);
+        vlcLayer.vlc.set(Module.HEAPU8.subarray(vlcPtr, vlcPtr + vlcLen), 0);
         // console.log(vlcLayer.vlc);
 
         if (this.mediaAttr.vCodec == def.DEF_HEVC || this.mediaAttr.vCodec == def.DEF_H265) {
             let vpsLen      = Module.cwrap('getVPSLen', 'number', [])();
             let vpsPtr      = Module.cwrap('getVPS', 'number', [])();
-            let vpsSubPtr   = Module.HEAPU8.subarray(vpsPtr, vpsPtr + vpsLen);
-            this.naluLayer.vps   = new Uint8Array(vpsLen);
-            this.naluLayer.vps.set(vpsSubPtr, 0);
-
-            Module._free(vpsSubPtr);
-            vpsSubPtr = null;
+            naluLayer.vps   = new Uint8Array(vpsLen);
+            naluLayer.vps.set(Module.HEAPU8.subarray(vpsPtr, vpsPtr + vpsLen), 0);
 
             // console.log(vpsLen, vps);
         } else if (this.mediaAttr.vCodec == def.DEF_AVC || this.mediaAttr.vCodec == def.DEF_H264) {
@@ -373,19 +350,10 @@ class MPEG_JS_Module {
             // undo
         }
 
-        Module._free(spsSubPtr);
-        spsSubPtr = null;
-        Module._free(ppsSubPtr);
-        ppsSubPtr = null;
-        Module._free(seiSubPtr);
-        seiSubPtr = null;
-        Module._free(vlcSubPtr);
-        vlcSubPtr = null;
-
         return {
-            nalu : this.naluLayer,
-            vlc : this.vlcLayer
-        };
+            nalu : naluLayer,
+            vlc : vlcLayer
+        }
     }
 
     isHEVC() {
@@ -432,9 +400,6 @@ class MPEG_JS_Module {
             layer : layer
         }
         // console.log(returnValue);
-
-        Module._free(dataPacket);
-        dataPacket = null;
 
         // console.log("readPacket"
         // 	+ ", type:" + type

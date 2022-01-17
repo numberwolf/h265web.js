@@ -46,8 +46,10 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 * Discord:numberwolf#8694
 * Wechat:numberwolf11
 
-#### DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (Demo is not newest version, you need to download from github and get newest version)
+#### Online DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (Demo is not newest version, you need to download from github and get newest version)
 </a>
+
+#### Simple Demo - for first use <a href="index-debug.html">index-debug.html</a>
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -216,6 +218,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 <a href="https://www.zzsin.com/h265webjs.html">https://www.zzsin.com/h265webjs.html</a>
 
+Simple Demo - First <a href="index-debug.html">index-debug.html</a>
+
 <br>
 
 #### PreviewImage ####
@@ -229,7 +233,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 ## 1、UseItByDemo ##
 
-* You can use it by `play.js`和`index.html`
+* Simple Demo - First <a href="index-debug.html">index-debug.html</a>
 
 * You need to put project in your `web server` path, and open it with `index.html`
 
@@ -250,6 +254,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 #### 1）Install SDK Package
 
 * By github 1.1 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
+
+* Simple Demo - First <a href="index-debug.html">index-debug.html</a>
 
 * demo: <a href="./example_normal">example_normal</a> （recommend）
 	```javascript
@@ -906,6 +912,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/01/17 |
+| - | 0.Fixed ISSUE of HLS 265 OOM Case https://github.com/numberwolf/h265web.js/issues/108  <img src="resource/mem-hls.jpg" width="300px"> |
+| - | 1.Fixed ISSUE of HLS Split Rules https://github.com/numberwolf/h265web.js/issues/105 |
+| - | 2.Add New Demo <a href="index-debug.html">index-debug.html</a> |
 | Time | 2021/12/31 |
 | - | 0.Add H.264 HTTP-FLV Retry after error |
 | Time | 2021/12/24 |

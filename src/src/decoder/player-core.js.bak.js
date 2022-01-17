@@ -69,6 +69,7 @@ module.exports = config => {
         },
         vcodecerPtr: null,
         videoCallback: null,
+        vCodecID: def.V_CODEC_NAME_HEVC,
         /*
          * frame.data
          * frame.pts
@@ -78,7 +79,6 @@ module.exports = config => {
         cacheYuvBuf: CacheYUV(CACHE_LENGTH),
         nowPacket: null, // 当前处理的Packet
         stream: new Uint8Array(),
-        vCodecID: def.V_CODEC_NAME_HEVC,
         audio: null,
         // screenView: new ScreenModule.Screen(),
         liveStartMs: -1, // @Todo
@@ -322,7 +322,6 @@ module.exports = config => {
         //     return cacheYuvStructObj;
         // }
         Module._free(offset);
-        offset = null;
         return false;
     }; // decodeNalu1Frame
     /**
@@ -894,7 +893,7 @@ module.exports = config => {
         player.debugID = debugID;
     };
     player.checkDisplaySize = (widthIn, heightIn) => {
-        console.log("player-core.js checkDisplaySize==========>", widthIn, heightIn);
+        //console.log("checkDisplaySize==========>", widthIn, heightIn);
         let biggerWidth = widthIn / player.config.width > heightIn / player.config.height;
         let fixedWidth = (player.config.width / widthIn).toFixed(2);
         let fixedHeight = (player.config.height / heightIn).toFixed(2);
@@ -940,13 +939,6 @@ module.exports = config => {
                 ptsSec, 
                 stride_y, height, 
                 buf_y, buf_u, buf_v);
-
-            Module._free(out_y);
-            out_y = null;
-            Module._free(out_u);
-            out_u = null;
-            Module._free(out_v);
-            out_v = null;
 
             player.cacheYuvBuf.appendCacheByCacheYuv(cacheYuvStructObj);
         });

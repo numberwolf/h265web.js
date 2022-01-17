@@ -45,8 +45,10 @@
 * Email: porschegt23@foxmail.com
 * Discord:numberwolf#8694
 
-#### DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (请以Github最新为准,在线Demo已长时间未更新)
+#### 在线DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (请以Github最新为准,在线Demo已长时间未更新)
 </a>
+
+#### 简易Demo - 方便读代码 <a href="index-debug.html">index-debug.html</a>
 
 
 <br>
@@ -216,6 +218,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 <a href="https://www.zzsin.com/h265webjs.html">https://www.zzsin.com/h265webjs.html</a>
 
+简易Demo - 方便读代码 <a href="index-debug.html">index-debug.html</a>
+
 <br>
 
 #### 效果预览 ####
@@ -229,13 +233,15 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 
 ## 1 快捷方式使用 ##
 
-* 使用流程也可以直接看 `play.js`和`index.html`的Demo使用
+* 简易Demo - 方便读代码 <a href="index-debug.html">index-debug.html</a>
 
 * 本项目可以直接放在你的`web服务器`目录下访问`index.html`
 
 <br>
 
 ## 2 播放器SDK使用文档 ##
+
+简易Demo - 方便读代码 <a href="index-debug.html">index-debug.html</a>
 
 ———————— __API以及事件能力__
 
@@ -250,6 +256,8 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 #### 1）引入包
 
 * 用普通js(不编译)直接引入原始js文件
+	
+	* 简易Demo - 第一次使用看这里 <a href="index-debug.html">index-debug.html</a>
 
 	* demo: <a href="./example_normal">example_normal</a>
 
@@ -915,6 +923,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/01/17 |
+| - | 0.解决ISSUE HLS 265内存泄露问题 https://github.com/numberwolf/h265web.js/issues/108  <img src="resource/mem-hls.jpg" width="300px"> |
+| - | 1.解决ISSUE HLS Split Rules https://github.com/numberwolf/h265web.js/issues/105 |
+| - | 2.增加新Demo <a href="index-debug.html">index-debug.html</a> |
 | 时间 | 2021/12/31 |
 | - | 0.增加 H.264 HTTP-FLV 失败后Retry |
 | 时间 | 2021/12/24 |

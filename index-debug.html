@@ -1,0 +1,344 @@
+<!DOCType html>
+<!--
+/*********************************************************
+ * LICENSE: GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Author: Numberwolf - ChangYanlong
+ * QQ: 531365872
+ * QQ Group:925466059
+ * Wechat: numberwolf11
+ * Discord: numberwolf#8694
+ * E-Mail: porschegt23@foxmail.com
+ * Github: https://github.com/numberwolf/h265web.js
+ *
+ * 作者: 小老虎(Numberwolf)(常炎隆)
+ * QQ: 531365872
+ * QQ群: 531365872
+ * 微信: numberwolf11
+ * Discord: numberwolf#8694
+ * 邮箱: porschegt23@foxmail.com
+ * 博客: https://www.jianshu.com/u/9c09c1e00fd1
+ * Github: https://github.com/numberwolf/h265web.js
+ *
+ **********************************************************/
+-->
+<html>
+<head>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <meta charset="utf-8">
+    <title>h265webjs - https://github.com/numberwolf/h265web.js</title>
+    <meta charset="utf-8" name="author" content="ChangYanlong">
+    <meta charset="utf-8" name="email" content="porschegt23@foxmail.com">
+    <meta charset="utf-8" name="discord" content="numberwolf#8694">
+    <meta charset="utf-8" name="github" content="https://github.com/numberwolf/h265web.js">
+    <script src="dist/missile.js"></script> <!-- IMPORTANT -->
+    <script src="dist/h265webjs-v20220117.js"></script> <!-- IMPORTANT -->
+    <style>
+    </style>
+</head>
+<body>
+<pre>
+/*********************************************************
+ * LICENSE: GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Author: Numberwolf - ChangYanlong
+ * QQ: 531365872
+ * QQ Group:925466059
+ * Wechat: numberwolf11
+ * Discord: numberwolf#8694
+ * E-Mail: porschegt23@foxmail.com
+ * Github: https://github.com/numberwolf/h265web.js
+ *
+ * 作者: 小老虎(Numberwolf)(常炎隆)
+ * QQ: 531365872
+ * QQ群: 531365872
+ * 微信: numberwolf11
+ * Discord: numberwolf#8694
+ * 邮箱: porschegt23@foxmail.com
+ * 博客: https://www.jianshu.com/u/9c09c1e00fd1
+ * Github: https://github.com/numberwolf/h265web.js
+ *
+ **********************************************************/
+</pre>
+
+
+    <div id="glplayer" style="width: 640px; height: 360px; background-color: #c9c9c9;">
+    </div>
+
+<pre>
+--> 1.Install Player 
+--> when [onReadyShowDone] happened 
+--> 2.Play/Pause/Seek/Other operations
+--> 3.Release Player
+</pre>
+    <hr>
+    <button onclick="installPlayer()">1.Install-Player</button>
+    <button onclick="releasePlayer()">2.Release-Player</button>
+    <br>
+    <button onclick="playPausePlayer()">1.Play/Pause</button>
+    <button onclick="seekPlayer()">2.Seek To 5s</button>
+    <button onclick="mutePlayer()">3.Mute(Volume 0.0)</button>
+    <button onclick="unmutePlayer()">4.Volume To 1.0</button>
+    <br>
+    <button onclick="fullscreenPlayer()">1.Fullscreen</button>
+
+    <hr>
+    Events log
+    <br>
+    <textarea id="logger" style="width: 640px; height: 100px; background-color: #000000; color:yellow;">
+h265web.js normal events
+--------------------
+    </textarea>
+    <br>
+    <textarea id="logger-cache" style="width: 640px; height: 100px; background-color: #000000; color:yellow;">
+h265web.js cache log
+--------------------
+    </textarea>
+    <br>
+    <textarea id="logger-pts" style="width: 640px; height: 100px; background-color: #000000; color:yellow;">
+h265web.js play pts log
+--------------------
+    </textarea>
+
+    <script>
+        const h265webURL = "https://github.com/numberwolf/h265web.js";
+        var token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
+        /******** Test Cases *******/
+        var url = "example/hevc_test_moov_set_head_16s.mp4";
+        //var url = "res/video_bf10_265_moov.mp4";
+        //var url = "res/hls/veilside.m3u8";
+        //var url = "res/hls1/test.m3u8";
+        //var url = "http://182.61.31.911:8080/live/livestream.flv";
+        //var url = "http://127.0.0.1/live/test/hls.m3u8";
+
+        /******** Websocket FLV/TS ********/
+        // var url = "ws://127.0.0.1/live/test.flv";
+        // var url = "ws://127.0.0.1/live/test.live.ts";
+
+        /******** HTTP FLV/TS/HLS ********/
+        // var url = "http://127.0.0.1/live/test.flv";
+        // var url = "http://127.0.0.1/live/test.live.ts";
+        // var url = "http://127.0.0.1/live/test/hls.m3u8";
+        var config = {
+            player: "glplayer",
+            width: 640,
+            height: 360,
+            token : token,
+            extInfo : {
+                coreProbePart : 0.4,
+                probeSize : 8192,
+                ignoreAudio : 0
+            }
+        }; // config
+        var playerObj = null;
+        var loggerObj = document.getElementById("logger");
+        var loggerCacheObj = document.getElementById("logger-cache");
+        var loggerPtsObj = document.getElementById("logger-pts");
+
+        function clear() {
+            window.STATICE_MEM_playerCount = -1;
+            window.STATICE_MEM_playerIndexPtr = 0;
+        } // end func clear
+
+        function releasePlayer() {
+            if (playerObj !== null) {
+                playerObj.release();
+                playerObj = null;
+                // log
+                loggerObj.value = h265webURL;
+            }
+        }
+
+        function installPlayer() {
+            clear();
+            /*
+             *
+             *
+             * 1. create player object
+             *
+             *
+             */
+            playerObj = window.new265webjs(url, config);
+            /*
+             *
+             *
+             * 2. bind events
+             *
+             *
+             */
+            playerObj.onSeekStart = (pts) => {
+                loggerObj.scrollNewest("\r\nplayerObj.onSeekStart:" + pts);
+            };
+
+            playerObj.onSeekFinish = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onSeekFinish");
+            };
+
+            playerObj.onPlayFinish = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onPlayFinish");
+            };
+
+            playerObj.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
+                loggerObj.scrollNewest("\r\nplayerObj.onRender");
+            };
+
+            playerObj.onOpenFullScreen = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onOpenFullScreen");
+            };
+
+            playerObj.onCloseFullScreen = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onCloseFullScreen");
+            };
+
+            playerObj.onSeekFinish = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onSeekFinish");
+            };
+
+            playerObj.onLoadCache = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onLoadCache");
+            };
+
+            playerObj.onLoadCacheFinshed = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onLoadCacheFinshed");
+            };
+
+            playerObj.onReadyShowDone = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onReadyShowDone");
+                loggerObj.scrollNewest("\r\n==== CAN PLAY NOW ===");
+            };
+
+            playerObj.onLoadFinish = () => {
+                loggerObj.scrollNewest("\r\nplayerObj.onLoadFinish");
+                loggerObj.scrollNewest("\r\nplayerObj.onLoadFinish ==== GET MediaInfo ===");
+
+                playerObj.setVoice(1.0);
+                mediaInfo = playerObj.mediaInfo();
+                console.log("playerObj.onLoadFinish mediaInfo===========>", mediaInfo);
+                /*
+                meta:
+                    durationMs: 144400
+                    fps: 25
+                    sampleRate: 44100
+                    size: {
+                        width: 864,
+                        height: 480
+                    },
+                    audioNone : false
+                videoType: "vod"
+                */
+                if (mediaInfo.meta.isHEVC === false) {
+                    loggerObj.scrollNewest("\r\n playerObj.onLoadFinish is Not HEVC/H.265");
+                    //coverToast.removeAttribute('hidden');
+                    //coverBtn.style.width = '100%';
+                    //coverBtn.style.fontSize = '50px';
+                    //coverBtn.innerHTML = 'is not HEVC/H.265 media!';
+                    //return;
+                } else {
+                    loggerObj.scrollNewest("\r\n playerObj.onLoadFinish is HEVC/H.265");
+                }
+
+                if (mediaInfo.meta.audioNone) {
+                    loggerObj.scrollNewest("\r\n playerObj.onLoadFinish no Audio");
+                }
+
+                if (mediaInfo.videoType == "vod") {
+                    loggerObj.scrollNewest("\r\n playerObj.onLoadFinish is VOD");
+                    loggerObj.scrollNewest("\r\n playerObj.onLoadFinish durationMS is " + mediaInfo.meta.durationMs);
+                } else {
+                    loggerObj.scrollNewest("\r\n playerObj.onLoadFinish is LIVE");
+                }
+            };
+
+            playerObj.onCacheProcess = (cPts) => {
+                loggerCacheObj.scrollNewest("\r\n playerObj.onCacheProcess " + cPts);
+            };
+
+            playerObj.onPlayTime = (videoPTS) => {
+                if (mediaInfo.videoType == "vod") {
+                    loggerPtsObj.scrollNewest("\r\n playerObj.onPlayTime VOD pts " + videoPTS);
+                } else {
+                    // LIVE
+                }
+            };
+
+            /*
+             *
+             *
+             * 3. install player
+             *
+             *
+             */
+            playerObj.do();
+        } // end func installPlayer
+
+        function playPausePlayer() {
+            loggerObj.scrollNewest("\r\n playerObj.playPausePlayer Click");
+            if (playerObj !== null) {
+                if (playerObj.isPlaying()) {
+                    loggerObj.scrollNewest("\r\n playerObj.playPausePlayer Click to pause");
+                    playerObj.pause();
+                } else {
+                    loggerObj.scrollNewest("\r\n playerObj.playPausePlayer Click to play");
+                    playerObj.play();
+                }
+            }
+        } // end func playPausePlayer
+
+        function seekPlayer() {
+            loggerObj.scrollNewest("\r\n playerObj.seekPlayer Click");
+            if (playerObj !== null) {
+                playerObj.seek(5);
+            }
+        } // end func seekPlayer
+
+        function mutePlayer() {
+            loggerObj.scrollNewest("\r\n playerObj.mutePlayer Click");
+            if (playerObj !== null) {
+                playerObj.setVoice(0);
+            }
+        } // end func mutePlayer
+
+        function unmutePlayer() {
+            loggerObj.scrollNewest("\r\n playerObj.unmutePlayer Click");
+            if (playerObj !== null) {
+                playerObj.setVoice(1.0);
+            }
+        } // end func unmutePlayer
+
+        function fullscreenPlayer() {
+            loggerObj.scrollNewest("\r\n playerObj.fullscreenPlayer Click"); 
+
+            if (playerObj !== null) {
+                playerObj.fullScreen();
+            }
+        }
+        
+
+        window.onload = function() {
+            if (loggerObj === null) {
+                loggerObj = document.getElementById("logger");
+                loggerCacheObj = document.getElementById("logger-cache");
+                loggerPtsObj = document.getElementById("logger-pts");
+            }
+            loggerObj.scrollNewest = function(val) {
+                loggerObj.value += val;
+                loggerObj.scrollTop = loggerObj.scrollHeight;
+            };
+            loggerCacheObj.scrollNewest = function(val) {
+                loggerCacheObj.value += val;
+                loggerCacheObj.scrollTop = loggerCacheObj.scrollHeight;
+            };
+            loggerPtsObj.scrollNewest = function(val) {
+                loggerPtsObj.value += val;
+                loggerPtsObj.scrollTop = loggerPtsObj.scrollHeight;
+            };
+        }; // end onload
+    </script>
+</body>
+</html>
+
+
+
+
+
+
