@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "/",
+        "allowJs": true,
+        "noImplicitThis": true,
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "types": ["vite/client"],
+        "paths": {
+            "@/*":["./*"]
+        }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}
