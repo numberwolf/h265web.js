@@ -1,24 +1,12 @@
 # example_vue
 
-## Project setup
-```
-yarn install
-```
+## Usage
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+```bash
 
-### Compiles and minifies for production
-```
-yarn build
-```
 
-### Lints and fixes files
-```
-yarn lint
-```
+$ yarn install
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+$ yarn serve
+
+```
