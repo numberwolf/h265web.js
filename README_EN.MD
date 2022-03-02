@@ -278,7 +278,7 @@ Simple Demo - First <a href="index-debug.html">index-debug.html</a>
 	// import wasm in html file
 	<script src="dist/missile.js"></script>
 	// import from local file in your es js file
-	import H265webjsModule from './dist/index';
+	import H265webjsModule from './dist';
 	```
 
 <br>
