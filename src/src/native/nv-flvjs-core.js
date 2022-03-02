@@ -141,7 +141,7 @@ class NvFlvjsCoreModule {
                 return;
             }
 
-            if (_this.checkStartIntervalCount > 5) {
+            if (_this.checkStartIntervalCount > 20) {
                 window.clearInterval(_this.checkStartInterval);
                 _this.checkStartIntervalCount = 0;
                 _this.checkStartInterval = null;

@@ -571,7 +571,7 @@ class H265webjsModule {
         }
 
         // this.autoScreenClose = true;
-    }
+    } // closeFullScreen
 
     /**********
      Private
