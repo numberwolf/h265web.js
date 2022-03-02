@@ -1,0 +1,19 @@
+{
+  "name": "h265web.js",
+  "author": "Numberwolf <531365872@qq.com>",
+  "main": "./index.cjs.js",
+  "types": "./index.d.ts",
+  "module": "./index.esm.js",
+  "description": "HttpFLV/HLS/MP4/TS/FLV/M3U8/Websocket.",
+  "license": "GPL3.0",
+  "keywords": [
+    "player",
+    "web",
+    "mp4",
+    "hls",
+    "wasm",
+    "websocket",
+    "m3u8",
+    "h265"
+  ]
+}
