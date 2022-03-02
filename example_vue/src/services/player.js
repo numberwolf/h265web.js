@@ -1,4 +1,4 @@
-import H265webjsModule from "../../public/dist/index";
+import H265webjsModule from "../../public/dist";
 
 const durationFormmat = (val) => {
   val = val.toString();

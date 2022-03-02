@@ -285,7 +285,7 @@ token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dp
 	// 在index.html引入wasm
 	<script src="dist/missile.js"></script>
 	// 在js文件 引入Github的本地文件
-	import H265webjsModule from './dist/index';
+	import H265webjsModule from './dist';
 	```
 
 <br>
