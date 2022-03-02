@@ -31,7 +31,7 @@
 | <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
 | HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br>商业化 |  . |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |  . |
 | MPEG-TS(VOD) | G711A | HDR10(BT2020) | . |
 
 </font>
@@ -39,7 +39,7 @@
 
 #### 联系我
 
-* <strong><font color="red">QQ技术支持群: 925466059</font></strong>
+* <strong><font color="red">QQ技术支持群: 925466059(大部分时间在QQ群)</font></strong>
 * <strong><font color="red">微信: numberwolf11(私聊咨询付费, 免费技术咨询请加QQ群)</font></strong>
 * Github: https://github.com/numberwolf
 * Email: porschegt23@foxmail.com
@@ -923,6 +923,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/03/02 |
+| - | 0.解决h264 FLV 部分有问题的流会出现频繁请求重试问题,兼容 |
 | 时间 | 2022/01/17 |
 | - | 0.解决ISSUE HLS 265内存泄露问题 https://github.com/numberwolf/h265web.js/issues/108  <img src="resource/mem-hls.jpg" width="300px"> |
 | - | 1.解决ISSUE HLS Split Rules https://github.com/numberwolf/h265web.js/issues/105 |
