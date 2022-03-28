@@ -168,6 +168,7 @@ Notice：
 | ---- | ---- |  ----  | ---- |
 | mp4 | Video on demand |  Y  | ---- |
 | mpeg-ts | Video on demand |  Y  | ---- |
+| mpeg-ps | Video on demand |  Y  | ---- |
 | m3u8 | Video on demand |  Y  | ---- |
 | hls | Live |  Y  | ---- |
 | HEVC/H.265 | Video on demand |  Y  | ---- |
