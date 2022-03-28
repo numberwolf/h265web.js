@@ -399,9 +399,9 @@ class CHttpLiveCoreModule { // export default
         // this.play();
     } // end func _callbackProbe
 
-    _callbackYUV(y, u, v, line_y, line_u, line_v, w, h, pts) 
+    _callbackYUV(y, u, v, line_y, line_u, line_v, w, h, pts, tag) 
     {
-        // console.log("callbackYUV==============>", line_y, line_u, line_v, w, h, pts);
+        console.log("callbackYUV==============>", line_y, line_u, line_v, w, h, pts, tag);
 
         let offsetY = Module.HEAPU8.subarray(y, y + line_y * h);
         let bufY = new Uint8Array(offsetY);
@@ -574,10 +574,15 @@ class CHttpLiveCoreModule { // export default
                 Module.HEAP8.set(item.bufData, offset_video);
 
                 // decode start
+                // let debugStartMS = AVCommon.GetMsTime();
                 let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
                     ["number", "number", "number", "number", "number"])
                     (_this.AVSniffPtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
                 //console.log("decodeVideoFrame ret:", decRet); 
+                // let debugEndMS = AVCommon.GetMsTime();
+
+                // console.log("js debug callbackYUV==============> time:", 
+                    // debugEndMS, "-", debugStartMS, "=", debugEndMS - debugStartMS);
                 // decode end
 
                 //item.bufData = null;
@@ -729,10 +734,9 @@ class CHttpLiveCoreModule { // export default
         }
 
         // if (this.ready_now > 0) {
-        
 
         // 得出几次平均耗时 然后重新做 patent
-        if (this.playInterval === undefined || this.playInterval === null) 
+        if (this.playInterval === undefined || this.playInterval === null)
         {
             let calcuteStartTime    = 0;
             let nowTimestamp        = 0;
@@ -745,17 +749,19 @@ class CHttpLiveCoreModule { // export default
 
             if (this.mediaInfo.audioNone === false && this.audioWAudio && this.mediaInfo.noFPS === false) 
             {
+                // 1. 只是针对渲染的耗时
+                // 2. @TODO-ZZ 继续加追帧
                 this.playInterval = setInterval(function() {
                     nowTimestamp = AVCommon.GetMsTime();
 
                     // console.log("YUV cachestatus", _this.cache_status);
-                    if (_this.cache_status) {
-                        if (nowTimestamp - calcuteStartTime >= _this.frameTime - playFrameCostTime) 
+                    if (_this.cache_status)
+                    {
+                        if (nowTimestamp - calcuteStartTime >= _this.frameTime - playFrameCostTime)
                         { // play
                             let item = _this.YuvBuf.shift(); 
-                            // console.log("YUV pts", item.pts, _this.YuvBuf.length);
+                            console.log("playInterval YUV pts playFrameCostTime", item.pts, _this.YuvBuf.length, playFrameCostTime);
 
-                            
                             if (item != undefined && item !== null) 
                             {
                                 let diff = 0;
@@ -791,6 +797,7 @@ class CHttpLiveCoreModule { // export default
                                 
                             } // check videoFrame item is empty
 
+                            // @TODO-ZZ 视频帧解码严重落后 cache
                             if (
                                 _this.YuvBuf.length <= 0 || 
                                 (_this.audioWAudio && _this.audioWAudio.sampleQueue.length <= 0)

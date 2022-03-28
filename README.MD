@@ -31,8 +31,8 @@
 | <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
 | HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |  . |
-| MPEG-TS(VOD) | G711A | HDR10(BT2020) | . |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
+| MPEG-TS(VOD) | MPEG-PS(VOD) | G711A | HDR10(BT2020) |
 
 </font>
 </strong>
@@ -923,6 +923,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/03/28 |
+| - | 0.支持MPEG-PS(MPEG1)标准视频播放 |
 | 时间 | 2022/03/02 |
 | - | 0.解决h264 FLV 部分有问题的流会出现频繁请求重试问题,兼容 |
 | 时间 | 2022/01/17 |

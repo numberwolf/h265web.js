@@ -32,8 +32,8 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
 | HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"> |  . |
-| MPEG-TS(VOD) | G711A | HDR10(BT2020) | . |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
+| MPEG-TS(VOD) | MPEG-PS(VOD) | G711A | HDR10(BT2020) |
 
 </font>
 </strong>
@@ -912,6 +912,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/03/28 |
+| - | 0.Support MPEG-PS(MPEG1) stream |
 | Time | 2022/03/02 |
 | - | 0.Fixed h264 FLV(LIVE) can not get resolution info with retry |
 | Time | 2022/01/17 |

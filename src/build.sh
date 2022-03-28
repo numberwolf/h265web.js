@@ -27,7 +27,7 @@ source ./version.sh
 !
 
 REMOVE_FUNCS='"console.log","console.warn","alert"'
-# REMOVE_FUNCS='"console.log"'
+# REMOVE_FUNCS='"alert"'
 # REMOVE_FUNCS='"console.warn","alert"'
 # REMOVE_FUNCS='"console.log","alert"'
 # REMOVE_FUNCS=''

@@ -966,7 +966,8 @@ class H265webjsModule {
      * 内部公共调用的一个方法 创建播放器
      */
     _makeMP4PlayerViewEvent(
-        durationMs, fps, sampleRate, size, audioNone=false, videoCodec=null) {
+        durationMs, fps, sampleRate, size, audioNone=false, videoCodec=null) 
+    {
         let _this = this;
         // set play params in this entry
         this.playParam.durationMs = durationMs;
@@ -1004,6 +1005,7 @@ class H265webjsModule {
             }
         }
 
+        console.log("start init player");
         this.player = Player({
             width: this.configFormat.playerW,
             height: this.configFormat.playerH,
@@ -1060,7 +1062,7 @@ class H265webjsModule {
                 _this.onReadyShowDone && _this.onReadyShowDone();
             }
         }
-    }
+    } // _makeMP4PlayerViewEvent
 
     _makeNativePlayer(durationMs, fps, sampleRate, size, audioNone, videoCodec) {
         let _this = this;

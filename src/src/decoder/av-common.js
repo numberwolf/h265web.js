@@ -53,6 +53,11 @@ const Formats = [
 		core: def.PLAYER_CORE_TYPE_DEFAULT
 	},
 	{
+		format: 'ps',
+		value: 'ts',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
 		format: 'mpegts',
 		value: 'ts',
 		core: def.PLAYER_CORE_TYPE_DEFAULT
