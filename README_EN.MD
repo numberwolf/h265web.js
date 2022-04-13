@@ -959,6 +959,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 | - | 2.Performance optimizing of 1080P MP4(VOD) |
 | - | 3.Retry of mp4 sniff action |
 | - | 4.Support AV1 |
+| - | 5.Support Play frame by frame |
+| - | 6.Support Video Frame Snapshot |
 | Time | 2022/03/28 |
 | - | 0.Support MPEG-PS(MPEG1) stream |
 | Time | 2022/03/02 |
