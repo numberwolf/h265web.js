@@ -31,8 +31,11 @@
 | <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
 | HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
-| MPEG-TS(VOD) | MPEG-PS(VOD) | G711A | HDR10(BT2020) |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-av1.png" width="100"> | <img src="resource/icon-mov-h265.png" width="100">|
+| MPEG-TS(VOD) | MPEG-PS(VOD) | AV1(Chrome) | MOV(H.265) |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
+| G711A | HDR10(BT2020) |
 
 </font>
 </strong>
@@ -141,6 +144,10 @@
 
 		- [退出全屏播放](#退出全屏播放)
 
+		- [逐帧播放](#逐帧播放)
+
+		- [截取当前帧图像](#截取当前帧图像)
+
 		- [释放播放器](#释放播放器)
 
 - [3-其它](#3-其它)
@@ -168,42 +175,48 @@
 | 协议  | 模式 | 是否支持 | 说明 |
 | ---- | ---- |  ----  | ---- |
 | mp4 | 点播 |  是  | ---- |
+| mov | 点播 |  是  | HEVC/H.265 |
+| av1 | 点播 |  是  | Chrome |
 | mpeg-ts | 点播 |  是  | ---- |
 | mpeg-ps | 点播 |  是  | ---- |
 | m3u8 | 点播 |  是  | ---- |
 | hls | 直播 |  是  | ---- |
+| flv | 点播 |  是  | --- |
+| http-flv | 直播 |  是  | CodecID=12 |
+| http-ts | 直播 |  是  | ---- |
+| websocket-flv | 直播 |  是  | ---- |
+| websocket-ts | 直播 |  是  | ---- |
 | HEVC/H.265 | 点播 |  是  | ---- |
 | HEVC/H.265 | 直播 |  是  | ---- |
 | AVC/H.264 | 点播 |  是  | ---- |
 | AVC/H.264 | 直播 |  是  | ---- |
-| http-flv | 直播 |  是  | CodecID=12 |
-| flv | 点播 |  是  | 备用播放内核模式,不需要填写 |
-| websocket-flv | 直播 |  是  | ---- |
-| websocket-ts | 直播 |  是  | ---- |
-| http-ts | 直播 |  是  | ---- |
+
 
 * 能力
 
-|  能力 | 是否支持 | 其他 |
+| 能力 | 是否支持 | 其他 |
 | ---- | ---- |  ----  |
-| 直播 | 是 |  ----  | ---- |
-| 点播 | 是 |  ----  | ---- |
-| Seek跳转 | 是 | ---- | ---- |
-| 精准Seek | 是 |  ----  | ---- |
-| 封面图 | 是 |  ----  | ---- |
-| 边下边播 | 是 |  ----  | ---- |
-| 音量调节 | 是 |  ----  | ---- |
-| 播放 | 是 |  ----  | ---- |
-| 暂停 | 是 |  ----  | ---- |
-| 重新播放 | 是 |  ----  | ---- |
-| 暂停截图 | 是 |  ----  | ---- |
-| 1080p播放 | 是 |  ----  | ---- |
-| 720p播放 | 是 |  ----  | ---- |
-| 多路播放 | 是 |  ----  | ---- |
-| 去音频播放 | 是 |  ----  | ---- |
-| 缓冲进度 | 是 |  ----  | ---- |
-| 开启全屏播放 | 是 |  ----  | ---- |
-| 退出全屏播放 | 是 |  ----  | ---- |
+| 直播 | 是 |  ----  |
+| 点播 | 是 |  ----  |
+| Seek跳转 | 是 | ---- |
+| 精准Seek | 是 |  ----  |
+| 封面图 | 是 |  ----  |
+| 边下边播 | 是 |  ----  |
+| 音量调节 | 是 |  ----  |
+| 播放 | 是 |  ----  |
+| 暂停 | 是 |  ----  |
+| 重新播放 | 是 |  ----  |
+| 暂停截图 | 是 |  ----  |
+| 1080p播放 | 是 |  ----  |
+| 720p播放 | 是 |  ----  |
+| 多路播放 | 是 |  ----  |
+| 去音频播放 | 是 |  ----  |
+| 缓冲进度 | 是 |  ----  |
+| 开启全屏播放 | 是 |  ----  |
+| 退出全屏播放 | 是 |  ----  |
+| 逐帧播放 | 是 |  ----  |
+| 截图 | 是 | ----  |
+| 自动播放 | 是 | HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264  |
 
 <br>
 
@@ -338,7 +351,8 @@ var config = {
 | \+ core  | Int | - | 否:默认0 | 0:默认播放内核 <br>1:备用播放内核 |
 | \+ coreProbePart  | Float32 | - | 否:默认1.0 | 探测Mp4媒体的属性，百分比 `0.0~1.0`,正常moov前置的文件都用0.1(10%)可以（只适用于备用播放内核) |
 | \+ ignoreAudio | Int | - | 否:默认0 | 0:带音频播放 <br>1:忽略音频播放 |
-| \+ probeSize | Int | - | 否:4096 | HTTP-FLV直播模式下的探测长度 |
+| \+ probeSize | Int | - | 否:默认4096 | HTTP-FLV直播模式下的探测长度 |
+| \+ autoPlay | Bool | true/false | 否:默认不开启 | 是否开启自动播放 <br>HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264 |
 
 
 
@@ -846,6 +860,36 @@ player.closeFullScreen();
 
 <br>
 
+
+
+
+#### 逐帧播放 ####
+
+|  调用函数 | 返回 | 说明 |
+|  ----  | ----  | ---- |
+| playNextFrame()  | - | 逐帧播放 播放下一帧 |
+
+<br>
+
+
+#### 截取当前帧图像 ####
+
+|  调用函数 | 返回 | 说明 |
+|  ----  | ----  | ---- |
+| snapshot()  | - | 截取当前帧图像 |
+
+* 示例
+
+```javascript
+const snapCanvas = document.getElementById("snapshot-player"); // create canvas
+h265Object.snapshot(snapCanvas); // snapshot to canvas
+```
+
+<br>
+
+
+
+
 #### 释放播放器 ####
 
 |  调用函数 | 返回 | 说明 |
@@ -924,6 +968,11 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/04/14 |
+| - | 0.支持 MOV视频播放 |
+| - | 1.支持 HTTP-FLV/HTTP-TS/HLS 自动播放 |
+| - | 2.1080P MP4 点播 播放优化 |
+| - | 3.MP4 增加嗅探失败重试 |
 | 时间 | 2022/03/28 |
 | - | 0.支持MPEG-PS(MPEG1)标准视频播放 |
 | 时间 | 2022/03/02 |

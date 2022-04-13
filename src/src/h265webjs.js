@@ -35,9 +35,13 @@ const def = require('./consts');
 const staticMem = require('./utils/static-mem');
 const UI = require('./utils/ui/ui');
 const CacheYUV = require('./decoder/cache');
+const RenderEngine420P = require('./render-engine/webgl-420p');
+
 // const Module = require('./decoder/missile.js');
 // const RawParser = require('./decoder/raw-parser');
 // http://localhost:8080/h265webjs-roi/
+
+// const MAX_RETRY_GET_MISSILE_STATE_COUNT = 3;
 
 const DEFAULT_CONFIG_EXT = {
     moovStartFlag : true,
@@ -49,6 +53,7 @@ const DEFAULT_CONFIG_EXT = {
     checkProbe : true,
     ignoreAudio : 0, // 0 no 1 yes
     probeSize : 4096,
+    autoPlay : false,
 }; // DEFAULT_CONFIG_EXT
 
 /**
@@ -76,6 +81,20 @@ Module.onRuntimeInitialized = () => {
     // _this._playUtilShowMask();
 }; // onRuntimeInitialized
 
+window.addEventListener("wasmLoaded", function()
+{
+    // document.domain = COMMON_DEF.RUN_DOMAIN;
+    // document.domain = RUN_DOMAIN;
+    global.STATIC_MEM_wasmDecoderState = 1;
+    console.log("wasmLoaded");
+    // Run();
+}); // wasmLoaded
+
+global.onWASMLoaded = function() {
+    global.STATIC_MEM_wasmDecoderState = 1;
+    console.log("onWASMLoaded");
+};
+
 class H265webjsModule {
     // static myStaticProp = 42;
 
@@ -101,6 +120,16 @@ class H265webjsModule {
         }; // hlsConf
 
         // this.uiObj = new UI.UI();
+
+        // this.snapshotCanvas = null;
+        this.snapshotCanvasContext = null;
+        this.snapshotYuvLastFrame = {
+            width: 0,
+            height: 0,
+            luma: null,
+            chromaB: null,
+            chromaR: null
+        }; // snapshotYuvLastFrame
 
         // val
         this.videoURL = videoURL;
@@ -188,6 +217,7 @@ class H265webjsModule {
         this.onCloseFullScreen = null;
         this.onNetworkError = null;
         this.onMakeItReady = null;
+        this.onPlayState = null;
 
         this.filterConfigParams();
         console.log("configFormat ==> ", this.configFormat);
@@ -207,7 +237,7 @@ class H265webjsModule {
 
         this.screenW = window.screen.width;
         this.screenH = window.screen.height;
-    }
+    } // constructor
 
     filterConfigParams() {
         if (this.configFormat.extInfo.checkProbe === undefined || this.configFormat.extInfo.checkProbe === null) {
@@ -317,7 +347,28 @@ class H265webjsModule {
         } else {
             this.player.release(); // keep
         }
+
+        if (this.snapshotCanvasContext !== undefined &&
+            this.snapshotCanvasContext !== null) 
+        {
+            RenderEngine420P.releaseContext(this.snapshotCanvasContext);
+            this.snapshotCanvasContext = null;
+
+            if (this.snapshotYuvLastFrame !== undefined && 
+                this.snapshotYuvLastFrame !== null) 
+            {
+                this.snapshotYuvLastFrame.luma     = null;
+                this.snapshotYuvLastFrame.chromaB  = null;
+                this.snapshotYuvLastFrame.chromaR  = null;
+
+                this.snapshotYuvLastFrame.width    = 0;
+                this.snapshotYuvLastFrame.height   = 0;
+            }
+        } // end free snapshot info
+
         this.configFormat.extInfo.readyShow = true;
+
+        window.onclick = document.body.onclick = null;
         return true;
     }
 
@@ -397,6 +448,66 @@ class H265webjsModule {
         mediaInfoData.meta.isHEVC = this.playParam.videoCodec === 0;
         return mediaInfoData;
     }
+
+    snapshot(canvasDom=null)
+    {
+        if (canvasDom === null) {
+            return null;
+        }
+
+        let _this = this; // this.snapshotCanvas
+        if (this.playParam !== undefined && this.playParam !== null)
+        {
+            // this.snapshotCanvas = canvasDom;
+
+            // audioNone: false // 是否不包含音频轨
+            // durationMs: 600000 // 时长 毫秒级
+            // fps: 25 // 帧率
+            // sampleRate: 44100 // 音频采样率
+            // size: // 视频分辨率
+            //     height: 720
+            //     width: 1280
+            // videoCodec: 0 // 0:HEVC/H.265 1:其他编码
+            // isHEVC: true // 是否是H265编码视频
+
+            if (this.playParam.videoCodec === 0) { // HEVC
+                this.player.setScreen(true);
+
+                canvasDom.width = this.snapshotYuvLastFrame.width;
+                canvasDom.height = this.snapshotYuvLastFrame.height;
+                console.log("this.snapshotYuvLastFrame", this.snapshotYuvLastFrame);
+
+                // RenderEngine420P
+                if (this.snapshotCanvasContext === undefined || 
+                    this.snapshotCanvasContext === null)
+                {
+                    this.snapshotCanvasContext = RenderEngine420P.setupCanvas(
+                        canvasDom, 
+                        {
+                            preserveDrawingBuffer: false
+                        }
+                    ); // snapshotCanvasContext
+                }
+
+                RenderEngine420P.renderFrame(
+                    this.snapshotCanvasContext,
+                    this.snapshotYuvLastFrame.luma, 
+                    this.snapshotYuvLastFrame.chromaB, 
+                    this.snapshotYuvLastFrame.chromaR,
+                    this.snapshotYuvLastFrame.width, 
+                    this.snapshotYuvLastFrame.height);
+            } else { // AVC
+                canvasDom.width = this.playParam.size.width;
+                canvasDom.height = this.playParam.size.height;
+                canvasDom.getContext('2d').drawImage(
+                    this.player.videoTag, 
+                    0, 0, canvasDom.width, canvasDom.height);
+                
+            } // end check codec
+        } // check params exist
+
+        return null;
+    } // snapshot
 
     _seekHLS(clickedValue, _self, callback) {
         // alert("seekHLS" + clickedValue);
@@ -572,6 +683,34 @@ class H265webjsModule {
 
         // this.autoScreenClose = true;
     } // closeFullScreen
+
+    playNextFrame() {
+        this.pause();
+        if (this.playParam !== undefined && this.playParam !== null)
+        {
+            // this.snapshotCanvas = canvasDom;
+
+            // audioNone: false // 是否不包含音频轨
+            // durationMs: 600000 // 时长 毫秒级
+            // fps: 25 // 帧率
+            // sampleRate: 44100 // 音频采样率
+            // size: // 视频分辨率
+            //     height: 720
+            //     width: 1280
+            // videoCodec: 0 // 0:HEVC/H.265 1:其他编码
+            // isHEVC: true // 是否是H265编码视频
+
+            if (this.playParam.videoCodec === 0) { // HEVC
+                this.player.playYUV();
+            } else {
+                this.player.nativeNextFrame();
+            }
+
+            return true;
+        } // this.playParam
+
+        return false;
+    } // showNextFrame
 
     /**********
      Private
@@ -854,8 +993,10 @@ class H265webjsModule {
             {
                 console.warn("videoFrame GET:", secVideoIdx, videoFrame.length);
                 // 首帧显示渲染
-                if (this.configFormat.extInfo.readyShow) {
-                    if (this.configFormat.type === def.PLAYER_IN_TYPE_M3U8) {
+                if (this.configFormat.extInfo.readyShow) 
+                {
+                    if (this.configFormat.type === def.PLAYER_IN_TYPE_M3U8) 
+                    {
                         this.configFormat.extInfo.readyShow = false;
                         // this.onReadyShowDone && this.onReadyShowDone();
                     } else {
@@ -869,8 +1010,15 @@ class H265webjsModule {
                             //     this.onReadyShowDone && this.onReadyShowDone();
                             // }
                         } else {
-                            if (this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) {
-                                this.player.playFrameYUV(true, true);
+                            if (this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) 
+                            {
+                                // if (this.player.playYUV(true, true) === true) {
+                                //     this.configFormat.extInfo.readyShow = false;
+                                //     this.onReadyShowDone && this.onReadyShowDone();
+                                // }
+                            }
+                            if (this.player.playYUV(true, true) === true) 
+                            {
                                 this.configFormat.extInfo.readyShow = false;
                                 this.onReadyShowDone && this.onReadyShowDone();
                             }
@@ -913,7 +1061,7 @@ class H265webjsModule {
                 return;
             }
         }, 5);
-    }
+    } // _avFeedMP4Data
 
     _makeMP4Player() {
         let _this = this;
@@ -960,7 +1108,7 @@ class H265webjsModule {
         }
 
         return 0;
-    } // end
+    } // _makeMP4Player end
 
     /**
      * 内部公共调用的一个方法 创建播放器
@@ -1036,9 +1184,27 @@ class H265webjsModule {
         this.player.onSeekFinish = () => {
             if (_this.onSeekFinish != null) _this.onSeekFinish();
         };
-        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
-            if (this.onRender != null) {
-                this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => 
+        {
+            _this.snapshotYuvLastFrame.luma     = null;
+            _this.snapshotYuvLastFrame.chromaB  = null;
+            _this.snapshotYuvLastFrame.chromaR  = null;
+
+            _this.snapshotYuvLastFrame.width    = width;
+            _this.snapshotYuvLastFrame.height   = height;
+            _this.snapshotYuvLastFrame.luma     = new Uint8Array(imageBufferY);
+            _this.snapshotYuvLastFrame.chromaB  = new Uint8Array(imageBufferB);
+            _this.snapshotYuvLastFrame.chromaR  = new Uint8Array(imageBufferR);
+
+            // if (_this.snapshotCanvas !== undefined && 
+            //     _this.snapshotCanvas !== null) 
+            // {
+            //     _this.snapshotCanvas.width = width;
+            //     _this.snapshotCanvas.height = height;
+            // }
+
+            if (_this.onRender != null) {
+                _this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
             }
         };
         this.player.onLoadCache = () => {
@@ -1089,7 +1255,8 @@ class H265webjsModule {
             playerId: this.configFormat.playerId,
             audioNone: audioNone,
             token: this.configFormat.token,
-            videoCodec: videoCodec
+            videoCodec: videoCodec,
+            autoPlay: this.configFormat.extInfo.autoPlay,
         });
         this.player.makeIt(this.videoURL);
 
@@ -1111,7 +1278,11 @@ class H265webjsModule {
             _this.onLoadFinish && _this.onLoadFinish();
             _this.onReadyShowDone && _this.onReadyShowDone();
         };
-    }
+
+        this.player.onPlayState = (status) => {
+            _this.onPlayState && _this.onPlayState(status);
+        }; // onPlayState
+    } // _makeNativePlayer
 
     _initMp4BoxObject() {
         // demux mp4
@@ -1138,7 +1309,7 @@ class H265webjsModule {
                 this._makeNativePlayer(durationMs, fps, sampleRate, size, this.mp4Obj.audioNone, videoCodec);
             }
         };
-    }
+    } // _initMp4BoxObject
 
     /********************************************************************
      ********************************************************************
@@ -1261,9 +1432,10 @@ class H265webjsModule {
      * Demuxer + Decoder
      *
      */
-    _cDemuxDecoderEntry() {
+    _cDemuxDecoderEntry(retry=0) {
         alert("_cDemuxDecoderEntry" + this.configFormat.type);
         let _this = this;
+        let probeSuccessed = false;
         // let playerConfBase = {
         //     width: this.configFormat.playerW,
         //     height: this.configFormat.playerH,
@@ -1284,6 +1456,7 @@ class H265webjsModule {
             checkProbe: this.configFormat.extInfo.checkProbe,
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
             playMode: this.playMode,
+            autoPlay: this.configFormat.extInfo.autoPlay,
         };
         this.player = new CNativeCore.CNativeCore(playerConfig); // end create player
 
@@ -1303,7 +1476,8 @@ class H265webjsModule {
          *
          */
         this.player.onProbeFinish = () => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
-            console.log("first probe ", _this.player.mediaInfo, _this.player.config);
+            probeSuccessed = true;
+            console.log("first probe ", _this.player.config);
             _this.playParam.fps          = _this.player.config.fps;
             _this.playParam.durationMs   = GetRealDurationOfLastFramePTS(_this.playParam.fps, _this.player.duration * 1000.0);
 
@@ -1390,9 +1564,27 @@ class H265webjsModule {
             if (this.onLoadCacheFinshed != null) this.onLoadCacheFinshed();
         };
 
-        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
-            if (this.onRender != null) {
-                this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => 
+        {
+            _this.snapshotYuvLastFrame.luma     = null;
+            _this.snapshotYuvLastFrame.chromaB  = null;
+            _this.snapshotYuvLastFrame.chromaR  = null;
+
+            _this.snapshotYuvLastFrame.width    = width;
+            _this.snapshotYuvLastFrame.height   = height;
+            _this.snapshotYuvLastFrame.luma     = new Uint8Array(imageBufferY);
+            _this.snapshotYuvLastFrame.chromaB  = new Uint8Array(imageBufferB);
+            _this.snapshotYuvLastFrame.chromaR  = new Uint8Array(imageBufferR);
+
+            // if (_this.snapshotCanvas !== undefined && 
+            //     _this.snapshotCanvas !== null) 
+            // {
+            //     _this.snapshotCanvas.width = width;
+            //     _this.snapshotCanvas.height = height;
+            // }
+
+            if (_this.onRender != null) {
+                _this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
             }
         };
 
@@ -1457,16 +1649,33 @@ class H265webjsModule {
                     console.log("start pump", reader);
                     return reader.read().then(function(result) {
                         if (result.done) {
-                            // alert("========== RESULT DONE ===========");
-                            fetchFin = true;
-                            _this.player && _this.player.pushDone();
-                            // window.clearInterval(networkInterval);
-                            // 一切结束后启动定时器
-                            // playInterval = window.setInterval(() => {
-                            //     console.log("---------------- loop", new Date());
-                            //     readingLoopWithF32();
-                            // }, 50);
-                            return;
+                            if (probeSuccessed === true) {
+                                // alert("========== RESULT DONE ===========");
+                                fetchFin = true;
+                                // _this.player && _this.player.pushDone();
+                                // window.clearInterval(networkInterval);
+                                // 一切结束后启动定时器
+                                // playInterval = window.setInterval(() => {
+                                //     console.log("---------------- loop", new Date());
+                                //     readingLoopWithF32();
+                                // }, 50);
+                            } else {
+                                let releaseRet = _this.player.release();
+                                console.log("releaseRet ===> 3 ", releaseRet);
+                                _this.player = null;
+                                // _this._makeNativePlayer(
+                                //     _this.playParam.durationMs, _this.playParam.fps, 
+                                //     _this.playParam.sampleRate, _this.playParam.size, 
+                                //     false, _this.playParam.videoCodec);
+                                if (retry < def.PLAYER_CNATIVE_VOD_RETRY_MAX) {
+                                    _this._cDemuxDecoderEntry(retry++);
+                                    return true;
+                                } else {
+                                    _this._mp4EntryVodStream();
+                                    return false;
+                                }
+                            }
+                            return true;
                         }
 
                         // array buffer
@@ -1482,8 +1691,13 @@ class H265webjsModule {
                                 //     _this.playParam.durationMs, _this.playParam.fps, 
                                 //     _this.playParam.sampleRate, _this.playParam.size, 
                                 //     false, _this.playParam.videoCodec);
-                                _this._mp4EntryVodStream();
-                                return false;
+                                if (retry < def.PLAYER_CNATIVE_VOD_RETRY_MAX) {
+                                    _this._cDemuxDecoderEntry(retry++);
+                                    return true;
+                                } else {
+                                    _this._mp4EntryVodStream();
+                                    return false;
+                                }
                             }
                         }
                         return pump(reader);
@@ -1511,7 +1725,7 @@ class H265webjsModule {
         let _this = this;
         playerConfig.probeSize = this.configFormat.extInfo.probeSize;
         this.player = new CHttpLiveCore.CHttpLiveCore(playerConfig);
-        alert("probeSize" + playerConfig.probeSize);
+        console.log("_cLiveFLVDecoderEntry playerConfig", playerConfig);
         /*
          *
          * Set Events
@@ -1572,6 +1786,34 @@ class H265webjsModule {
             if (this.onLoadCacheFinshed != null) this.onLoadCacheFinshed();
         }; // onLoadCacheFinshed
 
+        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => 
+        {
+            _this.snapshotYuvLastFrame.luma     = null;
+            _this.snapshotYuvLastFrame.chromaB  = null;
+            _this.snapshotYuvLastFrame.chromaR  = null;
+
+            _this.snapshotYuvLastFrame.width    = width;
+            _this.snapshotYuvLastFrame.height   = height;
+            _this.snapshotYuvLastFrame.luma     = new Uint8Array(imageBufferY);
+            _this.snapshotYuvLastFrame.chromaB  = new Uint8Array(imageBufferB);
+            _this.snapshotYuvLastFrame.chromaR  = new Uint8Array(imageBufferR);
+
+            // if (_this.snapshotCanvas !== undefined && 
+            //     _this.snapshotCanvas !== null) 
+            // {
+            //     _this.snapshotCanvas.width = width;
+            //     _this.snapshotCanvas.height = height;
+            // }
+
+            if (_this.onRender != null) {
+                _this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+            }
+        }; // onRender
+
+        this.player.onPlayState = (status) => {
+            _this.onPlayState && _this.onPlayState(status);
+        }; // onPlayState
+
         // boot
         this.player.start(this.videoURL);
         // this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
@@ -1588,6 +1830,7 @@ class H265webjsModule {
             checkProbe: this.configFormat.extInfo.checkProbe,
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
             playMode: this.playMode,
+            autoPlay: this.configFormat.extInfo.autoPlay,
         };
         playerConfig.probeSize = this.configFormat.extInfo.probeSize;
         this.player = new CWsLiveCore.CWsLiveCore(playerConfig);
@@ -1653,6 +1896,30 @@ class H265webjsModule {
             if (this.onLoadCacheFinshed != null) this.onLoadCacheFinshed();
         }; // onLoadCacheFinshed
 
+        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => 
+        {
+            _this.snapshotYuvLastFrame.luma     = null;
+            _this.snapshotYuvLastFrame.chromaB  = null;
+            _this.snapshotYuvLastFrame.chromaR  = null;
+
+            _this.snapshotYuvLastFrame.width    = width;
+            _this.snapshotYuvLastFrame.height   = height;
+            _this.snapshotYuvLastFrame.luma     = new Uint8Array(imageBufferY);
+            _this.snapshotYuvLastFrame.chromaB  = new Uint8Array(imageBufferB);
+            _this.snapshotYuvLastFrame.chromaR  = new Uint8Array(imageBufferR);
+
+            // if (_this.snapshotCanvas !== undefined && 
+            //     _this.snapshotCanvas !== null) 
+            // {
+            //     _this.snapshotCanvas.width = width;
+            //     _this.snapshotCanvas.height = height;
+            // }
+
+            if (_this.onRender != null) {
+                _this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+            }
+        }; // onRender
+
         // boot
         this.player.start(this.videoURL);
         // this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
@@ -1709,6 +1976,7 @@ class H265webjsModule {
                         checkProbe: _this.configFormat.extInfo.checkProbe,
                         ignoreAudio : _this.configFormat.extInfo.ignoreAudio,
                         playMode: _this.playMode,
+                        autoPlay: _this.configFormat.extInfo.autoPlay,
                     };
                     _this._cLiveFLVDecoderEntry(playerConfig);
 
@@ -1759,7 +2027,7 @@ class H265webjsModule {
 
         }; // onReady
         this.mpegTsObj.initMPEG();
-    }
+    } // _mpegTsEntry
 
     /**
      * @brief onReadyOBJ is h265webclazz
@@ -1801,7 +2069,7 @@ class H265webjsModule {
 
         //TODO: get all the data at once syncronously or feed data through a callback if streamed
         _this._avFeedMP4Data(0, 0);
-    }
+    } // _mpegTsEntryReady
 
     /**
      * @brief m3u8
@@ -1883,7 +2151,7 @@ class H265webjsModule {
         // start
         this.hlsObj.demux(this.videoURL);
 
-    } // end m3u8
+    } // _m3u8Entry end m3u8
 
     _hlsOnSamples(readyObj, frame) {
         let _this = this;
@@ -1895,7 +2163,7 @@ class H265webjsModule {
             _this.player.appendAACFrame(frame);
         }
 
-    }; // end onSamples
+    }; // _hlsOnSamples end onSamples
 
     // videojs
     _videoJsPlayer(probeDurationMS=-1) {
@@ -1906,6 +2174,7 @@ class H265webjsModule {
             height: this.configFormat.playerH,
             playerId: this.configFormat.playerId,
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
+            autoPlay: this.configFormat.extInfo.autoPlay,
         }; // playerConfig
         this.player = new NvVideoJSCore.NvVideojsCore(playerConfig);
         this.player.onMakeItReady = () => {
@@ -1950,20 +2219,24 @@ class H265webjsModule {
         this.player.onSeekFinish = () => {
             _this.onSeekFinish && _this.onSeekFinish();
         }; // onSeekFinish
+        this.player.onPlayState = (status) => {
+            _this.onPlayState && _this.onPlayState(status);
+        }; // onPlayState
         this.player.makeIt(this.videoURL);
 
     } // _videoJsPlayer
 
     _flvJsPlayer(durParams=-1) {
-        console.log("_flvJsPlayer");
         let _this = this;
         let playerConfig = {
             width: this.configFormat.playerW,
             height: this.configFormat.playerH,
             playerId: this.configFormat.playerId,
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
-            duration: durParams
+            duration: durParams,
+            autoPlay: this.configFormat.extInfo.autoPlay,
         }; // playerConfig
+        console.log("_flvJsPlayer", playerConfig);
         this.player = new NvFlvJSCore.NvFlvjsCore(playerConfig);
         this.player.onLoadFinish = () => {
             alert("_videoJsPlayer onLoadFinish");
@@ -1999,6 +2272,10 @@ class H265webjsModule {
                 _this.onPlayFinish();
             }
         }; // onPlayingFinish
+        this.player.onPlayState = (status) => {
+            _this.onPlayState && _this.onPlayState(status);
+        }; // onPlayState
+
         // this.player.onSeekFinish = () => {
         //     _this.onSeekFinish && _this.onSeekFinish();
         // }; // onSeekFinish

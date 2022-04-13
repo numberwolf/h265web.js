@@ -22,6 +22,11 @@
 
 const def = require('../consts');
 const Formats = [
+	// {
+	// 	format: 'avi', // regex match
+	// 	value: 'mp4',
+	// 	core: def.PLAYER_CORE_TYPE_CNATIVE
+	// },
 	{
 		format: 'mp4', // regex match
 		value: 'mp4',

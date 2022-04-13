@@ -110,6 +110,7 @@ class CNativeCoreModule {
             checkProbe: config.checkProbe,
             ignoreAudio: config.ignoreAudio,
             playMode: config.playMode || def.PLAYER_MODE_VOD,
+            autoPlay: config.autoPlay || false,
         };
         // console.log("CNativeCoreModule config ==> ", this.config);
         this.probeSize = PROBE_SIZE;
@@ -314,19 +315,21 @@ class CNativeCoreModule {
 
         this.config.readyShow = true;
 
+        window.onclick = document.body.onclick = null;
+
         this.onRelease && this.onRelease();
     	return releaseRet;
     }
 
     setScreen(setVal = false) {
     	this.showScreen = setVal;
-        if (this.canvas) {
-            if (setVal) {
-                this.canvas.setAttribute('hidden', true);
-            } else {
-                this.canvas.removeAttribute('hidden');
-            }
-        }
+        // if (this.canvas) {
+        //     if (setVal) {
+        //         this.canvas.setAttribute('hidden', true);
+        //     } else {
+        //         this.canvas.removeAttribute('hidden');
+        //     }
+        // }
     }
 
     getCachePTS() {
@@ -350,9 +353,9 @@ class CNativeCoreModule {
         return this.isPlaying;
     }
 
-    pushDone() {
-    	this.pushEOF = true;
-    }
+    // pushDone() {
+    // 	this.pushEOF = true;
+    // }
 
     _clearDecInterval() {
         // console.warn("_clearDecInterval RUN");
@@ -500,13 +503,12 @@ class CNativeCoreModule {
     								this.onRender		&& this.onRender(
     									videoFrame.line1, videoFrame.height, 
     									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v);
-    							} else {
-                                    console.warn("RenderEngine420P.renderFrame videoFrame.pts", videoFrame.pts);
-    								RenderEngine420P.renderFrame(
-    									this.yuv,
-    									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
-    									videoFrame.line1, videoFrame.height);
     							}
+                                console.warn("RenderEngine420P.renderFrame videoFrame.pts", videoFrame.pts);
+								RenderEngine420P.renderFrame(
+									this.yuv,
+									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+									videoFrame.line1, videoFrame.height);
 
     							/*
     							 * Event Call
@@ -1340,9 +1342,11 @@ class CNativeCoreModule {
     */
 
     _decVFrameIntervalFunc() {
+        let _this = this;
     	if (this.decVFrameInterval == null) {
     		this.decVFrameInterval = window.setInterval(() => {
-    			// console.log("decVFrameInterval _videoQueue, playVPipe", this._videoQueue.length, this.playVPipe.length);
+    			console.log("decVFrameInterval _videoQueue, playVPipe", this._videoQueue.length, this.playVPipe.length);
+
     			if (this._videoQueue.length < VIDEO_CACHE_LEN) {
     				// SniffStreamContext *sniffStreamContext,
         			// uint8_t *buff, uint64_t len, long pts
@@ -1357,26 +1361,26 @@ class CNativeCoreModule {
         				this.yuvMaxTime = Math.max(frame.pts, this.yuvMaxTime);
         				console.warn("+++++decVFrameRet : ", ptsMS, dtsMS);
 
-	    				let decVFrameRet = Module.cwrap('decodeVideoFrame', 
-	    					'number', 
-	    					['number', 'number', 'number', 'number', 'number'])(
-	    					this.corePtr, 
-	    					offset, 
-	    					nalBuf.length, 
-	    					ptsMS,
-	    					dtsMS,
-	    					this.frameCallTag);
-	    				// console.log("---------- to decVFrameRet:", decVFrameRet, ptsMS, this.frameCallTag);
+        				let decVFrameRet = Module.cwrap('decodeVideoFrame', 
+        					'number', 
+        					['number', 'number', 'number', 'number', 'number'])(
+        					this.corePtr, 
+        					offset, 
+        					nalBuf.length, 
+        					ptsMS,
+        					dtsMS,
+        					this.frameCallTag);
+        				// console.log("---------- to decVFrameRet:", decVFrameRet, ptsMS, this.frameCallTag);
 
-	    				Module._free(offset);
-	    				offset = null;
+        				Module._free(offset);
+        				offset = null;
     				}
     			} else {
 
     			}
     		}, 10);
     	}
-    }
+    } // _decVFrameIntervalFunc
 
     _frameCallback(
     	data_y, data_u, data_v, 
@@ -1456,23 +1460,6 @@ class CNativeCoreModule {
         // console.log(alignCropData);
         // console.log([buf_y, buf_u, buf_v]);
 
-        /*
-    	 * readyShow
-    	 */
-    	if (this.config.readyShow) {
-            console.warn("this.config.readyShow --- DEBUG");
-    		RenderEngine420P.renderFrame(
-	            this.yuv,
-	            buf_y, buf_u, buf_v,
-	            line1, height);
-    		// RenderEngine420P.renderFrame(
-	     //        this.yuv,
-	     //        alignCropData[0], alignCropData[1], alignCropData[2],
-	     //        width, height);
-    		this.config.readyShow = false;
-            this.onReadyShowDone && this.onReadyShowDone();
-    	} // end if readyShow
-
     	let frameUnit = new CNativeVideoFrame(
 	    	buf_y, buf_u, buf_v, 
 	    	line1, line2, line3, 
@@ -1502,14 +1489,40 @@ class CNativeCoreModule {
 
 	    this.vCachePTS = Math.max(pts, this.vCachePTS);
 	    this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
-        
-    }
+
+        /*
+         * readyShow
+         */
+        if (this.config.readyShow && this.playYUV() === true) {
+            console.warn("this.config.readyShow --- DEBUG");
+            // Render callback
+            // this.playYUV();
+            this.config.readyShow = false;
+            this.onReadyShowDone && this.onReadyShowDone();
+        } // end if readyShow
+    } // _frameCallback
 
     /* ******************************************
      *
      *				Public Core
      *
      * ******************************************/
+    playYUV() {
+        let _this = this;
+        if (this._videoQueue.length > 0) {
+            let videoFrame = this._videoQueue.shift();
+            console.warn("Native core ==> shift videoFrame.pts play", videoFrame.pts);
+            this.onRender && this.onRender(
+                videoFrame.line1, videoFrame.height, 
+                videoFrame.data_y, videoFrame.data_u, videoFrame.data_v);
+            RenderEngine420P.renderFrame(
+                this.yuv,
+                videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+                videoFrame.line1, videoFrame.height);
+            return true;
+        }
+        return false;
+    } // playYUV
 
     // reFull() {
     //     this._avFeedData(0);
@@ -1537,7 +1550,7 @@ class CNativeCoreModule {
 
         // @TODO
         return pushRet;
-    }
+    } // pushBuffer
 
 }
 

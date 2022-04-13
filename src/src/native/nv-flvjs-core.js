@@ -33,7 +33,8 @@ class NvFlvjsCoreModule {
             height: config.height || def.DEFAULT_HEIGHT,
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
             ignoreAudio: config.ignoreAudio,
-            duration: config.duration
+            duration: config.duration,
+            autoPlay: config.autoPlay || false,
         };
         this.audioVoice = 1.0;
 
@@ -68,6 +69,7 @@ class NvFlvjsCoreModule {
         /*
          * Event @todo
          */
+        this.onPlayState        = null;
         this.onLoadFinish       = null;
         this.onPlayingTime      = null;
         this.onPlayingFinish    = null;
@@ -75,34 +77,34 @@ class NvFlvjsCoreModule {
         this.onReadyShowDone    = null;
     } // constructor
 
-    _onVideoJsReady() {
-        let _this = this;
-        this.videoContaner = document.querySelector('#' + this.myPlayerID);
-        this.videoTag = this.videoContaner.querySelector("video");
-        this.videoTag.style.width = this.configFormat.width + 'px';
-        this.videoTag.style.height = this.configFormat.height + 'px';
+    // _onVideoJsReady() {
+    //     let _this = this;
+    //     this.videoContaner = document.querySelector('#' + this.myPlayerID);
+    //     this.videoTag = this.videoContaner.querySelector("video");
+    //     this.videoTag.style.width = this.configFormat.width + 'px';
+    //     this.videoTag.style.height = this.configFormat.height + 'px';
 
-        console.log("this.videoTag==>", this.videoTag);
+    //     console.log("this.videoTag==>", this.videoTag);
 
-        this.duration = this.myPlayer.duration();
-        alert("duration:" + this.duration === Infinity);
+    //     this.duration = this.myPlayer.duration();
+    //     alert("duration:" + this.duration === Infinity);
 
-        this.onLoadFinish && this.onLoadFinish();
-        this.onReadyShowDone && this.onReadyShowDone();
+    //     this.onLoadFinish && this.onLoadFinish();
+    //     this.onReadyShowDone && this.onReadyShowDone();
 
-        // if (this.duration === Infinity) {
-        //     this.play();
-        // }
+    //     // if (this.duration === Infinity) {
+    //     //     this.play();
+    //     // }
 
-        this.myPlayer.on("progress", function() {
-            console.log("正在请求数据 ", _this.myPlayer.buffered().length, _this.myPlayer.duration());
-        });
+    //     this.myPlayer.on("progress", function() {
+    //         console.log("正在请求数据 ", _this.myPlayer.buffered().length, _this.myPlayer.duration());
+    //     });
 
-        this.myPlayer.on("timeupdate", function() {
-            console.log("正在播放 ", _this.videoTag.currentTime, _this.myPlayer.duration());
-            _this.onPlayingTime && _this.onPlayingTime(_this.myPlayer.currentTime());
-        });
-    } // onVideoJsReady
+    //     this.myPlayer.on("timeupdate", function() {
+    //         console.log("正在播放 ", _this.videoTag.currentTime, _this.myPlayer.duration());
+    //         _this.onPlayingTime && _this.onPlayingTime(_this.myPlayer.currentTime());
+    //     });
+    // } // onVideoJsReady
 
     _reBuildFlvjs(url) {
         let _this = this;
@@ -186,6 +188,27 @@ class NvFlvjsCoreModule {
             this.videoTag.style.height = this.configFormat.height + 'px';
             h265Container.appendChild(this.videoTag);
 
+            if (this.configFormat.autoPlay === true) {
+                this.videoTag.muted = "muted";
+                this.videoTag.autoplay = "autoplay";
+                window.onclick = document.body.onclick = function(e) {
+                    _this.videoTag.muted = false;
+                    console.log("video isPlay", _this.isPlayingState());
+                };
+            }
+
+            this.videoTag.onplay = function() {
+                const playStateNow = _this.isPlayingState();
+                console.log("onplay video isPlay", playStateNow);
+                _this.onPlayState && _this.onPlayState(playStateNow);
+            };
+
+            this.videoTag.onpause = function() {
+                const playStateNow = _this.isPlayingState();
+                console.log("onpause video isPlay", playStateNow);
+                _this.onPlayState && _this.onPlayState(playStateNow);
+            };
+
             // this.videoTag.onloadedmetadata = () => {
             //     alert("this.videoTag.onloadedmetadata");
             //     if (isInitDecodeFrames === false && _this.videoTag.videoWidth > 0 && _this.videoTag.videoHeight > 0) 
@@ -237,7 +260,9 @@ class NvFlvjsCoreModule {
                     res, 
                     _this.videoTag.videoWidth, _this.videoTag.videoHeight,
                     _this.videoTag.duration);
-                if (_this.isInitDecodeFrames === false && _this.videoTag.videoWidth > 0 && _this.videoTag.videoHeight > 0) 
+                if (_this.isInitDecodeFrames === false &&
+                    _this.videoTag.videoWidth > 0 &&
+                    _this.videoTag.videoHeight > 0)
                 {
                     _this.isInitDecodeFrames = true;
                     _this.width = _this.videoTag.videoWidth;
@@ -246,6 +271,7 @@ class NvFlvjsCoreModule {
                     alert("1 flvduration" + _this.duration);
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
+                    console.log("onReadyShowDone video isPlay", _this.isPlayingState());
 
                     _this.videoTag.ontimeupdate = () => {
                         console.log("_this.videoTag ontimeupdate");
@@ -305,6 +331,7 @@ class NvFlvjsCoreModule {
                     alert("2 flvduration" + _this.duration);
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
+                    console.log("onReadyShowDone video isPlay", _this.isPlayingState());
 
                     _this.videoTag.ontimeupdate = () => {
                         console.log("_this.videoTag ontimeupdate");
@@ -429,6 +456,9 @@ class NvFlvjsCoreModule {
         this.onPlayingFinish    = null;
         // this.onSeekFinish       = null;
         this.onReadyShowDone    = null;
+        this.onPlayState        = null;
+
+        window.onclick = document.body.onclick = null;
     }
     
 

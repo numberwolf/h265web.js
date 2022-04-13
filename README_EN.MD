@@ -32,8 +32,11 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-httpflv.png" width="100"> | <img src="resource/icon-httpts.png" width="100"> | <img src="resource/icon-websocketflv.png" width="100"> | <img src="resource/icon-websocketts.png" width="100"> |
 | HTTP-FLV(LIVE) | HTTP-TS(LIVE) | WS-FLV(LIVE) | WS-TS(LIVE) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
-| MPEG-TS(VOD) | MPEG-PS(VOD) | G711A | HDR10(BT2020) |
+| <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-av1.png" width="100"> | <img src="resource/icon-mov-h265.png" width="100">|
+| MPEG-TS(VOD) | MPEG-PS(VOD) | AV1(Chrome) | MOV(H.265) |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
+| G711A | HDR10(BT2020) |
 
 </font>
 </strong>
@@ -141,6 +144,10 @@ Notice：
 
 		- [Exit Fullscreen](#exitfullscreen)
 
+		- [Play frame by frame(next frame)](#nextframe)
+
+		- [Snapshot](#snapshot)
+
 		- [Release Player](#release)
 
 - [3、Others](#3others)
@@ -167,43 +174,48 @@ Notice：
 |  protocol | model | support | desc |
 | ---- | ---- |  ----  | ---- |
 | mp4 | Video on demand |  Y  | ---- |
+| mov | Video on demand |  Y  | HEVC/H.265 |
+| av1 | Video on demand |  Y  | Chrome |
 | mpeg-ts | Video on demand |  Y  | ---- |
 | mpeg-ps | Video on demand |  Y  | ---- |
 | m3u8 | Video on demand |  Y  | ---- |
 | hls | Live |  Y  | ---- |
+| flv | Video on demand |  Y  | ---- |
+| http-flv | Live |  Y  | CodecID=12 |
+| http-ts | Live |  Y  | ---- |
+| websocket-flv | Live |  Y  | ---- |
+| websocket-ts | Live |  Y  | ---- |
 | HEVC/H.265 | Video on demand |  Y  | ---- |
 | HEVC/H.265 | Live |  Y  | ---- |
 | AVC/H.264 | Video on demand |  Y  | ---- |
 | AVC/H.264 | Live |  Y  | ---- |
-| http-flv | Live |  Y  | CodecID=12 |
-| flv | Video on demand |  Y  | Bak player core mode |
-| websocket-flv | Live |  Y  | ---- |
-| websocket-ts | Live |  Y  | ---- |
-| http-ts | Live |  Y  | ---- |
+
 
 * Features
 
 |  Feature | support | desc |
 | ---- | ---- |  ----  |
-| Video on demand | Y |  ----  | ---- |
-| Live | Y |  ----  | ---- |
-| Seek | Y | ----  | ---- |
-| AccurateSeek | Y |  ----  | ---- |
-| Cover Image | Y |  ----  | ---- |
-| Playing with download | Y |  ----  | ---- |
-| Volume | Y |  ----  | ---- |
-| Play | Y |  ----  | ---- |
-| Pause | Y |  ----  | ---- |
-| ReStart | Y |  ----  | ---- |
-| PauseWithCoverImage | Y |  ----  | ---- |
-| 1080P | Y |  ----  | ---- |
-| 720P | Y |  ----  | ---- |
-| Create multi players | Y |  ----  | ---- |
-| Play without Audio | Y |  ----  | ---- |
-| Cache process | Y |  ----  | ---- |
-| Open Fullscreen | Y |  ----  | ---- |
-| Exit Fullscreen | Y |  ----  | ---- |
-
+| Video on demand | Y |  ----  |
+| Live | Y |  ----  |
+| Seek | Y | ----  |
+| AccurateSeek | Y |  ----  |
+| Cover Image | Y |  ----  |
+| Playing with download | Y |  ----  |
+| Volume | Y |  ----  |
+| Play | Y |  ----  |
+| Pause | Y |  ----  |
+| ReStart | Y |  ----  |
+| PauseWithCoverImage | Y |  ----  |
+| 1080P | Y |  ----  |
+| 720P | Y |  ----  |
+| Create multi players | Y |  ----  |
+| Play without Audio | Y |  ----  |
+| Cache process | Y |  ----  |
+| Open Fullscreen | Y |  ----  |
+| Exit Fullscreen | Y |  ----  |
+| Play frame by frame | Y |  ----  |
+| Snapshot | Y |  ----  |
+| Autoplay | Y |  HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264  |
 
 <br>
 
@@ -332,6 +344,7 @@ let config = {
 | \+ core  | Int | - | N:Default 0 | 0:Default Core <br>1:Bak Core |
 | \+ ignoreAudio | Int | - | N:Default is 0 | 0:Play with audio <br>1:Without audio |
 | \+ probeSize | Int | - | N:4096 | HTTP-FLV(LIVE) Mode's probe size, default is 4096 |
+| \+ autoPlay | Bool | true/false | N:false | Open autoplay <br>HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264 |
 
 
 <br>
@@ -836,13 +849,40 @@ player.fullScreen();
 player.closeFullScreen();
 ```
 
+<br>
+
+
+#### nextframe ####
+
+|  Function | Return | Desc |
+|  ----  | ----  | ---- |
+| playNextFrame()  | - | play next frame |
+
+<br>
+
+
+#### snapshot ####
+
+|  Function | Return | Desc |
+|  ----  | ----  | ---- |
+| snapshot()  | - | Snapshot frame |
+
+* Example
+
+```javascript
+const snapCanvas = document.getElementById("snapshot-player"); // create canvas
+h265Object.snapshot(snapCanvas); // snapshot to canvas
+```
+
+<br>
+
 #### release ####
 
 | Function | Return | Desc |
 | ----  | ----  | ---- |
 | release()  | - | Release Player |
 
-* 示例
+* Example
 
 ```javascript
 player.release();
@@ -913,6 +953,11 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/04/14 |
+| - | 0.Support Mov File |
+| - | 1.Support HTTP-FLV/HTTP-TS/HLS Autoplay |
+| - | 2.Performance optimizing of 1080P MP4(VOD) |
+| - | 3.Retry of mp4 sniff action |
 | Time | 2022/03/28 |
 | - | 0.Support MPEG-PS(MPEG1) stream |
 | Time | 2022/03/02 |

@@ -31,7 +31,8 @@ class NvVideojsCoreModule {
 			width: config.width || def.DEFAULT_WIDTH,
             height: config.height || def.DEFAULT_HEIGHT,
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
-            ignoreAudio: config.ignoreAudio
+            ignoreAudio: config.ignoreAudio,
+            autoPlay: config.autoPlay || false,
         };
         this.audioVoice	= 1.0;
 
@@ -62,6 +63,7 @@ class NvVideojsCoreModule {
         this.onPlayingFinish 	= null;
         this.onSeekFinish 		= null;
         this.onReadyShowDone    = null;
+        this.onPlayState        = null;
     } // constructor
 
     _hiddenUnusedPlugins() {
@@ -91,11 +93,9 @@ class NvVideojsCoreModule {
         let _this = this;
         this._hiddenUnusedPlugins();
         this.videoContaner = document.querySelector('#' + this.myPlayerID);
-        this.videoTag = this.videoContaner.querySelector("video");
+        // this.videoTag = this.videoContaner.querySelector("video");
         this.videoTag.style.width = this.configFormat.width + 'px';
         this.videoTag.style.height = this.configFormat.height + 'px';
-
-        
 
         this.duration = this.myPlayer.duration();
         console.log("this.videoTag==>", this.videoTag, this.duration);
@@ -133,7 +133,7 @@ class NvVideojsCoreModule {
             controlBar : false,
             preload : 'auto',
             // autoplay : 'any',
-            autoplay : false,
+            autoplay : this.configFormat.autoPlay,
             sources: [
                 {
                     src: url,
@@ -146,10 +146,35 @@ class NvVideojsCoreModule {
             ]
         };
 
+        console.log("vjs module makeIt", options);
+
         let h265Container = document.querySelector('#' + this.configFormat.playerId);
         let proVjsDom = document.createElement('video');
         proVjsDom.id = this.myPlayerID;
+
+        this.videoTag = proVjsDom;
         h265Container.appendChild(proVjsDom);
+
+        if (this.configFormat.autoPlay === true) {
+            this.videoTag.muted = "muted";
+            this.videoTag.autoplay = "autoplay";
+            window.onclick = document.body.onclick = function(e) {
+                _this.videoTag.muted = false;
+                console.log("video isPlay", _this.isPlayingState());
+            };
+        }
+
+        this.videoTag.onplay = function() {
+            const playStateNow = _this.isPlayingState();
+            console.log("onplay video isPlay", playStateNow);
+            _this.onPlayState && _this.onPlayState(playStateNow);
+        };
+
+        this.videoTag.onpause = function() {
+            const playStateNow = _this.isPlayingState();
+            console.log("onpause video isPlay", playStateNow);
+            _this.onPlayState && _this.onPlayState(playStateNow);
+        };
 
         this.myPlayer = videojs(this.myPlayerID, options, function() {
             alert("load vjs");
@@ -161,8 +186,8 @@ class NvVideojsCoreModule {
                 // }
             });
             //myPlayer.play();
-            _this.myPlayer.on("loadedmetadata", function() {
-                console.log("vjs loadedmetadata");
+            _this.myPlayer.on("loadedmetadata", function(e) {
+                console.log("vjs loadedmetadata", e);
                 _this._onVideoJsReady();
                 if (_this.configFormat.probeDurationMS > 0) {
                     _this.onLoadFinish && _this.onLoadFinish();
@@ -252,6 +277,9 @@ class NvVideojsCoreModule {
         this.onPlayingFinish    = null;
         this.onSeekFinish       = null;
         this.onReadyShowDone    = null;
+        this.onPlayState        = null;
+
+        window.onclick = document.body.onclick = null;
     }
     
 

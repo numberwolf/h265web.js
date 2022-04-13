@@ -22,7 +22,7 @@ body {
         to right, red 50px, yellow, blue, green);*/
     /*background-position: 100% 50%;*/
     width: 960px;
-    min-height: 50px;
+    height: 50px;
     position: absolute; 
     /*float: bottom;*/
     z-index: 99999;

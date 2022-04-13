@@ -93,6 +93,22 @@ global.makeH265webjs = (videoURL, config) => {
     playerCont.style.width = config.width + 'px';
     playerCont.style.height = config.height + 'px';
     controllerCont.style.width = config.width + 'px';
+    // bottom: 627.875
+    // height: 540
+    // left: 240
+    // right: 1200
+    // top: 87.875
+    // width: 960
+    // x: 240
+    // y: 87.875
+    // playerDom.getBoundingClientRect().top
+    console.log(
+        "playerDom.getBoundingClientRect().height", playerDom.getBoundingClientRect());
+    controllerCont.style.top = 
+        playerDom.getBoundingClientRect().top 
+        + config.height 
+        - 50 + 'px';
+    controllerCont.style.left = playerDom.getBoundingClientRect().left + 'px';
 
     let muteState = false;
 
@@ -265,19 +281,19 @@ global.makeH265webjs = (videoURL, config) => {
             progressCont.hidden = true;
             ptsLabel.textContent = 'LIVE';
 
-            if (mediaInfo.meta.audioNone === true) {
-                // playBar.textContent = '||';
-                playerObj.play();
-            } else {
+            // if (mediaInfo.meta.audioNone === true) {
+            //     // playBar.textContent = '||';
+            //     playerObj.play();
+            // } else {
 
-                coverToast.removeAttribute('hidden');
-                coverBtn.onclick = () => {
-                    // playBar.textContent = '||';
-                    // playerObj.play();
-                    playAction();
-                    coverToast.setAttribute('hidden', 'hidden');
-                };
-            }
+            //     coverToast.removeAttribute('hidden');
+            //     coverBtn.onclick = () => {
+            //         // playBar.textContent = '||';
+            //         // playerObj.play();
+            //         playAction();
+            //         coverToast.setAttribute('hidden', 'hidden');
+            //     };
+            // }
 
         }
 
@@ -309,6 +325,15 @@ global.makeH265webjs = (videoURL, config) => {
         } else {
             // ptsLabel.textContent = durationText(videoPTS) + '/LIVE';
             ptsLabel.textContent = '/LIVE';
+        }
+    };
+
+    playerObj.onPlayState = (status) => {
+        console.log("playerObj.onPlayState=>", status);
+        if (status === true) {
+            playBar.setAttribute('class', 'pauseBtn');
+        } else {
+            playBar.setAttribute('class', 'playBtn');
         }
     };
 

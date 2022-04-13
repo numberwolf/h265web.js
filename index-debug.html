@@ -33,7 +33,7 @@
     <meta charset="utf-8" name="github" content="https://github.com/numberwolf/h265web.js">
     <script src="dist/missile.js"></script> <!-- IMPORTANT -->
     <!--<script src="dist/missile-120func-v20220117.js"></script>--> <!-- IMPORTANT -->
-    <script src="dist/h265webjs-v20220328.js"></script> <!-- IMPORTANT -->
+    <script src="dist/h265webjs-v20220411.js"></script> <!-- IMPORTANT -->
     <style>
     </style>
 </head>
@@ -63,8 +63,15 @@
 </pre>
 
 
+    Player Area:<br>
     <div id="glplayer" style="width: 640px; height: 360px; background-color: #c9c9c9;">
     </div>
+
+    <hr>
+
+    Snapshot Area:<br>
+    <canvas id="snapshot-canvas" style="width: 360px; height: 180px; background-color: #000000;">
+    </canvas>
 
 <pre>
 --> 1.Install Player 
@@ -82,6 +89,9 @@
     <button onclick="unmutePlayer()">4.Volume To 1.0</button>
     <br>
     <button onclick="fullscreenPlayer()">1.Fullscreen</button>
+    <br>
+    <button onclick="nextFrame()">1.Next Frame</button>
+    <button onclick="snapshot()">2.Snapshot</button>
 
     <hr>
     Events log
@@ -313,6 +323,20 @@ h265web.js play pts log
                 playerObj.fullScreen();
             }
         }
+
+        function nextFrame() {
+            loggerObj.scrollNewest("\r\n playerObj.playNextFrame Click"); 
+            if (playerObj !== null) {
+                playerObj.playNextFrame();
+            }
+        } 
+
+        function snapshot() {
+            const snapCanvas = document.querySelector("#snapshot-canvas");
+            if (playerObj !== null) {
+                playerObj.snapshot(snapCanvas);
+            }
+        } 
         
 
         window.onload = function() {

@@ -124,13 +124,13 @@ module.exports = config => {
     player.setScreen = (setVal = false) => {
         if (null !== player && undefined !== player) {
             player.showScreen = setVal;
-            if (player.canvas) {
-                if (setVal) {
-                    player.canvas.setAttribute('hidden', true);
-                } else {
-                    player.canvas.removeAttribute('hidden');
-                }
-            }
+            // if (player.canvas) {
+            //     if (setVal) {
+            //         player.canvas.setAttribute('hidden', true);
+            //     } else {
+            //         player.canvas.removeAttribute('hidden');
+            //     }
+            // }
         }
     };
     player.setSize = (width, height) => {
@@ -676,6 +676,8 @@ module.exports = config => {
 
         player.canvas.remove();
         player.canvas = null;
+
+        window.onclick = document.body.onclick = null;
         return true;
     };
     player.nextNalu = (onceGetNalCount=1) => {
@@ -767,6 +769,11 @@ module.exports = config => {
     //     }
     //     return true;
     // };
+
+    player.playYUV = () => {
+        return player.playFrameYUV(true, true);
+    }; // playYUV
+
     /**
      * @brief play yuv cache
      */
@@ -802,6 +809,11 @@ module.exports = config => {
         if ((!show && accurateSeek) || show) {
             if (show) {
                 //console.log("cacheThread ----> render pts ", yuvItemObj);
+                player.onRender(
+                    yuvItemObj.width, yuvItemObj.height, 
+                    yuvItemObj.imageBufferY,
+                    yuvItemObj.imageBufferB,
+                    yuvItemObj.imageBufferR);
                 player.drawImage(
                     yuvItemObj.width,
                     yuvItemObj.height,
@@ -853,7 +865,7 @@ module.exports = config => {
             // when full screen mode open,
             // do not render the main window,
             // only use fullscreen window
-            return;
+            // return;
         }
 
         if (!player.isCheckDisplay) {

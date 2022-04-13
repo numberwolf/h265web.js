@@ -33,7 +33,8 @@ class Mp4PlayerModule {
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
             audioNone: config.audioNone || false,
             token: config.token || null,
-            videoCodec: config.videoCodec || def.CODEC_H265
+            videoCodec: config.videoCodec || def.CODEC_H265,
+            autoPlay: config.autoPlay || false,
         };
 
         this.videoTag = null;
@@ -44,6 +45,7 @@ class Mp4PlayerModule {
         this.onLoadFinish = null;
         this.onPlayingTime = null;
         this.onPlayingFinish = null;
+        this.onPlayState = null;
 
         // this.onPlayUpdatePTSInterval = null;
 	}
@@ -55,6 +57,27 @@ class Mp4PlayerModule {
         let canvasBox = document.querySelector('div#' + this.configFormat.playerId);
         this.videoTag = document.createElement('video');
 
+        if (this.configFormat.autoPlay === true) {
+            this.videoTag.muted = "muted";
+            this.videoTag.autoplay = "autoplay";
+            window.onclick = document.body.onclick = function(e) {
+                _this.videoTag.muted = false;
+                console.log("video isPlay", _this.isPlayingState());
+            };
+        }
+
+        this.videoTag.onplay = function() {
+	        const playStateNow = _this.isPlayingState();
+	        console.log("onplay video isPlay", playStateNow);
+	        _this.onPlayState && _this.onPlayState(playStateNow);
+	    };
+
+	    this.videoTag.onpause = function() {
+	        const playStateNow = _this.isPlayingState();
+	        console.log("onpause video isPlay", playStateNow);
+	        _this.onPlayState && _this.onPlayState(playStateNow);
+	    };
+
         this.videoTag.ontimeupdate = () => {
         	console.log("ontimeupdate");
 			_this.onPlayingTime && _this.onPlayingTime(_this.videoTag.currentTime);
@@ -65,8 +88,8 @@ class Mp4PlayerModule {
 			_this.onPlayingFinish && _this.onPlayingFinish();
 		};
 
-		this.videoTag.onloadedmetadata = () => {
-			alert("loadedmetadata");
+		this.videoTag.onloadedmetadata = (e) => {
+			console.log("mp4-player loadedmetadata", e);
 			_this.duration = _this.videoTag.duration;
 			_this.onLoadFinish && _this.onLoadFinish();
 		};
@@ -105,8 +128,18 @@ class Mp4PlayerModule {
 		this.onLoadFinish = null;
         this.onPlayingTime = null;
         this.onPlayingFinish = null;
+        this.onPlayState = null;
+
+        window.onclick = document.body.onclick = null;
 	}
 
-};
+	nativeNextFrame() {
+		let _this = this;
+		if (this.videoTag !== undefined && this.videoTag !== null) {
+			this.videoTag.currentTime += 1.0 / this.configFormat.fps;
+		}
+	} // nativeNextFrame
+
+}; // Mp4PlayerModule
 
 exports.Mp4Player = Mp4PlayerModule;

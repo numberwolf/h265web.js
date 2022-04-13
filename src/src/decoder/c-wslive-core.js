@@ -80,7 +80,8 @@ class CWsLiveCoreModule { // export default
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
             token: config.token || null,
             probeSize: config.probeSize || 4096,
-            ignoreAudio : config.ignoreAudio || 0
+            ignoreAudio : config.ignoreAudio || 0,
+            autoPlay: config.autoPlay || false,
         }; // end this.config
 
         alert("this.config.probeSize" + this.config.probeSize + " ignoreAudio:" + this.config.ignoreAudio);
@@ -151,6 +152,7 @@ class CWsLiveCoreModule { // export default
 
         this.totalLen = 0;
         this.pushPkg = 0;
+        this.showScreen = false;
 
         // events
         this.onProbeFinish      = null;
@@ -159,7 +161,7 @@ class CWsLiveCoreModule { // export default
         // this.loadCacheStatus    = false;
         this.onLoadCache        = null;
         this.onLoadCacheFinshed = null;
-        // this.onRender           = null;
+        this.onRender           = null;
         // this.onCacheProcess     = null;
         this.onReadyShowDone    = null;
         this.onNetworkError     = null;
@@ -422,8 +424,7 @@ class CWsLiveCoreModule { // export default
         Module._free(offsetV);
         offsetV = null;
 
-        if (this.readyShowDone === false) {
-            this.playYUV();
+        if (this.readyShowDone === false && this.playYUV() === true) {
             this.readyShowDone = true;
             this.onReadyShowDone && this.onReadyShowDone();
             if (!this.audioWAudio) {
@@ -581,6 +582,17 @@ class CWsLiveCoreModule { // export default
         // } // end this.AVDecodeInterval === undefined decode
     } // end func _decode
 
+    setScreen(setVal = false) {
+        this.showScreen = setVal;
+        // if (this.canvas) {
+        //     if (setVal) {
+        //         this.canvas.setAttribute('hidden', true);
+        //     } else {
+        //         this.canvas.removeAttribute('hidden');
+        //     }
+        // }
+    }
+
     checkCacheState() {
         let newState = (
             this.YuvBuf.length >= HTTP_FLV_CACHE_V_OK_COUNT 
@@ -659,6 +671,8 @@ class CWsLiveCoreModule { // export default
         this.CanvasObj && this.CanvasObj.remove();
         this.CanvasObj = null;
 
+        window.onclick = document.body.onclick = null;
+
         return 0;
     }
 
@@ -675,6 +689,9 @@ class CWsLiveCoreModule { // export default
     playYUV() {
         if (this.YuvBuf.length > 0) {
             let item = this.YuvBuf.shift();
+            this.onRender && this.onRender(
+                item.line_y, item.h, 
+                item.bufY, item.bufU, item.bufV);
             RenderEngine420P.renderFrame(this.AVGLObj, 
                                 item.bufY, item.bufU, item.bufV, 
                                 item.line_y, item.h);
@@ -751,6 +768,14 @@ class CWsLiveCoreModule { // export default
                                                 + PLAY_LOOP_RESET_CORRECT_DUR_MS;
                                 }
 
+                                if (_this.showScreen) { // on render
+                                    // Render callback
+                                    _this.onRender && _this.onRender(
+                                        item.line_y, item.h, 
+                                        item.bufY, item.bufU, item.bufV);
+                                }
+                                console.warn("RenderEngine420P.renderFrame item.pts", item.pts);
+
                                 // render
                                 RenderEngine420P.renderFrame(_this.AVGLObj, 
                                     item.bufY, item.bufU, item.bufV, 
@@ -800,6 +825,13 @@ class CWsLiveCoreModule { // export default
                     let item = _this.YuvBuf.shift(); 
                     if (item != undefined && item !== null) 
                     {
+                        if (_this.showScreen) { // on render
+                            // Render callback
+                            _this.onRender && _this.onRender(
+                                item.line_y, item.h, 
+                                item.bufY, item.bufU, item.bufV);
+                        }
+
                         // render
                         RenderEngine420P.renderFrame(_this.AVGLObj, 
                             item.bufY, item.bufU, item.bufV, 
