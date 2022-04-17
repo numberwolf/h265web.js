@@ -56,7 +56,7 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
-| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="LICENSE-Free_CN.MD">LICENSE-Free_CN.MD</a> |
+| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="LICENSE-Free_CN.MD">CYL_Free-1.0 LICENSE-Free_CN.MD</a> |
 
 <hr>
 
@@ -954,7 +954,7 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 | Update | Content |
 | ---- | ---- |
 | Time | 2022/04/17 |
-| - | New Opensource Free Protocol <a href="LICENSE-Free_CN.MD">LICENSE-Free_CN.MD</a> |
+| - | New Opensource Free Protocol <a href="LICENSE-Free_CN.MD">CYL_Free-1.0 LICENSE-Free_CN.MD</a> |
 | Time | 2022/04/14 |
 | - | 0.Support Mov File |
 | - | 1.Support HTTP-FLV/HTTP-TS/HLS Autoplay |
