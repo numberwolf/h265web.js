@@ -13,7 +13,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /********************************************************* 
- * LICENSE: GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.txt
+ * LICENSE: LICENSE-Free_CN.MD
  * 
  * Author: Numberwolf - ChangYanlong
  * QQ: 531365872

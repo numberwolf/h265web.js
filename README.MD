@@ -58,7 +58,7 @@
 
 | h265web.js | mpeg.js `(解析ts)` | h265web.js 底层265解码器SDK | LICENSE |
 | ---- | ---- | ---- | ---- |
-| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="https://www.gnu.org/licenses/gpl-3.0.md">License GPL-3.0</a> |
+| [h265web.js](https://github.com/numberwolf/h265web.js)  | [MPEG-Demuxer.js](https://github.com/numberwolf/MPEG-Demuxer.js) | [h265web.js-wasm-decoder](https://github.com/numberwolf/h265web.js-wasm-decoder) | <a href="LICENSE-Free_CN.MD">LICENSE-Free_CN.MD</a> |
 
 <hr>
 
@@ -968,6 +968,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/04/17 |
+| - | 更新开源协议<a href="LICENSE-Free_CN.MD">LICENSE-Free_CN.MD</a> |
 | 时间 | 2022/04/14 |
 | - | 0.支持 MOV视频播放 |
 | - | 1.支持 HTTP-FLV/HTTP-TS/HLS 自动播放 |

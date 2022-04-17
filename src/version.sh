@@ -1,5 +1,5 @@
 # /********************************************************* 
-#  * LICENSE: GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.txt
+#  * LICENSE: LICENSE-Free_CN.MD
 #  * 
 #  * Author: Numberwolf - ChangYanlong
 #  * QQ: 531365872
@@ -19,4 +19,4 @@
 #  * Github: https://github.com/numberwolf/h265web.js
 #  * 
 #  **********************************************************/
-VERSION='v20220411' # output version + index.js
+VERSION='v20220417' # output version + index.js

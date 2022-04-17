@@ -1,5 +1,5 @@
 /********************************************************* 
- * LICENSE: GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.txt
+ * LICENSE: LICENSE-Free_CN.MD
  * 
  * Author: Numberwolf - ChangYanlong
  * QQ: 531365872
@@ -19,7 +19,7 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20220411');
+require('./h265webjs-v20220417');
 export default class h265webjs {
 	static createPlayer(videoURL, config) {
 		return window.new265webjs(videoURL, config);

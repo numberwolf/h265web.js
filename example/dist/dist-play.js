@@ -126,7 +126,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /********************************************************* 
- * LICENSE: GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.txt
+ * LICENSE: LICENSE-Free_CN.MD
  * 
  * Author: Numberwolf - ChangYanlong
  * QQ: 531365872
@@ -146,7 +146,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20220411');
+require('./h265webjs-v20220417');
 
 var h265webjs =
 /*#__PURE__*/
@@ -174,7 +174,7 @@ function () {
 exports["default"] = h265webjs;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./h265webjs-v20220411":1}],3:[function(require,module,exports){
+},{"./h265webjs-v20220417":1}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
