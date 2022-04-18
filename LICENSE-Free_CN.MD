@@ -27,7 +27,7 @@
 
 ## 第一部分 项目技术工程创始人简介 ##
 
-* 姓名:常炎隆
+* 姓名:常炎隆/Numberwolf/小老虎
 * <small><u>_技术咨询QQ群:925466059_</u></small>
 * 自毕业开始就职 `Baidu`、`Tencent`
 * <strong>音视频全栈研发工程师</strong>、<strong>知识产权以及相关法律参与者</strong>
