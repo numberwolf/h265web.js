@@ -968,6 +968,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/04/21 |
+| - | 0.播放器内核性能优化 |
 | 时间 | 2022/04/17 |
 | - | 更新开源协议<a href="LICENSE-Free_CN.MD">CYL_Free-1.0 LICENSE-Free_CN.MD</a> |
 | 时间 | 2022/04/14 |
