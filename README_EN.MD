@@ -121,6 +121,8 @@ Notice：
 		- [Open FullScreen Event](#openfullscreenevent)
 
 		- [Exit FullScreen Event](#closefullscreenevent)
+		
+		- [Callback Play State](#callbackplaystate)
 
 	- [Player API Document](#playerapidocument)
 
@@ -662,6 +664,17 @@ player.onOpenFullScreen = () => {
 ```javascript
 player.onCloseFullScreen = () => {
     // todo
+};
+```
+
+#### CallbackPlayState ####
+
+* Example
+
+```javascript
+player.onPlayState = (state) => {
+    // state
+    // true: playing / false: paused
 };
 ```
 
