@@ -161,6 +161,7 @@ class NvVideojsCoreModule {
             window.onclick = document.body.onclick = function(e) {
                 _this.videoTag.muted = false;
                 console.log("video isPlay", _this.isPlayingState());
+                window.onclick = document.body.onclick = null;
             };
         }
 
