@@ -139,6 +139,8 @@ class CHttpLiveCoreModule { // export default
                     _this.pause();
                     _this.play();
                 }
+
+                window.onclick = document.body.onclick = null;
             };
         }
 
