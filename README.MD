@@ -121,6 +121,8 @@
 		- [开启全屏事件](#开启全屏事件)
 
 		- [关闭全屏事件](#关闭全屏事件)
+		
+		- [播放器播放状态](#播放器播放状态)
 
 	- [播放器API能力](#播放器api能力)
 
@@ -667,6 +669,17 @@ player.onOpenFullScreen = () => {
 ```javascript
 player.onCloseFullScreen = () => {
     // todo
+};
+```
+
+#### 播放器播放状态 ####
+
+* 示例
+
+```javascript
+player.onPlayState = (state) => {
+    // state
+    // true: playing / false: paused
 };
 ```
 
