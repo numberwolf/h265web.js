@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "/",
+        "allowJs": true,
+        "noImplicitThis": true,
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "jsx": "preserve",
+        "types": ["vite/client"],
+        "lib": ["esnext", "dom", "dom.iterable"], 
+        
+    },
+    "include": ["global.d.ts","shim.vue.d.ts","src/**/*.vue", "src/**/*.ts",]
+}
