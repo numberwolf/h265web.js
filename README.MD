@@ -34,8 +34,8 @@
 | <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-av1.png" width="100"> | <img src="resource/icon-mov-h265.png" width="100">|
 | MPEG-TS(VOD) | MPEG-PS(VOD) | AV1(Chrome) | MOV(H.265) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
-| G711A | HDR10(BT2020) |
+| <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
+| HTTP-HEVC | MKV(HEVC) | G711A | HDR10(BT2020) |
 
 </font>
 </strong>
@@ -178,6 +178,7 @@
 | ---- | ---- |  ----  | ---- |
 | mp4 | 点播 |  是  | ---- |
 | mov | 点播 |  是  | HEVC/H.265 |
+| mkv | 点播 |  是  | HEVC/H.265 |
 | av1 | 点播 |  是  | Chrome |
 | mpeg-ts | 点播 |  是  | ---- |
 | mpeg-ps | 点播 |  是  | ---- |
@@ -405,7 +406,6 @@ var config = {
 
 		```javascript
 		let config = {
-		    type: "raw265",
 		    player: "glplayer",
 		    width: 960,
 		    height: 540,
@@ -456,7 +456,8 @@ var config = {
 		let player = H265webjsModule.createPlayer(videoURL, config);
 		```
 
-		* 3. 如果创建的是`raw265`类型的裸流数据播放 请注意
+		* 3. 如果创建的是`raw265`类型的Websocket等直播裸流数据播放 请注意
+			(普通265点播流直接填写url播放就可以，不需要走如下流程)
 			> 这部分fetch请求网络数据以及异步喂数据的过程 请自行改写,下面给出的仅仅是一个demo,网络IO和解析265流为帧数据会非常耗时。
 			>   
 			> 如果你可以通过websocket直接一帧一帧传输的话，那么只需要调用喂265数据的函数即可。
@@ -981,6 +982,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/05/07 |
+| - | 0.点播内核错误优化 |
+| - | 1.265裸流点播流程优化，只需要填写url和rawFps即可播放 |
+| - | 2.支持MKV格式 |
 | 时间 | 2022/04/21 |
 | - | 0.播放器内核性能优化 |
 | 时间 | 2022/04/17 |

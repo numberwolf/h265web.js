@@ -38,6 +38,11 @@ const Formats = [
 		core: def.PLAYER_CORE_TYPE_CNATIVE
 	},
 	{
+		format: 'mkv',
+		value: 'mp4',
+		core: def.PLAYER_CORE_TYPE_CNATIVE
+	},
+	{
 		format: 'flv',
 		value: 'flv',
 		core: def.PLAYER_CORE_TYPE_CNATIVE
@@ -74,6 +79,11 @@ const Formats = [
 	},
 	{
 		format: 'h265',
+		value: 'raw265',
+		core: def.PLAYER_CORE_TYPE_DEFAULT
+	},
+	{
+		format: '265',
 		value: 'raw265',
 		core: def.PLAYER_CORE_TYPE_DEFAULT
 	}
@@ -191,7 +201,25 @@ function GetUriProtocol(uri) {
 
 function GetMsTime() {
     return new Date().getTime();
-};
+}
+
+function GetScriptPath(foo) {
+    let fooStr = foo.toString();
+    let fooMatchFunc = fooStr.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/);
+
+    console.log(fooStr);
+    console.log(fooMatchFunc);
+
+    let funcStream = [fooMatchFunc[1]];
+    return window.URL.createObjectURL(
+        new Blob(
+            funcStream, 
+            {
+                type: 'text/javascript'
+            }
+        )
+    ); 
+}
 
 module.exports = {
     frameDataAlignCrop : frameDataAlignCrop,
@@ -199,4 +227,5 @@ module.exports = {
     GetFormatPlayCore : GetFormatPlayCore,
     GetUriProtocol : GetUriProtocol,
     GetMsTime : GetMsTime,
+    GetScriptPath : GetScriptPath,
 }; // module exports

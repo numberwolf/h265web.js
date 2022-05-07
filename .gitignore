@@ -38,3 +38,4 @@ example/dist/missile-512mb*
 example/dist/missile-256mb*
 example_normal/dist/missile-512mb*
 example_normal/dist/missile-256mb*
+src/src/decoder/dc-worker*

@@ -35,8 +35,8 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-av1.png" width="100"> | <img src="resource/icon-mov-h265.png" width="100">|
 | MPEG-TS(VOD) | MPEG-PS(VOD) | AV1(Chrome) | MOV(H.265) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
-| G711A | HDR10(BT2020) |
+| <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
+| HTTP-HEVC | MKV(HEVC) | G711A | HDR10(BT2020) |
 
 </font>
 </strong>
@@ -177,6 +177,7 @@ Notice：
 | ---- | ---- |  ----  | ---- |
 | mp4 | Video on demand |  Y  | ---- |
 | mov | Video on demand |  Y  | HEVC/H.265 |
+| mkv | Video on demand |  Y  | HEVC/H.265 |
 | av1 | Video on demand |  Y  | Chrome |
 | mpeg-ts | Video on demand |  Y  | ---- |
 | mpeg-ps | Video on demand |  Y  | ---- |
@@ -400,7 +401,6 @@ let config = {
 		```javascript
 		let videoURL = "demo/res/raw.h265";
 		let config = {
-		    type: "raw265",
 		    player: "glplayer",
 		    width: 960,
 		    height: 540,
@@ -456,6 +456,7 @@ let config = {
 		```
 
 		* 3. NOTICE! If you want to create `raw265` stream player
+			(Do not need execute with this step when you play 265 vod stream)
 
 			* `raw265` type，feed byte data
 
@@ -966,6 +967,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/05/07 |
+| - | 0.Fixed:MP4(VOD) retry error |
+| - | 1.Support:HEVC raw stream(VOD), create with url |
+| - | 2.Support:MKV format |
 | Time | 2022/04/21 |
 | - | 0.Performance optimizing |
 | Time | 2022/04/17 |

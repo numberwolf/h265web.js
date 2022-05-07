@@ -563,7 +563,7 @@ module.exports = config => {
                 // let test1time = AVCommon.GetMsTime();
                 let spendMs = AVCommon.GetMsTime() - player.liveStartMs;
                 let frameCount = spendMs / player.frameTime;
-                // console.log("player.loop====>", spendMs, frameCount, frameIdx);
+                console.log("player.loop====>", spendMs, frameCount, frameIdx);
 
                 if (frameCount >= frameIdx) {
                     player.playFrameYUV(true, player.playParams.accurateSeek);

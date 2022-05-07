@@ -99,6 +99,7 @@ class CNativeVideoFrame {
 
 class CNativeCoreModule {
 	constructor(config) {
+        let _this = this;
 		this.config = {
 			width: config.width || def.DEFAULT_WIDTH,
             height: config.height || def.DEFAULT_HEIGHT,
@@ -111,6 +112,7 @@ class CNativeCoreModule {
             ignoreAudio: config.ignoreAudio,
             playMode: config.playMode || def.PLAYER_MODE_VOD,
             autoPlay: config.autoPlay || false,
+            defaultFps: config.defaultFps || -1,
         };
         // console.log("CNativeCoreModule config ==> ", this.config);
         this.probeSize = PROBE_SIZE;
@@ -211,6 +213,15 @@ class CNativeCoreModule {
         this.onReadyShowDone    = null;
         this.onRelease          = null;
 
+        this.playModeEnum = 
+            this.config.playMode === def.PLAYER_MODE_NOTIME_LIVE ? 1 : 0;
+
+        // @TEST
+        // this.worker1 = null;
+        // this.worker1ready = false;
+        // this.worker1decing = false;
+        // this._createWorker1();
+
 		/*
 		 * Init Module
 		 */
@@ -232,19 +243,67 @@ class CNativeCoreModule {
         console.log("start add function aacCallback");
         this._ptr_aacCallback = Module.addFunction(this._aacFrameCallback.bind(this));
 
-        let mode = this.config.playMode === def.PLAYER_MODE_NOTIME_LIVE ? 1 : 0;
         console.log(
-            "start add initializeSniffStreamModuleWithAOpt", this.config.ignoreAudio, this.config.playMode, mode);
+            "start add initializeSniffStreamModuleWithAOpt", this.config.ignoreAudio, this.config.playMode, this.playModeEnum);
         let initRet = Module.cwrap('initializeSniffStreamModuleWithAOpt', 'number', 
-        	['number', 'number', 'number', 'number', 'number'])(
+        	['number', 
+            'number', 'number', 'number', 'number', 'number', 
+            'number', 'number', 'number'])(
             this.corePtr, 
             this._ptr_probeCallback, 
             this._ptr_frameCallback, this._ptr_naluCallback, 
             this._ptr_sampleCallback, this._ptr_aacCallback, 
-            this.config.ignoreAudio, mode);
+            this.config.ignoreAudio, this.playModeEnum, this.config.defaultFps);
 
         console.log("initRet : ", initRet);
     }
+
+    _createWorker1() {
+        let _this = this;
+        console.log("dc-worker.js start init from core");
+        this.worker1 = new Worker('./dist/dc-worker-dist.js');
+        this.worker1ready = false;
+        this.worker1decing = false;
+        this.worker1.onmessage = function(event) {
+            
+            let worker1_data = event.data;
+            let worker1_cmd = worker1_data.cmd;
+            let worker1_params = worker1_data.params;
+
+            console.log('dc-worker.js this.worker1.onmessage', worker1_data);
+
+            switch(worker1_cmd) {
+                case "onRuntimeInitialized":
+                    _this.worker1.postMessage({
+                        cmd: "AVSniffStreamInit",
+                        params: [_this.config.token, VersionModule.PLAYER_VERSION],
+                    });
+                    break;
+                case "onInitDecOK":
+                    _this.worker1ready = true;
+                    break;
+                case "decodeVideoFrame_Start":
+                    _this.worker1decing = true;
+                    break;
+                case "decodeVideoFrame_End":
+                    _this.worker1decing = false;
+                    break;
+                case "_frameCallback":
+                    _this._handleFrameYUVCallback(
+                        worker1_params.buf_y, worker1_params.buf_u, worker1_params.buf_v,
+                        worker1_params.line1, worker1_params.line2, worker1_params.line3,
+                        worker1_params.width, worker1_params.height, worker1_params.pts, 
+                        worker1_params.tag);
+                    break;
+                case "stop_End":
+                    _this.worker1.onmessage = null;
+                    _this.worker1 = null;
+                    break;
+                default:
+                    break;
+            }
+        }; // this.worker1.onmessage
+    } // _createWorker1
 
     _removeBindFuncPtr() {
         if (this._ptr_probeCallback !== null) 
@@ -314,6 +373,13 @@ class CNativeCoreModule {
         }
 
         this.config.readyShow = true;
+
+        // if (this.worker1 !== undefined && this.worker1 !== null) {
+        //     this.worker1.postMessage({
+        //         cmd: 'stop',
+        //         params: '',
+        //     });
+        // }
 
         window.onclick = document.body.onclick = null;
 
@@ -801,6 +867,7 @@ class CNativeCoreModule {
      * @param pts: double
      */
     _avFeedData(pts) {
+        let _this = this;
     	this.playVPipe.length = 0;
     	this.audioWAudio && this.audioWAudio.cleanQueue();
     	// this.playAPipe.length = 0;
@@ -813,22 +880,27 @@ class CNativeCoreModule {
     		// 考虑recv动态
     		// video
     		let videoSecIdx = 0;
-    		this.avFeedVideoInterval = window.setInterval(() => {
-    			let videoSecLen = this.bufObject.videoBuffer.length;
+    		_this.avFeedVideoInterval = window.setInterval(() => {
+    			let videoSecLen = _this.bufObject.videoBuffer.length;
     			// console.warn("avFeedVideoInterval:", videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
 
     			if ((videoSecLen - 1 > videoSecIdx) 
-    			|| (this.duration - this.getMaxPTS() < this.frameDur && videoSecLen - 1 == videoSecIdx)
+    			|| (
+                    _this.duration > 0 &&
+                    _this.duration - _this.getMaxPTS() < _this.frameDur &&
+                    videoSecLen - 1 == videoSecIdx
+                    )
     			) {
-    				let len = this.bufObject.videoBuffer[videoSecIdx].length;
+    				let len = _this.bufObject.videoBuffer[videoSecIdx].length;
                     if (len > 0) {
     	    			for (let i = 0; i < len; i++) {
+                            console.log('nalu this.playVPipe push ', videoSecIdx, i, '/', len);
 
-    	    				this.playVPipe.push(BUFF_FRAME.ConstructWithDts(
-    	    					this.bufObject.videoBuffer[videoSecIdx][i].pts, 
-    	    					this.bufObject.videoBuffer[videoSecIdx][i].dts, 
-    	    					this.bufObject.videoBuffer[videoSecIdx][i].isKey, 
-    	    					this.bufObject.videoBuffer[videoSecIdx][i].data, true));
+    	    				_this.playVPipe.push(BUFF_FRAME.ConstructWithDts(
+    	    					_this.bufObject.videoBuffer[videoSecIdx][i].pts, 
+    	    					_this.bufObject.videoBuffer[videoSecIdx][i].dts, 
+    	    					_this.bufObject.videoBuffer[videoSecIdx][i].isKey, 
+    	    					_this.bufObject.videoBuffer[videoSecIdx][i].data, true));
 
     	    				// console.warn("=============> ", 
     	    				// 	videoSecIdx,  
@@ -839,41 +911,41 @@ class CNativeCoreModule {
     	    			videoSecIdx += 1;
                     }
 
-	    			if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                        this.duration - this.getMaxPTS() < this.frameDur &&
-	    				this.playVPipe.length > 0 && 
-	    				this.playVPipe[this.playVPipe.length - 1].pts >= this.bufLastVDTS) {
+	    			if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                        _this.duration - _this.getMaxPTS() < _this.frameDur &&
+	    				_this.playVPipe.length > 0 && 
+	    				_this.playVPipe[_this.playVPipe.length - 1].pts >= _this.bufLastVDTS) {
 
-	    				window.clearInterval(this.avFeedVideoInterval);
-	    				this.avFeedVideoInterval = null;
+	    				window.clearInterval(_this.avFeedVideoInterval);
+	    				_this.avFeedVideoInterval = null;
 	    				console.warn("======1=======> V BREAK ", 
-                            this.playVPipe[this.playVPipe.length - 1].pts,
-                            this.bufLastVDTS, 
-                            this.bufObject.videoBuffer,
-                            this.playVPipe
+                            _this.playVPipe[_this.playVPipe.length - 1].pts,
+                            _this.bufLastVDTS, 
+                            _this.bufObject.videoBuffer,
+                            _this.playVPipe
                         );
 	    			}
 	    		} else {
-	    			if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                        this.playVPipe.length > 0 && 
-                        this.playVPipe[this.playVPipe.length - 1].pts >= this.duration) { // break
+	    			if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                        _this.playVPipe.length > 0 && 
+                        _this.playVPipe[_this.playVPipe.length - 1].pts >= _this.duration) { // break
 
-	    				window.clearInterval(this.avFeedVideoInterval);
-	    				this.avFeedVideoInterval = null;
+	    				window.clearInterval(_this.avFeedVideoInterval);
+	    				_this.avFeedVideoInterval = null;
 	    				console.warn("=======2======> V BREAK ", 
-                            this.playVPipe[this.playVPipe.length - 1].pts, 
-                            this.duration,
-                            this.bufObject.videoBuffer,
-                            this.playVPipe);
+                            _this.playVPipe[_this.playVPipe.length - 1].pts, 
+                            _this.duration,
+                            _this.bufObject.videoBuffer,
+                            _this.playVPipe);
 	    			}
 	    		}
                 // 2 feed
-                if (this.avSeekVState) {
-                    console.warn("_afterAvFeedSeekToStartWithFinishedBuffer:", videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
+                if (_this.avSeekVState) {
+                    console.warn("_afterAvFeedSeekToStartWithFinishedBuffer:", videoSecLen, videoSecIdx, _this.getMaxPTS(), _this.duration);
 
-                    if (this.config.playMode === def.PLAYER_MODE_VOD) {
-                        this._afterAvFeedSeekToStartWithFinishedBuffer(pts);
-                        this.avSeekVState = false;
+                    if (_this.config.playMode === def.PLAYER_MODE_VOD) {
+                        _this._afterAvFeedSeekToStartWithFinishedBuffer(pts);
+                        _this.avSeekVState = false;
                     }
                 } // this.avSeekVState
     		}, 5); // avFeedVideoInterval
@@ -882,26 +954,26 @@ class CNativeCoreModule {
     		// audio
     		// console.log("check avFeedAudioInterval:", 
 	    	// 			this.audioWAudio, this.config.ignoreAudio);
-    		if (this.audioWAudio !== undefined 
-                && this.audioWAudio !== null 
-                && this.config.ignoreAudio < 1
+    		if (_this.audioWAudio !== undefined 
+                && _this.audioWAudio !== null 
+                && _this.config.ignoreAudio < 1
             ) {
 	    		let audioSecIdx = 0;
-	    		this.avFeedAudioInterval = window.setInterval(() => {
-	    			let audioSecLen = this.bufObject.audioBuffer.length;
+	    		_this.avFeedAudioInterval = window.setInterval(() => {
+	    			let audioSecLen = _this.bufObject.audioBuffer.length;
 	    			// console.log("avFeedAudioInterval 1:", 
 	    			// 	this.audioWAudio, audioSecLen, audioSecIdx, this.getMaxPTS(), this.duration);
 
 	    			if ((audioSecLen - 1 > audioSecIdx) 
-	    			|| (this.duration - this.getMaxPTS() < this.frameDur && audioSecLen - 1 == audioSecIdx)
+	    			|| (_this.duration - _this.getMaxPTS() < _this.frameDur && audioSecLen - 1 == audioSecIdx)
 	    			) {
-	    				let len = this.bufObject.audioBuffer[audioSecIdx].length;
+	    				let len = _this.bufObject.audioBuffer[audioSecIdx].length;
 		    			for (let i = 0; i < len; i++) {
 
-		    				this.audioWAudio.addSample(new BUFF_FRAME.BufferFrame(
-		    					this.bufObject.audioBuffer[audioSecIdx][i].pts, 
-		    					this.bufObject.audioBuffer[audioSecIdx][i].isKey, 
-		    					this.bufObject.audioBuffer[audioSecIdx][i].data,
+		    				_this.audioWAudio.addSample(new BUFF_FRAME.BufferFrame(
+		    					_this.bufObject.audioBuffer[audioSecIdx][i].pts, 
+		    					_this.bufObject.audioBuffer[audioSecIdx][i].isKey, 
+		    					_this.bufObject.audioBuffer[audioSecIdx][i].data,
 		    					false));
 
 		    				// console.log("=============> ", 
@@ -912,27 +984,27 @@ class CNativeCoreModule {
 		    			}
 		    			audioSecIdx += 1;
 
-		    			if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                            this.duration - this.getMaxPTS() < this.frameDur && 
-		    				this.audioWAudio.sampleQueue.length > 0 && 
-		    				this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts >= this.bufLastADTS) {
+		    			if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                            _this.duration - _this.getMaxPTS() < _this.frameDur && 
+		    				_this.audioWAudio.sampleQueue.length > 0 && 
+		    				_this.audioWAudio.sampleQueue[_this.audioWAudio.sampleQueue.length - 1].pts >= _this.bufLastADTS) {
 
-		    				window.clearInterval(this.avFeedAudioInterval);
-		    				this.avFeedAudioInterval = null;
+		    				window.clearInterval(_this.avFeedAudioInterval);
+		    				_this.avFeedAudioInterval = null;
 		    				console.warn("========1=====> A BREAK ", 
-		    					this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts, 
-		    					this.bufObject.audioBuffer);
+		    					_this.audioWAudio.sampleQueue[_this.audioWAudio.sampleQueue.length - 1].pts, 
+		    					_this.bufObject.audioBuffer);
 		    			}
 		    		} else {
-		    			if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                            this.audioWAudio.sampleQueue.length > 0 && 
-                            this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts >= this.duration) { // break
+		    			if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                            _this.audioWAudio.sampleQueue.length > 0 && 
+                            _this.audioWAudio.sampleQueue[_this.audioWAudio.sampleQueue.length - 1].pts >= _this.duration) { // break
 
-		    				window.clearInterval(this.avFeedAudioInterval);
-		    				this.avFeedAudioInterval = null;
+		    				window.clearInterval(_this.avFeedAudioInterval);
+		    				_this.avFeedAudioInterval = null;
 		    				console.warn("=======2======> A BREAK ", 
-		    					this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts, 
-		    					this.bufObject.audioBuffer);
+		    					_this.audioWAudio.sampleQueue[_this.audioWAudio.sampleQueue.length - 1].pts, 
+		    					_this.bufObject.audioBuffer);
 		    			}
 		    		}
 	    		}, 5);
@@ -951,25 +1023,25 @@ class CNativeCoreModule {
 
     		let videoSecIdx = posInt;
     		this.avFeedVideoInterval = window.setInterval(() => {
-                let videoSecLen = this.bufObject.videoBuffer.length;
+                let videoSecLen = _this.bufObject.videoBuffer.length;
 
                 if ((videoSecLen - 1 > videoSecIdx) 
                 || (
-                    this.duration - this.getMaxPTS() < this.frameDur && videoSecLen - 1 == videoSecIdx
+                    _this.duration - _this.getMaxPTS() < _this.frameDur && videoSecLen - 1 == videoSecIdx
                     )
                 ) {
-                    let len = this.bufObject.videoBuffer[videoSecIdx].length;
+                    let len = _this.bufObject.videoBuffer[videoSecIdx].length;
                     // console.warn("avFeedVideoInterval branch 1 ", videoSecIdx, videoSecLen, len);
                     if (len > 0) {
                         // console.warn(
                             // "====> avFeedVideoInterval branch 1 feed ",
                             // videoSecIdx, videoSecLen, len);
                         for (let i = 0; i < len; i++) {
-                            this.playVPipe.push(BUFF_FRAME.ConstructWithDts(
-                                this.bufObject.videoBuffer[videoSecIdx][i].pts, 
-                                this.bufObject.videoBuffer[videoSecIdx][i].dts, 
-                                this.bufObject.videoBuffer[videoSecIdx][i].isKey, 
-                                this.bufObject.videoBuffer[videoSecIdx][i].data, true));
+                            _this.playVPipe.push(BUFF_FRAME.ConstructWithDts(
+                                _this.bufObject.videoBuffer[videoSecIdx][i].pts, 
+                                _this.bufObject.videoBuffer[videoSecIdx][i].dts, 
+                                _this.bufObject.videoBuffer[videoSecIdx][i].isKey, 
+                                _this.bufObject.videoBuffer[videoSecIdx][i].data, true));
 
                             // console.log("=============> ", 
                             //  videoSecIdx,  
@@ -980,13 +1052,13 @@ class CNativeCoreModule {
                         videoSecIdx += 1;
                     }
 
-                    if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                        this.duration - this.getMaxPTS() < this.frameDur &&
-                        this.playVPipe.length > 0 && 
-                        this.playVPipe[this.playVPipe.length - 1].pts >= this.bufLastVDTS) {
+                    if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                        _this.duration - _this.getMaxPTS() < _this.frameDur &&
+                        _this.playVPipe.length > 0 && 
+                        _this.playVPipe[_this.playVPipe.length - 1].pts >= _this.bufLastVDTS) {
 
-                        window.clearInterval(this.avFeedVideoInterval);
-                        this.avFeedVideoInterval = null;
+                        window.clearInterval(_this.avFeedVideoInterval);
+                        _this.avFeedVideoInterval = null;
                         // alert("======3=======> V BREAK");
                         // console.warn("======3=======> V BREAK ", 
                         //     this.playVPipe[this.playVPipe.length - 1].pts,
@@ -996,12 +1068,12 @@ class CNativeCoreModule {
                     }
                 } else {
                     console.log("avFeedVideoInterval branch 2 ", videoSecIdx, videoSecLen);
-                    if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                        this.playVPipe.length > 0 && 
-                        this.playVPipe[this.playVPipe.length - 1].pts >= this.duration) { // break
+                    if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                        _this.playVPipe.length > 0 && 
+                        _this.playVPipe[_this.playVPipe.length - 1].pts >= _this.duration) { // break
 
-                        window.clearInterval(this.avFeedVideoInterval);
-                        this.avFeedVideoInterval = null;
+                        window.clearInterval(_this.avFeedVideoInterval);
+                        _this.avFeedVideoInterval = null;
                         // alert("======4=======> V BREAK");
                         // console.warn("=======4======> V BREAK ", 
                         //     this.playVPipe[this.playVPipe.length - 1].pts, 
@@ -1011,14 +1083,14 @@ class CNativeCoreModule {
                 }
 
                 // 2 feed
-                if (this.avSeekVState) {
+                if (_this.avSeekVState) {
                     console.warn(
                         "avFeedVideo_afterAvFeedSeekToStartWithUnFinBufferInterval:", 
-                        videoSecLen, videoSecIdx, this.getMaxPTS(), this.duration);
+                        videoSecLen, videoSecIdx, _this.getMaxPTS(), _this.duration);
 
-                    if (this.config.playMode === def.PLAYER_MODE_VOD) {
-                        this._afterAvFeedSeekToStartWithUnFinBuffer(pts);
-                        this.avSeekVState = false;
+                    if (_this.config.playMode === def.PLAYER_MODE_VOD) {
+                        _this._afterAvFeedSeekToStartWithUnFinBuffer(pts);
+                        _this.avSeekVState = false;
                     }
                 } // this.avSeekVState
     		}, 5); // end video seek
@@ -1030,25 +1102,25 @@ class CNativeCoreModule {
 
 	    		let audioSecIdx = posAudioInt;
 	    		this.avFeedAudioInterval = window.setInterval(() => {
-	    			let audioSecLen = this.bufObject.audioBuffer.length;
+	    			let audioSecLen = _this.bufObject.audioBuffer.length;
 	    			// console.log("avFeedAudioInterval:", 
 	    			// 	audioSecLen, audioSecIdx, this.getMaxPTS(), this.duration);
 
 	    			if ((audioSecLen - 1 > audioSecIdx) 
-	    			|| (this.duration - this.getMaxPTS() < this.frameDur && audioSecLen - 1 == audioSecIdx)
+	    			|| (_this.duration - _this.getMaxPTS() < _this.frameDur && audioSecLen - 1 == audioSecIdx)
 	    			) {
-	    				let len = this.bufObject.audioBuffer[audioSecIdx].length;
+	    				let len = _this.bufObject.audioBuffer[audioSecIdx].length;
 		    			for (let i = 0; i < len; i++) {
 
-		    				let framePts = this.bufObject.audioBuffer[audioSecIdx][i].pts;
-		    				if (framePts < this.seekTarget) {
+		    				let framePts = _this.bufObject.audioBuffer[audioSecIdx][i].pts;
+		    				if (framePts < _this.seekTarget) {
 		    					continue;
 		    				}
 
-		    				this.audioWAudio.addSample(new BUFF_FRAME.BufferFrame(
-		    					this.bufObject.audioBuffer[audioSecIdx][i].pts, 
-		    					this.bufObject.audioBuffer[audioSecIdx][i].isKey, 
-		    					this.bufObject.audioBuffer[audioSecIdx][i].data,
+		    				_this.audioWAudio.addSample(new BUFF_FRAME.BufferFrame(
+		    					_this.bufObject.audioBuffer[audioSecIdx][i].pts, 
+		    					_this.bufObject.audioBuffer[audioSecIdx][i].isKey, 
+		    					_this.bufObject.audioBuffer[audioSecIdx][i].data,
 		    					false));
 
 		    				// console.log("=============> ", 
@@ -1059,24 +1131,24 @@ class CNativeCoreModule {
 		    			}
 		    			audioSecIdx += 1;
 
-		    			if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                            this.duration - this.getMaxPTS() < this.frameDur && 
-		    				this.audioWAudio.sampleQueue.length > 0 && 
-		    				this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts >= this.bufLastADTS) {
+		    			if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                            _this.duration - _this.getMaxPTS() < _this.frameDur && 
+		    				_this.audioWAudio.sampleQueue.length > 0 && 
+		    				_this.audioWAudio.sampleQueue[_this.audioWAudio.sampleQueue.length - 1].pts >= _this.bufLastADTS) {
 
-		    				window.clearInterval(this.avFeedAudioInterval);
-		    				this.avFeedAudioInterval = null;
+		    				window.clearInterval(_this.avFeedAudioInterval);
+		    				_this.avFeedAudioInterval = null;
 		    				// console.warn("======3=======> A BREAK ", 
 		    				// 	this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts, 
 		    				// 	this.bufObject.audioBuffer);
 		    			}
 		    		} else {
-		    			if (this.config.playMode === def.PLAYER_MODE_VOD &&
-                            this.audioWAudio.sampleQueue.length > 0 && 
-                            this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts >= this.duration) { // break
+		    			if (_this.config.playMode === def.PLAYER_MODE_VOD &&
+                            _this.audioWAudio.sampleQueue.length > 0 && 
+                            _this.audioWAudio.sampleQueue[_this.audioWAudio.sampleQueue.length - 1].pts >= _this.duration) { // break
 
-		    				window.clearInterval(this.avFeedAudioInterval);
-		    				this.avFeedAudioInterval = null;
+		    				window.clearInterval(_this.avFeedAudioInterval);
+		    				_this.avFeedAudioInterval = null;
 		    				// console.warn("=======4======> A BREAK ", 
 		    				// 	this.audioWAudio.sampleQueue[this.audioWAudio.sampleQueue.length - 1].pts, 
 		    				// 	this.bufObject.audioBuffer);
@@ -1219,13 +1291,20 @@ class CNativeCoreModule {
     /**
      * nalu callback
      */
-    _naluCallback(data, len, isKey, width, height, pts, dts) {
+    _naluCallback(data, len, isKey, width, height, pts, dts, isRawStream)
+    {
+        console.log("naluCallback => ", 
+            len, isKey, width, height, pts, dts);
     	let ptsFixed = this._ptsFixed2(pts);
+        if (isRawStream > 0) {
+            ptsFixed = pts;
+        }
     	// let dtsFixed = this._ptsFixed2(dts);
-    	console.warn("LIVE naluCallback => ", len, isKey, width, height, ptsFixed, dts);
+    	
 
     	let outData = Module.HEAPU8.subarray(data, data + len);
         let bufData = new Uint8Array(outData);
+        console.log("_naluCallback", outData, bufData);
     	this.bufObject.appendFrameWithDts(
     		ptsFixed, dts, bufData, true, isKey);
 
@@ -1345,20 +1424,28 @@ class CNativeCoreModule {
         let _this = this;
     	if (this.decVFrameInterval == null) {
     		this.decVFrameInterval = window.setInterval(() => {
-    			console.log("decVFrameInterval _videoQueue, playVPipe", this._videoQueue.length, this.playVPipe.length);
+    			console.log(
+                    "decVFrameInterval _videoQueue, playVPipe", 
+                    _this._videoQueue.length, _this.playVPipe.length);
 
-    			if (this._videoQueue.length < VIDEO_CACHE_LEN) {
+                // if (_this.worker1ready === false) {
+                //     console.log("decVFrameInterval worker1ready false");
+                //     return;
+                // }
+
+    			if (_this._videoQueue.length < VIDEO_CACHE_LEN) {
     				// SniffStreamContext *sniffStreamContext,
         			// uint8_t *buff, uint64_t len, long pts
-        			if (this.playVPipe.length > 0) {
-        				let frame = this.playVPipe.shift(); // nal
+        			if (_this.playVPipe.length > 0) //  && _this.worker1decing === false
+                    {
+        				let frame = _this.playVPipe.shift(); // nal
         				let nalBuf = frame.data;
         				let offset = Module._malloc(nalBuf.length);
         				Module.HEAP8.set(nalBuf, offset);
         				let ptsMS = parseInt(frame.pts * 1000, 10);
         				let dtsMS = parseInt(frame.dts * 1000, 10);
 
-        				this.yuvMaxTime = Math.max(frame.pts, this.yuvMaxTime);
+        				_this.yuvMaxTime = Math.max(frame.pts, _this.yuvMaxTime);
         				console.warn("+++++decVFrameRet : ", ptsMS, dtsMS);
 
         				let decVFrameRet = Module.cwrap('decodeVideoFrame', 
@@ -1370,7 +1457,22 @@ class CNativeCoreModule {
         					ptsMS,
         					dtsMS,
         					this.frameCallTag);
-        				// console.log("---------- to decVFrameRet:", decVFrameRet, ptsMS, this.frameCallTag);
+
+                        // @TEST
+                        // if (_this.worker1 !== undefined && _this.worker1 !== null) {
+                        //     _this.worker1.postMessage({
+                        //         cmd: "decodeVideoFrame",
+                        //         params: {
+                        //             nalBuf: new Uint8Array(nalBuf),
+                        //             ptsMS: ptsMS,
+                        //             dtsMS: dtsMS
+                        //         }
+                        //     });
+                        // } else {
+                        //     console.log("decVFrameInterval worker1 is null", _this.worker1);
+                        // }
+
+        				console.log("---------- to decVFrameRet:", decVFrameRet, ptsMS, this.frameCallTag);
 
         				Module._free(offset);
         				offset = null;
@@ -1392,16 +1494,16 @@ class CNativeCoreModule {
             pts, this._videoQueue.length);
 
     	if (this.openFrameCall === false 
-    		|| tag !== this.frameCallTag 
-    		|| pts > this.yuvMaxTime + this.frameDur) { 
+            || tag !== this.frameCallTag 
+            || pts > this.yuvMaxTime + this.frameDur) { 
             // 预防seek之后又出现上次的回调尾巴
             // console.log("++++++++++++_frameCallback continue frame call===========", 
                 // pts, this._videoQueue.length);
             console.warn("LIVE yuvMaxTime remove CALL YUV");
-    		return;
-    	}
+            return;
+        }
 
-    	
+        
         if (this.isNewSeek && this.seekTarget - pts > this.frameDur * 3) {
             // console.log(
             // "++++++++++++_frameCallback continue for seek pts===========",
@@ -1411,39 +1513,39 @@ class CNativeCoreModule {
 
         
 
-    	// @TODO 暂时加个健壮性判断，如果 pts_new - pts_last > 1.0 ,return
-    	let len = this._videoQueue.length;
+        // @TODO 暂时加个健壮性判断，如果 pts_new - pts_last > 1.0 ,return
+        let len = this._videoQueue.length;
         // @TODO
-    	// if (len > 0 && pts - this._videoQueue[len - 1].pts > 1.0) {
+        // if (len > 0 && pts - this._videoQueue[len - 1].pts > 1.0) {
         //     console.warn("LIVE pts - lastPTS > 1.0");
-    	// 	   return;
-    	// }
+        //     return;
+        // }
 
-    	// check canvas width/height
+        // check canvas width/height
         if (this.canvas.width != line1 || this.canvas.height != height) {
             this.canvas.width = line1;
             this.canvas.height = height;
 
-			if (!this.isCheckDisplay) { // resize by callback
-	            // let displayWH = this._checkDisplaySize(line1, height);
-	            let displayWH = this._checkDisplaySize(width, line1, height);
-	        }
+            if (!this.isCheckDisplay) { // resize by callback
+                // let displayWH = this._checkDisplaySize(line1, height);
+                let displayWH = this._checkDisplaySize(width, line1, height);
+            }
         }
 
         if (this.playPTS > pts) {
             console.warn("LIVE playPTS > pts");
-        	return;
+            return;
         }
 
         
 
-    	// for (let i = 0; i < this._videoQueue.length; i++) {
-    	// 	if (this._videoQueue[i].pts === pts) {
-    	// 		return;
-    	// 	}
-    	// }
+        // for (let i = 0; i < this._videoQueue.length; i++) {
+        //  if (this._videoQueue[i].pts === pts) {
+        //      return;
+        //  }
+        // }
 
-    	let out_y = Module.HEAPU8.subarray(data_y, data_y + line1 * height);
+        let out_y = Module.HEAPU8.subarray(data_y, data_y + line1 * height);
         let out_u = Module.HEAPU8.subarray(data_u, data_u + (line2 * height) / 2);
         let out_v = Module.HEAPU8.subarray(data_v, data_v + (line3 * height) / 2);
         let buf_y = new Uint8Array(out_y);
@@ -1455,40 +1557,40 @@ class CNativeCoreModule {
         // console.log(buf_v);
 
         // let alignCropData = AVCommon.frameDataAlignCrop(
-        // 	line1, line2, line3, 
-        // 	width, height, buf_y, buf_u, buf_v);
+        //  line1, line2, line3, 
+        //  width, height, buf_y, buf_u, buf_v);
         // console.log(alignCropData);
         // console.log([buf_y, buf_u, buf_v]);
 
-    	let frameUnit = new CNativeVideoFrame(
-	    	buf_y, buf_u, buf_v, 
-	    	line1, line2, line3, 
-	    	width, height, pts);
+        let frameUnit = new CNativeVideoFrame(
+            buf_y, buf_u, buf_v, 
+            line1, line2, line3, 
+            width, height, pts);
 
-    	if (len <= 0 || pts > this._videoQueue[len - 1].pts) {
-    		this._videoQueue.push(frameUnit);
+        if (len <= 0 || pts > this._videoQueue[len - 1].pts) {
+            this._videoQueue.push(frameUnit);
 
-    	} else if (pts < this._videoQueue[0].pts) {
-    		this._videoQueue.splice(0, 0, frameUnit);
+        } else if (pts < this._videoQueue[0].pts) {
+            this._videoQueue.splice(0, 0, frameUnit);
 
-    	} else if (pts < this._videoQueue[len - 1].pts) {
+        } else if (pts < this._videoQueue[len - 1].pts) {
 
-	    	for (let i = 0; i < len; i++) {
-	    		if (
-	    			pts > this._videoQueue[i].pts && 
-	    			(i + 1 < len && pts < this._videoQueue[i + 1].pts)
-	    		) {
-	    			this._videoQueue.splice(i + 1, 0, frameUnit);
-	    			// console.log(i + 1, pts, this._videoQueue);
-	    			break;
-	    		}
-	    	}
-	    }
+            for (let i = 0; i < len; i++) {
+                if (
+                    pts > this._videoQueue[i].pts && 
+                    (i + 1 < len && pts < this._videoQueue[i + 1].pts)
+                ) {
+                    this._videoQueue.splice(i + 1, 0, frameUnit);
+                    // console.log(i + 1, pts, this._videoQueue);
+                    break;
+                }
+            }
+        }
 
         console.warn("LIVE frameCall videoQueueRet:", this._videoQueue);
 
-	    this.vCachePTS = Math.max(pts, this.vCachePTS);
-	    this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
+        this.vCachePTS = Math.max(pts, this.vCachePTS);
+        this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
 
         /*
          * readyShow
@@ -1501,6 +1603,130 @@ class CNativeCoreModule {
             this.onReadyShowDone && this.onReadyShowDone();
         } // end if readyShow
     } // _frameCallback
+
+    _handleFrameYUVCallback(
+        buf_ab_y, buf_ab_u, buf_ab_v,
+        line1, line2, line3,
+        width, height, pts, 
+        tag) 
+    {
+        let buf_y = new Uint8Array(buf_ab_y);
+        let buf_u = new Uint8Array(buf_ab_u);
+        let buf_v = new Uint8Array(buf_ab_v);
+        console.log(
+            "++++++++++++ _handleFrameYUVCallback successed ===========",
+            buf_ab_y, buf_ab_u, buf_ab_v, buf_y, buf_u, buf_v);
+
+        if (this.openFrameCall === false 
+            || tag !== this.frameCallTag 
+            || pts > this.yuvMaxTime + this.frameDur) { 
+            // 预防seek之后又出现上次的回调尾巴
+            // console.log("++++++++++++_frameCallback continue frame call===========", 
+                // pts, this._videoQueue.length);
+            console.warn("LIVE yuvMaxTime remove CALL YUV");
+            return;
+        }
+
+        
+        if (this.isNewSeek && this.seekTarget - pts > this.frameDur * 3) {
+            // console.log(
+            // "++++++++++++_frameCallback continue for seek pts===========",
+            // pts, this.isNewSeek, this.seekTarget, this._videoQueue.length);
+            return;
+        }
+
+        
+
+        // @TODO 暂时加个健壮性判断，如果 pts_new - pts_last > 1.0 ,return
+        let len = this._videoQueue.length;
+        // @TODO
+        // if (len > 0 && pts - this._videoQueue[len - 1].pts > 1.0) {
+        //     console.warn("LIVE pts - lastPTS > 1.0");
+        //     return;
+        // }
+
+        // check canvas width/height
+        if (this.canvas.width != line1 || this.canvas.height != height) {
+            this.canvas.width = line1;
+            this.canvas.height = height;
+
+            if (!this.isCheckDisplay) { // resize by callback
+                // let displayWH = this._checkDisplaySize(line1, height);
+                let displayWH = this._checkDisplaySize(width, line1, height);
+            }
+        }
+
+        if (this.playPTS > pts) {
+            console.warn("LIVE playPTS > pts");
+            return;
+        }
+
+        
+
+        // for (let i = 0; i < this._videoQueue.length; i++) {
+        //  if (this._videoQueue[i].pts === pts) {
+        //      return;
+        //  }
+        // }
+
+        // let out_y = Module.HEAPU8.subarray(data_y, data_y + line1 * height);
+        // let out_u = Module.HEAPU8.subarray(data_u, data_u + (line2 * height) / 2);
+        // let out_v = Module.HEAPU8.subarray(data_v, data_v + (line3 * height) / 2);
+        // let buf_y = new Uint8Array(out_y);
+        // let buf_u = new Uint8Array(out_u);
+        // let buf_v = new Uint8Array(out_v);
+        
+        // console.log(out_y, buf_y);
+        // console.log(buf_u);
+        // console.log(buf_v);
+
+        // let alignCropData = AVCommon.frameDataAlignCrop(
+        //  line1, line2, line3, 
+        //  width, height, buf_y, buf_u, buf_v);
+        // console.log(alignCropData);
+        // console.log([buf_y, buf_u, buf_v]);
+
+        let frameUnit = new CNativeVideoFrame(
+            buf_y, buf_u, buf_v, 
+            line1, line2, line3, 
+            width, height, pts);
+
+        if (len <= 0 || pts > this._videoQueue[len - 1].pts) {
+            this._videoQueue.push(frameUnit);
+
+        } else if (pts < this._videoQueue[0].pts) {
+            this._videoQueue.splice(0, 0, frameUnit);
+
+        } else if (pts < this._videoQueue[len - 1].pts) {
+
+            for (let i = 0; i < len; i++) {
+                if (
+                    pts > this._videoQueue[i].pts && 
+                    (i + 1 < len && pts < this._videoQueue[i + 1].pts)
+                ) {
+                    this._videoQueue.splice(i + 1, 0, frameUnit);
+                    // console.log(i + 1, pts, this._videoQueue);
+                    break;
+                }
+            }
+        }
+
+        console.warn("LIVE frameCall videoQueueRet:", this._videoQueue);
+
+        this.vCachePTS = Math.max(pts, this.vCachePTS);
+        this.onCacheProcess && this.onCacheProcess(this.getCachePTS());
+
+        /*
+         * readyShow
+         */
+        if (this.config.readyShow && this.playYUV() === true) {
+            console.warn("this.config.readyShow --- DEBUG");
+            // Render callback
+            // this.playYUV();
+            this.config.readyShow = false;
+            this.onReadyShowDone && this.onReadyShowDone();
+        } // end if readyShow
+    } // _handleFrameYUVCallback
 
     /* ******************************************
      *
