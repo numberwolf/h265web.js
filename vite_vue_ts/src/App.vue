@@ -41,21 +41,15 @@
   </div>
 </template>
 
-<script>
-/**
- * vue/next is same as vue2, so we should init  project
- * in mounted lifecycle.
- */
+<script lang="ts">
 import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+
 import {
   createPlayerServer,
   executePlayerServer,
   destoryPlayerServer,
-} from './services/player'
+} from './player'
 
-/**
- * By default we define a constant vairiable should without vue module
- */
 const URL = 'hevc_test_moov_set_head_16s.mp4'
 const H265JS_DEFAULT_PLAYER_CONFIG = {
   player: 'glplayer',
@@ -72,7 +66,8 @@ export default defineComponent({
   setup() {
     const timelineRef = ref(null)
     let playerObject = null
-    const resolveConfig = (conf) =>
+
+    const resolveConfig = (conf?: Record<string, any>) =>
       Object.assign(H265JS_DEFAULT_PLAYER_CONFIG, conf)
 
     onMounted(() => {

@@ -1,5 +1,3 @@
-import H265webjsModule from '../../public/dist/index'
-
 const durationFormmat = (val) => {
   val = val.toString()
   if (val.length < 2) return '0' + val
@@ -19,8 +17,14 @@ const setDurationText = (duration) => {
 }
 
 export const createPlayerServer = (videoUrl, config) => {
-  return H265webjsModule.createPlayer(videoUrl, config)
+  // @ts-ignore
+  return window.new265webjs(videoUrl, config)
 }
+
+/**
+ * get playerInstance.
+ */
+export type PlayerInstance = ReturnType<typeof createPlayerServer>
 
 export const executePlayerServer = (player, timelineEl) => {
   // todo....
@@ -45,11 +49,7 @@ export const executePlayerServer = (player, timelineEl) => {
   player.do()
 }
 
-/**
- *
- * @param {ReturnType<typeof H265webjsModule.createPlayer>} playerInstance
- */
-export const destoryPlayerServer = (playerInstance) => {
+export const destoryPlayerServer = (playerInstance: PlayerInstance) => {
   // release playerInstance & forece Gc
   playerInstance.release()
   playerInstance = null
