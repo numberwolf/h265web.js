@@ -52,23 +52,23 @@ const PLAY_LOOP_COST_ONCE_TOTAL         = 100; // 100 loop compute once
 
 const PLAY_LOOP_RESET_CORRECT_DUR_MS    = 1; // 1ms
 
-function getScriptPath(foo) {
-    let fooStr = foo.toString();
-    let fooMatchFunc = fooStr.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/);
+// function getScriptPath(foo) {
+//     let fooStr = foo.toString();
+//     let fooMatchFunc = fooStr.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/);
 
-    console.log(fooStr);
-    console.log(fooMatchFunc);
+//     console.log(fooStr);
+//     console.log(fooMatchFunc);
 
-    let funcStream = [fooMatchFunc[1]];
-    return window.URL.createObjectURL(
-        new Blob(
-            funcStream, 
-            {
-                type: 'text/javascript'
-            }
-        )
-    ); 
-}
+//     let funcStream = [fooMatchFunc[1]];
+//     return window.URL.createObjectURL(
+//         new Blob(
+//             funcStream, 
+//             {
+//                 type: 'text/javascript'
+//             }
+//         )
+//     ); 
+// }
 
 class CHttpLiveCoreModule { // export default 
 	constructor(config) {
@@ -967,7 +967,7 @@ class CHttpLiveCoreModule { // export default
         console.warn("start fetch httpflv");
         // this.getPackageTimeMS = AVCommon.GetMsTime();
         
-        this.workerFetch = new Worker(getScriptPath(function() {
+        this.workerFetch = new Worker(AVCommon.GetScriptPath(function() {
             let urlpath = null;
             let controller = new AbortController();
             let signal = controller.signal;

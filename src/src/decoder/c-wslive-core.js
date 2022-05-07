@@ -52,23 +52,23 @@ const PLAY_LOOP_COST_ONCE_TOTAL         = 100; // 100 loop compute once
 
 const PLAY_LOOP_RESET_CORRECT_DUR_MS    = 1; // 1ms
 
-function getScriptPath(foo) {
-    let fooStr = foo.toString();
-    let fooMatchFunc = fooStr.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/);
+// function getScriptPath(foo) {
+//     let fooStr = foo.toString();
+//     let fooMatchFunc = fooStr.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/);
 
-    console.log(fooStr);
-    console.log(fooMatchFunc);
+//     console.log(fooStr);
+//     console.log(fooMatchFunc);
 
-    let funcStream = [fooMatchFunc[1]];
-    return window.URL.createObjectURL(
-        new Blob(
-            funcStream, 
-            {
-                type: 'text/javascript'
-            }
-        )
-    ); 
-}
+//     let funcStream = [fooMatchFunc[1]];
+//     return window.URL.createObjectURL(
+//         new Blob(
+//             funcStream, 
+//             {
+//                 type: 'text/javascript'
+//             }
+//         )
+//     ); 
+// }
 
 class CWsLiveCoreModule { // export default 
 	constructor(config) {
@@ -870,7 +870,7 @@ class CWsLiveCoreModule { // export default
         // this.getPackageTimeMS = AVCommon.GetMsTime();
         
         // @TODO doing this worker
-        this.workerFetch = new Worker(getScriptPath(function() {
+        this.workerFetch = new Worker(AVCommon.GetScriptPath(function() {
             var WSURL = null;
             var WSocket = null;
             let _self = self;

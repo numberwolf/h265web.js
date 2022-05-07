@@ -14,4 +14,4 @@ const loadScript = (url) =>
     document.body.appendChild(script)
   })
 
-loadScript('/dist/missile-v20220421.js').then((res) => createApp(App).mount('#app'))
+loadScript('/dist/missile.js').then((res) => createApp(App).mount('#app'))

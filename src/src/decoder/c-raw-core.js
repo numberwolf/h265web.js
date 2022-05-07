@@ -19,14 +19,23 @@
  * Github: https://github.com/numberwolf/h265web.js
  * 
  **********************************************************/
-require('./h265webjs-v20220507');
-export default class h265webjs {
-	static createPlayer(videoURL, config) {
-		return window.new265webjs(videoURL, config);
-	}
+const BUFF_FRAME	= require('../demuxer/bufferFrame');
+const BUFFMOD		= require('../demuxer/buffer');
+const CacheYUV      = require('./cache');
+const CacheYUVStruct= require('./cacheYuv');
 
-	static clear() {
-		global.STATICE_MEM_playerCount = -1;
-		global.STATICE_MEM_playerIndexPtr = 0;
-    }
-}
+const RenderEngine420P 	= require('../render-engine/webgl-420p');
+const AVCommon 			= require('./av-common');
+const def 			= require('../consts');
+const VersionModule = require('../version');
+
+
+
+
+
+
+
+
+
+
+

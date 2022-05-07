@@ -96,7 +96,8 @@ module.exports = () => {
 			}
         }
 
-        // console.warn("IDR Buffer 2:", bufferModule.idrIdxBuffer);
+        console.log("nalu IDR Buffer 2:", 
+        	bufferModule.videoBuffer, bufferModule.idrIdxBuffer);
 
         return true;
 	};
