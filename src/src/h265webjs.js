@@ -387,6 +387,7 @@ class H265webjsModule {
             this.workerFetch.postMessage({
                 cmd: 'stop',
                 params: '',
+                type: this.mediaExtProtocol,
             });
             this.workerFetch.onmessage = null;
         }
@@ -1108,7 +1109,12 @@ class H265webjsModule {
         // alert("type: " + this.configFormat.type);
 
         if (this.mediaExtProtocol === def.URI_PROTOCOL_WEBSOCKET_DESC) {
-            this._cWsFLVDecoderEntry();
+            console.log("this.configFormat.type", this.configFormat.type);
+            if (this.configFormat.type === def.PLAYER_IN_TYPE_RAW_265) {
+                this._raw265Entry();
+            } else {
+                this._cWsFLVDecoderEntry();
+            }
             return 0;
         }
 
@@ -2333,6 +2339,700 @@ class H265webjsModule {
         console.log("_raw265Entry", this.videoURL);
         // this.rawParserObj = new RawParser.RawParser();
 
+        let _raw265Entry_createWorkerFetch = function() {
+            /*
+             * workerFetch
+             */
+            _this.workerFetch = new Worker(AVCOMMON.GetScriptPath(function() {
+                console.log("import raw worker!!!");
+                // for fetch
+                let controller = new AbortController();
+                let signal = controller.signal;
+                // for ws
+                let WSocket = null;
+
+                function fetchData(url265) {
+                    let fetchFinished = false;
+                    let startFetch = false;
+
+                    if (!startFetch) {
+                        startFetch = true;
+                        fetch(url265, {signal}).then(function(response) {
+                            let pump = function(reader) {
+                                return reader.read().then(function(result) {
+                                    if (result.done) {
+                                        // console.log("========== RESULT DONE ===========");
+                                        fetchFinished = true;
+                                        postMessage({
+                                            cmd: 'fetch-fin',
+                                            data: null, 
+                                            msg: 'fetch-fin'
+                                        });
+                                        // window.clearInterval(networkInterval);
+                                        // networkInterval = null;
+                                        return;
+                                    }
+
+                                    let chunk = result.value;
+                                    postMessage({
+                                        cmd: 'fetch-chunk',
+                                        data: chunk, 
+                                        msg: 'fetch-chunk'
+                                    });
+                                    // rawParser.appendStreamRet(chunk);
+                                    return pump(reader);
+                                });
+                            }
+                            return pump(response.body.getReader());
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    }
+                } // fetchData
+
+                function fetchWs(url265) {
+                    WSocket = new WebSocket(url265);
+                    WSocket.binaryType = "arraybuffer";
+
+                    WSocket.onopen = function(wsevent) {
+                        console.log("Connection open ...");
+                        WSocket.send("Hello WebSockets!");
+                    };
+
+                    WSocket.onmessage = function(wsevent) {
+                        // if(typeof wsevent.data === String) {
+                        //     console.log("Received data string");
+                        // }
+                        if(wsevent.data instanceof ArrayBuffer) {
+                            var buffer = wsevent.data;
+                            console.log("Received arraybuffer", buffer);
+
+                            if (buffer.byteLength > 0) {
+                                postMessage({
+                                    cmd: 'fetch-chunk',
+                                    data: new Uint8Array(buffer),
+                                    msg: 'fetch-chunk'
+                                });
+                            }
+
+                            // if (totalData === null) {
+                            //     totalData = new Uint8Array(buffer);
+                            // } else {
+                            //     var tmpBuf = new Uint8Array(buffer);
+                            //     var newLen = totalData.length + tmpBuf.length;
+                            //     var newData = new Uint8Array(newLen);
+                            //     newData.set(totalData);
+                            //     newData.set(tmpBuf, totalData.length);
+                            //     totalData = new Uint8Array(newData);
+                            // }
+                        }
+                    }; // WSocket.onmessage
+
+                    WSocket.onclose = function(wsevent) {
+                        console.log("Connection closed.");
+                        postMessage({
+                            cmd: 'fetch-fin',
+                            data: null, 
+                            msg: 'fetch-fin'
+                        });
+                    }; // WSocket.onclose
+                } // fetchWs
+
+                onmessage = (event) => {
+
+                    // console.log("worker.onmessage", event);
+                    let body = event.data;
+                    let cmd = null;
+                    if (body.cmd === undefined || body.cmd === null) {
+                        cmd = '';
+                    } else {
+                        cmd = body.cmd;
+                    }
+
+                    // console.log("worker recv cmd:", cmd);
+
+                    switch (cmd) {
+                        case 'start':
+                            // console.log("worker start");
+                            let url = body.url;
+                            if (body.type === 'http') {
+                                fetchData(url);
+                            } else if (body.type === 'websocket') {
+                                fetchWs(url);
+                            }
+                            
+                            postMessage({
+                                cmd: 'default',
+                                data: 'WORKER STARTED', 
+                                msg: 'default'
+                            });
+                            break;
+                        case 'stop':
+                            if (body.type === 'http') {
+                                // fetchData(url);
+                                controller.abort();
+                            } else if (body.type === 'websocket') {
+                                WSocket && WSocket.close();
+                            }
+                            // console.log("worker stop");
+                            // postMessage('WORKER STOPPED: ' + body);
+                            close(); // Terminates the worker.
+                            break;
+                        default:
+                            // console.log("worker default");
+                            // console.log("worker.body -> default: ", body);
+                            // worker.postMessage('Unknown command: ' + data.msg);
+                            break;
+                    };
+                };
+            })); // end this.workerFetch
+
+            _this.workerFetch.onMsgFetchFinished = false;
+
+            _this.workerFetch.onmessage = function(event) {
+                // console.log("play -> workerFetch recv:", event, playerObj);
+                let body = event.data;
+                let cmd = null;
+                if (body.cmd === undefined || body.cmd === null) {
+                    cmd = '';
+                } else {
+                    cmd = body.cmd;
+                }
+
+                // console.log("play -> workerFetch recv cmd:", cmd);
+
+                switch (cmd) {
+                    case 'fetch-chunk':
+                        console.log("play -> workerFetch append chunk");
+                        let chunk = body.data;
+                        _this.workerParse.postMessage({
+                            cmd : "append-chunk",
+                            data : chunk,
+                            msg : "append-chunk"
+                        });
+                        break;
+                    case 'fetch-fin':
+                        _this.workerFetch.onMsgFetchFinished = true;
+                        _raw265Entry_naluGetFunc();
+                        break;
+                    default:
+                        break;
+                }
+            }; // this.workerFetch.onmessage
+        }; // _raw265Entry_createWorkerFetch
+
+        let _raw265Entry_createWorkerParse = function() {
+            /*
+             * workerParse
+             */
+            _this.workerParse = new Worker(AVCOMMON.GetScriptPath(function() {
+                const AfterGetNalThenMvLen  = 3;
+
+                function createRawParserModule() {
+                    let obj = new Object();
+                    obj.frameList = [];
+                    obj.stream = null;
+
+                    obj.frameListEmpty = function() {
+                        return obj.frameList.length <= 0;
+                    };
+
+                    obj.streamEmpty = function() {
+                        return obj.stream === null || obj.stream.length <= 0;
+                    };
+
+                    obj.checkEmpty = function() {
+                        if (obj.streamEmpty() === true &&
+                            obj.frameListEmpty() === true
+                        ) {
+                            return true;
+                        }
+                        console.log('checkEmpty', obj.stream, obj.frameList);
+                        return false;
+                    }; // checkEmpty
+
+                    /*
+                     *****************************************************
+                     *                                                   *
+                     *                                                   *
+                     *                     HEVC Frames                   *
+                     *                                                   *
+                     *                                                   *
+                     *****************************************************
+                     */
+                    obj.pushFrameRet = function (streamPushInput) {
+                        if (!streamPushInput || streamPushInput == undefined || streamPushInput == null) {
+                            return false;
+                        }
+
+                        if (!obj.frameList || obj.frameList == undefined || obj.frameList == null) {
+                            obj.frameList = [];
+                            obj.frameList.push(streamPushInput);
+                            
+                        } else {
+                            obj.frameList.push(streamPushInput);
+                        }
+
+                        return true;
+                    }; // pushFrameRet
+
+                    obj.nextFrame = function () {
+                        if (!obj.frameList && obj.frameList == undefined || obj.frameList == null && obj.frameList.length < 1) {
+                            return null;
+                        }
+                        return obj.frameList.shift();
+                    } // nextFrame
+
+                    obj.clearFrameRet = function () {
+                        obj.frameList = null;
+                    } // clearFrameRet
+
+                    /*
+                     *****************************************************
+                     *                                                   *
+                     *                                                   *
+                     *                     HEVC stream                   *
+                     *                                                   *
+                     *                                                   *
+                     *****************************************************
+                     */
+                    obj.setStreamRet = function (streamBufInput) {
+                        obj.stream = streamBufInput;
+                    }; // setStreamRet
+
+                    obj.getStreamRet = function () {
+                        return obj.stream;
+                    }; // getStreamRet
+
+                    /**
+                     * push stream nalu, for live, not vod
+                     * @param Uint8Array
+                     * @return bool
+                     */
+                    obj.appendStreamRet = function (input) {
+                        if (!input || input === undefined || input == null) {
+                            return false;
+                        }
+
+                        if (!obj.stream || obj.stream === undefined || obj.stream == null) {
+                            obj.stream = input;
+                            return true;
+                        }
+
+                        let lenOld  = obj.stream.length;
+                        let lenPush = input.length;
+
+                        let mergeStream = new Uint8Array(lenOld + lenPush);
+                        mergeStream.set(obj.stream, 0);
+                        mergeStream.set(input, lenOld);
+
+                        obj.stream = mergeStream;
+
+                        // let retList = obj.nextNaluList(9000);
+                        // if (retList !== false && retList.length > 0) {
+                        //     obj.frameList.push(...retList);
+                        // }
+
+                        for (let i = 0; i < 9999; i++) {
+                            let nalBuf = obj.nextNalu();
+                            if (nalBuf !== false && nalBuf !== null && nalBuf !== undefined) {
+                                obj.frameList.push(nalBuf);
+                            } else {
+                                break;
+                            }
+                        }
+
+                        return true;
+                    }; // appendStreamRet
+
+                    /**
+                     * sub nalu stream, and get Nalu unit
+                     */
+                    obj.subBuf = function (startOpen, endOpen) { // sub block [m,n]
+                        // nal
+                        let returnBuf = new Uint8Array(
+                            obj.stream.subarray(startOpen, endOpen + 1)
+                        );
+
+                        // streamBuf sub
+                        obj.stream = new Uint8Array(
+                            obj.stream.subarray(endOpen + 1)
+                        );
+
+                        return returnBuf;
+                    }; // subBuf
+
+                    obj.lastNalu = function() {
+                        const nalBuf = obj.subBuf(0, obj.stream.length);
+                        obj.frameList.push(nalBuf);
+                    };
+
+                    /**
+                     * @param onceGetNalCount: once use get nal count, defult 1
+                     * @return uint8array OR false
+                     */
+                    obj.nextNalu = function (onceGetNalCount=1) {
+
+                        // check params
+                        if (obj.stream == null || obj.stream.length <= 4) {
+                            return false;
+                        }
+
+                        // start nal pos
+                        let startTag = -1;
+                        // return nalBuf
+                        let returnNalBuf = null;
+
+                        for (let i = 0;i < obj.stream.length; i++) {
+                            if (i + 5 >= obj.stream.length) {
+                                return false;
+                                // if (startTag == -1) {
+                                //     return false;
+                                // } else {
+                                //     // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
+                                //     returnNalBuf = obj.subBuf(startTag, obj.stream.length-1);
+                                //     return returnNalBuf;
+                                // }
+                            }
+
+                            // find nal
+                            if (
+                                (   // 0x00 00 01
+                                    obj.stream[i]        == 0
+                                    && obj.stream[i+1]   == 0
+                                    && obj.stream[i+2]   == 1
+                                ) || 
+                                (   // 0x00 00 00 01
+                                    obj.stream[i]        == 0
+                                    && obj.stream[i+1]   == 0
+                                    && obj.stream[i+2]   == 0
+                                    && obj.stream[i+3]   == 1
+                                )
+                            ) {
+                                // console.log(
+                                //     "enter find nal , now startTag:" + startTag 
+                                //     + ", now pos:" + i
+                                // );
+                                let nowPos = i;
+                                i += AfterGetNalThenMvLen; // 移出去
+                                // begin pos
+                                if (startTag == -1) {
+                                    startTag = nowPos;
+                                } else {
+                                    if (onceGetNalCount <= 1) {
+                                        // startCode - End
+                                        // [startTag,nowPos)
+                                        // console.log("[===>] last code hex is :" + obj.stream[nowPos-1].toString(16))
+                                        returnNalBuf = obj.subBuf(startTag,nowPos-1);
+                                        return returnNalBuf;
+                                    } else {
+                                        onceGetNalCount -= 1;
+                                    }
+                                }
+                            }
+
+                        } // end for
+
+                        return false;
+                    }; // nextNalu
+
+                    obj.nextNalu2 = function (onceGetNalCount=1) {
+                        // check params
+                        if (obj.stream == null || obj.stream.length <= 4) {
+                            return false;
+                        }
+
+                        // start nal pos
+                        let startTag = -1;
+                        // return nalBuf
+                        let returnNalBuf = null;
+
+                        for (let i = 0;i < obj.stream.length; i++) {
+                            if (i + 5 >= obj.stream.length) {
+                                if (startTag == -1) {
+                                    return false;
+                                } else {
+                                    // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
+                                    returnNalBuf = obj.subBuf(startTag, obj.stream.length - 1);
+                                    return returnNalBuf;
+                                }
+                            }
+
+                            // find nal
+                            let is3BitHeader = obj.stream.slice(i, i+3).join(' ') == '0 0 1';
+                            let is4BitHeader = obj.stream.slice(i, i+4).join(' ') == '0 0 0 1';
+                            if (
+                                is3BitHeader || 
+                                is4BitHeader
+                            ) {
+                                let nowPos = i;
+                                i += AfterGetNalThenMvLen; // 移出去
+                                // begin pos
+                                if (startTag == -1) {
+                                    startTag = nowPos;
+                                } else {
+                                    if (onceGetNalCount <= 1) {
+                                        // startCode - End
+                                        // [startTag,nowPos)
+                                        // console.log("[===>] last code hex is :" + this.stream[nowPos-1].toString(16))
+                                        returnNalBuf = obj.subBuf(startTag, nowPos-1);
+                                        return returnNalBuf;
+                                    } else {
+                                        onceGetNalCount -= 1;
+                                    }
+                                }
+                            }
+
+                        } // end for
+                        return false;
+                    }; // nextNalu2
+
+
+                    /**
+                     * @brief sub nalu stream, and get Nalu unit
+                     *          to parse: 
+                     *           typedef struct {
+                     *               uint32_t width;
+                     *               uint32_t height;
+                     *               uint8_t *dataY;
+                     *               uint8_t *dataChromaB;
+                     *               uint8_t *dataChromaR;
+                     *           } ImageData;
+                     * @params struct_ptr: Module.cwrap('getFrame', 'number', [])
+                     * @return Dict
+                     */
+                    // obj.parseYUVFrameStruct = function (struct_ptr = null) { // sub block [m,n]
+                    //     if (struct_ptr == null || !struct_ptr || struct_ptr == undefined) {
+                    //         return null;
+                    //     }
+
+                    //     let width           = Module.HEAPU32[struct_ptr / 4];
+                    //     let height          = Module.HEAPU32[struct_ptr / 4 + 1];
+                    //     // let imgBufferPtr    = Module.HEAPU32[ptr / 4 + 2];
+                    //     // let imageBuffer     = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + width * height * 3);
+                    //     // console.log("width:",width," height:",height);
+
+                    //     let sizeWH          = width * height;
+                    //     // let imgBufferYPtr   = Module.HEAPU32[ptr / 4 + 2];
+                    //     // let imageBufferY    = Module.HEAPU8.subarray(imgBufferYPtr, imgBufferYPtr + sizeWH);
+
+                    //     // let imgBufferBPtr   = Module.HEAPU32[ptr/4+ 2 + sizeWH/4 + 1];
+                    //     // let imageBufferB    = Module.HEAPU8.subarray(
+                    //     //     imgBufferBPtr, 
+                    //     //     imgBufferBPtr + sizeWH/4
+                    //     // );
+                    //     // console.log(imageBufferB);
+
+                    //     // let imgBufferRPtr   = Module.HEAPU32[imgBufferBPtr + sizeWH/16 + 1];
+                    //     // let imageBufferR    = Module.HEAPU8.subarray(
+                    //     //     imgBufferRPtr, 
+                    //     //     imgBufferRPtr + sizeWH/4
+                    //     // );
+
+                    //     let imgBufferPtr = Module.HEAPU32[struct_ptr / 4 + 1 + 1];
+
+                    //     let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
+
+                    //     let imageBufferB = Module.HEAPU8.subarray(
+                    //         imgBufferPtr + sizeWH + 8, 
+                    //         imgBufferPtr + sizeWH + 8 + sizeWH/4
+                    //     );
+
+                    //     let imageBufferR = Module.HEAPU8.subarray(
+                    //         imgBufferPtr + sizeWH + 8 + sizeWH/4 + 8,
+                    //         imgBufferPtr + sizeWH + 8 + sizeWH/2 + 8
+                    //     );
+
+                    //     return {
+                    //         width           : width,
+                    //         height          : height,
+                    //         sizeWH          : sizeWH,
+                    //         imageBufferY    : imageBufferY,
+                    //         imageBufferB    : imageBufferB,
+                    //         imageBufferR    : imageBufferR
+                    //     };
+                    // }; // parseYUVFrameStruct
+
+                    return obj;
+                } // createRawParserModule
+
+                let g_RawParser = createRawParserModule();
+
+                onmessage = (event) => {
+                    // console.log("parse - worker.onmessage", event);
+                    let body = event.data;
+                    let cmd = null;
+                    if (body.cmd === undefined || body.cmd === null) {
+                        cmd = '';
+                    } else {
+                        cmd = body.cmd;
+                    }
+
+                    // console.log("parse - worker recv cmd:", cmd);
+
+                    switch (cmd) {
+                        case 'append-chunk':
+                            // console.log("parse - worker append-chunk");
+                            let chunk = body.data;
+                            g_RawParser.appendStreamRet(chunk);
+
+                            let nalBufRet1 = g_RawParser.nextFrame();
+                            postMessage({
+                                cmd : "return-nalu",
+                                data : nalBufRet1,
+                                msg : "return-nalu",
+                                parseEmpty : g_RawParser.checkEmpty(),
+                                streamEmpty: g_RawParser.streamEmpty(),
+                                frameListEmpty: g_RawParser.frameListEmpty(),
+                            });
+                            break;
+                        case 'get-nalu':
+                            // let nalBuf = g_RawParser.nextNalu();
+                            let nalBufRet2 = g_RawParser.nextFrame();
+                            // console.log("parse - worker get-nalu", nalBuf);
+
+                            // if (nalBuf != false) {
+                                postMessage({
+                                    cmd : "return-nalu",
+                                    data : nalBufRet2,
+                                    msg : "return-nalu",
+                                    parseEmpty : g_RawParser.checkEmpty(),
+                                    streamEmpty: g_RawParser.streamEmpty(),
+                                    frameListEmpty: g_RawParser.frameListEmpty(),
+                                });
+                            // }
+
+                            break;
+                        case 'last-nalu':
+                            let nalBufRet3 = g_RawParser.lastNalu();
+                            postMessage({
+                                cmd : "return-nalu",
+                                data : nalBufRet3,
+                                msg : "return-nalu",
+                                parseEmpty : g_RawParser.checkEmpty(),
+                                streamEmpty: g_RawParser.streamEmpty(),
+                                frameListEmpty: g_RawParser.frameListEmpty(),
+                            });
+                            break;
+                        case 'stop':
+                            // console.log("parse - worker stop");
+                            postMessage('parse - WORKER STOPPED: ' + body);
+                            close(); // Terminates the worker.
+                            break;
+                        default:
+                            // console.log("parse - worker default");
+                            // console.log("parse - worker.body -> default: ", body);
+                            // worker.postMessage('Unknown command: ' + data.msg);
+                            break;
+                    };
+                };
+            })); // this.workerParse
+            _this.workerParse.stopNaluInterval = false;
+            _this.workerParse.parseEmpty = false;
+            _this.workerParse.streamEmpty = false;
+            _this.workerParse.frameListEmpty = false;
+
+            _this.workerParse.onmessage = event => {
+                // return-nalu
+                // console.log("play -> workerParse recv:", event, playerObj);
+                let body = event.data;
+                let cmd = null;
+                if (body.cmd === undefined || body.cmd === null) {
+                    cmd = '';
+                } else {
+                    cmd = body.cmd;
+                }
+
+                // console.log("play -> workerParse recv cmd:", cmd);
+
+                switch (cmd) {
+                    case 'return-nalu':
+                        let nalBuf = body.data;
+                        let parseEmpty = body.parseEmpty;
+                        let streamEmpty = body.streamEmpty;
+                        let frameListEmpty = body.frameListEmpty;
+                        _this.workerParse.parseEmpty = parseEmpty;
+                        _this.workerParse.streamEmpty = streamEmpty;
+                        _this.workerParse.frameListEmpty = frameListEmpty;
+
+                        if (nalBuf === false || nalBuf === null || nalBuf === undefined) 
+                        {
+                            if (_this.workerFetch.onMsgFetchFinished === true && parseEmpty === true)
+                            {
+                                console.log("set stopNaluInterval");
+                                _this.workerParse.stopNaluInterval = true;
+                            }
+                        } else {
+                            // console.warn("play -> workerParse nalu");
+                            _this.append265NaluFrame(nalBuf);
+                            _this.workerParse.postMessage({
+                                cmd : "get-nalu",
+                                data : null,
+                                msg : "get-nalu"
+                            });
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }; // this.workerParse.onmessage
+        }; // _raw265Entry_createWorkerParse
+
+        let _raw265Entry_naluGetFunc = function() {
+            setTimeout(() => {
+                _this.workerParse.postMessage({
+                    cmd : "get-nalu",
+                    data : null,
+                    msg : "get-nalu"
+                });
+                console.log("stop _raw265Entry_naluGetFunc check ", 
+                    _this.workerParse.parseEmpty, _this.workerFetch.onMsgFetchFinished);
+
+                if (_this.workerFetch.onMsgFetchFinished === true) {
+                    // last-nalu
+                    if (_this.workerParse.frameListEmpty === true && _this.workerParse.streamEmpty === false) {
+                        _this.workerParse.postMessage({
+                            cmd : "last-nalu",
+                            data : null,
+                            msg : "last-nalu"
+                        });
+                    }
+                }
+
+                if (_this.workerParse.parseEmpty === true) {
+                    _this.workerParse.stopNaluInterval = true;
+                }
+                if (_this.workerParse.stopNaluInterval === true) {
+                    console.log("stop _raw265Entry_naluGetFunc");
+                    return;
+                }
+                _raw265Entry_naluGetFunc();
+            }, 1000);
+        }; // _raw265Entry_naluGetFunc
+
+        let _raw265Entry_coverGetFunc = function() {
+            setTimeout(() => {
+                // 首帧显示渲染
+                if (_this.configFormat.extInfo.readyShow) {
+                    // candebug = true;
+                    console.log("============== readyShow");
+                    if (_this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) 
+                    {
+                        _this.player.playFrameYUV(true, true);
+                        _this.configFormat.extInfo.readyShow = false;
+                        _this.onReadyShowDone && _this.onReadyShowDone();
+                        
+                    } else {
+                        _raw265Entry_coverGetFunc();
+                    }
+                }
+            }, 1000);
+        }; // _raw265Entry_coverGetFunc
+
+        /*
+         * do
+         */
         // this.playParam.durationMs = durationMs;
         // this.playParam.fps = fps;
         // this.playParam.sampleRate = sampleRate;
@@ -2357,612 +3057,17 @@ class H265webjsModule {
             this.timerFeed = null;
         }
 
-        /*
-         * workerFetch
-         */
-        this.workerFetch = new Worker(AVCOMMON.GetScriptPath(function() {
-            console.log("import raw worker!!!");
-            function fetchData(url265) {
-                let fetchFinished = false;
-                let startFetch = false;
+        _raw265Entry_createWorkerFetch();
+        _raw265Entry_createWorkerParse();
 
-                if (!startFetch) {
-                    startFetch = true;
-                    fetch(url265).then(function(response) {
-                        let pump = function(reader) {
-                            return reader.read().then(function(result) {
-                                if (result.done) {
-                                    // console.log("========== RESULT DONE ===========");
-                                    fetchFinished = true;
-                                    postMessage({
-                                        cmd: 'fetch-fin',
-                                        data: null, 
-                                        msg: 'fetch-fin'
-                                    });
-                                    // window.clearInterval(networkInterval);
-                                    // networkInterval = null;
-                                    return;
-                                }
-
-                                let chunk = result.value;
-                                postMessage({
-                                    cmd: 'fetch-chunk',
-                                    data: chunk, 
-                                    msg: 'fetch-chunk'
-                                });
-                                // rawParser.appendStreamRet(chunk);
-                                return pump(reader);
-                            });
-                        }
-                        return pump(response.body.getReader());
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                }
-            }
-
-            onmessage = (event) => {
-
-                // console.log("worker.onmessage", event);
-                let body = event.data;
-                let cmd = null;
-                if (body.cmd === undefined || body.cmd === null) {
-                    cmd = '';
-                } else {
-                    cmd = body.cmd;
-                }
-
-                // console.log("worker recv cmd:", cmd);
-
-                switch (cmd) {
-                    case 'start':
-                        // console.log("worker start");
-                        let url = body.data;
-                        fetchData(url);
-                        postMessage({
-                            cmd: 'default',
-                            data: 'WORKER STARTED', 
-                            msg: 'default'
-                        });
-                        break;
-                    case 'stop':
-                        // console.log("worker stop");
-                        // postMessage('WORKER STOPPED: ' + body);
-                        close(); // Terminates the worker.
-                        break;
-                    default:
-                        // console.log("worker default");
-                        // console.log("worker.body -> default: ", body);
-                        // worker.postMessage('Unknown command: ' + data.msg);
-                        break;
-                };
-            };
-        })); // end this.workerFetch
-
-
-        let onMsgFetchFinished = false;
-        let stopNaluInterval = false;
-
-        this.workerFetch.onmessage = function(event) {
-            // console.log("play -> workerFetch recv:", event, playerObj);
-            let body = event.data;
-            let cmd = null;
-            if (body.cmd === undefined || body.cmd === null) {
-                cmd = '';
-            } else {
-                cmd = body.cmd;
-            }
-
-            // console.log("play -> workerFetch recv cmd:", cmd);
-
-            switch (cmd) {
-                case 'fetch-chunk':
-                    console.log("play -> workerFetch append chunk");
-                    let chunk = body.data;
-                    _this.workerParse.postMessage({
-                        cmd : "append-chunk",
-                        data : chunk,
-                        msg : "append-chunk"
-                    });
-                    break;
-                case 'fetch-fin':
-                    onMsgFetchFinished = true;
-                    break;
-                default:
-                    break;
-            }
-        }; // this.workerFetch.onmessage
-
-
-        /*
-         * workerParse
-         */
-        this.workerParse = new Worker(AVCOMMON.GetScriptPath(function() {
-            const AfterGetNalThenMvLen  = 3;
-
-            function createRawParserModule() {
-                let obj = new Object();
-                obj.frameList = [];
-                obj.stream = null;
-
-                /*
-                 *****************************************************
-                 *                                                   *
-                 *                                                   *
-                 *                     HEVC Frames                   *
-                 *                                                   *
-                 *                                                   *
-                 *****************************************************
-                 */
-                obj.pushFrameRet = function (streamPushInput) {
-                    if (!streamPushInput || streamPushInput == undefined || streamPushInput == null) {
-                        return false;
-                    }
-
-                    if (!obj.frameList || obj.frameList == undefined || obj.frameList == null) {
-                        obj.frameList = [];
-                        obj.frameList.push(streamPushInput);
-                        
-                    } else {
-                        obj.frameList.push(streamPushInput);
-                    }
-
-                    return true;
-                }; // pushFrameRet
-
-                obj.nextFrame = function () {
-                    if (!obj.frameList && obj.frameList == undefined || obj.frameList == null && obj.frameList.length < 1) {
-                        return null;
-                    }
-                    return obj.frameList.shift();
-                } // nextFrame
-
-                obj.clearFrameRet = function () {
-                    obj.frameList = null;
-                } // clearFrameRet
-
-                /*
-                 *****************************************************
-                 *                                                   *
-                 *                                                   *
-                 *                     HEVC stream                   *
-                 *                                                   *
-                 *                                                   *
-                 *****************************************************
-                 */
-                obj.setStreamRet = function (streamBufInput) {
-                    obj.stream = streamBufInput;
-                }; // setStreamRet
-
-                obj.getStreamRet = function () {
-                    return obj.stream;
-                }; // getStreamRet
-
-                /**
-                 * push stream nalu, for live, not vod
-                 * @param Uint8Array
-                 * @return bool
-                 */
-                obj.appendStreamRet = function (input) {
-                    if (!input || input === undefined || input == null) {
-                        return false;
-                    }
-
-                    if (!obj.stream || obj.stream === undefined || obj.stream == null) {
-                        obj.stream = input;
-                        return true;
-                    }
-
-                    let lenOld  = obj.stream.length;
-                    let lenPush = input.length;
-
-                    let mergeStream = new Uint8Array(lenOld + lenPush);
-                    mergeStream.set(obj.stream, 0);
-                    mergeStream.set(input, lenOld);
-
-                    obj.stream = mergeStream;
-
-                    // let retList = obj.nextNaluList(9000);
-                    // if (retList !== false && retList.length > 0) {
-                    //     obj.frameList.push(...retList);
-                    // }
-
-                    for (let i = 0; i < 9999; i++) {
-                        let nalBuf = obj.nextNalu();
-                        if (nalBuf !== false && nalBuf !== null && nalBuf !== undefined) {
-                            obj.frameList.push(nalBuf);
-                        } else {
-                            break;
-                        }
-                    }
-
-                    return true;
-                }; // appendStreamRet
-
-                /**
-                 * sub nalu stream, and get Nalu unit
-                 */
-                obj.subBuf = function (startOpen, endOpen) { // sub block [m,n]
-                    // nal
-                    let returnBuf = new Uint8Array(
-                        obj.stream.subarray(startOpen, endOpen + 1)
-                    );
-
-                    // streamBuf sub
-                    obj.stream = new Uint8Array(
-                        obj.stream.subarray(endOpen + 1)
-                    );
-
-                    return returnBuf;
-                }; // subBuf
-
-                /**
-                 * @param onceGetNalCount: once use get nal count, defult 1
-                 * @return uint8array OR false
-                 */
-                obj.nextNalu = function (onceGetNalCount=1) {
-
-                    // check params
-                    if (obj.stream == null || obj.stream.length <= 4) {
-                        return false;
-                    }
-
-                    // start nal pos
-                    let startTag = -1;
-                    // return nalBuf
-                    let returnNalBuf = null;
-
-                    for (let i = 0;i < obj.stream.length; i++) {
-                        if (i + 5 >= obj.stream.length) {
-                            return false;
-                            // if (startTag == -1) {
-                            //     return false;
-                            // } else {
-                            //     // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
-                            //     returnNalBuf = obj.subBuf(startTag, obj.stream.length-1);
-                            //     return returnNalBuf;
-                            // }
-                        }
-
-                        // find nal
-                        if (
-                            (   // 0x00 00 01
-                                obj.stream[i]        == 0
-                                && obj.stream[i+1]   == 0
-                                && obj.stream[i+2]   == 1
-                            ) || 
-                            (   // 0x00 00 00 01
-                                obj.stream[i]        == 0
-                                && obj.stream[i+1]   == 0
-                                && obj.stream[i+2]   == 0
-                                && obj.stream[i+3]   == 1
-                            )
-                        ) {
-                            // console.log(
-                            //     "enter find nal , now startTag:" + startTag 
-                            //     + ", now pos:" + i
-                            // );
-                            let nowPos = i;
-                            i += AfterGetNalThenMvLen; // 移出去
-                            // begin pos
-                            if (startTag == -1) {
-                                startTag = nowPos;
-                            } else {
-                                if (onceGetNalCount <= 1) {
-                                    // startCode - End
-                                    // [startTag,nowPos)
-                                    // console.log("[===>] last code hex is :" + obj.stream[nowPos-1].toString(16))
-                                    returnNalBuf = obj.subBuf(startTag,nowPos-1);
-                                    return returnNalBuf;
-                                } else {
-                                    onceGetNalCount -= 1;
-                                }
-                            }
-                        }
-
-                    } // end for
-
-                    return false;
-                }; // nextNalu
-
-                obj.nextNalu2 = function (onceGetNalCount=1) {
-                    // check params
-                    if (obj.stream == null || obj.stream.length <= 4) {
-                        return false;
-                    }
-
-                    // start nal pos
-                    let startTag = -1;
-                    // return nalBuf
-                    let returnNalBuf = null;
-
-                    for (let i = 0;i < obj.stream.length; i++) {
-                        if (i + 5 >= obj.stream.length) {
-                            if (startTag == -1) {
-                                return false;
-                            } else {
-                                // 如果结尾不到判断的字节位置 就直接全量输出最后一个nal
-                                returnNalBuf = obj.subBuf(startTag, obj.stream.length - 1);
-                                return returnNalBuf;
-                            }
-                        }
-
-                        // find nal
-                        let is3BitHeader = obj.stream.slice(i, i+3).join(' ') == '0 0 1';
-                        let is4BitHeader = obj.stream.slice(i, i+4).join(' ') == '0 0 0 1';
-                        if (
-                            is3BitHeader || 
-                            is4BitHeader
-                        ) {
-                            let nowPos = i;
-                            i += AfterGetNalThenMvLen; // 移出去
-                            // begin pos
-                            if (startTag == -1) {
-                                startTag = nowPos;
-                            } else {
-                                if (onceGetNalCount <= 1) {
-                                    // startCode - End
-                                    // [startTag,nowPos)
-                                    // console.log("[===>] last code hex is :" + this.stream[nowPos-1].toString(16))
-                                    returnNalBuf = obj.subBuf(startTag, nowPos-1);
-                                    return returnNalBuf;
-                                } else {
-                                    onceGetNalCount -= 1;
-                                }
-                            }
-                        }
-
-                    } // end for
-                    return false;
-                }; // nextNalu2
-
-
-                /**
-                 * @brief sub nalu stream, and get Nalu unit
-                 *          to parse: 
-                 *           typedef struct {
-                 *               uint32_t width;
-                 *               uint32_t height;
-                 *               uint8_t *dataY;
-                 *               uint8_t *dataChromaB;
-                 *               uint8_t *dataChromaR;
-                 *           } ImageData;
-                 * @params struct_ptr: Module.cwrap('getFrame', 'number', [])
-                 * @return Dict
-                 */
-                // obj.parseYUVFrameStruct = function (struct_ptr = null) { // sub block [m,n]
-                //     if (struct_ptr == null || !struct_ptr || struct_ptr == undefined) {
-                //         return null;
-                //     }
-
-                //     let width           = Module.HEAPU32[struct_ptr / 4];
-                //     let height          = Module.HEAPU32[struct_ptr / 4 + 1];
-                //     // let imgBufferPtr    = Module.HEAPU32[ptr / 4 + 2];
-                //     // let imageBuffer     = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + width * height * 3);
-                //     // console.log("width:",width," height:",height);
-
-                //     let sizeWH          = width * height;
-                //     // let imgBufferYPtr   = Module.HEAPU32[ptr / 4 + 2];
-                //     // let imageBufferY    = Module.HEAPU8.subarray(imgBufferYPtr, imgBufferYPtr + sizeWH);
-
-                //     // let imgBufferBPtr   = Module.HEAPU32[ptr/4+ 2 + sizeWH/4 + 1];
-                //     // let imageBufferB    = Module.HEAPU8.subarray(
-                //     //     imgBufferBPtr, 
-                //     //     imgBufferBPtr + sizeWH/4
-                //     // );
-                //     // console.log(imageBufferB);
-
-                //     // let imgBufferRPtr   = Module.HEAPU32[imgBufferBPtr + sizeWH/16 + 1];
-                //     // let imageBufferR    = Module.HEAPU8.subarray(
-                //     //     imgBufferRPtr, 
-                //     //     imgBufferRPtr + sizeWH/4
-                //     // );
-
-                //     let imgBufferPtr = Module.HEAPU32[struct_ptr / 4 + 1 + 1];
-
-                //     let imageBufferY = Module.HEAPU8.subarray(imgBufferPtr, imgBufferPtr + sizeWH);
-
-                //     let imageBufferB = Module.HEAPU8.subarray(
-                //         imgBufferPtr + sizeWH + 8, 
-                //         imgBufferPtr + sizeWH + 8 + sizeWH/4
-                //     );
-
-                //     let imageBufferR = Module.HEAPU8.subarray(
-                //         imgBufferPtr + sizeWH + 8 + sizeWH/4 + 8,
-                //         imgBufferPtr + sizeWH + 8 + sizeWH/2 + 8
-                //     );
-
-                //     return {
-                //         width           : width,
-                //         height          : height,
-                //         sizeWH          : sizeWH,
-                //         imageBufferY    : imageBufferY,
-                //         imageBufferB    : imageBufferB,
-                //         imageBufferR    : imageBufferR
-                //     };
-                // }; // parseYUVFrameStruct
-
-                return obj;
-            } // createRawParserModule
-
-            let g_RawParser = createRawParserModule();
-
-            onmessage = (event) => {
-                // console.log("parse - worker.onmessage", event);
-                let body = event.data;
-                let cmd = null;
-                if (body.cmd === undefined || body.cmd === null) {
-                    cmd = '';
-                } else {
-                    cmd = body.cmd;
-                }
-
-                // console.log("parse - worker recv cmd:", cmd);
-
-                switch (cmd) {
-                    case 'append-chunk':
-                        // console.log("parse - worker append-chunk");
-                        let chunk = body.data;
-                        g_RawParser.appendStreamRet(chunk);
-
-                        let nalBufRet1 = g_RawParser.nextFrame();
-                        postMessage({
-                            cmd : "return-nalu",
-                            data : nalBufRet1,
-                            msg : "return-nalu"
-                        });
-                        break;
-                    case 'get-nalu':
-                        // let nalBuf = g_RawParser.nextNalu();
-                        let nalBufRet2 = g_RawParser.nextFrame();
-                        // console.log("parse - worker get-nalu", nalBuf);
-
-                        // if (nalBuf != false) {
-                            postMessage({
-                                cmd : "return-nalu",
-                                data : nalBufRet2,
-                                msg : "return-nalu"
-                            });
-                        // }
-
-                        break;
-                    case 'stop':
-                        // console.log("parse - worker stop");
-                        postMessage('parse - WORKER STOPPED: ' + body);
-                        close(); // Terminates the worker.
-                        break;
-                    default:
-                        // console.log("parse - worker default");
-                        // console.log("parse - worker.body -> default: ", body);
-                        // worker.postMessage('Unknown command: ' + data.msg);
-                        break;
-                };
-            };
-        })); // this.workerParse
-
-        this.workerParse.onmessage = event => {
-            // return-nalu
-            // console.log("play -> workerParse recv:", event, playerObj);
-            let body = event.data;
-            let cmd = null;
-            if (body.cmd === undefined || body.cmd === null) {
-                cmd = '';
-            } else {
-                cmd = body.cmd;
-            }
-
-            // console.log("play -> workerParse recv cmd:", cmd);
-
-            switch (cmd) {
-                case 'return-nalu':
-                    let nalBuf = body.data;
-                    if (nalBuf === false || nalBuf === null || nalBuf === undefined) 
-                    {
-                        if (onMsgFetchFinished === true) {
-                            stopNaluInterval = true;
-                        }
-                    } else {
-                        // console.warn("play -> workerParse nalu");
-                        _this.append265NaluFrame(nalBuf);
-                        _this.workerParse.postMessage({
-                            cmd : "get-nalu",
-                            data : null,
-                            msg : "get-nalu"
-                        });
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }; // this.workerParse.onmessage 
-
-        
-        let naluGetFunc = function() {
-            setTimeout(() => {
-                _this.workerParse.postMessage({
-                    cmd : "get-nalu",
-                    data : null,
-                    msg : "get-nalu"
-                });
-                if (stopNaluInterval === true) {
-                    return;
-                }
-                naluGetFunc();
-            }, 1000);
-        }; // naluGetFunc
-
-        let coverGetFunc = function() {
-            setTimeout(() => {
-                // 首帧显示渲染
-                if (_this.configFormat.extInfo.readyShow) {
-                    // candebug = true;
-                    console.log("============== readyShow");
-                    if (_this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) 
-                    {
-                        _this.player.playFrameYUV(true, true);
-                        _this.configFormat.extInfo.readyShow = false;
-                        _this.onReadyShowDone && _this.onReadyShowDone();
-                        
-                    } else {
-                        coverGetFunc();
-                    }
-                }
-            }, 1000);
-        }; // coverGetFunc
-
-        /*
-         * do
-         */
         this.workerFetch.postMessage({
             cmd: "start", 
-            data: this.videoURL, 
+            url: this.videoURL,
+            type: this.mediaExtProtocol, // def.URI_PROTOCOL_HTTP_DESC, 
             msg: "start"
         }); // this.workerFetch.postMessage
-        // naluGetFunc();
-        coverGetFunc();
-
-        // let frameDur = 1.0 / this.configFormat.extInfo.rawFps;
-        // let timestampNow = 0.0;
-        // // let debugcount = 1000; // @debug
-        // // let candebug = false;
-        // this.timerFeed = window.setInterval(() => {
-        //     let nalBuf = this.rawParserObj.nextNalu(); // nal
-        //     if (nalBuf != false) {
-        //         /*
-        //             nalBuf = frame.data;
-        //             pts = frame.pts;
-        //          */
-        //         let frame = {
-        //             data : nalBuf,
-        //             pts : timestampNow
-        //         }
-        //         timestampNow += frameDur;
-        //         this.player.appendHevcFrame(frame);
-        //         console.log("==> append frame", frame);
-
-        //         // if (candebug) { // @debug
-        //         //     console.log("=========== debugcount", debugcount);
-        //         //     debugcount -= 1;
-        //         //     if (debugcount < 0) {
-        //         //         window.clearInterval(this.timerFeed);
-        //         //         this.timerFeed = null;
-        //         //         console.log("=============== over ================");
-        //         //         return;
-        //         //     }
-        //         // }
-
-        //         // 首帧显示渲染
-        //         if (this.configFormat.extInfo.readyShow) {
-        //             // candebug = true;
-        //             console.log("============== readyShow");
-        //             if (this.player.cacheYuvBuf.getState() != CACHE_APPEND_STATUS_CODE.NULL) {
-        //                 this.player.playFrameYUV(true, true);
-        //                 this.configFormat.extInfo.readyShow = false;
-        //             }
-        //         }
-        //     }
-        // }, 1);
+        // _raw265Entry_naluGetFunc();
+        _raw265Entry_coverGetFunc();
     } // raw265Entry
 
     // append raw 265 nalu frame
@@ -2993,7 +3098,7 @@ class H265webjsModule {
         }
 
         this.rawModePts += 1.0 / this.configFormat.extInfo.rawFps;
-    }
+    } // append265NaluFrame
 
     /**
      * append 265 raw

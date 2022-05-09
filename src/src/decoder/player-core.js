@@ -377,7 +377,7 @@ module.exports = config => {
             let getPktObj = player.getNalu1Packet(false);
             // console.warn("getPktObj", getPktObj);
             if (getPktObj == null) {
-                // console.error("cacheThread ----> noNALU Packet");
+                console.log("cacheThread ----> noNALU Packet");
                 return;
             }
 
