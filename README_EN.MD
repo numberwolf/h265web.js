@@ -35,8 +35,11 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-av1.png" width="100"> | <img src="resource/icon-mov-h265.png" width="100">|
 | MPEG-TS(VOD) | MPEG-PS(VOD) | AV1(Chrome) | MOV(H.265) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
-| HTTP-HEVC | MKV(HEVC) | G711A | HDR10(BT2020) |
+| <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
+| HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-todo.png" width="100"> |
+| G711A |
 
 </font>
 </strong>
@@ -76,7 +79,7 @@ Notice：
 
 ## Index
 
-- [Update Log](#upldatelog)
+- [Update Log](#updatelog)
 
 - [0、README](#0readme)
 
@@ -186,6 +189,9 @@ Notice：
 | flv | Video on demand |  Y  | ---- |
 | http-flv | Live |  Y  | CodecID=12 |
 | http-ts | Live |  Y  | ---- |
+| http-hevc | Live |  Y  | ---- |
+| http-hevc | Video on demand |  Y  | ---- |
+| websocket-hevc | Live |  Y  | ---- |
 | websocket-flv | Live |  Y  | ---- |
 | websocket-ts | Live |  Y  | ---- |
 | HEVC/H.265 | Video on demand |  Y  | ---- |
@@ -458,68 +464,25 @@ let config = {
 		* 3. NOTICE! If you want to create `raw265` stream player
 			(Do not need execute with this step when you play 265 vod stream)
 
-			* `raw265` type，feed byte data
-
-			Function
-
-			|  Function | Return | Desc | 
-			|  ----  | ----  | ---- |
-			| append265NaluFrame  | NULL | Feed H.265 nalu-frame (bytes) |
-
-			Params
-
-			| Param | Type | Default | Require | Desc | 
-			|  ----  | ----  | ---- | ---- | ---- |
-			| frame  | Uint8Array | - | Y | Bytes |
-
-			Example - I get a hevc file by network, and get bytes data to player.
+			* Add `raw265` type, and set `rawFps` for player's fps
 
 			```javascript
-			//
-		    // fetch 265
-		    // you can use your code to fetch vod stream
-		    // only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
-		    //
-		    let rawParser = new RawParserModule();
-
-		    let fetchFinished = false;
-		    let startFetch = false;
-		    let networkInterval = window.setInterval(() => {
-		        if (!startFetch) {
-		            startFetch = true;
-		            fetch(url265).then(function(response) {
-		                let pump = function(reader) {
-		                    return reader.read().then(function(result) {
-		                        if (result.done) {
-		                            // console.log("========== RESULT DONE ===========");
-		                            fetchFinished = true;
-		                            window.clearInterval(networkInterval);
-		                            networkInterval = null;
-		                            return;
-		                        }
-		                        let chunk = result.value;
-		                        rawParser.appendStreamRet(chunk);
-		                        return pump(reader);
-		                    });
-		                }
-		                return pump(response.body.getReader());
-		            })
-		            .catch(function(error) {
-		                console.log(error);
-		            });
-		        }
-		    }, 1);
-
-		    // fps>=30 play else cache
-		    let naluParseInterval = window.setInterval(() => {
-		        if (nalBuf != false) {
-		            // require
-		            h265webjs.append265NaluFrame(nalBuf);
-		        } else if (fetchFinished) {
-		            window.clearInterval(naluParseInterval);
-		            naluParseInterval = null;
-		        }
-		    }, 1);
+			config = {
+                type: 'raw265',
+                player: "glplayer",
+                width: 960,
+                height: 540,
+                // accurateSeek : true,
+                token : token,
+                extInfo : {
+                    rawFps: 24,
+                    moovStartFlag : true,
+                    coreProbePart : 0.1,
+                    ignoreAudio : 0,
+                    probeSize : 8192,
+                    autoPlay : true,
+                }
+            };
 			```
 	
 
@@ -963,10 +926,12 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 <br>
 
-# UpldateLog #
+# UpdateLog #
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/05/09 |
+| - | 0.Suport play with Websocket 265 raw stream |
 | Time | 2022/05/07 |
 | - | 0.Fixed:MP4(VOD) retry error |
 | - | 1.Support:HEVC raw stream(VOD), create with url |

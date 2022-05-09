@@ -905,7 +905,7 @@ class CWsLiveCoreModule { // export default
                             // if(typeof wsevent.data === String) {
                             //     console.log("Received data string");
                             // }
-                            if(wsevent.data instanceof ArrayBuffer){
+                            if(wsevent.data instanceof ArrayBuffer) {
                                 var buffer = wsevent.data;
                                 console.log("Received arraybuffer", buffer);
 

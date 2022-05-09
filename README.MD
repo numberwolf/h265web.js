@@ -34,8 +34,11 @@
 | <img src="resource/icon-ts.png" width="100"> | <img src="resource/icon-mpegps.png" width="100"> | <img src="resource/icon-av1.png" width="100"> | <img src="resource/icon-mov-h265.png" width="100">|
 | MPEG-TS(VOD) | MPEG-PS(VOD) | AV1(Chrome) | MOV(H.265) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-todo.png" width="100"> | <img src="resource/icon-todo.png" width="100"><br> |
-| HTTP-HEVC | MKV(HEVC) | G711A | HDR10(BT2020) |
+| <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
+| HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-todo.png" width="100"> |
+| G711A |
 
 </font>
 </strong>
@@ -187,6 +190,9 @@
 | flv | 点播 |  是  | --- |
 | http-flv | 直播 |  是  | CodecID=12 |
 | http-ts | 直播 |  是  | ---- |
+| http-hevc | 直播 |  是  | ---- |
+| http-hevc | 点播 |  是  | ---- |
+| websocket-hevc | 直播 |  是  | ---- |
 | websocket-flv | 直播 |  是  | ---- |
 | websocket-ts | 直播 |  是  | ---- |
 | HEVC/H.265 | 点播 |  是  | ---- |
@@ -458,72 +464,25 @@ var config = {
 
 		* 3. 如果创建的是`raw265`类型的Websocket等直播裸流数据播放 请注意
 			(普通265点播流直接填写url播放就可以，不需要走如下流程)
-			> 这部分fetch请求网络数据以及异步喂数据的过程 请自行改写,下面给出的仅仅是一个demo,网络IO和解析265流为帧数据会非常耗时。
-			>   
-			> 如果你可以通过websocket直接一帧一帧传输的话，那么只需要调用喂265数据的函数即可。
-
-			* `raw265`类型下，喂一帧一帧H.265播放
-
-			调用函数
-
-			|  函数 | 返回 | 说明 | 
-			|  ----  | ----  | ---- |
-			| append265NaluFrame  | NULL | 喂一帧265数据 |
-
-			参数
-
-			| 参数 | 类型 | 默认值 | 必填 | 说明 | 
-			|  ----  | ----  | ---- | ---- | ---- |
-			| frame  | Uint8Array | - | 是 | 一帧265数据 |
-
-			例子 - 这里直接将265文件通过网络串流传输
+			* 请填写`raw265`类型, 添加`rawFps`选项设置播放帧率
 
 			```javascript
-			//
-		    // fetch 265
-		    // you can use your code to fetch vod stream
-		    // only need `h265webjs.append265NaluFrame(nalBuf);` to append 265 frame
-		    //
-		    let rawParser = new RawParserModule();
-
-		    let fetchFinished = false;
-		    let startFetch = false;
-		    let networkInterval = window.setInterval(() => {
-		        if (!startFetch) {
-		            startFetch = true;
-		            fetch(url265).then(function(response) {
-		                let pump = function(reader) {
-		                    return reader.read().then(function(result) {
-		                        if (result.done) {
-		                            // console.log("========== RESULT DONE ===========");
-		                            fetchFinished = true;
-		                            window.clearInterval(networkInterval);
-		                            networkInterval = null;
-		                            return;
-		                        }
-		                        let chunk = result.value;
-		                        rawParser.appendStreamRet(chunk);
-		                        return pump(reader);
-		                    });
-		                }
-		                return pump(response.body.getReader());
-		            })
-		            .catch(function(error) {
-		                console.log(error);
-		            });
-		        }
-		    }, 1);
-
-		    // fps>=30 play else cache
-		    let naluParseInterval = window.setInterval(() => {
-		        if (nalBuf != false) {
-		            // require
-		            h265webjs.append265NaluFrame(nalBuf);
-		        } else if (fetchFinished) {
-		            window.clearInterval(naluParseInterval);
-		            naluParseInterval = null;
-		        }
-		    }, 1);
+			config = {
+                type: 'raw265',
+                player: "glplayer",
+                width: 960,
+                height: 540,
+                // accurateSeek : true,
+                token : token,
+                extInfo : {
+                    rawFps: 24,
+                    moovStartFlag : true,
+                    coreProbePart : 0.1,
+                    ignoreAudio : 0,
+                    probeSize : 8192,
+                    autoPlay : true,
+                }
+            };
 			```
 
 <br>
@@ -982,6 +941,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | 更新日志 | 内容 |
 | ---- | ---- |
+| 时间 | 2022/05/09 |
+| - | 0.支持 Websocket 265流播放 |
 | 时间 | 2022/05/07 |
 | - | 0.点播内核错误优化 |
 | - | 1.265裸流点播流程优化，只需要填写url和rawFps即可播放 |
