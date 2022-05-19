@@ -935,8 +935,9 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 | ---- | ---- |
 | Time | 2022/05/18 |
 | - | 0.Support multi-thread decode |
-| - | 1.Performance optimizing |
-| - | 2.This version is for Beta |
+| - | 1.Support mp4's cache length config |
+| - | 2.Performance optimizing |
+| - | 3.This version is for Beta |
 | Time | 2022/05/09 |
 | - | 0.Suport play with Websocket 265 raw stream |
 | Time | 2022/05/07 |
