@@ -38,8 +38,8 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-todo.png" width="100"> |
-| G711A |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-todo.png" width="100"> |
+| Multi-Thread | G711A |
 
 </font>
 </strong>
@@ -48,14 +48,15 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 
 * Github: https://github.com/numberwolf/h265web.js
 * Email: porschegt23@foxmail.com
-* <strong><font color="red">QQ: 531365872</font></strong>
+* <strong><font color="red">QQ Group Number: 925466059(recommand)</font></strong>
+* <strong>QQ: 531365872</strong>
 * Discord:numberwolf#8694
 * Wechat:numberwolf11
 
 #### Online DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (Demo is not newest version, you need to download from github and get newest version)
 </a>
 
-#### Simple Demo - for first use <a href="index-debug.html">index-debug.html</a>
+#### First Demo - for first use <a href="index-debug.html">index-debug.html</a>
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -225,6 +226,7 @@ Notice：
 | Play frame by frame | Y |  ----  |
 | Snapshot | Y |  ----  |
 | Autoplay | Y |  HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264  |
+| Cache Length | Y | MP4 265 |
 
 <br>
 
@@ -354,6 +356,7 @@ let config = {
 | \+ ignoreAudio | Int | - | N:Default is 0 | 0:Play with audio <br>1:Without audio |
 | \+ probeSize | Int | - | N:4096 | HTTP-FLV(LIVE) Mode's probe size, default is 4096 |
 | \+ autoPlay | Bool | true/false | N:false | Open autoplay <br>HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264 |
+| \+ cacheLength | Int | [5, ∞+] | N:Default is 50 frames | Set cache frame count by manual <br>MP4 265 |
 
 
 <br>
@@ -930,6 +933,11 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/05/18 |
+| - | 0.Support multi-thread decode |
+| - | 1.Support mp4's cache length config |
+| - | 2.Performance optimizing |
+| - | 3.This version is for Beta |
 | Time | 2022/05/09 |
 | - | 0.Suport play with Websocket 265 raw stream |
 | Time | 2022/05/07 |

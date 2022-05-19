@@ -45,14 +45,18 @@ const AU_FMT_READ 	= 10;
 
 const READ_EOF_CODE	= -404;
 
+const VIDEO_CACHE_MIN_LEN = 5;
 const VIDEO_CACHE_LEN = 50;
 const AUDIO_CACHE_LEN = 200;
 
-const VIDEO_CACHE_WARN_COUNT = 15;
-const AUDIO_CACHE_WARN_COUNT = 50;
+// const VIDEO_CACHE_WARN_COUNT = 15;
+// const AUDIO_CACHE_WARN_COUNT = 50;
 
 const CHECK_AU_SAMP_LEN_C_DUR_MS = 1000;
 const CHECK_AU_SAMP_RETRY_MAX = 5;
+
+const V_CACHE_INTERVAL_WAIT_LOOP_MS = 100;
+const V_CACHE_INTERVAL_PUSH_LOOP_MS = 10;
 
 /*
  * Equal Native
@@ -113,7 +117,9 @@ class CNativeCoreModule {
             playMode: config.playMode || def.PLAYER_MODE_VOD,
             autoPlay: config.autoPlay || false,
             defaultFps: config.defaultFps || -1,
+            cacheLength: config.cacheLength || VIDEO_CACHE_LEN
         };
+        this.config.cacheLength = Math.max(this.config.cacheLength, VIDEO_CACHE_MIN_LEN);
         // console.log("CNativeCoreModule config ==> ", this.config);
         this.probeSize = PROBE_SIZE;
         // this.audioPlayer = null; // pcm audio player
@@ -134,6 +140,9 @@ class CNativeCoreModule {
         this.bufLastVDTS	= 0.0;
         this.bufLastADTS	= 0.0;
         this.yuvMaxTime		= 0.0;
+        this.loopMs         = V_CACHE_INTERVAL_PUSH_LOOP_MS;
+
+        this.isCacheV       = def.CACHE_NO_LOADCACHE;
 
         /*	
          * 	BufferFrameStruct
@@ -150,6 +159,8 @@ class CNativeCoreModule {
          * Queue YUVFrame
          */
         this._videoQueue = [];
+
+        this._VIDEO_CACHE_LEN = this.config.cacheLength;
 
         /*
          * func ptr
@@ -362,6 +373,8 @@ class CNativeCoreModule {
     	this.playVPipe.length = 0;
     	// this.playAPipe.length = 0;
 
+        this.loopMs = V_CACHE_INTERVAL_PUSH_LOOP_MS;
+
         if (this.yuv !== undefined && this.yuv !== null) {
             RenderEngine420P.releaseContext(this.yuv);
             this.yuv = null;
@@ -472,167 +485,233 @@ class CNativeCoreModule {
      * @brief Start play
      */
     play() {
+        let _this = this;
         console.warn("play=========>");
+        if (this.isCacheV === def.CACHE_WITH_NOPLAY_SIGN) {
+            this.isCacheV = def.CACHE_WITH_PLAY_SIGN;
+        }
+        this.isPlaying = true;
         if (!this.playFrameInterval 
         	|| null === this.playFrameInterval 
         	|| undefined == this.playFrameInterval) {
 
-        	if (this._videoQueue.length > 0) {
-        		this.isPlaying = true;
-        	}
+        	// if (this._videoQueue.length > 0) {
+        	// 	this.isPlaying = true;
+        	// }
 
         	let calcuteStartTime 	= 0;
         	let nowTimestamp 		= 0;
         	let playFrameCostTime 	= 0;
 
+            const playDiffLimit = this.frameTime * 1;
+
             if (this.config.playMode === def.PLAYER_MODE_NOTIME_LIVE) {
                 console.warn("LIVE start play =========>");
             	this.playFrameInterval = window.setInterval(() => {
-                    if (this._videoQueue.length > 0) {
-                		let videoFrame = this._videoQueue.shift();
-                		console.warn("LIVE ==> shift videoFrame.pts play", videoFrame.pts);
-                		RenderEngine420P.renderFrame(
-        		            this.yuv,
-        		            videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
-        		            videoFrame.line1, videoFrame.height);
+                    nowTimestamp = AVCommon.GetMsTime();
+                    if (_this._videoQueue.length > 0) {
+
+                        if (nowTimestamp - calcuteStartTime >= _this.frameTime - playFrameCostTime) 
+                        {
+                    		let videoFrame = _this._videoQueue.shift();
+                    		console.warn("LIVE ==> shift videoFrame.pts play", videoFrame.pts);
+                    		RenderEngine420P.renderFrame(
+            		            _this.yuv,
+            		            videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+            		            videoFrame.line1, videoFrame.height);
+
+                            /*
+                             * Cost Time
+                             */
+                            playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp;
+
+                            if (playFrameCostTime >= _this.frameTime) {
+                                playFrameCostTime = _this.frameTime;
+                            }
+
+                            calcuteStartTime = nowTimestamp;
+                        } else {
+                            console.warn("shift videoFrame.pts 等待");
+                        }
                     }
-            	}, this.frameDur * 1000);
+            	}, 2);
                 // }, 1000);
             } else {
 
-    			this.playFrameInterval = window.setInterval(() => {
-                    // console.warn("playFrameInterval", 
-                    //     nowTimestamp, calcuteStartTime, 
-                    //     ">=", 
-                    //     this.frameTime, playFrameCostTime);
-    				nowTimestamp = AVCommon.GetMsTime();
-    				if (this._videoQueue.length > 0) {
+                // if (this.audioWAudio === undefined || this.audioWAudio === null) 
+                // {
+                //     this.playFrameInterval = window.setInterval(() => {
+                //         nowTimestamp = AVCommon.GetMsTime();
+                //         if (_this._videoQueue.length > 0) {
 
-    					/*
-    					 * Calcute time
-    					 */
-    					if (nowTimestamp - calcuteStartTime >= this.frameTime - playFrameCostTime) { // play
-                            // console.warn("playFrameInterval handle frame");
-    						// if (this.playVPipe.length > 0) { // debug
-    						// 	console.log("==> shift videoFrame.pts playVPipe length", 
-    						// 		this.playVPipe.length, 
-    						// 		this.playVPipe[this.playVPipe.length - 1].pts, 
-    						// 		this.bufObject.videoBuffer.length);
-    						// }
-    						let videoFrame = this._videoQueue.shift();
-    						// let videoFrame = this._videoQueue[this.playIdx++];
+                //             if (nowTimestamp - calcuteStartTime >= _this.frameTime - playFrameCostTime) 
+                //             {
+                //                 let videoFrame = _this._videoQueue.shift();
+                //                 console.warn("LIVE ==> shift videoFrame.pts play", videoFrame.pts);
+                //                 RenderEngine420P.renderFrame(
+                //                     _this.yuv,
+                //                     videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+                //                     videoFrame.line1, videoFrame.height);
 
-    						let diff = 0;
-    						if (!this.isNewSeek 
-    							&& this.audioWAudio !== null 
-    							&& this.audioWAudio !== undefined) {
-    							diff = (videoFrame.pts - this.audioWAudio.getAlignVPTS()) * 1000;
-    							// console.warn(
-    							// 	"vpts: ", videoFrame.pts,
-    							// 	",apts: ", this.audioWAudio.getAlignVPTS(),
-    							// 	",diff:", diff);
+                //                 /*
+                //                  * Event Call
+                //                  */
+                //                 _this.onPlayingTime && _this.onPlayingTime(videoFrame.pts);
+                //                 /*
+                //                  * Cost Time
+                //                  */
+                //                 playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp;
 
-    							this.playPTS = Math.max(this.audioWAudio.getAlignVPTS(), this.playPTS);
-    						}
-    						calcuteStartTime = nowTimestamp;
-                            console.log("after set calcuteStartTime", calcuteStartTime);
+                //                 if (playFrameCostTime >= _this.frameTime) {
+                //                     playFrameCostTime = _this.frameTime;
+                //                 }
 
-    						let startR = AVCommon.GetMsTime();
-    						// console.warn("shift videoFrame.pts", 
-    						// 	videoFrame.pts, this.seekTarget, this.isNewSeek);
-    						this.playPTS = Math.max(videoFrame.pts, this.playPTS);
+                //                 calcuteStartTime = nowTimestamp;
+                //             } else {
+                //                 console.warn("shift videoFrame.pts 等待");
+                //             }
+                //         }
+                //     }, 2);
+                // } else {
+                    // let checkIdx = 0;
+        			this.playFrameInterval = window.setInterval(() => {
+                        // console.warn("playFrameInterval", 
+                        //     nowTimestamp, calcuteStartTime, 
+                        //     ">=", 
+                        //     this.frameTime, playFrameCostTime);
+        				nowTimestamp = AVCommon.GetMsTime();
+        				if (this._videoQueue.length > 0) {
 
-    						if (this.isNewSeek 
-    							&& this.seekTarget - this.frameDur > videoFrame.pts) {
-    							playFrameCostTime = this.frameTime; // 快进呀
-    							return;
-    						} else { // render
-    							if (this.isNewSeek) {
-                                    // alert("after seek, play"
-                                    //     + ", target:" + this.seekTarget
-                                    //     + ", playVPipe pts:" + this.playVPipe[0].pts
-                                    //     + ", vpts:" + videoFrame.pts
-                                    //     + ", apts:" + this.audioWAudio.getAlignVPTS());
-    								this.audioWAudio && this.audioWAudio.setVoice(this.audioVoice);
-    								this.audioWAudio && this.audioWAudio.play();
-    								playFrameCostTime = 0;
-    								// calcuteStartTime = 0;
-    								this.isNewSeek = false;
-    								this.seekTarget = 0;
+        					/*
+        					 * Calcute time
+        					 */
+        					if (nowTimestamp - calcuteStartTime >= this.frameTime - playFrameCostTime) { // play
+                                // console.warn("playFrameInterval handle frame");
+        						// if (this.playVPipe.length > 0) { // debug
+        						// 	console.log("==> shift videoFrame.pts playVPipe length", 
+        						// 		this.playVPipe.length, 
+        						// 		this.playVPipe[this.playVPipe.length - 1].pts, 
+        						// 		this.bufObject.videoBuffer.length);
+        						// }
+        						let videoFrame = this._videoQueue.shift();
+                                // if (this._videoQueue.length > 0) {
+                                //     videoFrame = this._videoQueue.shift();
+                                // }
+                                // if (this._videoQueue.length > 0) {
+                                //     videoFrame = this._videoQueue.shift();
+                                // }
+        						// let videoFrame = this._videoQueue[this.playIdx++];
 
-    							}
+        						let diff = 0;
+        						if (!this.isNewSeek 
+        							&& this.audioWAudio !== null 
+        							&& this.audioWAudio !== undefined) {
+        							diff = (videoFrame.pts - this.audioWAudio.getAlignVPTS()) * 1000;
+        							// console.warn(
+        							// 	"vpts: ", videoFrame.pts,
+        							// 	",apts: ", this.audioWAudio.getAlignVPTS(),
+        							// 	",diff:", diff);
 
-    							// console.warn("TO RENDER videoFrame.pts", videoFrame.pts);
+        							this.playPTS = Math.max(this.audioWAudio.getAlignVPTS(), this.playPTS);
+        						}
+        						calcuteStartTime = nowTimestamp;
+                                // console.log("after set calcuteStartTime", calcuteStartTime);
 
-    							if (this.showScreen) { // on render
-    								// Render callback
-    								this.onRender		&& this.onRender(
-    									videoFrame.line1, videoFrame.height, 
-    									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v);
-    							}
-                                console.warn("RenderEngine420P.renderFrame videoFrame.pts", videoFrame.pts);
-								RenderEngine420P.renderFrame(
-									this.yuv,
-									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
-									videoFrame.line1, videoFrame.height);
+        						// let startR = AVCommon.GetMsTime();
+        						// console.warn("shift videoFrame.pts", 
+        						// 	videoFrame.pts, this.seekTarget, this.isNewSeek);
+        						this.playPTS = Math.max(videoFrame.pts, this.playPTS);
 
-    							/*
-    							 * Event Call
-    							 */
-    							this.onPlayingTime 	&& this.onPlayingTime(videoFrame.pts);
-    						}
-
-    						// 正常播放
-    						// Video慢于Audio时候: 小于1帧
-    						// Video快于Audio:
-    						if (!this.isNewSeek && this.audioWAudio && (
-    							(diff < 0 && diff * (-1) <= this.frameTime) 
-    							|| diff >= 0
-    							)
-    						) {
-    							// Check Finished
-    							// console.log("pts: ", videoFrame.pts, " duration:", this.duration);
-                                if (this.config.playMode === def.PLAYER_MODE_VOD) {
-        							if (videoFrame.pts >= this.duration) { // play finish 1
-        								this.onLoadCacheFinshed && this.onLoadCacheFinshed();
-        								this.onPlayingFinish && this.onPlayingFinish();
-        								this._clearDecInterval();
-        								this.pause();
-        							} else {
-        								if (this._checkPlayFinished()) { // play finish 2
-        									return;
-        								}
+        						if (this.isNewSeek 
+        							&& this.seekTarget - this.frameDur > videoFrame.pts) {
+        							playFrameCostTime = this.frameTime; // 快进呀
+        							return;
+        						} else { // render
+        							if (this.isNewSeek) {
+                                        // alert("after seek, play"
+                                        //     + ", target:" + this.seekTarget
+                                        //     + ", playVPipe pts:" + this.playVPipe[0].pts
+                                        //     + ", vpts:" + videoFrame.pts
+                                        //     + ", apts:" + this.audioWAudio.getAlignVPTS());
+        								this.audioWAudio && this.audioWAudio.setVoice(this.audioVoice);
+        								this.audioWAudio && this.audioWAudio.play();
+        								playFrameCostTime = 0;
+        								// calcuteStartTime = 0;
+        								this.isNewSeek = false;
+        								this.seekTarget = 0;
         							}
-                                }
-    							/*
-    							 * Cost Time
-    							 */
-    							playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp;
-    							// console.log("shift videoFrame.pts 常规", playFrameCostTime);
-    						} else if (!this.isNewSeek && this.audioWAudio) {
-    							if (diff < 0 && diff * (-1) > this.frameTime) {
-    								// Video特别慢于Audio: > 1帧
-    								playFrameCostTime = this.frameTime; // 快进呀
-    								// console.log("shift videoFrame.pts 快进", this.frameTime);
-    							} else { // @TODO
-    								playFrameCostTime = this.frameTime;
-    								// console.log("shift videoFrame.pts 快进2", this.frameTime);
-    							}
-    						}
 
-    					} else {
-    						console.warn("shift videoFrame.pts 等待");
-    					} // end if check play timestamp
-    				} else {
-                        console.warn("playFrameInterval this._videoQueue.length < 0");
-                    } // end if videoQueue > 0
+        							// console.warn("TO RENDER videoFrame.pts", videoFrame.pts);
 
-    				if (this._checkPlayFinished()) { // play finish 2
-                        // console.warn("native-core FINISHED!");
-    					return;
-    				}
+        							if (this.showScreen) { // on render
+        								// Render callback
+        								this.onRender		&& this.onRender(
+        									videoFrame.line1, videoFrame.height, 
+        									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v);
+        							}
+                                    // console.warn("RenderEngine420P.renderFrame videoFrame.pts", videoFrame.pts);
+    								RenderEngine420P.renderFrame(
+    									this.yuv,
+    									videoFrame.data_y, videoFrame.data_u, videoFrame.data_v,
+    									videoFrame.line1, videoFrame.height);
 
-    			}, 1); // end playFrameInterval
+        							/*
+        							 * Event Call
+        							 */
+        							this.onPlayingTime 	&& this.onPlayingTime(videoFrame.pts);
+        						}
+
+        						// 正常播放
+        						// Video慢于Audio时候: 小于1帧
+        						// Video快于Audio:
+        						if (!this.isNewSeek && this.audioWAudio && (
+        							(diff < 0 && diff * (-1) <= playDiffLimit) 
+        							|| diff >= 0
+        							)
+        						) {
+        							// Check Finished
+        							// console.log("pts: ", videoFrame.pts, " duration:", this.duration);
+                                    if (this.config.playMode === def.PLAYER_MODE_VOD) {
+            							if (videoFrame.pts >= this.duration) { // play finish 1
+            								this.onLoadCacheFinshed && this.onLoadCacheFinshed();
+            								this.onPlayingFinish && this.onPlayingFinish();
+            								this._clearDecInterval();
+            								this.pause();
+            							} else {
+            								if (this._checkPlayFinished()) { // play finish 2
+            									return;
+            								}
+            							}
+                                    }
+        							/*
+        							 * Cost Time
+        							 */
+        							playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp;
+        							// console.log("shift videoFrame.pts 常规", playFrameCostTime);
+        						} else if (!this.isNewSeek && this.audioWAudio) {
+        							if (diff < 0 && diff * (-1) > playDiffLimit) {
+        								// Video特别慢于Audio: > 1帧
+        								playFrameCostTime = this.frameTime; // 快进呀
+        								// console.log("shift videoFrame.pts 快进", this.frameTime);
+        							} else { // @TODO
+        								playFrameCostTime = this.frameTime;
+        								// console.log("shift videoFrame.pts 快进2", this.frameTime);
+        							}
+        						}
+
+        					} else {
+        						// console.warn("shift videoFrame.pts 等待");
+        					} // end if check play timestamp
+        				} else {
+                            // console.warn("playFrameInterval this._videoQueue.length < 0");
+                        } // end if videoQueue > 0
+
+        				if (this._checkPlayFinished()) { // play finish 2
+                            // console.warn("native-core FINISHED!");
+        					return;
+        				}
+        			}, 1); // end playFrameInterval
+                // }
             } // end check playMode
 	    } // end if !this.playFrameInterval
 
@@ -647,6 +726,9 @@ class CNativeCoreModule {
     pause() {
     	this.isPlaying = false;
     	this._pause();
+        if (this.isCacheV === def.CACHE_WITH_PLAY_SIGN) {
+            this.isCacheV = def.CACHE_WITH_NOPLAY_SIGN;
+        }
     }
 
     _pause() {
@@ -710,7 +792,7 @@ class CNativeCoreModule {
     }
 
     cacheIsFull() {
-        return this._videoQueue.length >= VIDEO_CACHE_LEN;
+        return this._videoQueue.length >= this._VIDEO_CACHE_LEN;
     }
 
     _checkDisplaySize(realW, widthIn, heightIn) {
@@ -817,24 +899,36 @@ class CNativeCoreModule {
         	let diff = this.duration - this.getMaxPTS();
         	if (diff < this.frameDur) {
         		console.log("break avRecv!");
-        		this.bufRecvStat = true;
-        		if (this.avRecvInterval !== null) {
-    				window.clearInterval(this.avRecvInterval);
-    				this.avRecvInterval = null;
-                    this.bufOK = true;
-    			}
+                // this.bufRecvStat = true;
+                // if (this.avRecvInterval !== null) {
+                //     window.clearInterval(this.avRecvInterval);
+                //     this.avRecvInterval = null;
+                //     this.bufOK = true;
+                // }
+                this._avSetRecvFinished();
         	}
         }
     }
 
+    _avSetRecvFinished() {
+        console.log("break avRecv!");
+        this.bufRecvStat = true;
+        if (this.avRecvInterval !== null) {
+            window.clearInterval(this.avRecvInterval);
+            this.avRecvInterval = null;
+        }
+        this.bufOK = true;
+    }
+
     _afterAvFeedSeekToStartWithFinishedBuffer(pts) {
+        let _this = this;
         let afterAvFeedSeekToStartInterval = window.setInterval(() => {
-            console.log("afterAvFeedSeekToStartInterval length:", this._videoQueue.length);
+            // console.log("afterAvFeedSeekToStartInterval length:", _this._videoQueue.length);
             // @TODO 最后seek位置剩余帧数不足 VIDEO_CACHE_LEN怎么办
-            if (this._videoQueue.length >= VIDEO_CACHE_LEN) {
-                this.onSeekFinish && this.onSeekFinish();
-                this.onPlayingTime && this.onPlayingTime(pts);
-                this.play();
+            if (_this._videoQueue.length >= _this._VIDEO_CACHE_LEN) {
+                _this.onSeekFinish && _this.onSeekFinish();
+                _this.onPlayingTime && _this.onPlayingTime(pts);
+                _this.play();
                 window.clearInterval(afterAvFeedSeekToStartInterval);
                 afterAvFeedSeekToStartInterval = null;
             }
@@ -843,16 +937,17 @@ class CNativeCoreModule {
     } // _afterAvFeedSeekToStartWithFinishedBuffer
 
     _afterAvFeedSeekToStartWithUnFinBuffer(pts) {
+        let _this = this;
     	let afterAvFeedSeekToStartInterval = window.setInterval(() => {
             console.log("afterAvFeedSeekToStartInterval length:", this._videoQueue.length);
     		// @TODO 最后seek位置剩余帧数不足 VIDEO_CACHE_LEN怎么办
-    		if (this._videoQueue.length >= VIDEO_CACHE_LEN) {
-				this.onSeekFinish && this.onSeekFinish();
-                this.onPlayingTime && this.onPlayingTime(pts);
-                if (this.reFull === false) {
-    				this.play();
+    		if (_this._videoQueue.length >= _this._VIDEO_CACHE_LEN) {
+				_this.onSeekFinish && _this.onSeekFinish();
+                _this.onPlayingTime && _this.onPlayingTime(pts);
+                if (_this.reFull === false) {
+    				_this.play();
                 } else {
-                    this.reFull = false;
+                    _this.reFull = false;
                 }
 				window.clearInterval(afterAvFeedSeekToStartInterval);
 				afterAvFeedSeekToStartInterval = null;
@@ -1329,24 +1424,28 @@ class CNativeCoreModule {
     }
 
     // @TODO
-    _aacFrameCallback(adts, buffer, line1, channel, pts) {
+    // _aacFrameCallback(adts, buffer, line1, channel, pts) {
+    _aacFrameCallback(aacFrame, line1, channel, pts) {
     	let ptsFixed = this._ptsFixed2(pts);
     	if (this.audioWAudio) {
-	    	let pcmFrame = new Uint8Array(7 + line1);
+            let pcmFrameABuf = Module.HEAPU8.subarray(aacFrame, aacFrame + line1);
+            let pcmFrame = new Uint8Array(pcmFrameABuf);
 
-	    	let adts_buf = Module.HEAPU8.subarray(adts, adts + 7);
-	    	pcmFrame.set(adts_buf, 0);
-	    	// let adts_out = new Uint8Array(adts_buf);
+	    	// let pcmFrame = new Uint8Array(7 + line1);
 
-	    	let aac_buf = Module.HEAPU8.subarray(buffer, buffer + line1);
-	    	pcmFrame.set(aac_buf, 7);
+	    	// let adts_buf = Module.HEAPU8.subarray(adts, adts + 7);
+	    	// pcmFrame.set(adts_buf, 0);
+	    	// // let adts_out = new Uint8Array(adts_buf);
+
+	    	// let aac_buf = Module.HEAPU8.subarray(buffer, buffer + line1);
+	    	// pcmFrame.set(aac_buf, 7);
 
 	    	this.bufObject.appendFrame(ptsFixed, pcmFrame, false, true);
         	this.bufLastADTS = Math.max(ptsFixed, this.bufLastADTS);
 
 	    	// let aac_buf_out = new Uint8Array(aac_buf);
 
-	    	// console.log("_aacFrameCallback============>", pcmFrame, pts);
+	    	// console.log("_aacFrameCallback============>", adts_buf, pcmFrame, pts);
 	    	// let sampleObject = {
 	    	// 	data: pcmFrame, 
 	    	// 	pts: pts
@@ -1420,67 +1519,134 @@ class CNativeCoreModule {
     }
     */
 
+    _setLoadCache() {
+        let _this = this;
+        if (_this.avFeedVideoInterval === null && 
+            _this.avFeedAudioInterval === null && 
+            _this.playVPipe.length <= 0) 
+        {
+            return 1;
+        }
+        if (_this.isCacheV === def.CACHE_NO_LOADCACHE) {
+            const isPlay = _this.isPlaying;
+            _this.pause();
+            _this.onLoadCache && _this.onLoadCache();
+            if (isPlay) {
+                _this.isCacheV = def.CACHE_WITH_PLAY_SIGN;
+            } else {
+                _this.isCacheV = def.CACHE_WITH_NOPLAY_SIGN;
+            }
+        }
+        return 0;
+    }
+
+    _setLoadCacheFinished() {
+        let _this = this;
+        if (_this.isCacheV !== def.CACHE_NO_LOADCACHE) {
+            console.warn("_setLoadCacheFinished" + _this.isCacheV);
+            _this.onLoadCacheFinshed && _this.onLoadCacheFinshed();
+            if (_this.isCacheV === def.CACHE_WITH_PLAY_SIGN) {
+                _this.play();
+            }
+            _this.isCacheV = def.CACHE_NO_LOADCACHE;
+        }
+    }
+
+    _createDecVframeInterval(loopMs=V_CACHE_INTERVAL_PUSH_LOOP_MS) {
+        let _this = this;
+        if (this.decVFrameInterval !== null) {
+            window.clearInterval(this.decVFrameInterval);
+            this.decVFrameInterval = null;
+        }
+
+        let naluLListLength = 0;
+        this.loopMs = loopMs;
+        this.decVFrameInterval = window.setInterval(() => {
+            // console.log(
+            //     "decVFrameInterval _videoQueue, playVPipe", 
+            //     _this._videoQueue.length, _this.playVPipe.length);
+
+            // if (_this.worker1ready === false) {
+            //     console.log("decVFrameInterval worker1ready false");
+            //     return;
+            // }
+
+            if (_this._videoQueue.length < 1) {
+                _this._setLoadCache();
+            } else if (_this._videoQueue.length >= _this._VIDEO_CACHE_LEN) {
+                _this._setLoadCacheFinished();
+            } // end check onLoadCache
+
+            // _this._videoQueue.length < VIDEO_CACHE_LEN &&
+            if (_this._videoQueue.length < _this._VIDEO_CACHE_LEN && 
+                naluLListLength <= _this._VIDEO_CACHE_LEN) 
+            {
+                // SniffStreamContext *sniffStreamContext,
+                // uint8_t *buff, uint64_t len, long pts
+                if (_this.playVPipe.length > 0) //  && _this.worker1decing === false
+                {
+                    if (_this.loopMs === V_CACHE_INTERVAL_WAIT_LOOP_MS) 
+                    {
+                        _this._createDecVframeInterval(V_CACHE_INTERVAL_PUSH_LOOP_MS);
+                    }
+                    let frame = _this.playVPipe.shift(); // nal
+                    let nalBuf = frame.data;
+                    let offset = Module._malloc(nalBuf.length);
+                    Module.HEAP8.set(nalBuf, offset);
+                    let ptsMS = parseInt(frame.pts * 1000, 10);
+                    let dtsMS = parseInt(frame.dts * 1000, 10);
+
+                    _this.yuvMaxTime = Math.max(frame.pts, _this.yuvMaxTime);
+                    // console.warn("+++++decVFrameRet : ", ptsMS, dtsMS);
+
+                    let nalu_ret = Module.cwrap('decodeVideoFrame', 
+                        'number', 
+                        ['number', 'number', 'number', 'number', 'number'])(
+                        _this.corePtr, 
+                        offset, 
+                        nalBuf.length, 
+                        ptsMS,
+                        dtsMS,
+                        _this.frameCallTag);
+
+                    if (nalu_ret > 0) {
+                        naluLListLength = nalu_ret;
+                    }
+
+                    // @TEST
+                    // if (_this.worker1 !== undefined && _this.worker1 !== null) {
+                    //     _this.worker1.postMessage({
+                    //         cmd: "decodeVideoFrame",
+                    //         params: {
+                    //             nalBuf: new Uint8Array(nalBuf),
+                    //             ptsMS: ptsMS,
+                    //             dtsMS: dtsMS
+                    //         }
+                    //     });
+                    // } else {
+                    //     console.log("decVFrameInterval worker1 is null", _this.worker1);
+                    // }
+
+                    // console.log("---------- to decVFrameRet naluLListLength:", 
+                    //     naluLListLength, ptsMS, _this.frameCallTag);
+
+                    Module._free(offset);
+                    offset = null;
+                }
+            } else {
+                naluLListLength = Module.cwrap('naluLListLength', 
+                        'number', 
+                        ['number'])(_this.corePtr);
+                // _this._createDecVframeInterval(V_CACHE_INTERVAL_WAIT_LOOP_MS);
+                // _this._setLoadCacheFinished();
+            }
+        }, loopMs);
+    } // _createDecVframeInterval
+
     _decVFrameIntervalFunc() {
         let _this = this;
     	if (this.decVFrameInterval == null) {
-    		this.decVFrameInterval = window.setInterval(() => {
-    			console.log(
-                    "decVFrameInterval _videoQueue, playVPipe", 
-                    _this._videoQueue.length, _this.playVPipe.length);
-
-                // if (_this.worker1ready === false) {
-                //     console.log("decVFrameInterval worker1ready false");
-                //     return;
-                // }
-
-    			if (_this._videoQueue.length < VIDEO_CACHE_LEN) {
-    				// SniffStreamContext *sniffStreamContext,
-        			// uint8_t *buff, uint64_t len, long pts
-        			if (_this.playVPipe.length > 0) //  && _this.worker1decing === false
-                    {
-        				let frame = _this.playVPipe.shift(); // nal
-        				let nalBuf = frame.data;
-        				let offset = Module._malloc(nalBuf.length);
-        				Module.HEAP8.set(nalBuf, offset);
-        				let ptsMS = parseInt(frame.pts * 1000, 10);
-        				let dtsMS = parseInt(frame.dts * 1000, 10);
-
-        				_this.yuvMaxTime = Math.max(frame.pts, _this.yuvMaxTime);
-        				console.warn("+++++decVFrameRet : ", ptsMS, dtsMS);
-
-        				let decVFrameRet = Module.cwrap('decodeVideoFrame', 
-        					'number', 
-        					['number', 'number', 'number', 'number', 'number'])(
-        					this.corePtr, 
-        					offset, 
-        					nalBuf.length, 
-        					ptsMS,
-        					dtsMS,
-        					this.frameCallTag);
-
-                        // @TEST
-                        // if (_this.worker1 !== undefined && _this.worker1 !== null) {
-                        //     _this.worker1.postMessage({
-                        //         cmd: "decodeVideoFrame",
-                        //         params: {
-                        //             nalBuf: new Uint8Array(nalBuf),
-                        //             ptsMS: ptsMS,
-                        //             dtsMS: dtsMS
-                        //         }
-                        //     });
-                        // } else {
-                        //     console.log("decVFrameInterval worker1 is null", _this.worker1);
-                        // }
-
-        				console.log("---------- to decVFrameRet:", decVFrameRet, ptsMS, this.frameCallTag);
-
-        				Module._free(offset);
-        				offset = null;
-    				}
-    			} else {
-
-    			}
-    		}, 10);
+    		this._createDecVframeInterval(10);
     	}
     } // _decVFrameIntervalFunc
 
@@ -1493,14 +1659,20 @@ class CNativeCoreModule {
             "++++++++++++ LIVE _frameCallback successed pts===========",
             pts, this._videoQueue.length);
 
-    	if (this.openFrameCall === false 
-            || tag !== this.frameCallTag 
-            || pts > this.yuvMaxTime + this.frameDur) { 
+    	if (this.openFrameCall === false) {
+            console.warn("LIVE yuvMaxTime remove CALL YUV");
+            return -1;
+        }
+        if (tag !== this.frameCallTag) {
+            console.warn("LIVE yuvMaxTime remove CALL YUV");
+            return -2;
+        }
+        if (pts > this.yuvMaxTime + this.frameDur) { 
             // 预防seek之后又出现上次的回调尾巴
             // console.log("++++++++++++_frameCallback continue frame call===========", 
                 // pts, this._videoQueue.length);
             console.warn("LIVE yuvMaxTime remove CALL YUV");
-            return;
+            return -3;
         }
 
         
@@ -1508,7 +1680,7 @@ class CNativeCoreModule {
             // console.log(
             // "++++++++++++_frameCallback continue for seek pts===========",
             // pts, this.isNewSeek, this.seekTarget, this._videoQueue.length);
-            return;
+            return -4;
         }
 
         
@@ -1534,7 +1706,7 @@ class CNativeCoreModule {
 
         if (this.playPTS > pts) {
             console.warn("LIVE playPTS > pts");
-            return;
+            return -5;
         }
 
         
@@ -1602,6 +1774,8 @@ class CNativeCoreModule {
             this.config.readyShow = false;
             this.onReadyShowDone && this.onReadyShowDone();
         } // end if readyShow
+
+        return 0;
     } // _frameCallback
 
     _handleFrameYUVCallback(

@@ -64,15 +64,32 @@ source ./version.sh
 # done
 
 REMOVE_FUNCS='"console.log","console.warn","alert"'
+# REMOVE_FUNCS='"console.log","console.warn"'
 # REMOVE_FUNCS='"alert"'
 # REMOVE_FUNCS='"console.warn","alert"'
 # REMOVE_FUNCS='"console.log","alert"'
 # REMOVE_FUNCS=''
 
+function echoLog {
+    local log_str=$*
+    local color=30 # front 30-39 # color 40-49 , 38 39 except
+    local color2=42
+
+    local color_param="${color};${color2};5"
+    echo -e -e "\033[${color_param}m${log_str}\033[0m"
+}
+
+echo ""
+echoLog "==========================================================="
+echoLog "==========================================================="
+echoLog "========    Step.1 START EXECUTE COMPILE =================="
+echoLog "==========================================================="
+echoLog "==========================================================="
 rm ./dist/*.js
 rm ./dist/*.wasm
 
 cp src/decoder/missile* ./dist/
+# terser src/decoder/missile.js -c pure_funcs=[${REMOVE_FUNCS}],toplevel=true -m -o ./dist/missile.js
 # cmd[1]="cp src/demuxer/missile* ./dist/
 cp -r src/assets dist
 browserify src/h265webjs.js -o ./dist/h265webjs_tmp.js
@@ -82,13 +99,37 @@ rm ./dist/h265webjs_tmp.js
 cp -r ./dist/* ./demo/dist/
 cp ./src/decoder/raw-parser.js ./dist/ # extension module
 
-browserify worker-fetch.js -o ./dist/worker-fetch-dist.js
-browserify worker-parse.js -o ./dist/worker-parse-dist.js
+#browserify worker-fetch.js -o ./dist/worker-fetch-dist.js
+#browserify worker-parse.js -o ./dist/worker-parse-dist.js
+#cat src/decoder/missile.js src/decoder/dc-worker.js > ./dist/dc-worker-dist.tmp.js
+#terser ./dist/dc-worker-dist.tmp.js -c pure_funcs=[${REMOVE_FUNCS}],toplevel=true -m -o ./dist/dc-worker-dist.js
 
-cat src/decoder/missile.js src/decoder/dc-worker.js > ./dist/dc-worker-dist.tmp.js
-terser ./dist/dc-worker-dist.tmp.js -c pure_funcs=[${REMOVE_FUNCS}],toplevel=true -m -o ./dist/dc-worker-dist.js
-
+echo ""
+echoLog "==========================================================="
+echoLog "==========================================================="
+echoLog "========    Step.2 START EXECUTE BUILD WASM ==============="
+echoLog "==========================================================="
+echoLog "==========================================================="
+bash missile-rebuild.sh
 browserify play.js -o ./dist/dist-play.js
+
+echo ""
+echoLog "==========================================================="
+echoLog "==========================================================="
+echoLog "========    Step.3 START CLEAM TEMP FILEl ================="
+echoLog "==========================================================="
+echoLog "==========================================================="
+
+rm ./dist/h265webjs_tmp.js.tmp*
+rm ./dist/dist-play.js.tmp*
+
+echo ""
+echoLog "==========================================================="
+echoLog "==========================================================="
+echoLog "========    OK Finished ==================================="
+echoLog "==========================================================="
+echoLog "==========================================================="
+echo ""
 
 
 

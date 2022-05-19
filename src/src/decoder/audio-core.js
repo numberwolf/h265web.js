@@ -21,6 +21,7 @@
  **********************************************************/
 const AudioContext 	= window.AudioContext || window.webkitAudioContext;
 const AUDIO_WAIT 	= 0.04; // 40ms ~ 2frame, 44100 -> 20ms 22050 40ms
+// const AUDIO_WAIT 	= 0.08; // 40ms ~ 2frame, 44100 -> 20ms 22050 40ms
 const def = require('../consts');
 const AVCommon = require('./av-common');
 
@@ -74,7 +75,7 @@ module.exports = options => {
 	    audioModule.durationMs = durationMs;
 	};
 	audioModule.setVoice = (voice = 1.0) => {
-		console.log("playFunc ==> setVoic ", voice);
+		// console.log("playFunc ==> setVoic ", voice);
 		audioModule.voice = voice;
 		audioModule.gainNode.gain.value = voice;
 	};
@@ -91,7 +92,7 @@ module.exports = options => {
 	 * @brief Swap SourceNode To Play When before node play end
 	 */
 	audioModule.swapSource = (sourceIndex = -1, dstIndex = -1) => {
-		console.log("audioModule.swapSource", sourceIndex, dstIndex);
+		// console.log("audioModule.swapSource", sourceIndex, dstIndex);
 		if (audioModule.startStatus == false) {
 			return null;
 		}
@@ -146,7 +147,7 @@ module.exports = options => {
 	 	// 	return true
 	 	// }
 		audioModule.sampleQueue.push(sampleObj);
-		// console.log(audioModule.sampleQueue.length);
+		// console.log("sampleQueue:", audioModule.sampleQueue);
 	    return true;
 	};
 	audioModule.runNextBuffer = () => {
@@ -239,10 +240,10 @@ module.exports = options => {
 				};
 				audioModule.sourceList[sourceIndex].stop();
 				// audioModule.decodeSample(sourceIndex, dstIndex);
-				console.log("audioModule.sampleQueue.length is 0, return 0");
+				// console.log("audioModule.sampleQueue.length is 0, return 0");
 				return 0;
 			}
-			console.log("audioModule.sampleQueue.length is 0, return -2");
+			// console.log("audioModule.sampleQueue.length is 0, return -2");
 			return -2;
 		}
 
@@ -261,11 +262,11 @@ module.exports = options => {
 
 		// 如果有buffer提前释放播放了
 		if (audioModule.sourceList[sourceIndex].buffer) {
-			console.log("audioModule play clear not buffer");
-			console.log(
-				audioModule.sourceList[sourceIndex], 
-				audioModule.sourceList[dstIndex],
-				audioModule.gainNode);
+			// console.log("audioModule play clear not buffer");
+			// console.log(
+			// 	audioModule.sourceList[sourceIndex], 
+			// 	audioModule.sourceList[dstIndex],
+			// 	audioModule.gainNode);
 
 			// audioModule.sourceList[sourceIndex].connect(audioModule.gainNode);
 			// if (audioModule.sourceList[sourceIndex].startState === true) {
@@ -296,11 +297,15 @@ module.exports = options => {
 			return 1;
 		}
 
-		let inputArrayBuffer = audioModule.nextBuffer.data.buffer;
+		// .buffer.slice(0, out_y.buffer.byteLength)
+		// const nextArrBuf = audioModule.nextBuffer.data.buffer;
+		const inputArrayBuffer = audioModule.nextBuffer.data.buffer;
+		// .slice(0, audioModule.nextBuffer.data.buffer.byteLength);
+		// alert(inputArrayBuffer.byteLength);
 		audioModule.playTimestamp = audioModule.nextBuffer.pts;
 		audioModule.playStartTime = AVCommon.GetMsTime();
 
-		// console.log("audioModule inputArrayBuffer.pts ", audioModule.playTimestamp);
+		// console.log("audioModule inputArrayBuffer.pts ", inputArrayBuffer, audioModule.nextBuffer.data, audioModule.playTimestamp);
 		try {
 
 			audioModule.audioCtx.decodeAudioData(
@@ -326,6 +331,12 @@ module.exports = options => {
 						audioModule.sourceList[sourceIndex].start();
 						audioModule.sourceList[sourceIndex].startState = true;
 					}
+					// console.log(
+					// 	"OK audioModule inputArrayBuffer.pts ", 
+					// 	inputArrayBuffer.byteLength, 
+					// 	audioModule.nextBuffer.data, 
+					// 	audioModule.nextBuffer.data.buffer,
+					// 	audioModule.playTimestamp);
 					// console.log(audioModule.sourceList[sourceIndex]);
 
 					// console.warn(
@@ -333,7 +344,13 @@ module.exports = options => {
 					// 	audioModule.sourceList[sourceIndex].context.state);
 		    	},
 				function(e) {
-					console.log("Error with decoding audio data", e);
+					// console.log(
+					// 	"Error audioModule inputArrayBuffer.pts ", 
+					// 	inputArrayBuffer.byteLength, 
+					// 	audioModule.nextBuffer.data, 
+					// 	audioModule.nextBuffer.data.buffer,
+					// 	audioModule.playTimestamp);
+					console.log("Error audioModule with decoding audio data", e);
 				}
 			);
 		} catch (e) {
@@ -516,11 +533,11 @@ module.exports = options => {
     audioModule.sourceList.push(audioModule.audioCtx.createBufferSource());
 
     audioModule.sourceList[0].onended = function() {
-    	console.log("sourceList onended 0");
+    	// console.log("sourceList onended 0");
     	audioModule.swapSource(0, 1);
     };
     audioModule.sourceList[1].onended = function() {
-    	console.log("sourceList onended 1");
+    	// console.log("sourceList onended 1");
 	    audioModule.swapSource(1, 0);
 	};
 	audioModule.gainNode = audioModule.audioCtx.createGain();

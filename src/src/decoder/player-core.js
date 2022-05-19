@@ -538,6 +538,10 @@ module.exports = config => {
      */
     player.play = (playParams) => {
 
+        // if (player.isCaching === def.CACHE_WITH_NOPLAY_SIGN) {
+        //     player.isCaching = def.CACHE_WITH_PLAY_SIGN;
+        // }
+
         /*
          * 播放参数
          */
