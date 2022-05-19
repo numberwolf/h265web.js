@@ -56,7 +56,7 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 #### Online DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (Demo is not newest version, you need to download from github and get newest version)
 </a>
 
-#### Simple Demo - for first use <a href="index-debug.html">index-debug.html</a>
+#### First Demo - for first use <a href="index-debug.html">index-debug.html</a>
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |

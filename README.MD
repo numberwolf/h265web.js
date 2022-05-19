@@ -46,7 +46,7 @@
 #### 在线DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (请以Github最新为准,在线Demo已长时间未更新)
 </a>
 
-#### 简易Demo - 方便读代码 <a href="index-debug.html">index-debug.html</a>
+#### 入门调试Demo <a href="index-debug.html">index-debug.html</a>
 
 <hr>
 
