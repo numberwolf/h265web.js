@@ -54,6 +54,7 @@ const DEFAULT_CONFIG_EXT = {
     ignoreAudio : 0, // 0 no 1 yes
     probeSize : 4096,
     autoPlay : false,
+    cacheLength : 50,
 }; // DEFAULT_CONFIG_EXT
 
 /**
@@ -80,6 +81,12 @@ Module.onRuntimeInitialized = () => {
     // _this._playerUtilBuildMask(_this.configFormat.playIcon);
     // _this._playUtilShowMask();
 }; // onRuntimeInitialized
+
+window.g_players = {};
+
+window.onmessage = (event) => {
+    console.log("window.onmessage", event);
+};
 
 window.addEventListener("wasmLoaded", function()
 {
@@ -406,6 +413,7 @@ class H265webjsModule {
         this.configFormat.extInfo.readyShow = true;
 
         window.onclick = document.body.onclick = null;
+        window.g_players = {};
         return true;
     }
 
@@ -1501,9 +1509,12 @@ class H265webjsModule {
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
             playMode: this.playMode,
             autoPlay: this.configFormat.extInfo.autoPlay,
-            defaultFps: this.configFormat.extInfo.rawFps
+            defaultFps: this.configFormat.extInfo.rawFps,
+            cacheLength: this.configFormat.extInfo.cacheLength,
         };
         this.player = new CNativeCore.CNativeCore(playerConfig); // end create player
+        // window.testPlayer = this.player;
+        window.g_players[this.player.corePtr] = this.player;
 
         this.player.onReadyShowDone = () => {
             _this.configFormat.extInfo.readyShow = false;

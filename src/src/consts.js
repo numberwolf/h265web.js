@@ -83,9 +83,12 @@ module.exports = {
     A_CODEC_NAME_MP3  : 113,
     A_CODEC_NAME_UNKN : 500,
 
-    CACHE_NO_LOADCACHE      : 0xC0,
-    CACHE_WITH_PLAY_SIGN    : 0xC1,
-    CACHE_WITH_NOPLAY_SIGN  : 0xC2,
+    // CACHE_NO_LOADCACHE      : 0xC0,
+    // CACHE_WITH_PLAY_SIGN    : 0xC1,
+    // CACHE_WITH_NOPLAY_SIGN  : 0xC2,
+    CACHE_NO_LOADCACHE      : 1001,
+    CACHE_WITH_PLAY_SIGN    : 1002,
+    CACHE_WITH_NOPLAY_SIGN  : 1003,
 
     V_CODEC_AVC_DEFAULT_FPS : 25,
 }; // module export

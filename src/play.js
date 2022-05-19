@@ -23,6 +23,7 @@
 import H265webjsModule from './dist/index';
 
 const SHOW_LOADING = "loading...";
+const CACHE_DONE = "cacheOK";
 const SHOW_DONE = "done.";
 
 
@@ -115,7 +116,8 @@ global.makeH265webjs = (videoURL, config) => {
     // controllerCont.style.left = playerContainer.clientLeft;
     // controllerCont.style.bottom = playerContainer.clientBottom;
     // alert(playerContainer.clientLeft);
-
+    // let testAudio = document.createElement("audio");
+    // testAudio.src = videoURL;
     let playAction = () => {
         console.log("is playing:", playerObj.isPlaying());
         if (playerObj.isPlaying()) {
@@ -127,6 +129,7 @@ global.makeH265webjs = (videoURL, config) => {
             // playBar.textContent = '||';
             playBar.setAttribute('class', 'pauseBtn');
             playerObj.play();
+            // testAudio.play();
         }
     };
 
@@ -229,7 +232,7 @@ global.makeH265webjs = (videoURL, config) => {
     };
 
     playerObj.onLoadCacheFinshed = () => {
-        showLabel.textContent = SHOW_DONE;
+        showLabel.textContent = CACHE_DONE;
     };
 
     playerObj.onReadyShowDone = () => {
@@ -340,3 +343,315 @@ global.makeH265webjs = (videoURL, config) => {
     playerObj.do();
     return playerObj;
 };
+
+global.makeH265webjs2 = (videoURL, config) => {
+    let playerId        = config.player;
+
+    let playerObj       = H265webjsModule.createPlayer(videoURL, config);
+
+    let playerDom       = document.querySelector('#' + playerId);
+    // let playerCont      = document.querySelector('#player-container2');
+    let controllerCont  = document.querySelector('#controller2')
+    let progressVoice   = document.querySelector('#progressVoice2');
+    let playBtn         = document.querySelector('#playBtn2');
+    let showLabel       = document.querySelector('#showLabel2');
+    let ptsLabel        = document.querySelector('#ptsLabel2');
+    let coverToast      = document.querySelector('#coverLayer2');
+    let coverBtn        = document.querySelector('#coverLayerBtn2');
+    let muteBtn         = document.querySelector('#muteBtn2');
+    // let debugYUVBtn     = document.querySelector('#debugYUVBtn');
+    // let debugYUVATag    = document.querySelector('#debugYUVUrl');
+    let fullScreenBtn   = document.querySelector('#fullScreenBtn2');
+    let mediaInfo       = null;
+
+    playBtn.disabled    = true;
+    // playBar.textContent = '>';
+    showLabel.textContent = SHOW_LOADING;
+    controllerCont.style.width = config.width + 'px';
+    // bottom: 627.875
+    // height: 540
+    // left: 240
+    // right: 1200
+    // top: 87.875
+    // width: 960
+    // x: 240
+    // y: 87.875
+    // playerDom.getBoundingClientRect().top
+    console.log(
+        "playerDom.getBoundingClientRect().height", playerDom.getBoundingClientRect());
+    controllerCont.style.top = 
+        playerDom.getBoundingClientRect().top 
+        + config.height 
+        - 50 + 'px';
+    controllerCont.style.left = playerDom.getBoundingClientRect().left + 'px';
+
+    let muteState = false;
+
+    // controllerCont.style.left = playerContainer.clientLeft;
+    // controllerCont.style.bottom = playerContainer.clientBottom;
+    // alert(playerContainer.clientLeft);
+
+    let playAction = () => {
+        console.log("is playing:", playerObj.isPlaying());
+        if (playerObj.isPlaying()) {
+            console.log("bar pause============>");
+            // playBar.textContent = '>';
+            playerObj.pause();
+        } else {
+            // playBar.textContent = '||';
+            playerObj.play();
+        }
+    };
+
+    playerDom.onmouseup = function() {
+        playAction();
+    };
+
+    playBtn.onclick = () => {
+        playAction();
+    };
+    fullScreenBtn.onclick = () => {
+        playerObj.fullScreen();
+        // setTimeout(() => {
+        //     playerObj.closeFullScreen();
+        // }, 2000);
+    };
+
+    // playerObj.onSeekStart = (pts) => {
+    //     showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
+    // };
+
+    // playerObj.onSeekFinish = () => {
+    //     showLabel.textContent = SHOW_DONE;
+    // };
+
+    playerObj.onPlayFinish = () => {
+        console.log("============= FINISHED ===============");
+        // playBar.textContent = '>';
+        // playBar.setAttribute('class', 'playBtn');
+        // playerObj.release();
+        // console.log("=========> release ok");
+    };
+
+    playerObj.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
+        console.log("on render");
+    };
+
+    playerObj.onOpenFullScreen = () => {
+        console.log("onOpenFullScreen");
+    };
+
+    playerObj.onCloseFullScreen = () => {
+        console.log("onCloseFullScreen");
+    };
+
+    playerObj.onNetworkError = (error) => {
+        alert("player - onNetworkError" + error.toString());
+    }; // onNetworkError
+
+
+    playerObj.onReadyShowDone = () => {
+        console.log("onReadyShowDone");
+        // showLabel.textContent = "Cover Img OK";
+    };
+
+    playerObj.onLoadFinish = () => {
+        playerObj.setVoice(1.0);
+        mediaInfo = playerObj.mediaInfo();
+        console.log("mediaInfo===========>", mediaInfo);
+
+        if (mediaInfo.meta.isHEVC === false) {
+            console.log("is not HEVC/H.265 media!");
+            // coverToast.removeAttribute('hidden');
+            // coverBtn.style.width = '100%';
+            // coverBtn.style.fontSize = '50px';
+            // coverBtn.innerHTML = 'is not HEVC/H.265 media!';
+            // return;
+        }
+        // console.log("is HEVC/H.265 media.");
+        /*
+        meta:
+            durationMs: 144400
+            fps: 25
+            sampleRate: 44100
+            size: {
+                width: 864,
+                height: 480
+            },
+            audioNone : false
+        videoType: "vod"
+        */
+        playBtn.disabled = false;
+    };
+
+
+
+    playerObj.onPlayState = (status) => {
+        // console.log("playerObj.onPlayState=>", status);
+        // if (status === true) {
+        //     playBar.setAttribute('class', 'pauseBtn');
+        // } else {
+        //     playBar.setAttribute('class', 'playBtn');
+        // }
+    };
+
+    playerObj.do();
+    return playerObj;
+};
+
+
+global.makeH265webjs3 = (videoURL, config) => {
+    let playerId        = config.player;
+
+    let playerObj       = H265webjsModule.createPlayer(videoURL, config);
+
+    let playerDom       = document.querySelector('#' + playerId);
+    // let playerCont      = document.querySelector('#player-container2');
+    let controllerCont  = document.querySelector('#controller3')
+    let progressVoice   = document.querySelector('#progressVoice3');
+    let playBtn         = document.querySelector('#playBtn3');
+    let showLabel       = document.querySelector('#showLabel3');
+    let ptsLabel        = document.querySelector('#ptsLabel3');
+    let coverToast      = document.querySelector('#coverLayer3');
+    let coverBtn        = document.querySelector('#coverLayerBtn3');
+    let muteBtn         = document.querySelector('#muteBtn3');
+    // let debugYUVBtn     = document.querySelector('#debugYUVBtn');
+    // let debugYUVATag    = document.querySelector('#debugYUVUrl');
+    let fullScreenBtn   = document.querySelector('#fullScreenBtn3');
+    let mediaInfo       = null;
+
+    playBtn.disabled    = true;
+    // playBar.textContent = '>';
+    showLabel.textContent = SHOW_LOADING;
+    controllerCont.style.width = config.width + 'px';
+    // bottom: 627.875
+    // height: 540
+    // left: 240
+    // right: 1200
+    // top: 87.875
+    // width: 960
+    // x: 240
+    // y: 87.875
+    // playerDom.getBoundingClientRect().top
+    console.log(
+        "playerDom.getBoundingClientRect().height", playerDom.getBoundingClientRect());
+    controllerCont.style.top = 
+        playerDom.getBoundingClientRect().top 
+        + config.height 
+        - 50 + 'px';
+    controllerCont.style.left = playerDom.getBoundingClientRect().left + 'px';
+
+    let muteState = false;
+
+    // controllerCont.style.left = playerContainer.clientLeft;
+    // controllerCont.style.bottom = playerContainer.clientBottom;
+    // alert(playerContainer.clientLeft);
+
+    let playAction = () => {
+        console.log("is playing:", playerObj.isPlaying());
+        if (playerObj.isPlaying()) {
+            console.log("bar pause============>");
+            // playBar.textContent = '>';
+            playerObj.pause();
+        } else {
+            // playBar.textContent = '||';
+            playerObj.play();
+        }
+    };
+
+    playerDom.onmouseup = function() {
+        playAction();
+    };
+
+    playBtn.onclick = () => {
+        playAction();
+    };
+    fullScreenBtn.onclick = () => {
+        playerObj.fullScreen();
+        // setTimeout(() => {
+        //     playerObj.closeFullScreen();
+        // }, 2000);
+    };
+
+    // playerObj.onSeekStart = (pts) => {
+    //     showLabel.textContent = SHOW_LOADING + " seek to:" + parseInt(pts);
+    // };
+
+    // playerObj.onSeekFinish = () => {
+    //     showLabel.textContent = SHOW_DONE;
+    // };
+
+    playerObj.onPlayFinish = () => {
+        console.log("============= FINISHED ===============");
+        // playBar.textContent = '>';
+        // playBar.setAttribute('class', 'playBtn');
+        // playerObj.release();
+        // console.log("=========> release ok");
+    };
+
+    playerObj.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => {
+        console.log("on render");
+    };
+
+    playerObj.onOpenFullScreen = () => {
+        console.log("onOpenFullScreen");
+    };
+
+    playerObj.onCloseFullScreen = () => {
+        console.log("onCloseFullScreen");
+    };
+
+    playerObj.onNetworkError = (error) => {
+        alert("player - onNetworkError" + error.toString());
+    }; // onNetworkError
+
+
+    playerObj.onReadyShowDone = () => {
+        console.log("onReadyShowDone");
+        // showLabel.textContent = "Cover Img OK";
+    };
+
+    playerObj.onLoadFinish = () => {
+        playerObj.setVoice(1.0);
+        mediaInfo = playerObj.mediaInfo();
+        console.log("mediaInfo===========>", mediaInfo);
+
+        if (mediaInfo.meta.isHEVC === false) {
+            console.log("is not HEVC/H.265 media!");
+            // coverToast.removeAttribute('hidden');
+            // coverBtn.style.width = '100%';
+            // coverBtn.style.fontSize = '50px';
+            // coverBtn.innerHTML = 'is not HEVC/H.265 media!';
+            // return;
+        }
+        // console.log("is HEVC/H.265 media.");
+        /*
+        meta:
+            durationMs: 144400
+            fps: 25
+            sampleRate: 44100
+            size: {
+                width: 864,
+                height: 480
+            },
+            audioNone : false
+        videoType: "vod"
+        */
+        playBtn.disabled = false;
+    };
+
+
+
+    playerObj.onPlayState = (status) => {
+        // console.log("playerObj.onPlayState=>", status);
+        // if (status === true) {
+        //     playBar.setAttribute('class', 'pauseBtn');
+        // } else {
+        //     playBar.setAttribute('class', 'playBtn');
+        // }
+    };
+
+    playerObj.do();
+    return playerObj;
+};
+
