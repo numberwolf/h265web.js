@@ -953,6 +953,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/06/26 |
+| - | 0.Support g711a (http-flv) |
+| - | 1.Fixed 264(avc) flv error with mediainfo |
+| - | 2.Support Multi/Single Thread |
 | Time | 2022/05/18 |
 | - | 0.Support multi-thread decode |
 | - | 1.Support mp4's cache length config |
