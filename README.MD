@@ -37,8 +37,11 @@
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-todo.png" width="100"> |
-| Multi-Thread | G711A |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> |
+| Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | G711A(HTTP-FLV) | HEVC/H.265 | AVC/H.264 |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100"> | - | - |
+| Single-Thread | MediaInfo | - | - |
 
 </font>
 </strong>
@@ -77,6 +80,15 @@
 | AVC/H.264 | 点播 |  是  | ---- |
 | AVC/H.264 | 直播 |  是  | ---- |
 
+* 编码
+
+| 编码 | 是否支持 | 说明 |
+| ---- |  ----  | ---- |
+| AVC/H.264 |  是  | ---- |
+| HEVC/H.265 |  是  | ---- |
+| AAC |  是  | ---- |
+| G711A |  是  | HTTP-FLV |
+| AV1 |  是  | Chrome |
 
 * 能力
 
@@ -104,6 +116,14 @@
 | 截图 | 是 | ----  |
 | 自动播放 | 是 | HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264  |
 | 设置缓存长度 | 是 | MP4 265 |
+| 多线程解码 | 是 | (需要HTTPS+配置NGINX支持) |
+| 单线程解码 | 是 | 兼容性强 |
+| 获取 MediaInfo | 是 | ---- |
+| 获取 Codec编码 | 是 | 视频&音频 |
+| 获取 Media Duration 时长 | 是 | 视频&音频|
+| 获取 视频尺寸 | 是 | ---- |
+| 获取 视频帧率 | 是 | ---- |
+| 获取 音频采样率 | 是 | ---- |
 
 <br>
 
@@ -159,7 +179,7 @@
 
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
-| <img src="dist/assets/donate/wechat.JPG" height="500"> | <img src="dist/assets/donate/alipay.JPG" height="500"> | TODO |
+| <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | TODO |
 
 
 

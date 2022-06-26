@@ -62,7 +62,7 @@ if (d.cmd === "goexit") {
                                     // console.log("ecmd go thread 2", e_data);
                                     const corePtr = e_data.corePtr;
                                     const coreType = e_data.type;
-                                    if (coreType === "video") {
+                                    if (coreType === "video") { // @TODO
                                         window.g_players[corePtr]._naluCallback(
                                             e_data.naluFrame,
                                             e_data.frameLen,
@@ -72,7 +72,7 @@ if (d.cmd === "goexit") {
                                             e_data.v_pts,
                                             e_data.v_dts,
                                             e_data.isRaw);
-                                    } else if (coreType === "audio") {
+                                    } else if (coreType === "audio") { // @TODO
                                         /*
                                          {
                                                     cmd:"go",
@@ -120,6 +120,43 @@ if (d.cmd === "goexit") {
                                         // console.log(
                                         //  "ecmd go thread decode_video", 
                                         //  e_data.v_pts, ret1, window.g_players[corePtr]._videoQueue);
+                                    } else if (coreType === "decode_video_flv") {
+                                        let ret1 = window.g_players[corePtr]._callbackYUV(
+                                                e_data.y, 
+                                                e_data.u, 
+                                                e_data.v,
+                                                e_data.line1, 
+                                                e_data.line2, 
+                                                e_data.line3,
+                                                e_data.w, 
+                                                e_data.h, 
+                                                e_data.v_pts, 
+                                                e_data.tag);
+                                    } else if (coreType === "decode_video_g711") {
+                                        let ret1 = window.g_players[corePtr]._callbackYUV(
+                                                e_data.y, 
+                                                e_data.u, 
+                                                e_data.v,
+                                                e_data.line1, 
+                                                e_data.line2, 
+                                                e_data.line3,
+                                                e_data.w, 
+                                                e_data.h, 
+                                                e_data.v_pts, 
+                                                e_data.tag);
+                                    } else if (coreType === "decode_audio_g711") {
+                                        // type: "decode_audio_g711",
+                                        //                     corePtr: $0,
+                                        //                     pcm: $1,
+                                        //                     len: $2,
+                                        //                     v_pts: $3,
+                                        //                     tag: $4
+                                        // console.log("decode_audio_g711", e_data);
+                                        let ret1 = window.g_players[corePtr]._callbackPCM(
+                                                e_data.pcm, 
+                                                e_data.len, 
+                                                e_data.v_pts,
+                                                e_data.tag);
                                     } // end if coreType
                                 } // end if check corePtr exist
                             } // if (e_data !== undefined && e_data !== null)

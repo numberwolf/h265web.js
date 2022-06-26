@@ -38,8 +38,11 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-todo.png" width="100"> |
-| Multi-Thread | G711A |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> |
+| Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | G711A(HTTP-FLV) | HEVC/H.265 | AVC/H.264 |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100"> | - | - |
+| Single-Thread | MediaInfo | - | - |
 
 </font>
 </strong>
@@ -200,10 +203,20 @@ Notice：
 | AVC/H.264 | Video on demand |  Y  | ---- |
 | AVC/H.264 | Live |  Y  | ---- |
 
+* Codec
+
+| Codec | Support | Desc |
+| ---- |  ----  | ---- |
+| AVC/H.264 |  Y  | ---- |
+| HEVC/H.265 |  Y  | ---- |
+| AAC |  Y  | ---- |
+| G711A |  Y  | HTTP-FLV |
+| AV1 |  Y  | Chrome |
+
 
 * Features
 
-|  Feature | support | desc |
+|  Feature | Support | Desc |
 | ---- | ---- |  ----  |
 | Video on demand | Y |  ----  |
 | Live | Y |  ----  |
@@ -227,6 +240,14 @@ Notice：
 | Snapshot | Y |  ----  |
 | Autoplay | Y |  HTTP-FLV 265+264<br>HTTP-TS 265+264<br>HLS 264  |
 | Cache Length | Y | MP4 265 |
+| Multi-thread decoder | Y | (HTTPS+ Conf NGINX) |
+| Single-thread decoder | Y | compatible |
+| Get MediaInfo | Y | ---- |
+| Get Codec Param | Y | Video&Audio |
+| Get Media Duration | Y | Video&Audio |
+| Get Video Size | Y | ---- |
+| Get Video FPS | Y | ---- |
+| Get Audio SampleRate | Y | ---- |
 
 <br>
 
@@ -876,8 +897,7 @@ player.release();
 
 |  Wechat | Alipay | PayPal |
 |  ---- | ----  | ---- |
-| <img src="dist/assets/donate/wechat.JPG" height="500"> | <img src="dist/assets/donate/alipay.JPG" height="500"> | TODO |
-
+| <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | TODO |
 <br>
 
 ### FFmpegSupportH265LiveEncode ###

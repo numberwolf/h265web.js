@@ -23,6 +23,7 @@ const Player = require('./decoder/player-core');
 const PlayerNative = require('./native/mp4-player');
 const CNativeCore = require('./decoder/c-native-core');
 const CHttpLiveCore = require('./decoder/c-httplive-core');
+const CHttpG711Core = require('./decoder/c-http-g711-core');
 const CWsLiveCore = require('./decoder/c-wslive-core');
 const NvVideoJSCore = require('./native/nv-videojs-core');
 const NvFlvJSCore = require('./native/nv-flvjs-core');
@@ -1781,17 +1782,132 @@ class H265webjsModule {
 
     } // _cDemuxDecoderEntry
 
-    _cLiveFLVDecoderEntry(playerConfig) {
+    _cLiveG711DecoderEntry(playerConfig)
+    {
         let _this = this;
         playerConfig.probeSize = this.configFormat.extInfo.probeSize;
-        this.player = new CHttpLiveCore.CHttpLiveCore(playerConfig);
-        console.log("_cLiveFLVDecoderEntry playerConfig", playerConfig);
+        this.player = new CHttpG711Core.CHttpG711Core(playerConfig);
+        console.log("_cLiveG711DecoderEntry playerConfig", playerConfig);
+        window.g_players[this.player.corePtr] = this.player;
         /*
          *
          * Set Events
          *
          */
         this.player.onProbeFinish = () => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
+            _this.playParam.fps          = _this.player.mediaInfo.fps;
+            _this.playParam.durationMs   = -1;
+
+            _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+            // alert("HTTP FLV LIVE");
+
+            _this.playParam.sampleRate   = _this.player.mediaInfo.sampleRate;
+            _this.playParam.size = {
+                width   : _this.player.mediaInfo.width,
+                height  : _this.player.mediaInfo.height
+            };
+            _this.playParam.audioNone = _this.player.mediaInfo.audioNone;
+
+            console.log("_cLiveG711DecoderEntry _this.player.mediaInfo", _this.player.mediaInfo);
+
+            if (_this.player.vCodecID === def.V_CODEC_NAME_HEVC) {
+                if (_this.playParam.audioIdx < 0) {
+                    _this.playParam.audioNone = true;
+                }
+                _this.playParam.videoCodec = def.CODEC_H265;
+                _this.onLoadFinish && _this.onLoadFinish();
+
+            } else {
+                // need 264 codec, but do not use
+                _this.playParam.videoCodec = def.CODEC_H264;
+                let releaseRet = _this.player.release();
+                console.log("releaseRet ===> ", releaseRet);
+                _this.player = null;
+                _this._flvJsPlayer(_this.playParam.durationMs);
+            }
+            // _this.onLoadFinish && _this.onLoadFinish();
+        }; // onProbeFinish
+
+        this.player.onNetworkError = (error) => {
+            // alert("onNetworkError" + error.toString());
+            _this.onNetworkError && _this.onNetworkError(error);
+        }; // onNetworkError
+
+        this.player.onReadyShowDone = () => {
+            _this.configFormat.extInfo.readyShow = false;
+            _this.onReadyShowDone && _this.onReadyShowDone();
+        }; // onReadyShowDone
+
+        this.player.onLoadCache = () => {
+            // this._playerUtilBuildMask(this.configFormat.loadIcon);
+            // this._playUtilShowMask();
+            if (this.onLoadCache != null) this.onLoadCache();
+        }; // onLoadCache
+
+        this.player.onLoadCacheFinshed = () => {
+            // this._playUtilHiddenMask();
+            if (this.onLoadCacheFinshed != null) this.onLoadCacheFinshed();
+        }; // onLoadCacheFinshed
+
+        this.player.onRender = (width, height, imageBufferY, imageBufferB, imageBufferR) => 
+        {
+            _this.snapshotYuvLastFrame.luma     = null;
+            _this.snapshotYuvLastFrame.chromaB  = null;
+            _this.snapshotYuvLastFrame.chromaR  = null;
+
+            _this.snapshotYuvLastFrame.width    = width;
+            _this.snapshotYuvLastFrame.height   = height;
+            _this.snapshotYuvLastFrame.luma     = new Uint8Array(imageBufferY);
+            _this.snapshotYuvLastFrame.chromaB  = new Uint8Array(imageBufferB);
+            _this.snapshotYuvLastFrame.chromaR  = new Uint8Array(imageBufferR);
+
+            // if (_this.snapshotCanvas !== undefined && 
+            //     _this.snapshotCanvas !== null) 
+            // {
+            //     _this.snapshotCanvas.width = width;
+            //     _this.snapshotCanvas.height = height;
+            // }
+
+            if (_this.onRender != null) {
+                _this.onRender(width, height, imageBufferY, imageBufferB, imageBufferR);
+            }
+        }; // onRender
+
+        this.player.onPlayState = (status) => {
+            _this.onPlayState && _this.onPlayState(status);
+        }; // onPlayState
+
+        // boot
+        this.player.start(this.videoURL);
+        // this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+    } // _cLiveG711DecoderEntry
+
+    _cLiveFLVDecoderEntry(playerConfig)
+    {
+
+        // debug start
+        // return this._cLiveG711DecoderEntry(playerConfig);
+        // debug end
+
+        let _this = this;
+        playerConfig.probeSize = this.configFormat.extInfo.probeSize;
+        this.player = new CHttpLiveCore.CHttpLiveCore(playerConfig);
+        console.log("_cLiveFLVDecoderEntry playerConfig", playerConfig);
+        window.g_players[this.player.corePtr] = this.player;
+        /*
+         *
+         * Set Events
+         *
+         */
+        this.player.onProbeFinish = (trans_to_gcore=0) => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
+
+            if (trans_to_gcore === 1) {
+                _this.player.release();
+                _this.player = null;
+                _this._cLiveG711DecoderEntry(playerConfig);
+                return;
+            }
+
             _this.playParam.fps          = _this.player.mediaInfo.fps;
             _this.playParam.durationMs   = -1;
 
@@ -1896,6 +2012,7 @@ class H265webjsModule {
         this.player = new CWsLiveCore.CWsLiveCore(playerConfig);
         alert("_cWsFLVDecoderEntry probeSize" + playerConfig.probeSize);
         console.log("_cWsFLVDecoderEntry playerConfig", playerConfig);
+        window.g_players[this.player.corePtr] = this.player;
         /*
          *
          * Set Events

@@ -556,4 +556,4 @@ module.exports = options => {
 	audioModule.runNextBuffer();
 
 	return audioModule;
-}
+};
