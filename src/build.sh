@@ -63,6 +63,8 @@ source ./version.sh
 # 	${cmd[$i]}
 # done
 
+H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER=0
+
 REMOVE_FUNCS='"console.log","console.warn","alert"'
 # REMOVE_FUNCS='"console.log","console.warn"'
 # REMOVE_FUNCS='"alert"'
@@ -79,25 +81,32 @@ function echoLog {
     echo -e -e "\033[${color_param}m${log_str}\033[0m"
 }
 
+DIST_PATH='dist'
+if [[ $H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER -eq 0 ]]; then
+	DIST_PATH='dist'
+else
+	DIST_PATH='dist-multi-thread'
+fi
+
 echo ""
 echoLog "==========================================================="
 echoLog "==========================================================="
 echoLog "========    Step.1 START EXECUTE COMPILE =================="
 echoLog "==========================================================="
 echoLog "==========================================================="
-rm ./dist/*.js
-rm ./dist/*.wasm
+rm ./$DIST_PATH/*.js
+rm ./$DIST_PATH/*.wasm
 
-cp src/decoder/missile* ./dist/
+# cp src/decoder/missile* $DIST_PATH/
 # terser src/decoder/missile.js -c pure_funcs=[${REMOVE_FUNCS}],toplevel=true -m -o ./dist/missile.js
 # cmd[1]="cp src/demuxer/missile* ./dist/
-cp -r src/assets dist
-browserify src/h265webjs.js -o ./dist/h265webjs_tmp.js
-terser ./dist/h265webjs_tmp.js -c pure_funcs=[${REMOVE_FUNCS}],toplevel=true -m -o ./dist/h265webjs-${VERSION}.js
-cp -r src/index.js dist/
-rm ./dist/h265webjs_tmp.js
-cp -r ./dist/* ./demo/dist/
-cp ./src/decoder/raw-parser.js ./dist/ # extension module
+cp -r src/assets ./$DIST_PATH/
+browserify src/h265webjs.js -o ./$DIST_PATH/h265webjs_tmp.js
+terser ./$DIST_PATH/h265webjs_tmp.js -c pure_funcs=[${REMOVE_FUNCS}],toplevel=true -m -o ./$DIST_PATH/h265webjs-${VERSION}.js
+cp -r src/index.js ./$DIST_PATH/
+rm ./$DIST_PATH/h265webjs_tmp.js
+cp -r ./$DIST_PATH/* ./demo/$DIST_PATH/
+cp ./src/decoder/raw-parser.js ./$DIST_PATH/ # extension module
 
 #browserify worker-fetch.js -o ./dist/worker-fetch-dist.js
 #browserify worker-parse.js -o ./dist/worker-parse-dist.js
@@ -110,8 +119,15 @@ echoLog "==========================================================="
 echoLog "========    Step.2 START EXECUTE BUILD WASM ==============="
 echoLog "==========================================================="
 echoLog "==========================================================="
-bash missile-rebuild.sh
-browserify play.js -o ./dist/dist-play.js
+# if [[ $H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER -eq 1 ]]; then
+bash missile-rebuild.sh $H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER $DIST_PATH
+# else
+# fi
+
+exit 0
+
+####################### EXIT ############################
+browserify play.js -o ./$DIST_PATH/dist-play.js
 
 echo ""
 echoLog "==========================================================="
@@ -120,8 +136,8 @@ echoLog "========    Step.3 START CLEAM TEMP FILEl ================="
 echoLog "==========================================================="
 echoLog "==========================================================="
 
-rm ./dist/h265webjs_tmp.js.tmp*
-rm ./dist/dist-play.js.tmp*
+rm ./$DIST_PATH/h265webjs_tmp.js.tmp*
+rm ./$DIST_PATH/dist-play.js.tmp*
 
 echo ""
 echoLog "==========================================================="

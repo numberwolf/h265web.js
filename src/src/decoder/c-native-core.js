@@ -395,6 +395,7 @@ class CNativeCoreModule {
         // }
 
         window.onclick = document.body.onclick = null;
+        delete window.g_players[this.corePtr];
 
         this.onRelease && this.onRelease();
     	return releaseRet;

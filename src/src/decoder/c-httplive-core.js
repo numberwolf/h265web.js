@@ -102,7 +102,7 @@ class CHttpLiveCoreModule { // export default
         this.duration = -1;
         this.vCodecID = def.V_CODEC_NAME_HEVC;
 
-        this.AVSniffPtr = null;
+        this.corePtr = null;
         this.AVGetInterval = null;
         // this.AVDecodeInterval = null;
 
@@ -165,7 +165,7 @@ class CHttpLiveCoreModule { // export default
         this._ptr_aacCallback = null;
 
         // fetch worker
-        // console.warn("_this before AVSniffPtr:", _this);
+        // console.warn("_this before corePtr:", _this);
 
         this.totalLen = 0;
         this.pushPkg = 0;
@@ -183,6 +183,13 @@ class CHttpLiveCoreModule { // export default
         this.onReadyShowDone    = null;
         this.onNetworkError     = null;
         this.onPlayState        = null;
+
+        // run
+        const TOKEN_SECRET = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
+        this.corePtr = Module.cwrap("AVSniffHttpFlvInit", "number", ["string", "string"])(
+            TOKEN_SECRET, '0.0.0'
+        );
+        console.log("wasmHttpFLVLoaded!!", this.corePtr);
 
     } // end func constructor
 
@@ -213,11 +220,11 @@ class CHttpLiveCoreModule { // export default
                     || _this.AVGetInterval === null) 
                 {
                     _this.AVGetInterval = window.setInterval(function() {
-                        let bufLen = Module.cwrap("getBufferLengthApi", "number", ["number"])(_this.AVSniffPtr);
+                        let bufLen = Module.cwrap("getBufferLengthApi", "number", ["number"])(_this.corePtr);
                         // console.log("play -> workerFetch last buf len: ", bufLen);
                         if (bufLen > _this.config.probeSize) {
                         // if (pushPkg > READY_PUSH_COUNT_LIMIT) {
-                            let get_ret = Module.cwrap("getSniffHttpFlvPkg", "number", ["number"])(_this.AVSniffPtr);
+                            let get_ret = Module.cwrap("getSniffHttpFlvPkg", "number", ["number"])(_this.corePtr);
                             // console.log("play -> workerFetch get nalu ret: ", get_ret, _this.pushPkg);
                             _this.pushPkg -= 1;
                             // _this.ready_now = 1;
@@ -248,9 +255,9 @@ class CHttpLiveCoreModule { // export default
                     let offset_video = Module._malloc(chunk.length);
                     Module.HEAP8.set(chunk, offset_video);
 
-                    // console.warn("_this.AVSniffPtr:", _this);
+                    // console.warn("_this.corePtr:", _this);
                     push_ret = Module.cwrap("pushSniffHttpFlvData", "number", ["number", "number", "number", "number"])(
-                        _this.AVSniffPtr, offset_video, chunk.length, _this.config.probeSize
+                        _this.corePtr, offset_video, chunk.length, _this.config.probeSize
                     );
                     // console.warn("pushRet:", push_ret);
 
@@ -270,11 +277,11 @@ class CHttpLiveCoreModule { // export default
                 //     || _this.AVGetInterval === null) 
                 // {
                 //     _this.AVGetInterval = window.setInterval(function() {
-                //         let bufLen = Module.cwrap("getBufferLengthApi", "number", ["number"])(_this.AVSniffPtr);
+                //         let bufLen = Module.cwrap("getBufferLengthApi", "number", ["number"])(_this.corePtr);
                 //         // console.log("play -> workerFetch last buf len: ", bufLen);
                 //         if (bufLen > _this.config.probeSize) {
                 //         // if (pushPkg > READY_PUSH_COUNT_LIMIT) {
-                //             let get_ret = Module.cwrap("getSniffHttpFlvPkg", "number", ["number"])(_this.AVSniffPtr);
+                //             let get_ret = Module.cwrap("getSniffHttpFlvPkg", "number", ["number"])(_this.corePtr);
                 //             // console.log("play -> workerFetch get nalu ret: ", get_ret, _this.pushPkg);
                 //             _this.pushPkg -= 1;
                 //             // _this.ready_now = 1;
@@ -372,8 +379,14 @@ class CHttpLiveCoreModule { // export default
     // callback
     _callbackProbe(duration, width, height, fps,
         audioIdx,
-        sample_rate, channels, vcodec_name_id, sample_fmt) 
+        sample_rate, channels, vcodec_name_id, sample_fmt, trans_to_gcore=0) 
     {
+
+        if (trans_to_gcore === 1) {
+            this.onProbeFinish && this.onProbeFinish(trans_to_gcore);
+            return;
+        }
+
         const hex = Module.HEAPU8.subarray(sample_fmt, sample_fmt + AU_FMT_READ);
         let sample_fmt_str = "";
         for (let i = 0; i < hex.length; i++) {
@@ -547,7 +560,7 @@ class CHttpLiveCoreModule { // export default
         // decode start
         let decRet = Module.cwrap("decodeVideoFrame", "number", 
             ["number", "number", "number", "number", "number"])
-            (AVSniffPtr, offset_video, bufData.length, pts, dts, 0);
+            (corePtr, offset_video, bufData.length, pts, dts, 0);
         console.log("decodeVideoFrame ret:", decRet); 
         // decode end
 
@@ -562,21 +575,23 @@ class CHttpLiveCoreModule { // export default
     _callbackPCM(pcm) {
     } // end func _callbackPCM
 
-    _callbackAAC(adts, buffer, line1, channel, pts) {
+    // _callbackAAC(adts, buffer, line1, channel, pts) {
+    _callbackAAC(aacFrame, line1, channel, pts) {
         // console.log("callbackNALU time AAC dts", pts);
 
         let ptsFixed = this._ptsFixed2(pts);
         if (this.audioWAudio && this.muted === false) 
         {
             console.log("_reinitAudioModule callbackaac");
-            let pcmFrame = new Uint8Array(7 + line1);
+            // let pcmFrame = new Uint8Array(7 + line1);
+            // let adts_buf = Module.HEAPU8.subarray(adts, adts + 7);
+            // pcmFrame.set(adts_buf, 0);
+            // // let adts_out = new Uint8Array(adts_buf);
+            // let aac_buf = Module.HEAPU8.subarray(buffer, buffer + line1);
+            // pcmFrame.set(aac_buf, 7);
 
-            let adts_buf = Module.HEAPU8.subarray(adts, adts + 7);
-            pcmFrame.set(adts_buf, 0);
-            // let adts_out = new Uint8Array(adts_buf);
-
-            let aac_buf = Module.HEAPU8.subarray(buffer, buffer + line1);
-            pcmFrame.set(aac_buf, 7);
+            let pcmFrameABuf = Module.HEAPU8.subarray(aacFrame, aacFrame + line1);
+            let pcmFrame = new Uint8Array(pcmFrameABuf);
 
             let aacData = {
                 pts : ptsFixed,
@@ -621,7 +636,7 @@ class CHttpLiveCoreModule { // export default
                 // let debugStartMS = AVCommon.GetMsTime();
                 let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
                     ["number", "number", "number", "number", "number"])
-                    (_this.AVSniffPtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
+                    (_this.corePtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
                 //console.log("decodeVideoFrame ret:", decRet); 
                 // let debugEndMS = AVCommon.GetMsTime();
 
@@ -650,7 +665,7 @@ class CHttpLiveCoreModule { // export default
         //             // decode start
         //             let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
         //                 ["number", "number", "number", "number", "number"])
-        //                 (_this.AVSniffPtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
+        //                 (_this.corePtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
         //             //console.log("decodeVideoFrame ret:", decRet); 
         //             // decode end
 
@@ -734,8 +749,10 @@ class CHttpLiveCoreModule { // export default
         this.AVGetInterval = null;
 
         this._removeBindFuncPtr();
-        let releaseRet = Module.cwrap(
-            'releaseHttpFLV', 'number', ['number'])(this.AVSniffPtr);
+        if (this.corePtr !== undefined && this.corePtr !== null) {
+            let releaseRet = Module.cwrap(
+                'releaseHttpFLV', 'number', ['number'])(this.corePtr);
+        }
 
         this.playInterval && clearInterval(this.playInterval);
         this.playInterval = null;
@@ -752,6 +769,7 @@ class CHttpLiveCoreModule { // export default
         this.CanvasObj = null;
 
         window.onclick = document.body.onclick = null;
+        delete window.g_players[this.corePtr];
 
         return 0;
     }
@@ -1090,12 +1108,12 @@ class CHttpLiveCoreModule { // export default
 
         console.log("this.workerFetch flv=>", this.workerFetch);
 
-        const TOKEN_SECRET = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
+        // const TOKEN_SECRET = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
 
-        this.AVSniffPtr = Module.cwrap("AVSniffHttpFlvInit", "number", ["string", "string"])(
-            TOKEN_SECRET, '0.0.0'
-        );
-        console.log("wasmHttpFLVLoaded!!", this.AVSniffPtr);
+        // this.corePtr = Module.cwrap("AVSniffHttpFlvInit", "number", ["string", "string"])(
+        //     TOKEN_SECRET, '0.0.0'
+        // );
+        // console.log("wasmHttpFLVLoaded!!", this.corePtr);
 
         console.log("start add function probeCallback");
         this._ptr_probeCallback   = Module.addFunction(this._callbackProbe.bind(this));
@@ -1116,7 +1134,7 @@ class CHttpLiveCoreModule { // export default
             "initializeSniffHttpFlvModule",
             "number",
             ["number", "number", "number", "number", "number", "number"])
-            (this.AVSniffPtr, 
+            (this.corePtr, 
                 this._ptr_probeCallback, 
                 this._ptr_yuvCallback, this._ptr_naluCallback, 
                 this._ptr_sampleCallback, this._ptr_aacCallback);

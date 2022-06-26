@@ -77,35 +77,6 @@ class NvFlvjsCoreModule {
         this.onReadyShowDone    = null;
     } // constructor
 
-    // _onVideoJsReady() {
-    //     let _this = this;
-    //     this.videoContaner = document.querySelector('#' + this.myPlayerID);
-    //     this.videoTag = this.videoContaner.querySelector("video");
-    //     this.videoTag.style.width = this.configFormat.width + 'px';
-    //     this.videoTag.style.height = this.configFormat.height + 'px';
-
-    //     console.log("this.videoTag==>", this.videoTag);
-
-    //     this.duration = this.myPlayer.duration();
-    //     alert("duration:" + this.duration === Infinity);
-
-    //     this.onLoadFinish && this.onLoadFinish();
-    //     this.onReadyShowDone && this.onReadyShowDone();
-
-    //     // if (this.duration === Infinity) {
-    //     //     this.play();
-    //     // }
-
-    //     this.myPlayer.on("progress", function() {
-    //         console.log("正在请求数据 ", _this.myPlayer.buffered().length, _this.myPlayer.duration());
-    //     });
-
-    //     this.myPlayer.on("timeupdate", function() {
-    //         console.log("正在播放 ", _this.videoTag.currentTime, _this.myPlayer.duration());
-    //         _this.onPlayingTime && _this.onPlayingTime(_this.myPlayer.currentTime());
-    //     });
-    // } // onVideoJsReady
-
     _reBuildFlvjs(url) {
         let _this = this;
         _this._releaseFlvjs();
@@ -321,7 +292,7 @@ class NvFlvjsCoreModule {
             });
             this.myPlayer.on(flvjs.Events.METADATA_ARRIVED, function(res) {
                 alert("1 METADATA_ARRIVED");
-                if (_this.isInitDecodeFrames === false) 
+                if (_this.isInitDecodeFrames === false && res.width && res.width > 0) 
                 {
                     _this.isInitDecodeFrames = true;
                     alert("2 METADATA_ARRIVED");

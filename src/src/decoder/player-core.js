@@ -940,7 +940,7 @@ module.exports = config => {
             ['string', 'string'])(player.config.token, VersionModule.PLAYER_VERSION);
 
         player.videoCallback = Module.addFunction(function(addr_y, addr_u, addr_v, stride_y, stride_u, stride_v, width, height, pts) {
-            // console.warn("In video callback, size = %d * %d, pts = %f", width, height, pts);
+            console.log("In video callback, size = %d * %d, pts = %f", width, height, pts);
 
             let out_y = Module.HEAPU8.subarray(addr_y, addr_y + stride_y * height);
             let out_u = Module.HEAPU8.subarray(addr_u, addr_u + (stride_u * height) / 2);

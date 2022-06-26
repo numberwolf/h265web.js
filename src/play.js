@@ -21,6 +21,7 @@
  **********************************************************/
 // const H265webjs = require('./src/h265webjs');
 import H265webjsModule from './dist/index';
+// import H265webjsModule from './dist-multi-thread/index';
 
 const SHOW_LOADING = "loading...";
 const CACHE_DONE = "cacheOK";

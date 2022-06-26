@@ -30,6 +30,7 @@
  *      APPEND_TYPE_SEQUENCE  : [ [{pts:xxx, data:Uint8Array(...) }], ...]
  */
 module.exports = {
+    H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER: 0,
     // SLICE_TAG_AUDIO: 0x08,
     // SLICE_TAG_VIDEO: 0x09,
     // PLAY_CMD: 1001,

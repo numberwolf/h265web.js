@@ -21,27 +21,36 @@
  **********************************************************/
 const AudioContext 	= window.AudioContext || window.webkitAudioContext;
 const def = require('../consts');
-const getMsTime = () => {
-    return new Date().getTime();
-};
+const AVCommon = require('./av-common');
+
+// const getMsTime = () => {
+//     return new Date().getTime();
+// };
 
 class AudioPcmPlayerModule {
 
-	constructor(config) {
+	constructor() {
 
-		this._sample_rate 	= config.sampleRate || def.DEFAULT_SAMPLERATE;
-		this._seg_dur 		= config.segDur || 2; // 2 second
-		this._channels 		= config.channels || def.DEFAULT_CHANNELS;
+		// this._sample_rate 	= config.sampleRate || 44100;
+		// this._seg_dur 		= config.segDur || 2; // 2 second
+		// this._channels 		= config.channels || 1;
+		this._sample_rate 	= 44100;
+		this._seg_dur 		= 0.1; // 2 second
+		this._channels 		= 1;
 
 		this._swapStartPlay = true;
-		this._start_time 	= -1;
+		this.playStartTime 	= -1;
+		this.playTimestamp 	= 0.0; // @TODO
 		this._now_seg_dur 	= -1;
 		this._push_start_idx= 0;
 
+		this._playInterval = null;
+
 		// chunk = new Float32Array(u8_byte_arr.buffer);
 		this._pcm_array_buf = null;
+		this._pcm_array_frame = [];
 
-		this._once_pop_len 	= this._sample_rate * this._seg_dur; // ~ 2s 44100
+		this._once_pop_len 	= parseInt(this._sample_rate * this._seg_dur); // ~ 2s 44100
 
 		this._active_node 	= null;
 
@@ -55,6 +64,10 @@ class AudioPcmPlayerModule {
 	setVoice(volume) {
 		this._gain.gain.value = volume;
 	}
+
+	pushBufferFrame(buf, v_pts) {
+
+	} // pushBufferFrame
 
 	/**
 	 * @breif 	pack audio fltp(f32le) frames
@@ -113,59 +126,103 @@ class AudioPcmPlayerModule {
 			this._pcm_array_buf = tmp_buf;
 		}
 
-		console.log("-------------------------- audio this._pcm_array_buf len = ", 
+		console.log("decode_audio_g711 -------------------------- audio this._pcm_array_buf len = ", 
 			this._pcm_array_buf.length);
 	}
 
 	readingLoopWithF32() {
-		if (this._start_time > 0 && getMsTime() - this._start_time >= this._now_seg_dur) {
-			console.log("getMsTime() - start_time >= now_seg_dur", 
-				getMsTime(), this._start_time, this._now_seg_dur);
-			this._start_time = -1;
-			this._now_seg_dur = -1;
-		}
+		// if (this.playStartTime > 0 && AVCommon.GetMsTime() - this.playStartTime >= this._now_seg_dur) {
+		// 	console.log("AVCommon.GetMsTime() - start_time >= now_seg_dur", 
+		// 		AVCommon.GetMsTime(), this.playStartTime, this._now_seg_dur);
+		// 	this.playStartTime = -1;
+		// 	this._now_seg_dur = -1;
+		// }
 
-		console.log(getMsTime());
+		// if (this.playStartTime < 0) {
+		// 	this.playStartTime = AVCommon.GetMsTime();
+		// 	this.playTimestamp = AVCommon.GetMsTime();
+		// }
 
-		if (this._start_time < 0) {
-			console.log("---------------- loop", new Date());
+		// console.log(AVCommon.GetMsTime());
 
-			if (this._pcm_array_buf !== null && this._pcm_array_buf.length > this._push_start_idx) {
-				console.log("===================> readingLoopWithF32 <===================");
-				this._swapStartPlay = false;
-				// POP出数据
-				let end_idx = this._push_start_idx + this._once_pop_len;
-				if (end_idx > this._pcm_array_buf.length) {
-					end_idx = this._pcm_array_buf.length;
-				}
-				let data = this._pcm_array_buf.slice(this._push_start_idx, end_idx);
-				this._push_start_idx += data.length;
-				// let data = pcm_array_buf;
+		// if (this.playStartTime < 0) {
+		// console.log("---------------- loop", new Date());
 
-				this._now_seg_dur = (1.0 * data.length / this._sample_rate) * 1000;
+		if (this._pcm_array_buf !== null && this._pcm_array_buf.length > this._push_start_idx) 
+		{
+			console.log("===================> readingLoopWithF32 <===================");
 
-				console.log(data.length, this._sample_rate, this._now_seg_dur);
-
-			    const aud_buf = this._ctx.createBuffer(1, data.length, this._sample_rate);
-			    console.log("================> PLAY START", data.length, new Date());
-			    // copy our fetched data to its first channel
-			    aud_buf.copyToChannel(data, 0);
-			    // the actual player
-			    this._active_node = this._ctx.createBufferSource();
-			    this._active_node.buffer = aud_buf;
-			    this._active_node.connect(this._gain);
-
-			    this._start_time = getMsTime();
-			    this._active_node.start(0);
-			    // console.log("================> PLAY ENDED", data.length, new Date());
-			} else {
-				// console.log("================> WAIT 1s");
-				setTimeout(this.readingLoopWithF32, 1);
+			if (this.playStartTime < 0) {
+				this.playStartTime = AVCommon.GetMsTime();
+				this.playTimestamp = AVCommon.GetMsTime();
 			}
 
-		} // end if start < 0
+			this._swapStartPlay = false;
+			// POP出数据
+			let end_idx = this._push_start_idx + this._once_pop_len;
+			if (end_idx > this._pcm_array_buf.length) {
+				end_idx = this._pcm_array_buf.length;
+			}
+			let data = this._pcm_array_buf.slice(this._push_start_idx, end_idx);
+			this._push_start_idx += data.length;
+			// let data = pcm_array_buf;
+
+			this._now_seg_dur = (1.0 * data.length / this._sample_rate) * 1000;
+
+			console.log(data.length, this._sample_rate, this._now_seg_dur);
+
+		    const aud_buf = this._ctx.createBuffer(1, data.length, this._sample_rate);
+		    console.log("================> PLAY START", data.length, new Date());
+		    // copy our fetched data to its first channel
+		    aud_buf.copyToChannel(data, 0);
+		    // the actual player
+		    this._active_node = this._ctx.createBufferSource();
+		    this._active_node.buffer = aud_buf;
+		    this._active_node.connect(this._gain);
+
+		    this.playStartTime = AVCommon.GetMsTime();
+		    this._active_node.start(0);
+
+
+		    this.playTimestamp += this._now_seg_dur;
+		    // console.log("================> PLAY ENDED", data.length, new Date());
+		} else {
+			// console.log("================> WAIT 1s");
+			return -1;
+		}
+
+		return 0;
+
+		// } // end if start < 0
+	} // readingLoopWithF32
+
+	getAlignVPTS() {
+		return this.playTimestamp;
+	} // getAlignVPTS
+
+	// @TODO
+	/*
+	dist-play.js:31907 Uncaught TypeError: t.audioWAudio.pause is not a function
+    at dist-play.js:31907:159
+    */
+	pause() {
+		if (this._playInterval !== null) {
+			window.clearInterval(this._playInterval);
+			this._playInterval = null;
+		}
 	}
 
-}
+	play() {
+		let _this = this;
+		// 一切结束后启动定时器
+        this._playInterval = window.setInterval(() => {
+			let ret_read = _this.readingLoopWithF32();
+			// if (ret_read < 0) {
+			// 	_this.pause();
+			// }
+		}, 10);
+	}
+
+} // AudioPcmPlayerModule
 
 exports.AudioPcmPlayer = AudioPcmPlayerModule;
