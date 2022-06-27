@@ -63,7 +63,7 @@ source ./version.sh
 # 	${cmd[$i]}
 # done
 
-H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER=0
+H265WEBJS_COMPILE_MULTI_THREAD_SHAREDBUFFER=1
 
 REMOVE_FUNCS='"console.log","console.warn","alert"'
 # REMOVE_FUNCS='"console.log","console.warn"'

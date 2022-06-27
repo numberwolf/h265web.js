@@ -953,6 +953,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/06/27 |
+| - | 0.Fixed: problem with hls parser |
 | Time | 2022/06/26 |
 | - | 0.Support g711a (http-flv) |
 | - | 1.Fixed 264(avc) flv error with mediainfo |

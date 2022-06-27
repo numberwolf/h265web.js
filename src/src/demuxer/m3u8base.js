@@ -138,7 +138,7 @@ class M3u8BaseParserModule {
 	_uriParse(videoURL) {
 		this._preURI = "";
 
-		let headPart = videoURL.split("//");
+		let headPart = videoURL.split("://");
 		let subPartProtocal = null;
 		let subPartBody = null;
 
@@ -150,7 +150,7 @@ class M3u8BaseParserModule {
 		if (headPart.length > 1) {
 			subPartProtocal = headPart[0];
 			subPartBody = headPart[1].split("/");
-			this._preURI = subPartProtocal + "//";
+			this._preURI = subPartProtocal + "://";
 		} else {
 			subPartBody = headPart[0].split("/");
 		}
