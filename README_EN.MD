@@ -953,6 +953,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/07/01 |
+| - | 0.Feature: HTTP-FLV(Without audio) Stream Performance optimizing |
 | Time | 2022/06/27 |
 | - | 0.Fixed: problem with hls parser |
 | Time | 2022/06/26 |

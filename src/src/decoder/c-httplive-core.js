@@ -52,6 +52,9 @@ const PLAY_LOOP_COST_ONCE_TOTAL         = 100; // 100 loop compute once
 
 const PLAY_LOOP_RESET_CORRECT_DUR_MS    = 1; // 1ms
 
+const V_CACHE_INTERVAL_WAIT_LOOP_MS = 10;
+const V_CACHE_INTERVAL_PUSH_LOOP_MS = 1;
+
 // function getScriptPath(foo) {
 //     let fooStr = foo.toString();
 //     let fooMatchFunc = fooStr.match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/);
@@ -84,6 +87,7 @@ class CHttpLiveCoreModule { // export default
             ignoreAudio : config.ignoreAudio || 0,
             autoPlay: config.autoPlay || false,
         }; // end this.config
+        console.log("this.config", this.config);
 
         alert("this.config.probeSize" + this.config.probeSize + " ignoreAudio:" + this.config.ignoreAudio);
 
@@ -104,7 +108,8 @@ class CHttpLiveCoreModule { // export default
 
         this.corePtr = null;
         this.AVGetInterval = null;
-        // this.AVDecodeInterval = null;
+        this.AVDecodeInterval = null;
+        this.decVFrameInterval = null;
 
         this.readyShowDone = false;
         this.readyKeyFrame = false;
@@ -127,6 +132,8 @@ class CHttpLiveCoreModule { // export default
         this.audioWAudio= null; // web audio aac decoder player
         this.audioVoice = 1.0;
 
+        this.isCacheV = def.CACHE_NO_LOADCACHE;
+
         this.muted = this.config.autoPlay; // for autoplay
         if (this.config.autoPlay === true && this.config.ignoreAudio < 1)
         {
@@ -144,7 +151,8 @@ class CHttpLiveCoreModule { // export default
             };
         }
 
-        this.frameTime = 1000 * 1.0 / this.config.fps;
+        this.frameTimeSec = 1.0 / this.config.fps;
+        this.frameTime = 1000 * this.frameTimeSec;
 
         this.NaluBuf = [];
         this.YuvBuf = [];
@@ -362,13 +370,15 @@ class CHttpLiveCoreModule { // export default
     }
 
     _reinitAudioModule(sampleRate=44100) {
+        if (this.config.ignoreAudio > 0) {
+            return;
+        }
         let _this = this;
         if (undefined !== this.audioWAudio && null !== this.audioWAudio) {
             this.audioWAudio.stop();
             this.audioWAudio = null;
         }
 
-        // console.log("create audio = ignoreAudio:", this.config.ignoreAudio < 1);
         this.audioWAudio = AudioModule({
             sampleRate: sampleRate,
             appendType: def.APPEND_TYPE_FRAME
@@ -409,7 +419,9 @@ class CHttpLiveCoreModule { // export default
         this.mediaInfo.size.width = width;
         this.mediaInfo.size.height = height;
 
-        this.frameTime = Math.floor(1000.0 / (this.mediaInfo.fps + 2));
+        this.frameTime = Math.floor(1000.0 / (this.mediaInfo.fps + 5));
+
+        this.chaseFrame = 0;
 
         // check canvas width/height
         if (this.CanvasObj.width != width || this.CanvasObj.height != height) {
@@ -439,7 +451,7 @@ class CHttpLiveCoreModule { // export default
             // }); // this.audioWAudio
             // this.audioWAudio.isLIVE = true;
 
-            if (this.muted === false) {
+            if (this.config.ignoreAudio < 1 && this.muted === false) {
                 this._reinitAudioModule(this.mediaInfo.sampleRate);
             }
             // this.audioWAudio.setDurationMs(duration * 1000.0);
@@ -477,6 +489,8 @@ class CHttpLiveCoreModule { // export default
         }; // data
 
         this.YuvBuf.push(data);
+        console.log(
+            "callbackYUV==============> YuvBuf length", this.YuvBuf.length);
 
         this.checkCacheState();
 
@@ -511,7 +525,10 @@ class CHttpLiveCoreModule { // export default
         if (this.readyShowDone === false && this.playYUV() === true) {
             this.readyShowDone = true;
             this.onReadyShowDone && this.onReadyShowDone();
-            if (!this.audioWAudio && this.config.autoPlay === true) {
+            if (this.config.ignoreAudio > 0 && 
+                !this.audioWAudio && 
+                this.config.autoPlay === true) 
+            {
                 this.play();
                 setTimeout(function() {
                     console.log("isPlayingState", _this.isPlayingState());
@@ -573,11 +590,17 @@ class CHttpLiveCoreModule { // export default
     } // end func _callbackNALU
 
     _callbackPCM(pcm) {
+        if (this.config.ignoreAudio > 0) {
+            return;
+        }
     } // end func _callbackPCM
 
     // _callbackAAC(adts, buffer, line1, channel, pts) {
     _callbackAAC(aacFrame, line1, channel, pts) {
-        // console.log("callbackNALU time AAC dts", pts);
+        console.log("callbackAAC time AAC dts", pts);
+        if (this.config.ignoreAudio > 0) {
+            return;
+        }
 
         let ptsFixed = this._ptsFixed2(pts);
         if (this.audioWAudio && this.muted === false) 
@@ -619,62 +642,83 @@ class CHttpLiveCoreModule { // export default
         }
     } // end func _callbackPCM
 
-    _decode() {
+    _decode(loopMs=V_CACHE_INTERVAL_PUSH_LOOP_MS) {
         let _this = this;
 
         setTimeout(() => {
             if (_this.workerFetch === null) {
                 return;
             }
-            let item = _this.NaluBuf.shift();
-            if (item !== undefined && item !== null) {
+            // if (_this.cache_status === false || _this.YuvBuf.length < 5) 
+            // {
+                let item = _this.NaluBuf.shift();
+                if (item !== undefined && item !== null) {
 
-                let offset_video = Module._malloc(item.bufData.length);
-                Module.HEAP8.set(item.bufData, offset_video);
+                    let offset_video = Module._malloc(item.bufData.length);
+                    Module.HEAP8.set(item.bufData, offset_video);
 
-                // decode start
-                // let debugStartMS = AVCommon.GetMsTime();
-                let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
-                    ["number", "number", "number", "number", "number"])
-                    (_this.corePtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
-                //console.log("decodeVideoFrame ret:", decRet); 
-                // let debugEndMS = AVCommon.GetMsTime();
+                    // decode start
+                    // let debugStartMS = AVCommon.GetMsTime();
+                    let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
+                        ["number", "number", "number", "number", "number"])
+                        (_this.corePtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
+                    //console.log("decodeVideoFrame ret:", decRet); 
+                    // let debugEndMS = AVCommon.GetMsTime();
 
-                // console.log("js debug callbackYUV==============> time:", 
-                    // debugEndMS, "-", debugStartMS, "=", debugEndMS - debugStartMS);
-                // decode end
+                    // console.log("js debug callbackYUV==============> time:", 
+                        // debugEndMS, "-", debugStartMS, "=", debugEndMS - debugStartMS);
+                    // decode end
 
-                //item.bufData = null;
-                Module._free(offset_video);
-                offset_video = null;
-            }
+                    //item.bufData = null;
+                    Module._free(offset_video);
+                    offset_video = null;
+                }
+            // }
 
             _this._decode();
         }, 1); // end timeout
 
-        // if (this.AVDecodeInterval === undefined 
-        //     || this.AVDecodeInterval === null) 
-        // {
-        //     this.AVDecodeInterval = setInterval(function() {
-        //         let item = _this.NaluBuf.shift();
-        //         if (item !== undefined && item !== null) {
+        // console.log("loopMs=>", loopMs);
 
-        //             let offset_video = Module._malloc(item.bufData.length);
-        //             Module.HEAP8.set(item.bufData, offset_video);
+        // if (this.AVDecodeInterval !== undefined 
+        //     && this.AVDecodeInterval !== null) {
+        //     window.clearInterval(this.AVDecodeInterval);
+        //     this.AVDecodeInterval = null;
+        // }
 
-        //             // decode start
-        //             let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
-        //                 ["number", "number", "number", "number", "number"])
-        //                 (_this.corePtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
-        //             //console.log("decodeVideoFrame ret:", decRet); 
-        //             // decode end
-
-        //             //item.bufData = null;
-        //             Module._free(offset_video);
-        //             offset_video = null;
+        // this.AVDecodeInterval = setInterval(function() {
+        //     if (_this.cache_status === false) {
+        //         if (loopMs > V_CACHE_INTERVAL_PUSH_LOOP_MS) {
+        //             _this._decode();
+        //             return;
         //         }
-        //     }, 1); // end this.AVDecodeInterval
-        // } // end this.AVDecodeInterval === undefined decode
+        //     } else {
+        //         if (loopMs < V_CACHE_INTERVAL_WAIT_LOOP_MS) {
+        //             _this._decode(V_CACHE_INTERVAL_WAIT_LOOP_MS);
+        //             return;
+        //         }
+        //     }
+
+        //     if (_this.NaluBuf.length > 0) {
+        //         let item = _this.NaluBuf.shift();
+
+        //         let offset_video = Module._malloc(item.bufData.length);
+        //         Module.HEAP8.set(item.bufData, offset_video);
+
+        //         // decode start
+        //         let decRet = Module.cwrap("decodeHttpFlvVideoFrame", "number",
+        //             ["number", "number", "number", "number", "number"])
+        //             (_this.corePtr, offset_video, item.bufData.length, item.pts, item.dts, 0);
+        //         console.log("decodeVideoFrame ret:", decRet); 
+        //         // decode end
+
+        //         //item.bufData = null;
+        //         Module._free(offset_video);
+        //         offset_video = null;
+        //     } else {
+        //         // console.log("decodeVideoFrame nalu empty:", _this.NaluBuf.length); 
+        //     }
+        // }, loopMs); // end this.AVDecodeInterval
     } // end func _decode
 
     setScreen(setVal = false) {
@@ -689,10 +733,21 @@ class CHttpLiveCoreModule { // export default
     }
 
     checkCacheState() {
+        console.log("checkCacheState ", 
+            this.YuvBuf.length, HTTP_FLV_CACHE_V_OK_COUNT, 
+            (
+                this.config.ignoreAudio > 0 || 
+                this.mediaInfo.audioNone === true || 
+                (
+                    this.audioWAudio && 
+                    this.audioWAudio.sampleQueue.length >= HTTP_FLV_CACHE_A_OK_COUNT
+                )
+            )
+        );
         let newState = (
             this.YuvBuf.length >= HTTP_FLV_CACHE_V_OK_COUNT 
             && (
-                this.mediaInfo.audioNone === true || 
+                this.config.ignoreAudio > 0 || this.mediaInfo.audioNone === true || 
                 (this.audioWAudio && this.audioWAudio.sampleQueue.length >= HTTP_FLV_CACHE_A_OK_COUNT)
             )
         );
@@ -707,8 +762,10 @@ class CHttpLiveCoreModule { // export default
     }
 
     setVoice(voice) {
-        this.audioVoice = voice;
-        this.audioWAudio && this.audioWAudio.setVoice(voice);
+        if (this.ignoreAudio < 1) {
+            this.audioVoice = voice;
+            this.audioWAudio && this.audioWAudio.setVoice(voice);
+        }
     }
 
     _removeBindFuncPtr() {
@@ -779,9 +836,12 @@ class CHttpLiveCoreModule { // export default
     }
 
     pause() {
-        this.audioWAudio && this.audioWAudio.pause();
+        if (this.ignoreAudio < 1) {
+            this.audioWAudio && this.audioWAudio.pause();
+        }
         this.playInterval && clearInterval(this.playInterval);
         this.playInterval = null;
+        this.chaseFrame = 0;
 
         this.onPlayState && this.onPlayState(this.isPlayingState());
     }
@@ -803,6 +863,7 @@ class CHttpLiveCoreModule { // export default
 
     play() {
         let _this = this;
+        this.chaseFrame = 0;
 
         if (false === this.checkCacheState()) {
             this.onLoadCache && this.onLoadCache();
@@ -829,8 +890,16 @@ class CHttpLiveCoreModule { // export default
             // let onceTotalPlayCost   = 0; // PLAY_LOOP_COST_ONCE_TOTAL
             // let onceComputeCount    = 0;
 
-            if (this.mediaInfo.audioNone === false && this.audioWAudio && this.mediaInfo.noFPS === false) 
+            if (this.config.ignoreAudio < 1 &&
+                this.mediaInfo.audioNone === false &&
+                this.audioWAudio != null &&
+                this.mediaInfo.noFPS === false)
             {
+                console.log("playInterval entry first", 
+                    this.config.ignoreAudio,
+                    this.mediaInfo.audioNone,
+                    this.audioWAudio,
+                    this.mediaInfo.noFPS);
                 // 1. 只是针对渲染的耗时
                 // 2. @TODO-ZZ 继续加追帧
                 this.playInterval = setInterval(function() {
@@ -936,26 +1005,156 @@ class CHttpLiveCoreModule { // export default
 
             } else {
                 this.playInterval = setInterval(function() {
-                    let item = _this.YuvBuf.shift(); 
-                    if (item != undefined && item !== null) 
+                    nowTimestamp = AVCommon.GetMsTime();
+
+                    // console.log("YUV cachestatus", _this.cache_status);
+                    if (_this.cache_status)
                     {
-                        if (_this.showScreen) { // on render
-                            // Render callback
-                            _this.onRender && _this.onRender(
-                                item.line_y, item.h, 
-                                item.bufY, item.bufU, item.bufV);
+                        console.log(
+                            "playInterval log:",
+                            _this.YuvBuf.length,
+                            "-->",
+                            nowTimestamp, calcuteStartTime, 
+                            nowTimestamp - calcuteStartTime,
+                            ">=", 
+                            _this.frameTime, playFrameCostTime,
+                            _this.frameTime - playFrameCostTime
+                        );
+                        let now_diff_cal_dur = nowTimestamp - calcuteStartTime;
+                        let before_frame_cost = _this.frameTime - playFrameCostTime;
+
+                        if (_this.chaseFrame <= 0) {
+                            _this.chaseFrame = Math.floor(now_diff_cal_dur / before_frame_cost);
                         }
-                        // render
-                        RenderEngine420P.renderFrame(_this.AVGLObj, 
-                            item.bufY, item.bufU, item.bufV, 
-                            item.line_y, item.h);
-                    } // end item
-                    if (_this.YuvBuf.length <= 0) {
-                        console.log("YUV cacheing");
-                        _this.cache_status = false;
-                        // _this.onLoadCache && _this.onLoadCache();
-                    } // end check len
-                }, _this.frameTime); // end playInterval
+
+                        if (now_diff_cal_dur >= before_frame_cost || _this.chaseFrame > 0) // play
+                        {
+
+                            let item = _this.YuvBuf.shift(); 
+                            console.log("playInterval YUV pts playFrameCostTime", item.pts, _this.YuvBuf.length, playFrameCostTime);
+
+                            if (item != undefined && item !== null) 
+                            {
+                                playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp 
+                                    + PLAY_LOOP_RESET_CORRECT_DUR_MS;
+
+                                if (_this.showScreen) { // on render
+                                    // Render callback
+                                    _this.onRender && _this.onRender(
+                                        item.line_y, item.h, 
+                                        item.bufY, item.bufU, item.bufV);
+                                }
+                                console.warn("RenderEngine420P.renderFrame item.pts", item.pts);
+
+                                // render
+                                RenderEngine420P.renderFrame(_this.AVGLObj, 
+                                    item.bufY, item.bufU, item.bufV, 
+                                    item.line_y, item.h);
+
+                                
+                            } // check videoFrame item is empty
+
+                            // @TODO-ZZ 视频帧解码严重落后 cache
+                            if (
+                                _this.YuvBuf.length <= 0
+                            ) {
+                                console.log("YUV cacheing");
+                                _this.cache_status = false;
+                                _this.onLoadCache && _this.onLoadCache();
+                            }
+
+                            /*
+                             * Cost Time
+                             */
+                            calcuteStartTime = nowTimestamp;
+                            // playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp 
+                            //                     + PLAY_LOOP_RESET_CORRECT_DUR_MS;
+
+                            // onceComputeCount += 1;
+                            // onceTotalPlayCost += playFrameCostTime;
+                            // if (onceComputeCount >= PLAY_LOOP_COST_ONCE_TOTAL) {
+                            //     avgPlayFrameCost = onceTotalPlayCost / onceComputeCount;
+                            //     onceComputeCount = 0;
+                            //     onceTotalPlayCost = 0;
+                            // }
+
+                            if (_this.chaseFrame > 0) {
+                                _this.chaseFrame--;
+                                if (_this.chaseFrame === 0) {
+                                    playFrameCostTime = _this.frameTime;
+                                }
+                            }
+                        } // check cost with yuv frame to play
+
+                    } else {
+                        playFrameCostTime = _this.frameTime;
+
+                        // reset
+                        // onceTotalPlayCost   = 0; // PLAY_LOOP_COST_ONCE_TOTAL
+                        // onceComputeCount    = 0;
+                    }
+                }, 1); // this.playInterval
+
+                // this.beforePTS = -1;
+                // this.playInterval = window.setInterval(() => {
+                //     nowTimestamp = AVCommon.GetMsTime();
+                //     if (_this.cache_status)
+                //     {
+                //         if (_this.YuvBuf.length > 0) {
+                //             if (nowTimestamp - calcuteStartTime >= _this.frameTime - playFrameCostTime)
+                //             {
+                //                 let item = _this.YuvBuf.shift(); 
+                //                 if (item !== undefined && item !== null) {
+                //                     console.log("LIVE no audio ==> shift item.pts play ", item.pts);
+                //                     RenderEngine420P.renderFrame(_this.AVGLObj, 
+                //                         item.bufY, item.bufU, item.bufV, 
+                //                         item.line_y, item.h);
+
+                //                     playFrameCostTime = AVCommon.GetMsTime() - nowTimestamp;
+
+                //                     if (playFrameCostTime >= _this.frameTime) {
+                //                         playFrameCostTime = _this.frameTime;
+                //                     }
+
+                //                     calcuteStartTime = nowTimestamp;
+                //                 }
+                //             } else {
+                //                 console.log("LIVE no audio shift videoFrame.pts 等待");
+                //             }
+                //         } else {
+                //             console.log("YUV cacheing");
+                //             _this.cache_status = false;
+                //             _this.onLoadCache && _this.onLoadCache();
+                //         }
+                //     } else {
+                //         playFrameCostTime = _this.frameTime;
+                //     }
+
+                //     // calcuteStartTime = nowTimestamp;
+                // }, 2); // this.playInterval
+
+                // this.playInterval = setInterval(function() {
+                //     let item = _this.YuvBuf.shift(); 
+                //     if (item != undefined && item !== null) 
+                //     {
+                //         if (_this.showScreen) { // on render
+                //             // Render callback
+                //             _this.onRender && _this.onRender(
+                //                 item.line_y, item.h, 
+                //                 item.bufY, item.bufU, item.bufV);
+                //         }
+                //         // render
+                //         RenderEngine420P.renderFrame(_this.AVGLObj, 
+                //             item.bufY, item.bufU, item.bufV, 
+                //             item.line_y, item.h);
+                //     } // end item
+                //     if (_this.YuvBuf.length <= 0) {
+                //         console.log("YUV cacheing");
+                //         _this.cache_status = false;
+                //         // _this.onLoadCache && _this.onLoadCache();
+                //     } // end check len
+                // }, _this.frameTime); // end playInterval
+
             } // end if check audioNone to create play interval
             
         } // check this.playInterval is undefined or null
@@ -1133,18 +1332,23 @@ class CHttpLiveCoreModule { // export default
         let callbackRet = Module.cwrap(
             "initializeSniffHttpFlvModule",
             "number",
-            ["number", "number", "number", "number", "number", "number"])
+            ["number", 
+                "number", "number", "number", "number", "number", 
+                "number"])
             (this.corePtr, 
                 this._ptr_probeCallback, 
                 this._ptr_yuvCallback, this._ptr_naluCallback, 
-                this._ptr_sampleCallback, this._ptr_aacCallback);
+                this._ptr_sampleCallback, this._ptr_aacCallback, 
+                this.config.ignoreAudio);
         console.log("create_media_processor callbackRet: ", callbackRet);
 
         this.AVGLObj = RenderEngine420P.setupCanvas(this.CanvasObj, {preserveDrawingBuffer: false})
 
         // var url265 = "https://ahekv0bx0fsc5jjda5z.down.evs.bcelive.com/evs/hsnFWkELtOSv.flv?timestamp=1632799645&token=412ca3ab22886dd6faac3a405ed69de265abdb86afae91cf1861d78d05cd61e7";
         this.workerFetch.postMessage({cmd: "start", data: url265, msg: "start"});
+
         this._decode();
+        // this._createDecVframeInterval(V_CACHE_INTERVAL_PUSH_LOOP_MS)
         // this.play();
     } // end func startPost
 
