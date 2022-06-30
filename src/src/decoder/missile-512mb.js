@@ -850,7 +850,7 @@ var dataURIPrefix = "data:application/octet-stream;base64,";
 function isDataURI(filename) {
     return String.prototype.startsWith ? filename.startsWith(dataURIPrefix) : filename.indexOf(dataURIPrefix) === 0
 }
-var wasmBinaryFile = "missile-512mb-v20220623.wasm";
+var wasmBinaryFile = "missile-512mb-v20220701.wasm";
 if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile)
 }
