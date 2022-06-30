@@ -248,6 +248,7 @@ Notice：
 | Get Video Size | Y | ---- |
 | Get Video FPS | Y | ---- |
 | Get Audio SampleRate | Y | ---- |
+| Chase Frame | Y | HTTP-FLV(no audio) |
 
 <br>
 
