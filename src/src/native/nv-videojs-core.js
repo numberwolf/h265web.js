@@ -27,13 +27,14 @@ const videojs 		= require('video.js');
 class NvVideojsCoreModule {
 	constructor(config) {
 		this.configFormat = {
-            probeDurationMS: config.probeDurationMS || -1,
+            probeDurationMS: config.probeDurationMS,
 			width: config.width || def.DEFAULT_WIDTH,
             height: config.height || def.DEFAULT_HEIGHT,
             playerId: config.playerId || def.DEFAILT_WEBGL_PLAY_ID,
             ignoreAudio: config.ignoreAudio,
             autoPlay: config.autoPlay || false,
         };
+        console.log("this.configFormat", this.configFormat);
         this.audioVoice	= 1.0;
 
         this.myPlayerID = this.configFormat.playerId + '-vjs';
@@ -98,7 +99,7 @@ class NvVideojsCoreModule {
         this.videoTag.style.height = this.configFormat.height + 'px';
 
         this.duration = this.myPlayer.duration();
-        console.log("this.videoTag==>", this.videoTag, this.duration);
+        console.log("this.videoTag==>", this.videoTag, this.duration, this.getSize(), this.videoTag.videoWidth);
 
         // this.onLoadFinish && this.onLoadFinish();
         // this.onReadyShowDone && this.onReadyShowDone();
@@ -180,7 +181,8 @@ class NvVideojsCoreModule {
         this.myPlayer = videojs(this.myPlayerID, options, function() {
             alert("load vjs");
             _this.myPlayer.on("canplaythrough", function() {
-                console.log("视频源数据加载完成");
+                console.log("视频源数据加载完成", 
+                    _this.getSize(), _this.videoTag.videoWidth);
                 // if (_this.configFormat.probeDurationMS > 0) {
                 //     _this.onLoadFinish && _this.onLoadFinish();
                 //     _this.onReadyShowDone && _this.onReadyShowDone();
@@ -190,7 +192,7 @@ class NvVideojsCoreModule {
             _this.myPlayer.on("loadedmetadata", function(e) {
                 console.log("vjs loadedmetadata", e);
                 _this._onVideoJsReady();
-                if (_this.configFormat.probeDurationMS > 0) {
+                if (_this.configFormat.probeDurationMS >= 0) {
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
                 }
@@ -220,6 +222,12 @@ class NvVideojsCoreModule {
     } // makeIt
 
     getSize() {
+        if (this.myPlayer.videoWidth() <= 0) {
+            return {
+                width: this.videoTag.videoWidth,
+                height: this.videoTag.videoHeight
+            };
+        }
         return {
             width: this.myPlayer.videoWidth(),
             height: this.myPlayer.videoHeight(),

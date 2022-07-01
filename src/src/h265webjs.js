@@ -1109,8 +1109,68 @@ class H265webjsModule {
         }, 5);
     } // _avFeedMP4Data
 
+    _isSupportWASM() {
+        const supported = (() => {
+            try {
+                if (typeof WebAssembly === "object"
+                    && typeof WebAssembly.instantiate === "function") {
+                    const module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
+                    if (module instanceof WebAssembly.Module)
+                        return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
+                }
+            } catch (e) {
+            }
+            return false;
+        }) ();
+
+        console.log(supported ? "WebAssembly is supported" : "WebAssembly is not supported");
+
+        if (supported === false) {
+            return false;
+        }
+
+        if (supported === true) {
+            const browser_info = AVCOMMON.BrowserJudge();
+            const browser_type = browser_info[0];
+            const browser_version = browser_info[1];
+            if (browser_type === 'Chrome' && browser_version < 85) {
+                return false;
+            }
+
+            if (browser_type.indexOf("360") >= 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     _makeMP4Player() {
         let _this = this;
+
+        console.log("_isSupportWASM", this._isSupportWASM());
+
+        if (this._isSupportWASM() === false) {
+            if (this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
+                console.log("go mp4");
+                this._makeNativePlayer();
+            } else if (
+                this.configFormat.type == def.PLAYER_IN_TYPE_TS ||
+                this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
+            {
+                console.log("go ts");
+                // this._mpegTsEntry();
+                return -1;
+            } else if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+                console.log("go m3u8");
+                this._videoJsPlayer(0);
+            } else if (this.configFormat.type === def.PLAYER_IN_TYPE_RAW_265) {
+                console.log("go raw265");
+                // this._raw265Entry();
+                return -1;
+            }
+            return 1;
+        }
 
         /*
          * Switch Media
@@ -1282,7 +1342,7 @@ class H265webjsModule {
         }
     } // _makeMP4PlayerViewEvent
 
-    _makeNativePlayer(durationMs, fps, sampleRate, size, audioNone, videoCodec) {
+    _makeNativePlayer(durationMs=0, fps=0, sampleRate=0, size, audioNone=0, videoCodec) {
         let _this = this;
         // set play params in this entry
         this.playParam.durationMs = durationMs;
@@ -1327,6 +1387,7 @@ class H265webjsModule {
 
         this.player.onLoadFinish = () => {
             _this.playParam.durationMs = _this.player.duration * 1000;
+            _this.playParam.size = _this.player.getSize();
             _this.onLoadFinish && _this.onLoadFinish();
             _this.onReadyShowDone && _this.onReadyShowDone();
         };
@@ -2253,6 +2314,11 @@ class H265webjsModule {
      */
     _m3u8Entry() {
         let _this = this;
+
+        if (this._isSupportWASM() === false) {
+            return this._videoJsPlayer(0);
+        }
+
         let readyFinState = false;
         let durationMs = 0;
         let durationSecFloat;
@@ -2362,6 +2428,7 @@ class H265webjsModule {
 
             // getSize
             _this.playParam.size = _this.player.getSize();
+            _this.playParam.videoCodec = 1; // AVC
 
             if (_this.player.duration === Infinity || _this.player.duration < 0) {
                 _this.playParam.durationMs = -1;

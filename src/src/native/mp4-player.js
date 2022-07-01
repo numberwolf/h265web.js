@@ -100,6 +100,15 @@ class Mp4PlayerModule {
         canvasBox.appendChild(this.videoTag);
 	}
 
+	getSize() {
+		const width = this.videoTag.videoWidth > 0 ? this.videoTag.videoWidth : this.configFormat.width;
+        const height = this.videoTag.videoHeight > 0 ? this.videoTag.videoHeight : this.configFormat.height;
+        return {
+            width: width,
+            height: height
+        };
+	}
+
 	play() {
 		let _this = this;
 		this.videoTag.play();
