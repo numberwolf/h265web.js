@@ -271,16 +271,17 @@ class M3u8BaseParserModule {
 					if (mediaFile[0] === '/') {
 						const httpHostSplit = this._preURI.split("//");
 						const hostSplit = httpHostSplit[httpHostSplit.length-1].split('/'); // remove http
-
 						this._preURI = httpHostSplit[0] + "//" + hostSplit[0];
-						// this._preURI = "";
-						// for (let httpHostSplitIdx = 0; 
-						// 	httpHostSplitIdx < httpHostSplit.length; 
-						// 	httpHostSplitIdx++) 
-						// {
-						// 	this._preURI += httpHostSplit[httpHostSplitIdx];
-						// } // end for httpHostSplitIdx
-						// this._preURI += hostSplit[0];
+						/*
+						this._preURI = "";
+						for (let httpHostSplitIdx = 0; 
+							httpHostSplitIdx < httpHostSplit.length; 
+							httpHostSplitIdx++) 
+						{
+							this._preURI += httpHostSplit[httpHostSplitIdx];
+						} // end for httpHostSplitIdx
+						this._preURI += hostSplit[0];
+						*/
 					}
 					mediaURI = this._preURI + mediaFile;
 				}
