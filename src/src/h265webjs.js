@@ -1595,12 +1595,13 @@ class H265webjsModule {
          */
         this.player.onProbeFinish = () => { // GetRealDurationOfLastFramePTS(fps, this.mp4Obj.getDurationMs());
             probeSuccessed = true;
-            console.log("first probe ", _this.player.config);
+            console.log("first probe ", _this.player.config, _this.player.audioNone);
             _this.playParam.fps          = _this.player.config.fps;
             _this.playParam.durationMs   = GetRealDurationOfLastFramePTS(_this.playParam.fps, _this.player.duration * 1000.0);
 
             if (_this.player.duration < 0) { // LIVE
                 _this.playMode = def.PLAYER_MODE_NOTIME_LIVE;
+                _this.playParam.durationMs = -1;
                 alert("HTTP FLV LIVE");
             }
 
@@ -1633,7 +1634,7 @@ class H265webjsModule {
                         false, _this.playParam.videoCodec);
                 } else if (_this.mediaExtFormat === def.PLAYER_IN_TYPE_FLV) {
                     // todo flvjs
-                    _this._flvJsPlayer(); // flvjs
+                    _this._flvJsPlayer(_this.playParam.durationMs, _this.playParam.audioNone); // flvjs
                 } else {
                     _this.onLoadFinish && _this.onLoadFinish();
                 }
@@ -1884,7 +1885,7 @@ class H265webjsModule {
                 let releaseRet = _this.player.release();
                 console.log("releaseRet ===> ", releaseRet);
                 _this.player = null;
-                _this._flvJsPlayer(_this.playParam.durationMs);
+                _this._flvJsPlayer(_this.playParam.durationMs, _this.playParam.audioNone);
             }
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
@@ -1997,7 +1998,7 @@ class H265webjsModule {
                 let releaseRet = _this.player.release();
                 console.log("releaseRet ===> ", releaseRet);
                 _this.player = null;
-                _this._flvJsPlayer(_this.playParam.durationMs);
+                _this._flvJsPlayer(_this.playParam.durationMs, _this.playParam.audioNone);
             }
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
@@ -2108,7 +2109,7 @@ class H265webjsModule {
                 let releaseRet = _this.player.release();
                 console.log("releaseRet ===> ", releaseRet);
                 _this.player = null;
-                _this._flvJsPlayer(_this.playParam.durationMs);
+                _this._flvJsPlayer(_this.playParam.durationMs, _this.playParam.audioNone);
             }
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
@@ -2470,7 +2471,7 @@ class H265webjsModule {
 
     } // _videoJsPlayer
 
-    _flvJsPlayer(durParams=-1) {
+    _flvJsPlayer(durParams=-1, audioNone=false) {
         let _this = this;
         let playerConfig = {
             width: this.configFormat.playerW,
@@ -2479,6 +2480,7 @@ class H265webjsModule {
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
             duration: durParams,
             autoPlay: this.configFormat.extInfo.autoPlay,
+            audioNone: audioNone
         }; // playerConfig
         console.log("_flvJsPlayer", playerConfig);
         this.player = new NvFlvJSCore.NvFlvjsCore(playerConfig);

@@ -51,11 +51,11 @@
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> |
-| Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | G711A(HTTP-FLV) | HEVC/H.265 | AVC/H.264 |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100">  |
+| Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | Single-Thread | G711A(HTTP-FLV) | G711U(HTTP-FLV) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100"> | - | - |
-| Single-Thread | MediaInfo | - | - |
+| <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | - |
+| MediaInfo | HEVC/H.265 | AVC/H.264 | - |
 
 </font>
 </strong>
@@ -102,6 +102,7 @@
 | HEVC/H.265 |  是  | ---- |
 | AAC |  是  | ---- |
 | G711A |  是  | HTTP-FLV |
+| G711U |  是  | HTTP-FLV |
 | AV1 |  是  | Chrome |
 
 * 能力
