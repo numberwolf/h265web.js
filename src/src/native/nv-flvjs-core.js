@@ -35,6 +35,7 @@ class NvFlvjsCoreModule {
             ignoreAudio: config.ignoreAudio,
             duration: config.duration,
             autoPlay: config.autoPlay || false,
+            audioNone: config.audioNone
         };
         this.audioVoice = 1.0;
 
@@ -91,6 +92,8 @@ class NvFlvjsCoreModule {
                 if (AVCommon.GetMsTime() - _this.lastDecodedFrameTime > (10 * 1000)) {
                     window.clearInterval(_this.checkPicBlockInterval);
                     _this.checkPicBlockInterval = null;
+
+                    console.log("checkPicBlockInterval _reBuildFlvjs");
                     _this._reBuildFlvjs(url);
                     return;
                 }
@@ -100,6 +103,7 @@ class NvFlvjsCoreModule {
 
     _checkLoadState(url) {
         let _this = this;
+        console.log("_checkLoadState start");
         this.checkStartIntervalCount = 0;
         this.checkStartInterval = window.setInterval(function() {
             console.log(
@@ -119,6 +123,7 @@ class NvFlvjsCoreModule {
                 _this.checkStartIntervalCount = 0;
                 _this.checkStartInterval = null;
                 if (_this.isInitDecodeFrames === false) {
+                    console.log("_checkLoadState _reBuildFlvjs");
                     _this._reBuildFlvjs(url);
                 }
                 return;
@@ -213,6 +218,8 @@ class NvFlvjsCoreModule {
             //     url: _levels[_currentQuality].file,
             //     withCredentials: false
             let options = {
+                hasVideo: true,
+                hasAudio: !(this.configFormat.audioNone === true),
                 type: 'flv',
                 // url: 'http://localhost:8080/VideoMissile/VideoMissilePlayer/demo/res/jitui10.flv'
                 //url: 'http://182.61.31.119:8080/live/livestream.flv',
@@ -225,7 +232,34 @@ class NvFlvjsCoreModule {
             this.myPlayer.attachMediaElement(this.videoTag);
 
             this.myPlayer.on(flvjs.Events.MEDIA_INFO, function(res) {
-                console.log("Events.MEDIA_INFO", res);
+                console.log("Events.MEDIA_INFO", res, _this.videoTag.videoWidth);
+                if (_this.isInitDecodeFrames === false)
+                {
+                    _this.isInitDecodeFrames = true;
+                    _this.width = Math.max(_this.videoTag.videoWidth, res.width);
+                    _this.height = Math.max(_this.videoTag.videoHeight, res.height);
+                    _this.duration =  _this.videoTag.duration;
+                    alert("1 flvduration" + _this.duration);
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    _this.onReadyShowDone && _this.onReadyShowDone();
+                    console.log("onReadyShowDone video isPlay", _this.isPlayingState());
+
+                    _this.videoTag.ontimeupdate = () => {
+                        console.log("_this.videoTag ontimeupdate");
+                        _this.onPlayingTime && _this.onPlayingTime(_this.videoTag.currentTime);
+                    }; // ontimeupdate
+                    if (_this.duration !== Infinity && _this.duration > 0) {
+                        _this.videoTag.onended = () => {
+                            console.log("_this.videoTag onended");
+                            _this.onPlayingFinish && _this.onPlayingFinish();
+                        }; // onended
+                    }
+                    // check
+                    // _this.lastDecodedFrame = 1;
+                    // _this.lastDecodedFrameTime = AVCommon.GetMsTime();
+                }
+
+                
             });
             this.myPlayer.on(flvjs.Events.STATISTICS_INFO, function(res) {
                 console.log("Events.STATISTICS_INFO", 
@@ -260,32 +294,6 @@ class NvFlvjsCoreModule {
                 // check
                 _this.lastDecodedFrame = res.decodedFrames;
                 _this.lastDecodedFrameTime = AVCommon.GetMsTime();
-                // if (_this.lastDecodedFrame === 0) {
-                //     _this.lastDecodedFrame = res.decodedFrames;
-                // } else {
-                //     if (_this.lastDecodedFrame != res.decodedFrames) {
-                //         _this.lastDecodedFrame = res.decodedFrames;
-                //     } else {
-                //         _this.lastDecodedFrame = 0;
-                //         _this._releaseFlvjs();
-                //         _this.makeIt(url);
-                //         // if (_this.myPlayer) {
-                //             // _this.myPlayer.pause();
-                //             // _this.myPlayer.unload();
-                //             // _this.myPlayer.detachMediaElement();
-                //             // _this.myPlayer.destroy();
-                //             // _this.myPlayer = null;
-                //             // alert("reload flvjs");
-                //             // _this._releaseFlvjs();
-                //             // _this.makeIt(url)
-                //             // _this.myPlayer = flvjs.createPlayer(options);
-                //             // _this.myPlayer.attachMediaElement(_this.videoTag);
-                //             // _this.myPlayer.load();
-                //         // }
-                //     }
-                // }
-
-                // _this._checkLoadState();
             });
             this.myPlayer.on(flvjs.Events.SCRIPTDATA_ARRIVED, function(res) {
                 console.log("Events.SCRIPTDATA_ARRIVED", res);
@@ -321,6 +329,7 @@ class NvFlvjsCoreModule {
                 console.log("Events.ERROR", errorType, errorDetail, errorInfo);
                 // 视频出错后销毁重新创建
                 if (_this.myPlayer) {
+                    console.log("flvjs.Events.ERROR _reBuildFlvjs");
                     _this._reBuildFlvjs(url);
                 }
             });

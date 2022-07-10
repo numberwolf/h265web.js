@@ -38,11 +38,11 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> |
-| Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | G711A(HTTP-FLV) | HEVC/H.265 | AVC/H.264 |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100">  |
+| Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | Single-Thread | G711A(HTTP-FLV) | G711U(HTTP-FLV) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100"> | - | - |
-| Single-Thread | MediaInfo | - | - |
+| <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | - |
+| MediaInfo | HEVC/H.265 | AVC/H.264 | - |
 
 </font>
 </strong>
@@ -211,6 +211,7 @@ Notice：
 | HEVC/H.265 |  Y  | ---- |
 | AAC |  Y  | ---- |
 | G711A |  Y  | HTTP-FLV |
+| G711U |  Y  | HTTP-FLV |
 | AV1 |  Y  | Chrome |
 
 
@@ -954,6 +955,9 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/07/06-10 |
+| - | 0.Support g711u (http-flv) |
+| - | 1.Fixed: HTTP-FLV(AVC) without Audio |
 | Time | 2022/07/01 |
 | - | 0.Feature: HTTP-FLV(Without audio) Stream Performance optimizing |
 | Time | 2022/06/27 |

@@ -1266,8 +1266,8 @@ class CNativeCoreModule {
     	let _this = this;
     	this._createYUVCanvas();
 
-    	console.warn("_probeFinCallback codec name:", 
-            vcodec_name_id, def.V_CODEC_NAME_HEVC, duration, fps);
+    	console.log("_probeFinCallback codec name:", 
+            vcodec_name_id, audioIdx, def.V_CODEC_NAME_HEVC, duration, fps);
 
     	this.config.fps = fps * 1.0;
     	this.frameTime 	= 1000.0 / this.config.fps; // micro second
@@ -1300,6 +1300,12 @@ class CNativeCoreModule {
     	// console.log(sample_fmt_str);
     	// console.log(this);
 
+        if (audioIdx >= 0 && this.config.ignoreAudio < 1) {
+            this.audioNone = false;
+        } else {
+            this.audioNone = true;
+        }
+
     	/*
     	 * if not 264 native player
     	 */
@@ -1309,7 +1315,7 @@ class CNativeCoreModule {
 	    	/*
 	    	 * Audio Player Init
 	    	 */
-	    	if (audioIdx >= 0 && this.config.ignoreAudio < 1) {
+	    	if (this.audioNone === false) {
 		    	// const audioConfig = {
 		    	// 	sampleRate : this.config.sampleRate,
 		    	// 	channels : this.channels,
@@ -1366,8 +1372,6 @@ class CNativeCoreModule {
 			        	}
 		        	});
 		        }
-		    } else {
-		    	this.audioNone = true;
 		    }
 
 		    this._avRecvPackets();
