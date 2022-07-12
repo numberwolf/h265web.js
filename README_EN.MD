@@ -955,6 +955,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/07/12 |
+| - | 0.Fixed some problem |
 | Time | 2022/07/06-10 |
 | - | 0.Support g711u (http-flv) |
 | - | 1.Fixed: HTTP-FLV(AVC) without Audio |
