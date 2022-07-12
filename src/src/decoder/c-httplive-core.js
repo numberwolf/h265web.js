@@ -74,10 +74,10 @@ const V_CACHE_INTERVAL_PUSH_LOOP_MS = 1;
 // }
 
 class CHttpLiveCoreModule { // export default 
-	constructor(config) {
+    constructor(config) {
         let _this = this;
-		this.config = {
-			width: config.width || def.DEFAULT_WIDTH,
+        this.config = {
+            width: config.width || def.DEFAULT_WIDTH,
             height: config.height || def.DEFAULT_HEIGHT,
             fps: config.fps || def.DEFAULT_FPS,
             sampleRate: config.sampleRate || def.DEFAULT_SAMPLERATE,
@@ -761,7 +761,7 @@ class CHttpLiveCoreModule { // export default
     }
 
     setVoice(voice) {
-        if (this.ignoreAudio < 1) {
+        if (this.config.ignoreAudio < 1) {
             this.audioVoice = voice;
             this.audioWAudio && this.audioWAudio.setVoice(voice);
         }
@@ -835,7 +835,9 @@ class CHttpLiveCoreModule { // export default
     }
 
     pause() {
-        if (this.ignoreAudio < 1) {
+        console.log("audio pause prepare:", this.config.ignoreAudio, this.audioWAudio);
+        if (this.config.ignoreAudio < 1) {
+            console.log("audio pause start");
             this.audioWAudio && this.audioWAudio.pause();
         }
         this.playInterval && clearInterval(this.playInterval);
