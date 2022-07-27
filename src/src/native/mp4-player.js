@@ -56,6 +56,7 @@ class Mp4PlayerModule {
 
         let canvasBox = document.querySelector('div#' + this.configFormat.playerId);
         this.videoTag = document.createElement('video');
+        // playbackRate = 1.0;
 
         if (this.configFormat.autoPlay === true) {
             this.videoTag.muted = "muted";
@@ -98,6 +99,23 @@ class Mp4PlayerModule {
         this.videoTag.style.width = '100%';
         this.videoTag.style.height = '100%';
         canvasBox.appendChild(this.videoTag);
+	}
+
+	setPlaybackRate(rate=1.0) {
+		if (rate <= 0.0 || 
+			this.videoTag == undefined || this.videoTag === null) {
+			return false;
+		}
+		// playbackRate
+		this.videoTag = rate;
+		return true;
+	}
+
+	getPlaybackRate() {
+		if (this.videoTag == undefined || this.videoTag === null) {
+			return 0;
+		}
+		return this.videoTag.playbackRate;
 	}
 
 	getSize() {

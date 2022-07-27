@@ -250,6 +250,7 @@ Notice：
 | Get Video FPS | Y | ---- |
 | Get Audio SampleRate | Y | ---- |
 | Chase Frame | Y | HTTP-FLV(no audio) |
+| PlayBackRate | Y | H.264/AV1 |
 
 <br>
 
@@ -955,6 +956,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/07/27 |
+| - | 0.Support: PlayBackRate |
 | Time | 2022/07/12 |
 | - | 0.Fixed some problem |
 | Time | 2022/07/06-10 |
