@@ -343,6 +343,23 @@ class NvFlvjsCoreModule {
         } // flvjs.isSupported
     } // makeIt
 
+    setPlaybackRate(rate=1.0) {
+        if (rate <= 0.0 || 
+            this.videoTag == undefined || this.videoTag === null) {
+            return false;
+        }
+        // playbackRate
+        this.videoTag.playbackRate = rate;
+        return true;
+    }
+
+    getPlaybackRate() {
+        if (this.videoTag == undefined || this.videoTag === null) {
+            return 0;
+        }
+        return this.videoTag.playbackRate;
+    }
+
     getSize() {
         const width = this.videoTag.videoWidth > 0 ? this.videoTag.videoWidth : this.width;
         const height = this.videoTag.videoHeight > 0 ? this.videoTag.videoHeight : this.height;

@@ -221,6 +221,23 @@ class NvVideojsCoreModule {
         this._hiddenUnusedPlugins();
     } // makeIt
 
+    setPlaybackRate(rate=1.0) {
+        if (rate <= 0.0 || 
+            this.videoTag == undefined || this.videoTag === null) {
+            return false;
+        }
+        // playbackRate
+        this.videoTag = rate;
+        return true;
+    }
+
+    getPlaybackRate() {
+        if (this.videoTag == undefined || this.videoTag === null) {
+            return 0;
+        }
+        return this.videoTag.playbackRate;
+    }
+
     getSize() {
         if (this.myPlayer.videoWidth() <= 0) {
             return {

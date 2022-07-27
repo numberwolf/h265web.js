@@ -356,7 +356,6 @@ class H265webjsModule {
                 } // end if c
             }
         }, 500);
-            
     }
 
     release() {
@@ -420,6 +419,26 @@ class H265webjsModule {
 
     debugYUV(debugID) {
         this.player.debugYUV(debugID);
+    }
+
+    setPlaybackRate(rate=1.0) {
+        if (this.playParam.videoCodec === def.CODEC_H265 || 
+            rate <= 0.0 || 
+            this.player === undefined || this.player === null) {
+            return false;
+        }
+        // playbackRate
+        return this.player.setPlaybackRate(rate);
+    }
+
+    getPlaybackRate() {
+        if (this.player === undefined || this.player === null) {
+            return false;
+        }
+        if (this.playParam.videoCodec === def.CODEC_H265) {
+            return 1.0;
+        }
+        return this.player.getPlaybackRate();
     }
 
     setRenderScreen(setVal = false) {
