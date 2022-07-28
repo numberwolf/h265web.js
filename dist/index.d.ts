@@ -1,4 +1,4 @@
-export interface ExtraConfig {
+export interface Web265JsExtraConfig {
   moovStartFlag?: boolean
   rawFps?: number
   autoCrop?: boolean
@@ -29,7 +29,7 @@ export interface Web265JsConfig {
    * player token value
    */
   token: string
-  extInfo?: ExtraConfig
+  extInfo?: Web265JsExtraConfig
 }
 
 export interface Web265JsMediaInfo {
@@ -76,6 +76,8 @@ interface New265WebJs {
   playNextFrame(): void
   snapshot(): void
   release(): void
+  setPlaybackRate(rate: number): void
+  getPlaybackRate(): number
 }
 
 declare type new265webJsFn = (
@@ -83,8 +85,10 @@ declare type new265webJsFn = (
   config: Web265JsConfig
 ) => New265WebJs
 
-interface Window {
-  new265webjs: new265webJsFn
+declare global {
+  interface Window {
+    new265webjs: new265webJsFn
+  }
 }
 
 export default class H265webjsModule {

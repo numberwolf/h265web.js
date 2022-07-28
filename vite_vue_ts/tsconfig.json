@@ -14,5 +14,6 @@
         "lib": ["esnext", "dom", "dom.iterable"], 
         
     },
-    "include": ["global.d.ts","shim.vue.d.ts","src/**/*.vue", "src/**/*.ts",]
+    "files": ["global.d.ts"],
+    "include": ["shim.vue.d.ts","src"]
 }
