@@ -107,7 +107,7 @@ class Mp4PlayerModule {
 			return false;
 		}
 		// playbackRate
-		this.videoTag = rate;
+		this.videoTag.playbackRate = rate;
 		return true;
 	}
 
