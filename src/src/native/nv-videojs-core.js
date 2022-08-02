@@ -227,7 +227,7 @@ class NvVideojsCoreModule {
             return false;
         }
         // playbackRate
-        this.videoTag = rate;
+        this.videoTag.playbackRate = rate;
         return true;
     }
 
