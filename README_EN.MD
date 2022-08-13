@@ -159,6 +159,10 @@ Notice：
 
 		- [Snapshot](#snapshot)
 
+		- [SetPlayRate](#setplayrate)
+
+		- [GetPlayRate](#getplayrate)
+
 		- [Release Player](#release)
 
 - [3、Others](#3others)
@@ -867,12 +871,41 @@ player.closeFullScreen();
 
 <br>
 
+#### setplayrate ####
+
+| Function | Return | Desc |
+|  ----  | ----  | ---- |
+| setPlaybackRate(rate)  | true/false | 设置倍速 默认1.0 |
+
+* 示例
+
+```javascript
+h265Object.setPlaybackRate(0.5);
+```
+
+<br>
+
+#### getplayrate ####
+
+| Function | Return | Desc |
+|  ----  | ----  | ---- |
+| getPlaybackRate()  | Double | 截取当前帧图像 |
+
+* 示例
+
+```javascript
+let rate = h265Object.getPlaybackRate();
+```
+
+<br>
+
 #### resize ####
 
 | Function | Return | Desc |
 | ---- | ---- | ----|
 | resize(width, height) | true/false | resize |
 
+<br>
 
 #### snapshot ####
 
