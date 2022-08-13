@@ -155,6 +155,8 @@ Notice：
 
 		- [Play frame by frame(next frame)](#nextframe)
 
+		- [Resize](#resize)
+
 		- [Snapshot](#snapshot)
 
 		- [Release Player](#release)
@@ -251,6 +253,7 @@ Notice：
 | Get Audio SampleRate | Y | ---- |
 | Chase Frame | Y | HTTP-FLV(no audio) |
 | PlayBackRate | Y | H.264/AV1 |
+| Resize | Y | ---- |
 
 <br>
 
@@ -860,9 +863,15 @@ player.closeFullScreen();
 
 |  Function | Return | Desc |
 |  ----  | ----  | ---- |
-| playNextFrame()  | - | play next frame |
+| playNextFrame()  | true/false | play next frame |
 
 <br>
+
+#### resize ####
+
+| Function | Return | Desc |
+| ---- | ---- | ----|
+| resize(width, height) | true/false | resize |
 
 
 #### snapshot ####
@@ -956,6 +965,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/08/13 |
+| - | 0.Support: Resize |
 | Time | 2022/07/27 |
 | - | 0.Support: PlayBackRate |
 | Time | 2022/07/12 |

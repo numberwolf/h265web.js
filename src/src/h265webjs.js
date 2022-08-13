@@ -777,6 +777,82 @@ class H265webjsModule {
         return false;
     } // showNextFrame
 
+    resize(width, height) {
+        let _this = this;
+        // _this.playParam.size = {
+        //     width   : _this.player.mediaInfo.width,
+        //     height  : _this.player.mediaInfo.height
+        // };
+        if (this.player !== undefined && this.player !== null) {
+            if (!width ||
+                !height ||
+                !this.playParam.size.width ||
+                !this.playParam.size.height
+            ) {
+                return false;
+            }
+
+            const mediaW = this.playParam.size.width;
+            const mediaH = this.playParam.size.height;
+
+            const isHEVC = this.playParam.videoCodec === 0;
+            const glCanvasBox = document
+                .querySelector('#' + this.configFormat.playerId);
+            glCanvasBox.style.width = width + "px";
+            glCanvasBox.style.height = height + "px";
+
+            if (isHEVC === true) {
+                // soft decoder
+                let resizeBase = (targetWidth, targetHeight) => {
+                    // console.log('checkDisplaySize==========>', targetWidth, targetHeight, mediaW, mediaH);
+                    let biggerWidth = mediaW / targetWidth > mediaH / targetHeight;
+                    let fixedWidth = (targetWidth / mediaW).toFixed(2);
+                    let fixedHeight = (targetHeight / mediaH).toFixed(2);
+                    let scaleRatio = biggerWidth ? fixedWidth : fixedHeight;
+
+                    let width = parseInt(mediaW * scaleRatio, 10);
+                    let height = parseInt(mediaH * scaleRatio, 10);
+                    // console.log(
+                    //     'checkDisplaySize ==========>',
+                    //     targetWidth, targetHeight, mediaW, mediaH);
+                    // console.log(
+                    //     'checkDisplaySize ret ==========>', width, height);
+
+                    console.log("debug resize => targetHeight:", targetHeight, ", height:", height);
+                    console.log("debug resize => targetWidth:", targetWidth, ", width:", width);
+
+                    let topMargin = parseInt((targetHeight - height) / 2, 10);
+                    let leftMargin = parseInt((targetWidth - width) / 2, 10);
+                    // console.log(topMargin, leftMargin);
+                    // player.isCheckDisplay = true;
+                    return [topMargin, leftMargin, width, height];
+                }; // end resizeBase
+
+                let glCanvas = glCanvasBox
+                    .getElementsByTagName('canvas')[0];
+
+                let resizeData = resizeBase(width, height);
+                console.log("debug resize => resizeData:", resizeData);
+
+                glCanvas.style.marginTop = resizeData[0] + 'px';
+                glCanvas.style.marginLeft = resizeData[1] + 'px';
+                glCanvas.style.width = resizeData[2] + 'px';
+                glCanvas.style.height = resizeData[3] + 'px';
+            } else {
+                // native
+                let glCanvas = glCanvasBox
+                    .getElementsByTagName('video')[0];
+
+                glCanvas.style.width = width + 'px';
+                glCanvas.style.height = height + 'px';
+            } // end check avc/hevc resize
+
+            return true;
+        }
+
+        return false;
+    }
+
     /**********
      Private
      **********/
