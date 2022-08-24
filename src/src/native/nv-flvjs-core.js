@@ -67,6 +67,8 @@ class NvFlvjsCoreModule {
         this.checkStartIntervalCount = 0;
         this.checkStartInterval = null;
         this.checkPicBlockInterval = null;
+
+        this.bufferInterval = null;
         /*
          * Event @todo
          */
@@ -76,6 +78,7 @@ class NvFlvjsCoreModule {
         this.onPlayingFinish    = null;
         // this.onSeekFinish        = null;
         this.onReadyShowDone    = null;
+        this.onCacheProcess     = null;
     } // constructor
 
     _reBuildFlvjs(url) {
@@ -242,6 +245,7 @@ class NvFlvjsCoreModule {
                     alert("1 flvduration" + _this.duration);
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
+                    _this._loopBufferState();
                     console.log("onReadyShowDone video isPlay", _this.isPlayingState());
 
                     _this.videoTag.ontimeupdate = () => {
@@ -277,6 +281,7 @@ class NvFlvjsCoreModule {
                     alert("1 flvduration" + _this.duration);
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
+                    _this._loopBufferState();
                     console.log("onReadyShowDone video isPlay", _this.isPlayingState());
 
                     _this.videoTag.ontimeupdate = () => {
@@ -311,6 +316,7 @@ class NvFlvjsCoreModule {
                     alert("2 flvduration" + _this.duration);
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
+                    _this._loopBufferState();
                     console.log("onReadyShowDone video isPlay", _this.isPlayingState());
 
                     _this.videoTag.ontimeupdate = () => {
@@ -410,6 +416,29 @@ class NvFlvjsCoreModule {
         return !this.videoTag.paused;
     }
 
+    _loopBufferState() {
+        let _this = this;
+        if (_this.duration <= 0) {
+            _this.duration = _this.videoTag.duration;
+        }
+
+        if (_this.bufferInterval !== null) {
+            window.clearInterval(_this.bufferInterval);
+            _this.bufferInterval = null;
+        }
+
+        _this.bufferInterval = window.setInterval(function() {
+            const bufProgress = _this.videoTag.buffered.end(0);
+            console.log("bufProgress", bufProgress);
+            if (bufProgress >= _this.duration - 0.04) {
+                _this.onCacheProcess && _this.onCacheProcess(_this.duration);
+                window.clearInterval(_this.bufferInterval);
+                return;
+            }
+            _this.onCacheProcess && _this.onCacheProcess(bufProgress);
+        }, 200);
+    }
+
     _releaseFlvjs() {
         this.myPlayer.pause();
         this.myPlayer.unload();
@@ -443,6 +472,10 @@ class NvFlvjsCoreModule {
         if (this.checkPicBlockInterval !== null) {
             window.clearInterval(this.checkPicBlockInterval);
             this.checkPicBlockInterval = null;
+        }
+        if (this.bufferInterval !== null) {
+            window.clearInterval(this.bufferInterval);
+            this.bufferInterval = null;
         }
         this._releaseFlvjs();
 

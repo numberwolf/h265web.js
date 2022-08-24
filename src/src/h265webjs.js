@@ -1228,11 +1228,24 @@ class H265webjsModule {
             const browser_info = AVCOMMON.BrowserJudge();
             const browser_type = browser_info[0];
             const browser_version = browser_info[1];
+            console.log("BrowserJudge:", browser_type, browser_version);
             if (browser_type === 'Chrome' && browser_version < 85) {
                 return false;
             }
 
             if (browser_type.indexOf("360") >= 0) {
+                return false;
+            }
+
+            if(
+                (
+                    /Safari/.test(navigator.userAgent) 
+                    && !/Chrome/.test(navigator.userAgent)
+                ) && 
+                browser_version > 13
+            ) {
+                console.log("BrowserJudge:", 
+                    browser_version < 13, browser_version > 10);
                 return false;
             }
         }
@@ -1490,6 +1503,10 @@ class H265webjsModule {
         this.player.onPlayState = (status) => {
             _this.onPlayState && _this.onPlayState(status);
         }; // onPlayState
+
+        this.player.onCacheProcess = (cPts) => {
+            _this.onCacheProcess && _this.onCacheProcess(cPts);
+        };
     } // _makeNativePlayer
 
     _initMp4BoxObject() {
@@ -2562,6 +2579,9 @@ class H265webjsModule {
         this.player.onPlayState = (status) => {
             _this.onPlayState && _this.onPlayState(status);
         }; // onPlayState
+        this.player.onCacheProcess = (cPts) => {
+            _this.onCacheProcess && _this.onCacheProcess(cPts);
+        };
         this.player.makeIt(this.videoURL);
 
     } // _videoJsPlayer
@@ -2616,6 +2636,10 @@ class H265webjsModule {
         this.player.onPlayState = (status) => {
             _this.onPlayState && _this.onPlayState(status);
         }; // onPlayState
+
+        this.player.onCacheProcess = (cPts) => {
+            _this.onCacheProcess && _this.onCacheProcess(cPts);
+        };
 
         // this.player.onSeekFinish = () => {
         //     _this.onSeekFinish && _this.onSeekFinish();
