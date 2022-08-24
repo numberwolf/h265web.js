@@ -998,6 +998,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/08/24 |
+| - | 0.Feature: Safari with native player(version>13) |
+| Time | 2022/08/23 |
+| - | 0.Fixed: Buffer Progress with AVC |
 | Time | 2022/08/13 |
 | - | 0.Support: Resize |
 | Time | 2022/07/27 |

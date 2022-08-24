@@ -42,10 +42,13 @@ class Mp4PlayerModule {
         this.duration = -1;
         // this.fps = -1;
 
+        this.bufferInterval = null;
+
         this.onLoadFinish = null;
         this.onPlayingTime = null;
         this.onPlayingFinish = null;
         this.onPlayState = null;
+        this.onCacheProcess = null;
 
         // this.onPlayUpdatePTSInterval = null;
 	}
@@ -93,6 +96,22 @@ class Mp4PlayerModule {
 			console.log("mp4-player loadedmetadata", e);
 			_this.duration = _this.videoTag.duration;
 			_this.onLoadFinish && _this.onLoadFinish();
+
+			if (_this.bufferInterval !== null) {
+	            window.clearInterval(_this.bufferInterval);
+	            _this.bufferInterval = null;
+	        }
+
+			_this.bufferInterval = window.setInterval(function() {
+				const bufProgress = _this.videoTag.buffered.end(0);
+				console.log("bufProgress", bufProgress);
+				if (bufProgress >= _this.duration - 0.04) {
+					_this.onCacheProcess && _this.onCacheProcess(_this.duration);
+					window.clearInterval(_this.bufferInterval);
+					return;
+				}
+				_this.onCacheProcess && _this.onCacheProcess(bufProgress);
+			}, 200);
 		};
 
         this.videoTag.src = url;
@@ -156,6 +175,11 @@ class Mp4PlayerModule {
         this.onPlayingTime = null;
         this.onPlayingFinish = null;
         this.onPlayState = null;
+
+        if (this.bufferInterval !== null) {
+            window.clearInterval(this.bufferInterval);
+            this.bufferInterval = null;
+        }
 
         window.onclick = document.body.onclick = null;
 	}
