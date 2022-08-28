@@ -296,10 +296,11 @@ function BrowserJudge() {
         System.type = System.isIE ? "IE" :
             window.opera || (agent.indexOf("opr") > 0) ? "Opera" :
                 (agent.indexOf("chrome") > 0) ? "Chrome" :
-                    //safari也提供了专门的判定方式
-                    window.openDatabase ? "Safari" :
-                        (agent.indexOf("firefox") > 0) ? "Firefox" :
-                            'unknow';
+                    (agent.indexOf("safari") > 0) ? "Safari" :
+                        //safari也提供了专门的判定方式
+                        window.openDatabase ? "Safari" :
+                            (agent.indexOf("firefox") > 0) ? "Firefox" :
+                                'unknow';
 
         //版本号
         System.version = (System.type === "IE") ? System.ieVersion() :
