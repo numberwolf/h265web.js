@@ -368,6 +368,52 @@ function BrowserJudge() {
     return [System.type, System.version];
 }
 
+function ParseGetMediaURL(mediaFile, protocol='http') {
+
+    console.log('protocol', protocol);
+
+    if (protocol !== 'http' && protocol !== 'ws' && protocol !== 'wss') {
+        if (mediaFile.indexOf('ws') >= 0 || mediaFile.indexOf('wss') >= 0) {
+            protocol = 'ws';
+        }
+    }
+
+    if (protocol === 'ws' || protocol === 'wss') {
+        return mediaFile;
+    }
+
+    let mediaURI = mediaFile;
+    if (mediaFile.indexOf(protocol) >= 0) {
+        mediaURI = mediaFile;
+
+        console.log('mediaURI 1', mediaURI);
+    } else {
+        if (mediaFile[0] === '/') {
+            if (mediaFile[1] === '/') {
+                mediaURI = protocol + ':' + mediaFile;
+            } else {
+                mediaURI = window.location.origin + mediaFile
+            }
+
+            console.log('mediaURI 2', mediaURI);
+        } else if (mediaFile[0] === ':') {
+            mediaURI = protocol + mediaFile;
+
+            console.log('mediaURI 3', mediaURI);
+        } else {
+            let split_ret = window.location.href.split('/');
+            mediaURI = window.location.href.replace(
+                split_ret[split_ret.length - 1], mediaFile);
+
+            console.log('mediaURI 4', mediaURI);
+        }
+    }
+
+    console.log('mediaURI 5', mediaURI);
+
+    return mediaURI;
+} // end function ParseGetMediaURL
+
 module.exports = {
     frameDataAlignCrop : frameDataAlignCrop,
     GetUriFormat : GetUriFormat,
@@ -375,5 +421,6 @@ module.exports = {
     GetUriProtocol : GetUriProtocol,
     GetMsTime : GetMsTime,
     GetScriptPath : GetScriptPath,
-    BrowserJudge : BrowserJudge
+    BrowserJudge : BrowserJudge,
+    ParseGetMediaURL : ParseGetMediaURL
 }; // module exports

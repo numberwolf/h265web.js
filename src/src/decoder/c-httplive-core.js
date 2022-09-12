@@ -189,7 +189,7 @@ class CHttpLiveCoreModule { // export default
         this.onRender           = null;
         // this.onCacheProcess     = null;
         this.onReadyShowDone    = null;
-        this.onNetworkError     = null;
+        this.onError            = null;
         this.onPlayState        = null;
 
         // run
@@ -313,6 +313,7 @@ class CHttpLiveCoreModule { // export default
             case 'close':
                 _this.AVGetInterval && clearInterval(_this.AVGetInterval);
                 _this.AVGetInterval = null;
+                break;
             case 'fetch-fin':
                 // fetchFinished = true;
                 /*
@@ -324,7 +325,7 @@ class CHttpLiveCoreModule { // export default
                 */
                 break;
             case 'fetch-error':
-                _this.onNetworkError && _this.onNetworkError(body.data);
+                _this.onError && _this.onError(body.data);
             default:
                 break;
         } // end switch

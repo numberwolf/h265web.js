@@ -998,6 +998,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/09/12 |
+| - | 0.Fixed: hevc url cannot play without text of "http" |
 | Time | 2022/08/24 |
 | - | 0.Feature: Safari with native player(version>13) |
 | Time | 2022/08/23 |
