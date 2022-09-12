@@ -182,7 +182,7 @@ class CHttpG711CoreModule { // export default
         this.onRender           = null;
         // this.onCacheProcess     = null;
         this.onReadyShowDone    = null;
-        this.onNetworkError     = null;
+        this.onError            = null;
         this.onPlayState        = null;
 
         // run
@@ -280,7 +280,7 @@ class CHttpG711CoreModule { // export default
                 */
                 break;
             case 'fetch-error':
-                _this.onNetworkError && _this.onNetworkError(body.data);
+                _this.onError && _this.onError(body.data);
             default:
                 break;
         } // end switch

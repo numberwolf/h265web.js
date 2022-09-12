@@ -56,6 +56,8 @@ const DEFAULT_CONFIG_EXT = {
     probeSize : 4096,
     autoPlay : false,
     cacheLength : 50,
+    loadTimeout : 30, // 30s
+    hevc : true,
 }; // DEFAULT_CONFIG_EXT
 
 /**
@@ -217,6 +219,10 @@ class H265webjsModule {
 
         this.rawModePts = 0.0; // only use in raw 265 mode
 
+        // interval
+        this.loadTimeoutInterval = null;
+        this.loadTimeoutSecNow = this.configFormat.extInfo.loadTimeout;
+
         // screen
         this.autoScreenClose = true;
 
@@ -240,7 +246,8 @@ class H265webjsModule {
         this.onReadyShowDone = null;
         this.onOpenFullScreen = null;
         this.onCloseFullScreen = null;
-        this.onNetworkError = null;
+        this.onError = null;
+        this.onProbeError = null;
         this.onMakeItReady = null;
         this.onPlayState = null;
 
@@ -308,6 +315,12 @@ class H265webjsModule {
 
         UI.UI.createPlayerRender(this.configFormat.playerId, this.configFormat.playerW, this.configFormat.playerH);
 
+        if (this.configFormat.extInfo.hevc === false) {
+            const native = true;
+            this._makeMP4Player(native);
+            return 0;
+        }
+
         let initInterval = window.setInterval(() => {
             if (global.STATICE_MEM_playerIndexPtr === _this.playerIndex) {
                 console.log("global.STATICE_MEM_playerIndexPtr === _this.playerIndex:", global.STATICE_MEM_playerIndexPtr, _this.playerIndex);
@@ -356,7 +369,7 @@ class H265webjsModule {
                 } // end if c
             }
         }, 500);
-    }
+    } // do
 
     release() {
         if (this.player === undefined || this.player === null) {
@@ -1253,12 +1266,12 @@ class H265webjsModule {
         return true;
     }
 
-    _makeMP4Player() {
+    _makeMP4Player(native=false) {
         let _this = this;
 
         console.log("_isSupportWASM", this._isSupportWASM());
 
-        if (this._isSupportWASM() === false) {
+        if (this._isSupportWASM() === false || native === true) {
             if (this.configFormat.type == def.PLAYER_IN_TYPE_MP4) {
                 console.log("go mp4");
                 this._makeNativePlayer();
@@ -1828,7 +1841,7 @@ class H265webjsModule {
          * Start Execute Fetch
          *
          */
-        let fetchGetResp = false;
+        let fetchGetResp = false; // for retry
         let fetchFin = false;
         let fileSize = 0;
 
@@ -1855,6 +1868,17 @@ class H265webjsModule {
             }, def.FETCH_HTTP_FLV_TIMEOUT_MS);
 
             fetch(_this.videoURL, {signal}).then(function(response) {
+
+                console.log(
+                    "cnative start fetch", 
+                    response, response.headers.get("Content-Length"));
+                    // response.status, response.ok
+                if (!response.ok) {
+                    console.error(
+                        "error cdemuxdecoder prepare request media failed with http code:", response.status);
+                    return false;
+                }
+
                 fetchGetResp = true;
                 if (response.headers.has("Content-Length")) {
                     fileSize = response.headers.get("Content-Length");
@@ -1875,7 +1899,10 @@ class H265webjsModule {
                     // default set 4096
                     _this.player && _this.player.setProbeSize(4096);
                 }
-                console.log("cnative start fetch" + response.headers.get("Content-Length") + _this.configFormat.type + _this.mediaExtFormat);
+
+                console.log("cnative start fetch", 
+                    response.headers.get("Content-Length"), 
+                    _this.configFormat.type + _this.mediaExtFormat);
                 let pump = function(reader) {
                     console.log("start pump", reader);
                     return reader.read().then(function(result) {
@@ -1938,10 +1965,10 @@ class H265webjsModule {
                         return pump(reader);
                     });
                 }; // end pump
-
-                // window.setTimeout(() => {
                 return pump(response.body.getReader());
-                // }, 10);
+
+                // return _this.player.start(
+                //     AVCOMMON.ParseGetMediaURL(_this.videoURL));
             }).catch(function(error) {
                 if (!error.toString().includes('user aborted')) {
                     console.error("cdemuxdecoder error", error);
@@ -2002,10 +2029,10 @@ class H265webjsModule {
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
 
-        this.player.onNetworkError = (error) => {
-            // alert("onNetworkError" + error.toString());
-            _this.onNetworkError && _this.onNetworkError(error);
-        }; // onNetworkError
+        this.player.onError = (error) => {
+            // alert("onError" + error.toString());
+            _this.onError && _this.onError(error);
+        }; // onError
 
         this.player.onReadyShowDone = () => {
             _this.configFormat.extInfo.readyShow = false;
@@ -2115,10 +2142,10 @@ class H265webjsModule {
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
 
-        this.player.onNetworkError = (error) => {
-            // alert("onNetworkError" + error.toString());
-            _this.onNetworkError && _this.onNetworkError(error);
-        }; // onNetworkError
+        this.player.onError = (error) => {
+            // alert("onError" + error.toString());
+            _this.onError && _this.onError(error);
+        }; // onError
 
         this.player.onReadyShowDone = () => {
             _this.configFormat.extInfo.readyShow = false;
@@ -2226,10 +2253,10 @@ class H265webjsModule {
             // _this.onLoadFinish && _this.onLoadFinish();
         }; // onProbeFinish
 
-        this.player.onNetworkError = (error) => {
-            // alert("onNetworkError" + error.toString());
-            _this.onNetworkError && _this.onNetworkError(error);
-        }; // onNetworkError
+        this.player.onError = (error) => {
+            // alert("onError" + error.toString());
+            _this.onError && _this.onError(error);
+        }; // onError
 
         this.player.onReadyShowDone = () => {
             _this.configFormat.extInfo.readyShow = false;
@@ -3376,9 +3403,10 @@ class H265webjsModule {
         _raw265Entry_createWorkerFetch();
         _raw265Entry_createWorkerParse();
 
+        alert(AVCOMMON.ParseGetMediaURL(this.videoURL));
         this.workerFetch.postMessage({
             cmd: "start", 
-            url: this.videoURL,
+            url: AVCOMMON.ParseGetMediaURL(this.videoURL),
             type: this.mediaExtProtocol, // def.URI_PROTOCOL_HTTP_DESC, 
             msg: "start"
         }); // this.workerFetch.postMessage
