@@ -308,6 +308,11 @@ class NvVideojsCoreModule {
             _this.bufferInterval = null;
         }
 
+        alert("probeDurationMS:" + _this.configFormat.probeDurationMS);
+        if (_this.configFormat.probeDurationMS <= 0 || _this.duration <= 0) {
+            return;
+        }
+
         _this.bufferInterval = window.setInterval(function() {
             const bufProgress = _this.videoTag.buffered.end(0);
             console.log("bufProgress", bufProgress);
