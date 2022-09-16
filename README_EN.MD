@@ -998,6 +998,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/09/13 |
+| - | 0.Fixed: AVC stream loop buffer error without autoplay |
 | Time | 2022/09/12 |
 | - | 0.Fixed: hevc url cannot play without text of "http" |
 | Time | 2022/08/24 |

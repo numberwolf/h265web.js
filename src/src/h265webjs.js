@@ -2558,6 +2558,7 @@ class H265webjsModule {
             playerId: this.configFormat.playerId,
             ignoreAudio : this.configFormat.extInfo.ignoreAudio,
             autoPlay: this.configFormat.extInfo.autoPlay,
+            playMode: this.playMode,
         }; // playerConfig
         this.player = new NvVideoJSCore.NvVideojsCore(playerConfig);
         this.player.onMakeItReady = () => {
