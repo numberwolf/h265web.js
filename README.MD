@@ -1,4 +1,4 @@
-# h265web.js
+# h265web.js - 适配浏览器HEVC硬解码
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
@@ -28,8 +28,9 @@
 | <br> | <br> | <br> | <br> | <br> | <br> | <br> | <br> |
 | <img width="100" alt="山东呢沃尔德workd-group cn" src="https://user-images.githubusercontent.com/101395606/175974059-c9a7cff5-ca8a-4540-8b3f-f559e5b867fb.png"> | <img width="100" alt="上海联通" src="https://user-images.githubusercontent.com/101395606/175974083-cdb98f54-d2a6-42e1-9129-d2934608f887.png"> | <img width="100" alt="西安思华www sihua tech" src="https://user-images.githubusercontent.com/101395606/175974092-90bc48c4-2874-417e-a7b5-2ded8e06c29c.png"> | <br> | <br> | <br> | <br> | <br> |
 | 山东呢尔德 | 上海联通 | 西安思华 | <br> | <br> | <br> | <br> | <br> |
-  </strong>
-  </font>
+
+</strong>
+</font>
 
 <hr>
 <h3>能力矩阵</h3>
@@ -54,8 +55,8 @@
 | <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100">  |
 | Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | Single-Thread | G711A(HTTP-FLV) | G711U(HTTP-FLV) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | - |
-| MediaInfo | HEVC/H.265 | AVC/H.264 | - |
+| <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | <img src="resource/icon-hdecode.png" width="100"> |
+| MediaInfo | HEVC/H.265 | AVC/H.264 | Hardware decoder<br>硬解码<br>(FLV/HTTP-FLV/MP4) |
 
 </font>
 </strong>
@@ -109,6 +110,7 @@
 
 | 能力 | 是否支持 | 其他 |
 | ---- | ---- |  ----  |
+| 硬解码 | 是 |  适配Chrome/Safari等 |
 | 直播 | 是 |  ----  |
 | 点播 | 是 |  ----  |
 | Seek跳转 | 是 | ---- |

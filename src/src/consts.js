@@ -35,6 +35,9 @@ module.exports = {
     // SLICE_TAG_VIDEO: 0x09,
     // PLAY_CMD: 1001,
     // DISCONN_CMD: 1002,
+
+    DEFAULT_PLAYERE_LOAD_TIMEOUT: 20,
+
     DEFAILT_WEBGL_PLAY_ID: "glplayer",
     PLAYER_IN_TYPE_MP4: "mp4",
     PLAYER_IN_TYPE_FLV: "flv",

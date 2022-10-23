@@ -1,4 +1,4 @@
-# h265web.js - Will support HDR10!
+# h265web.js - Support Hard-Decode
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
@@ -41,8 +41,9 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 | <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100">  |
 | Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | Single-Thread | G711A(HTTP-FLV) | G711U(HTTP-FLV) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | - |
-| MediaInfo | HEVC/H.265 | AVC/H.264 | - |
+| <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | <img src="resource/icon-hdecode.png" width="100"> |
+| MediaInfo | HEVC/H.265 | AVC/H.264 | Hardware decoder<br>(FLV/HTTP-FLV/MP4) |
+
 
 </font>
 </strong>
@@ -225,6 +226,7 @@ Notice：
 
 |  Feature | Support | Desc |
 | ---- | ---- |  ----  |
+| Hardware-Decode | Y | For Chrome/Safari etc... |
 | Video on demand | Y |  ----  |
 | Live | Y |  ----  |
 | Seek | Y | ----  |
@@ -960,7 +962,7 @@ ffmpeg -i input.mp4 \
 -vcodec libx265 -pix_fmt \
 -acodec aac -ac 2 -ar 44100 \
 -preset medium -maxrate 1000k -bufsize 1000k \
--vtag hev1 \
+-vtag hvc1 \
 -movflags faststart \
 -y video.mp4
 ```
@@ -998,6 +1000,9 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/10/22 |
+| - | 0.Support: Hard-Decode for FLV/HTTP-FLV/MP4 |
+| - | 1.Support: AVC with Mpeg-TS |
 | Time | 2022/09/13 |
 | - | 0.Fixed: AVC stream loop buffer error without autoplay |
 | Time | 2022/09/12 |

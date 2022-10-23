@@ -414,6 +414,10 @@ function ParseGetMediaURL(mediaFile, protocol='http') {
     return mediaURI;
 } // end function ParseGetMediaURL
 
+function IsSupport265Mse() {
+    return MediaSource.isTypeSupported('video/mp4;codecs=hvc1.1.1.L63.B0"');
+} // end function IsSupport265Mse
+
 module.exports = {
     frameDataAlignCrop : frameDataAlignCrop,
     GetUriFormat : GetUriFormat,
@@ -422,5 +426,6 @@ module.exports = {
     GetMsTime : GetMsTime,
     GetScriptPath : GetScriptPath,
     BrowserJudge : BrowserJudge,
-    ParseGetMediaURL : ParseGetMediaURL
+    ParseGetMediaURL : ParseGetMediaURL,
+    IsSupport265Mse : IsSupport265Mse
 }; // module exports
