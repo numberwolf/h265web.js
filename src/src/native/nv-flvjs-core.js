@@ -22,7 +22,8 @@
 // const AVCommon       = require('./av-common');
 const def           = require('../consts');
 const VersionModule = require('../version');
-const flvjs         = require('flv.js');
+// const flvjs         = require('flv.js');
+const flvjs         = require('../demuxer/flv-hevc/flv-hevc.js');
 const AVCommon      = require('../decoder/av-common');
 
 
@@ -39,7 +40,7 @@ class NvFlvjsCoreModule {
         };
         this.audioVoice = 1.0;
 
-        this.myPlayerID = this.configFormat.playerId + '-flvjs';
+        this.myPlayerID = this.configFormat.playerId + '-flv-hevc';
         this.myPlayer = null;
         this.videoContaner = null;
         this.videoTag = null;
@@ -82,6 +83,7 @@ class NvFlvjsCoreModule {
     } // constructor
 
     _reBuildFlvjs(url) {
+        alert("_reBuildFlvjs");
         let _this = this;
         _this._releaseFlvjs();
         _this.makeIt(url);
@@ -155,6 +157,7 @@ class NvFlvjsCoreModule {
     } // _checkLoadState
 
     makeIt(url) {
+        alert("makeIt flvjs");
 
         // native
         let _this = this;
@@ -428,6 +431,11 @@ class NvFlvjsCoreModule {
         }
 
         _this.bufferInterval = window.setInterval(function() {
+            if (!_this.duration || _this.duration < 0) {
+                window.clearInterval(_this.bufferInterval);
+                return;
+            }
+
             const bufProgress = _this.videoTag.buffered.end(0);
             console.log("bufProgress", bufProgress);
             if (bufProgress >= _this.duration - 0.04) {
@@ -440,6 +448,7 @@ class NvFlvjsCoreModule {
     }
 
     _releaseFlvjs() {
+        console.log(this.myPlayer);
         this.myPlayer.pause();
         this.myPlayer.unload();
         this.myPlayer.detachMediaElement();
@@ -461,6 +470,8 @@ class NvFlvjsCoreModule {
         this.isInitDecodeFrames = false;
         this.lastDecodedFrame = 0;
         this.lastDecodedFrameTime = -1;
+
+        alert("release flv-hevc js");
     }
 
     release() {

@@ -55,7 +55,10 @@ class NvVideojsCoreModule {
 		// this.vCachePTS		= 0;
 		// this.aCachePTS		= 0;
 
+        this.loadSuccess    = false;
+
         this.bufferInterval = null;
+        this.bootInterval = null;
 
         /*
          * Event
@@ -169,6 +172,12 @@ class NvVideojsCoreModule {
             };
         }
 
+        console.log("vjs this.videoTag", this.videoTag);
+
+		//this.videoTag.onloadedmetadata = (e) => {
+			//console.log("vjs this.videoTag loadedmetadata", e);
+        //};
+
         this.videoTag.onplay = function() {
             const playStateNow = _this.isPlayingState();
             console.log("onplay video isPlay", playStateNow);
@@ -199,6 +208,7 @@ class NvVideojsCoreModule {
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
                     _this._loopBufferState();
+                    _this.loadSuccess = true;
                 }
             });
             _this.myPlayer.on("ended", function() {
@@ -218,13 +228,49 @@ class NvVideojsCoreModule {
                 _this.onLoadFinish && _this.onLoadFinish();
                 _this.onReadyShowDone && _this.onReadyShowDone();
                 _this._loopBufferState();
+                _this.loadSuccess = true;
             }
         });
         this.myPlayer.options.controls = false;
         // this.myPlayer.options.autoplay = 'any';
         this.myPlayer.options.autoplay = false;
         this._hiddenUnusedPlugins();
+        
+        /*if (this.onMakeItReady === undefined || this.onMakeItReady === null) {
+            if (this.bootInterval !== undefined && this.bootInterval !== null) {
+                window.clearInterval(this.bootInterval);
+                this.bootInterval = null;
+            }
+            let checkOnLoadCountMAX = 3;
+            this.bootInterval = window.setInterval(function() {
+                if (_this.loadSuccess === true) {
+                    window.clearInterval(_this.bootInterval);
+                    _this.bootInterval = null;
+                    return;
+                }
+                //_this.videoTag = document.getElementById(_this.myPlayerID).querySelector("video");
+                checkOnLoadCountMAX--;
+                console.log("checkOnLoadCountMAX:", checkOnLoadCountMAX);
+
+                if (checkOnLoadCountMAX <= 0) {
+                    window.clearInterval(_this.bootInterval);
+                    _this.bootInterval = null;
+
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    _this.onReadyShowDone && _this.onReadyShowDone();
+                    _this._loopBufferState();
+                    _this.loadSuccess = true;
+                    return;
+                }
+            }, 1000); // bootInterval
+        }*/
+
     } // makeIt
+
+    _refreshVideoTagEvent() {
+        let _this = this;
+        _this.videoTag = document.getElementById(_this.myPlayerID).querySelector("video");
+    }
 
     setPlaybackRate(rate=1.0) {
         if (rate <= 0.0 || 
@@ -326,6 +372,11 @@ class NvVideojsCoreModule {
     }
 
     release() {
+        this.loadSuccess = false;
+        if (this.bootInterval !== undefined && this.bootInterval !== null) {
+            window.clearInterval(this.bootInterval);
+            this.bootInterval = null;
+        }
         this.myPlayer.dispose();
         this.myPlayerID = null
         this.myPlayer = null;
