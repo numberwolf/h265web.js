@@ -32,11 +32,11 @@
     <meta charset="utf-8" name="discord" content="numberwolf#8694">
     <meta charset="utf-8" name="github" content="https://github.com/numberwolf/h265web.js">
 
-    <script src="dist/missile.js"></script> <!-- IMPORTANT -->
-    <script src="dist/h265webjs-v20221022.js"></script> <!-- IMPORTANT -->
+    <script src="dist/missile.js"></script>
+    <script src="dist/h265webjs-v20221022.js"></script>
 
-    <!--<script src="dist-multi-thread/missile-multi-thread.js"></script>
-    <script src="dist-multi-thread/h265webjs-v20221022.js"></script>-->
+    <!-- <script src="dist-multi-thread/missile-multi-thread.js"></script>
+    <script src="dist-multi-thread/h265webjs-v20220828.js"></script> -->
 
     <style>
     </style>
@@ -54,7 +54,10 @@
             <div style="width:100%; height:25px; background-color:blue; color:white;">
                 1. Input Play URL (Editable)
             </div>
+            <!-- <input id="url-input" style="width:100%; height: 20px; background-color: rgba(30,31,20,1); color:rgba(240,181,53,1);" value="http://127.0.0.1/live/test.flv"> -->
             <input id="url-input" style="width:100%; height: 20px; background-color: rgba(30,31,20,1); color:rgba(240,181,53,1);" value="example_normal/hevc_test_moov_set_head_16s.mp4">
+            
+            <!--<input id="url-input" style="width:100%; height: 20px; background-color: rgba(30,31,20,1); color:rgba(240,181,53,1);" value="http://flv.vaiwan.com/live/test.live.flv">-->
             </input>
             <div style="width:100%; height:25px; background-color:blue; color:white;">
                 2. Input Player Config (Editable)
@@ -117,6 +120,8 @@ pts log</textarea>
     |
     <button onclick="nextFrame()">1.Next Frame</button>
     <button onclick="snapshot()">2.Snapshot</button>
+    <button onclick="playrate(0.5)">3.PlayRate 0.5</button>
+    <button onclick="resize(640, 200)">resize640x200</button>
 
     <hr>
 
@@ -131,6 +136,10 @@ pts log</textarea>
 <a href="https://github.com/numberwolf/h265web.js">https://github.com/numberwolf/h265web.js</a>
 
     <script>
+        if((/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent))) {
+            alert("safari");
+        }
+
         const h265webURL = "https://github.com/numberwolf/h265web.js";
         
         var playerObj = null;
@@ -334,7 +343,7 @@ pts log</textarea>
             if (playerObj !== null) {
                 playerObj.playNextFrame();
             }
-        } 
+        }
 
         function snapshot() {
             const snapCanvas = document.querySelector("#snapshot-canvas");
@@ -342,7 +351,30 @@ pts log</textarea>
                 playerObj.snapshot(snapCanvas);
                 loggerObj.scrollNewest("\r\nplayerObj.snapshot"); 
             }
-        } 
+        }
+
+        function playrate(rate=1.0) {
+            console.log(playerObj.player.videoTag);
+            if (playerObj !== null) {
+                let ret = playerObj.setPlaybackRate(rate);
+                loggerObj.scrollNewest(
+                    "\r\nplayerObj playrate:" 
+                    + ' ret:' + ret
+                    + ' tag:' + rate
+                    + ' res:' + playerObj.getPlaybackRate()); 
+            }
+        }
+
+        function resize(w, h) {
+            if (playerObj !== null) {
+                let ret = playerObj.resize(w, h);
+                loggerObj.scrollNewest(
+                    "\r\nplayerObj resize:" 
+                    + ' ret:' + ret
+                    + ' w:' + w
+                    + ' h:' + h); 
+            }
+        }
         
 
         window.onload = function() {
