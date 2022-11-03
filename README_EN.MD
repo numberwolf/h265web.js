@@ -1000,6 +1000,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/11/02 |
+| - | 0.Update WASM |
 | Time | 2022/10/22 |
 | - | 0.Support: Hard-Decode for FLV/HTTP-FLV/MP4 |
 | - | 1.Support: AVC with Mpeg-TS |
