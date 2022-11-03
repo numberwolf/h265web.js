@@ -308,6 +308,10 @@ Simple Demo - First <a href="index-debug.html">index-debug.html</a>
 
 > * <h4> Warning: Put the .wasm file into `webpack`/`browerify`'s dist Directory! If wasm's path is not same with `webpack`/`browerify`'s dist file's path, you can not running with it！！！Or you can include with this github's dist/\*.js and dist/missile\*.wasm</h4>
 
+```bash
+bash init.sh
+```
+
 #### 1）Install SDK Package
 
 * By github 1.1 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
@@ -1000,6 +1004,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2022/11/02 |
+| - | 0.Update WASM |
 | Time | 2022/10/22 |
 | - | 0.Support: Hard-Decode for FLV/HTTP-FLV/MP4 |
 | - | 1.Support: AVC with Mpeg-TS |

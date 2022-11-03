@@ -39,3 +39,9 @@ example/dist/missile-256mb*
 example_normal/dist/missile-512mb*
 example_normal/dist/missile-256mb*
 src/src/decoder/dc-worker*
+
+example_normal/dist*
+example_vue3_vite/public/dist
+example_vue3/public/dist
+example_vue2/public/dist
+

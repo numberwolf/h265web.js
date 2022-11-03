@@ -326,6 +326,11 @@ class H265webjsModule {
         }
 
         if (this.configFormat.extInfo.hevc === false) {
+            let avpinit_ret = Module.cwrap("AVPlayerInit", "number", ["string", "string"])(
+                this.configFormat.token, '0.0.0'
+            );
+            
+            // AVPlayerInit
             const native = true;
             this._makeMP4Player(native);
             return 0;
