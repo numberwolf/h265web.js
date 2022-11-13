@@ -970,9 +970,9 @@ module.exports = config => {
         Module.cwrap('setCodecType', 'number', ['number', 'number', 'number'])(
             player.vcodecerPtr, player.config.videoCodec, player.videoCallback);
         // WASM
-        let ret1 = Module.cwrap('initMissile', 'number', ['number'])(player.vcodecerPtr);
+        //let ret1 = Module.cwrap('initMissile', 'number', ['number'])(player.vcodecerPtr);
         //console.log('initMissile ret:' + ret1);
-        ret1 = Module.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
+        let ret1 = Module.cwrap('initializeDecoder', 'number', ['number'])(player.vcodecerPtr);
         //console.log("initializeDecoder ret:" + ret1);
     };
     player.makeIt = () => {

@@ -199,16 +199,24 @@ class NvVideojsCoreModule {
                 //     _this.onLoadFinish && _this.onLoadFinish();
                 //     _this.onReadyShowDone && _this.onReadyShowDone();
                 // }
+                if (_this.loadSuccess !== true) {
+                    _this.onLoadFinish && _this.onLoadFinish();
+                    _this.onReadyShowDone && _this.onReadyShowDone();
+                    _this._loopBufferState();
+                    _this.loadSuccess = true;
+                }
             });
             //myPlayer.play();
             _this.myPlayer.on("loadedmetadata", function(e) {
                 console.log("vjs loadedmetadata", e);
                 _this._onVideoJsReady();
-                if (_this.configFormat.probeDurationMS >= 0) {
+                if (_this.loadSuccess !== true) {
+                // if (_this.configFormat.probeDurationMS >= 0) {
                     _this.onLoadFinish && _this.onLoadFinish();
                     _this.onReadyShowDone && _this.onReadyShowDone();
                     _this._loopBufferState();
                     _this.loadSuccess = true;
+                // }
                 }
             });
             _this.myPlayer.on("ended", function() {
@@ -224,12 +232,17 @@ class NvVideojsCoreModule {
             });
             // _this.play();
             _this.onMakeItReady && _this.onMakeItReady();
-            if (_this.configFormat.probeDurationMS < 0) {
-                _this.onLoadFinish && _this.onLoadFinish();
-                _this.onReadyShowDone && _this.onReadyShowDone();
-                _this._loopBufferState();
-                _this.loadSuccess = true;
-            }
+            setTimeout(function() {
+                if (_this.loadSuccess !== true) {
+                    if (_this.configFormat.probeDurationMS < 0) {
+                        _this.onLoadFinish && _this.onLoadFinish();
+                        _this.onReadyShowDone && _this.onReadyShowDone();
+                        _this._loopBufferState();
+                        _this.loadSuccess = true;
+                    }
+                }
+            }, 1000);
+            
         });
         this.myPlayer.options.controls = false;
         // this.myPlayer.options.autoplay = 'any';
