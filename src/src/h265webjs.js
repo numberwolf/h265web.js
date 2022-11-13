@@ -392,7 +392,8 @@ class H265webjsModule {
         }
         console.log("===>", this.player);
         if (this.playParam.videoCodec === def.CODEC_H265 && this.player) {
-            if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
+            if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8 
+                && this.hlsObj !== undefined && this.hlsObj !== null) {
                 this.hlsObj.release();
             }
             this.player.release();
@@ -1327,11 +1328,13 @@ class H265webjsModule {
                 this.configFormat.type == def.PLAYER_IN_TYPE_MPEGTS)
             {
                 console.log("go ts");
-                this._mpegTsEntry();
+                //this._mpegTsEntry();
+                this._mpegTsNv3rdPlayer(-1, false);
                 // return -1;
             } else if (this.configFormat.type == def.PLAYER_IN_TYPE_M3U8) {
                 console.log("go m3u8");
-                this._videoJsPlayer(0);
+                //this._videoJsPlayer(0);
+                this._videoJsPlayer();
             } else if (this.configFormat.type === def.PLAYER_IN_TYPE_RAW_265) {
                 console.log("go raw265");
                 // this._raw265Entry();
@@ -2437,6 +2440,10 @@ class H265webjsModule {
         console.log("entry ts");
         let _this = this;
 
+        let avpinit_ret = Module.cwrap("AVPlayerInit", "number", ["string", "string"])(
+            this.configFormat.token, '0.0.0'
+        );
+
         let controller = new AbortController();
         let signal = controller.signal;
 
@@ -2589,9 +2596,13 @@ class H265webjsModule {
         let _this = this;
 
         if (this._isSupportWASM() === false) {
-            return this._videoJsPlayer(0);
+            return this._videoJsPlayer();
         }
 
+        let avpinit_ret = Module.cwrap("AVPlayerInit", "number", ["string", "string"])(
+            this.configFormat.token, '0.0.0'
+        );
+        
         let readyFinState = false;
         let durationMs = 0;
         let durationSecFloat;

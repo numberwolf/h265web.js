@@ -19,5 +19,5 @@
 #  * Github: https://github.com/numberwolf/h265web.js
 #  * 
 #  **********************************************************/
-VERSION='v20221102' # output version + index.js
-WASM_VERSION='v20221022'
+VERSION='v20221106' # output version + index.js
+WASM_VERSION='v20221106'

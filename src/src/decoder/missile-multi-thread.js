@@ -614,10 +614,10 @@ function updateGlobalBufferAndViews(buf) {
     Module["HEAPF64"] = HEAPF64 = new Float64Array(buf)
 }
 if (!ENVIRONMENT_IS_PTHREAD) {
-    var STACK_BASE = 1402256,
-        STACK_MAX = 6645136,
-        DYNAMIC_BASE = 6645136,
-        DYNAMICTOP_PTR = 1401232;
+    var STACK_BASE = 1402272,
+        STACK_MAX = 6645152,
+        DYNAMIC_BASE = 6645152,
+        DYNAMICTOP_PTR = 1401248;
     assert(STACK_BASE % 16 === 0, "stack must start aligned");
     assert(DYNAMIC_BASE % 16 === 0, "heap must start aligned")
 }
@@ -881,7 +881,7 @@ var dataURIPrefix = "data:application/octet-stream;base64,";
 function isDataURI(filename) {
     return String.prototype.startsWith ? filename.startsWith(dataURIPrefix) : filename.indexOf(dataURIPrefix) === 0
 }
-var wasmBinaryFile = "missile-multi-thread-v20221022.wasm";
+var wasmBinaryFile = "missile-multi-thread-v20221106.wasm";
 if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile)
 }
@@ -1112,10 +1112,10 @@ if (!ENVIRONMENT_IS_PTHREAD) __ATINIT__.push({
     }
 });
 if (!ENVIRONMENT_IS_PTHREAD) {
-    memoryInitializer = "missile-multi-thread-v20221022.html.mem"
+    memoryInitializer = "missile-multi-thread-v20221106.html.mem"
 }
 var tempDoublePtr;
-if (!ENVIRONMENT_IS_PTHREAD) tempDoublePtr = 1402240;
+if (!ENVIRONMENT_IS_PTHREAD) tempDoublePtr = 1402256;
 assert(tempDoublePtr % 8 == 0);
 
 function demangle(func) {
@@ -1331,7 +1331,7 @@ var ERRNO_CODES = {
 };
 var __main_thread_futex_wait_address;
 if (ENVIRONMENT_IS_PTHREAD) __main_thread_futex_wait_address = PthreadWorkerInit.__main_thread_futex_wait_address;
-else PthreadWorkerInit.__main_thread_futex_wait_address = __main_thread_futex_wait_address = 1402224;
+else PthreadWorkerInit.__main_thread_futex_wait_address = __main_thread_futex_wait_address = 1402240;
 
 function _emscripten_futex_wake(addr, count) {
     if (addr <= 0 || addr > HEAP8.length || addr & 3 != 0 || count < 0) return -28;
@@ -1368,12 +1368,12 @@ var PThread = {
         if (ENVIRONMENT_IS_PTHREAD) return undefined;
         var requestedPoolSize = 10;
         PThread.preallocatedWorkers = PThread.createNewWorkers(requestedPoolSize);
-        PThread.mainThreadBlock = 1401440;
+        PThread.mainThreadBlock = 1401456;
         for (var i = 0; i < 244 / 4; ++i) HEAPU32[PThread.mainThreadBlock / 4 + i] = 0;
         HEAP32[PThread.mainThreadBlock + 24 >> 2] = PThread.mainThreadBlock;
         var headPtr = PThread.mainThreadBlock + 168;
         HEAP32[headPtr >> 2] = headPtr;
-        var tlsMemory = 1401696;
+        var tlsMemory = 1401712;
         for (var i = 0; i < 128; ++i) HEAPU32[tlsMemory / 4 + i] = 0;
         Atomics.store(HEAPU32, PThread.mainThreadBlock + 116 >> 2, tlsMemory);
         Atomics.store(HEAPU32, PThread.mainThreadBlock + 52 >> 2, PThread.mainThreadBlock);
@@ -1576,7 +1576,7 @@ var PThread = {
     },
     createNewWorkers: function(numWorkers) {
         if (typeof SharedArrayBuffer === "undefined") return [];
-        var pthreadMainJs = "missile-multi-thread-v20221022.worker.js";
+        var pthreadMainJs = "missile-multi-thread-v20221106.worker.js";
         pthreadMainJs = locateFile(pthreadMainJs);
         var newWorkers = [];
         for (var i = 0; i < numWorkers; ++i) {
@@ -5119,7 +5119,7 @@ function __emscripten_fetch_free(id) {
 }
 var _fetch_work_queue;
 if (ENVIRONMENT_IS_PTHREAD) _fetch_work_queue = PthreadWorkerInit._fetch_work_queue;
-else PthreadWorkerInit._fetch_work_queue = _fetch_work_queue = 1401424;
+else PthreadWorkerInit._fetch_work_queue = _fetch_work_queue = 1401440;
 
 function __emscripten_get_fetch_work_queue() {
     return _fetch_work_queue
@@ -5518,7 +5518,7 @@ var Fetch = {
         Fetch.openDatabase("emscripten_filesystem", 1, onsuccess, onerror);
         if (isMainThread) {
             addRunDependency("library_fetch_init");
-            var fetchJs = locateFile("missile-multi-thread-v20221022.fetch.js");
+            var fetchJs = locateFile("missile-multi-thread-v20221106.fetch.js");
             Fetch.worker = new Worker(fetchJs);
             Fetch.worker.onmessage = function(e) {
                 out("fetch-worker sent a message: " + e.filename + ":" + e.lineno + ": " + e.message)
@@ -6075,7 +6075,7 @@ function _gettimeofday(ptr) {
 }
 var ___tm_timezone;
 if (ENVIRONMENT_IS_PTHREAD) ___tm_timezone = PthreadWorkerInit.___tm_timezone;
-else PthreadWorkerInit.___tm_timezone = ___tm_timezone = (stringToUTF8("GMT", 1401328, 4), 1401328);
+else PthreadWorkerInit.___tm_timezone = ___tm_timezone = (stringToUTF8("GMT", 1401344, 4), 1401344);
 
 function _gmtime_r(time, tmPtr) {
     var date = new Date(HEAP32[time >> 2] * 1e3);
@@ -6917,7 +6917,7 @@ var debug_table_didd = [0, "jsCall_didd_0", "jsCall_didd_1", "jsCall_didd_2", "j
 var debug_table_fii = [0, "jsCall_fii_0", "jsCall_fii_1", "jsCall_fii_2", "jsCall_fii_3", "jsCall_fii_4", "jsCall_fii_5", "jsCall_fii_6", "jsCall_fii_7", "jsCall_fii_8", "jsCall_fii_9", "jsCall_fii_10", "jsCall_fii_11", "jsCall_fii_12", "jsCall_fii_13", "jsCall_fii_14", "jsCall_fii_15", "jsCall_fii_16", "jsCall_fii_17", "jsCall_fii_18", "jsCall_fii_19", "jsCall_fii_20", "jsCall_fii_21", "jsCall_fii_22", "jsCall_fii_23", "jsCall_fii_24", "jsCall_fii_25", "jsCall_fii_26", "jsCall_fii_27", "jsCall_fii_28", "jsCall_fii_29", "jsCall_fii_30", "jsCall_fii_31", "jsCall_fii_32", "jsCall_fii_33", "jsCall_fii_34", "_sbr_sum_square_c", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_fiii = [0, "jsCall_fiii_0", "jsCall_fiii_1", "jsCall_fiii_2", "jsCall_fiii_3", "jsCall_fiii_4", "jsCall_fiii_5", "jsCall_fiii_6", "jsCall_fiii_7", "jsCall_fiii_8", "jsCall_fiii_9", "jsCall_fiii_10", "jsCall_fiii_11", "jsCall_fiii_12", "jsCall_fiii_13", "jsCall_fiii_14", "jsCall_fiii_15", "jsCall_fiii_16", "jsCall_fiii_17", "jsCall_fiii_18", "jsCall_fiii_19", "jsCall_fiii_20", "jsCall_fiii_21", "jsCall_fiii_22", "jsCall_fiii_23", "jsCall_fiii_24", "jsCall_fiii_25", "jsCall_fiii_26", "jsCall_fiii_27", "jsCall_fiii_28", "jsCall_fiii_29", "jsCall_fiii_30", "jsCall_fiii_31", "jsCall_fiii_32", "jsCall_fiii_33", "jsCall_fiii_34", "_avpriv_scalarproduct_float_c", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_i = [0, "jsCall_i_0", "jsCall_i_1", "jsCall_i_2", "jsCall_i_3", "jsCall_i_4", "jsCall_i_5", "jsCall_i_6", "jsCall_i_7", "jsCall_i_8", "jsCall_i_9", "jsCall_i_10", "jsCall_i_11", "jsCall_i_12", "jsCall_i_13", "jsCall_i_14", "jsCall_i_15", "jsCall_i_16", "jsCall_i_17", "jsCall_i_18", "jsCall_i_19", "jsCall_i_20", "jsCall_i_21", "jsCall_i_22", "jsCall_i_23", "jsCall_i_24", "jsCall_i_25", "jsCall_i_26", "jsCall_i_27", "jsCall_i_28", "jsCall_i_29", "jsCall_i_30", "jsCall_i_31", "jsCall_i_32", "jsCall_i_33", "jsCall_i_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var debug_table_ii = [0, "jsCall_ii_0", "jsCall_ii_1", "jsCall_ii_2", "jsCall_ii_3", "jsCall_ii_4", "jsCall_ii_5", "jsCall_ii_6", "jsCall_ii_7", "jsCall_ii_8", "jsCall_ii_9", "jsCall_ii_10", "jsCall_ii_11", "jsCall_ii_12", "jsCall_ii_13", "jsCall_ii_14", "jsCall_ii_15", "jsCall_ii_16", "jsCall_ii_17", "jsCall_ii_18", "jsCall_ii_19", "jsCall_ii_20", "jsCall_ii_21", "jsCall_ii_22", "jsCall_ii_23", "jsCall_ii_24", "jsCall_ii_25", "jsCall_ii_26", "jsCall_ii_27", "jsCall_ii_28", "jsCall_ii_29", "jsCall_ii_30", "jsCall_ii_31", "jsCall_ii_32", "jsCall_ii_33", "jsCall_ii_34", "_avi_probe", "_avi_read_header", "_avi_read_close", "_av_default_item_name", "_ff_avio_child_class_next", "_flv_probe", "_flv_read_header", "_flv_read_close", "_live_flv_probe", "_h264_probe", "_ff_raw_video_read_header", "_hevc_probe", "_mpeg4video_probe", "_matroska_probe", "_matroska_read_header", "_matroska_read_close", "_mov_probe", "_mov_read_header", "_mov_read_close", "_mp3_read_probe", "_mp3_read_header", "_mpegps_probe", "_mpegps_read_header", "_mpegts_probe", "_mpegts_read_header", "_mpegts_read_close", "_mpegvideo_probe", "_format_to_name", "_format_child_class_next", "_get_category", "_pcm_read_header", "_urlcontext_to_name", "_ff_urlcontext_child_class_next", "_sws_context_to_name", "_ff_bsf_child_class_next", "_hevc_mp4toannexb_init", "_hevc_init_thread_copy", "_hevc_decode_init", "_hevc_decode_free", "_decode_init", "_context_to_name", "_codec_child_class_next", "_get_category_2919", "_pcm_decode_init", "_pcm_decode_close", "_aac_decode_init", "_aac_decode_close", "_init", "_context_to_name_6206", "_resample_flush", "___stdio_close", "___emscripten_stdout_close", "_decThread", "_releaseSniffStreamFunc", "_naluLListLengthFunc", "_hflv_decflvthread", "_hflv_releaseFunc", "_hflv_getBufferLength", "_g711_decthread", "_g711_releaseFunc", "_g711_decodeVideoFrameFunc", "_g711_getBufferLength", "_initializeDecoderFunc", "__getFrame", "_closeVideoFunc", "_releaseFunc", "_initializeDemuxerFunc", "_getPacketFunc", "_releaseDemuxerFunc", "_io_short_seek", "_avio_rb16", "_avio_rl16", "_av_buffer_allocz", "_frame_worker_thread", "_av_buffer_alloc", "_thread_worker", "___emscripten_thread_main", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var debug_table_ii = [0, "jsCall_ii_0", "jsCall_ii_1", "jsCall_ii_2", "jsCall_ii_3", "jsCall_ii_4", "jsCall_ii_5", "jsCall_ii_6", "jsCall_ii_7", "jsCall_ii_8", "jsCall_ii_9", "jsCall_ii_10", "jsCall_ii_11", "jsCall_ii_12", "jsCall_ii_13", "jsCall_ii_14", "jsCall_ii_15", "jsCall_ii_16", "jsCall_ii_17", "jsCall_ii_18", "jsCall_ii_19", "jsCall_ii_20", "jsCall_ii_21", "jsCall_ii_22", "jsCall_ii_23", "jsCall_ii_24", "jsCall_ii_25", "jsCall_ii_26", "jsCall_ii_27", "jsCall_ii_28", "jsCall_ii_29", "jsCall_ii_30", "jsCall_ii_31", "jsCall_ii_32", "jsCall_ii_33", "jsCall_ii_34", "_avi_probe", "_avi_read_header", "_avi_read_close", "_av_default_item_name", "_ff_avio_child_class_next", "_flv_probe", "_flv_read_header", "_flv_read_close", "_live_flv_probe", "_h264_probe", "_ff_raw_video_read_header", "_hevc_probe", "_mpeg4video_probe", "_matroska_probe", "_matroska_read_header", "_matroska_read_close", "_mov_probe", "_mov_read_header", "_mov_read_close", "_mp3_read_probe", "_mp3_read_header", "_mpegps_probe", "_mpegps_read_header", "_mpegts_probe", "_mpegts_read_header", "_mpegts_read_close", "_mpegvideo_probe", "_format_to_name", "_format_child_class_next", "_get_category", "_pcm_read_header", "_urlcontext_to_name", "_ff_urlcontext_child_class_next", "_sws_context_to_name", "_ff_bsf_child_class_next", "_hevc_mp4toannexb_init", "_hevc_init_thread_copy", "_hevc_decode_init", "_hevc_decode_free", "_decode_init", "_context_to_name", "_codec_child_class_next", "_get_category_2916", "_pcm_decode_init", "_pcm_decode_close", "_aac_decode_init", "_aac_decode_close", "_init", "_context_to_name_6203", "_resample_flush", "___stdio_close", "___emscripten_stdout_close", "_decThread", "_releaseSniffStreamFunc", "_naluLListLengthFunc", "_hflv_decflvthread", "_hflv_releaseFunc", "_hflv_getBufferLength", "_g711_decthread", "_g711_releaseFunc", "_g711_decodeVideoFrameFunc", "_g711_getBufferLength", "_initializeDecoderFunc", "__getFrame", "_closeVideoFunc", "_releaseFunc", "_initializeDemuxerFunc", "_getPacketFunc", "_releaseDemuxerFunc", "_io_short_seek", "_avio_rb16", "_avio_rl16", "_av_buffer_allocz", "_frame_worker_thread", "_av_buffer_alloc", "_thread_worker", "___emscripten_thread_main", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_iid = [0, "jsCall_iid_0", "jsCall_iid_1", "jsCall_iid_2", "jsCall_iid_3", "jsCall_iid_4", "jsCall_iid_5", "jsCall_iid_6", "jsCall_iid_7", "jsCall_iid_8", "jsCall_iid_9", "jsCall_iid_10", "jsCall_iid_11", "jsCall_iid_12", "jsCall_iid_13", "jsCall_iid_14", "jsCall_iid_15", "jsCall_iid_16", "jsCall_iid_17", "jsCall_iid_18", "jsCall_iid_19", "jsCall_iid_20", "jsCall_iid_21", "jsCall_iid_22", "jsCall_iid_23", "jsCall_iid_24", "jsCall_iid_25", "jsCall_iid_26", "jsCall_iid_27", "jsCall_iid_28", "jsCall_iid_29", "jsCall_iid_30", "jsCall_iid_31", "jsCall_iid_32", "jsCall_iid_33", "jsCall_iid_34", "_seekBufferFunc", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_iidiiii = [0, "jsCall_iidiiii_0", "jsCall_iidiiii_1", "jsCall_iidiiii_2", "jsCall_iidiiii_3", "jsCall_iidiiii_4", "jsCall_iidiiii_5", "jsCall_iidiiii_6", "jsCall_iidiiii_7", "jsCall_iidiiii_8", "jsCall_iidiiii_9", "jsCall_iidiiii_10", "jsCall_iidiiii_11", "jsCall_iidiiii_12", "jsCall_iidiiii_13", "jsCall_iidiiii_14", "jsCall_iidiiii_15", "jsCall_iidiiii_16", "jsCall_iidiiii_17", "jsCall_iidiiii_18", "jsCall_iidiiii_19", "jsCall_iidiiii_20", "jsCall_iidiiii_21", "jsCall_iidiiii_22", "jsCall_iidiiii_23", "jsCall_iidiiii_24", "jsCall_iidiiii_25", "jsCall_iidiiii_26", "jsCall_iidiiii_27", "jsCall_iidiiii_28", "jsCall_iidiiii_29", "jsCall_iidiiii_30", "jsCall_iidiiii_31", "jsCall_iidiiii_32", "jsCall_iidiiii_33", "jsCall_iidiiii_34", "_fmt_fp", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_iii = [0, "jsCall_iii_0", "jsCall_iii_1", "jsCall_iii_2", "jsCall_iii_3", "jsCall_iii_4", "jsCall_iii_5", "jsCall_iii_6", "jsCall_iii_7", "jsCall_iii_8", "jsCall_iii_9", "jsCall_iii_10", "jsCall_iii_11", "jsCall_iii_12", "jsCall_iii_13", "jsCall_iii_14", "jsCall_iii_15", "jsCall_iii_16", "jsCall_iii_17", "jsCall_iii_18", "jsCall_iii_19", "jsCall_iii_20", "jsCall_iii_21", "jsCall_iii_22", "jsCall_iii_23", "jsCall_iii_24", "jsCall_iii_25", "jsCall_iii_26", "jsCall_iii_27", "jsCall_iii_28", "jsCall_iii_29", "jsCall_iii_30", "jsCall_iii_31", "jsCall_iii_32", "jsCall_iii_33", "jsCall_iii_34", "_avi_read_packet", "_ff_avio_child_next", "_flv_read_packet", "_ff_raw_read_partial_packet", "_matroska_read_packet", "_mov_read_packet", "_mp3_read_packet", "_mpegps_read_packet", "_mpegts_read_packet", "_mpegts_raw_read_packet", "_format_child_next", "_ff_pcm_read_packet", "_urlcontext_child_next", "_bsf_child_next", "_hevc_mp4toannexb_filter", "_hevc_update_thread_context", "_null_filter", "_codec_child_next", "_initSniffStreamFunc", "_hflv_initFunc", "_hflv_getPacketFunc", "_g711_initFunc", "_io_read_pause", "_descriptor_compare", "_hls_decode_entry", "_avcodec_default_get_format", "_ff_startcode_find_candidate_c", "_color_table_compare"];
@@ -6945,7 +6945,7 @@ var debug_table_vf = [0, "jsCall_vf_0", "jsCall_vf_1", "jsCall_vf_2", "jsCall_vf
 var debug_table_vff = [0, "jsCall_vff_0", "jsCall_vff_1", "jsCall_vff_2", "jsCall_vff_3", "jsCall_vff_4", "jsCall_vff_5", "jsCall_vff_6", "jsCall_vff_7", "jsCall_vff_8", "jsCall_vff_9", "jsCall_vff_10", "jsCall_vff_11", "jsCall_vff_12", "jsCall_vff_13", "jsCall_vff_14", "jsCall_vff_15", "jsCall_vff_16", "jsCall_vff_17", "jsCall_vff_18", "jsCall_vff_19", "jsCall_vff_20", "jsCall_vff_21", "jsCall_vff_22", "jsCall_vff_23", "jsCall_vff_24", "jsCall_vff_25", "jsCall_vff_26", "jsCall_vff_27", "jsCall_vff_28", "jsCall_vff_29", "jsCall_vff_30", "jsCall_vff_31", "jsCall_vff_32", "jsCall_vff_33", "jsCall_vff_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_vfff = [0, "jsCall_vfff_0", "jsCall_vfff_1", "jsCall_vfff_2", "jsCall_vfff_3", "jsCall_vfff_4", "jsCall_vfff_5", "jsCall_vfff_6", "jsCall_vfff_7", "jsCall_vfff_8", "jsCall_vfff_9", "jsCall_vfff_10", "jsCall_vfff_11", "jsCall_vfff_12", "jsCall_vfff_13", "jsCall_vfff_14", "jsCall_vfff_15", "jsCall_vfff_16", "jsCall_vfff_17", "jsCall_vfff_18", "jsCall_vfff_19", "jsCall_vfff_20", "jsCall_vfff_21", "jsCall_vfff_22", "jsCall_vfff_23", "jsCall_vfff_24", "jsCall_vfff_25", "jsCall_vfff_26", "jsCall_vfff_27", "jsCall_vfff_28", "jsCall_vfff_29", "jsCall_vfff_30", "jsCall_vfff_31", "jsCall_vfff_32", "jsCall_vfff_33", "jsCall_vfff_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_vffff = [0, "jsCall_vffff_0", "jsCall_vffff_1", "jsCall_vffff_2", "jsCall_vffff_3", "jsCall_vffff_4", "jsCall_vffff_5", "jsCall_vffff_6", "jsCall_vffff_7", "jsCall_vffff_8", "jsCall_vffff_9", "jsCall_vffff_10", "jsCall_vffff_11", "jsCall_vffff_12", "jsCall_vffff_13", "jsCall_vffff_14", "jsCall_vffff_15", "jsCall_vffff_16", "jsCall_vffff_17", "jsCall_vffff_18", "jsCall_vffff_19", "jsCall_vffff_20", "jsCall_vffff_21", "jsCall_vffff_22", "jsCall_vffff_23", "jsCall_vffff_24", "jsCall_vffff_25", "jsCall_vffff_26", "jsCall_vffff_27", "jsCall_vffff_28", "jsCall_vffff_29", "jsCall_vffff_30", "jsCall_vffff_31", "jsCall_vffff_32", "jsCall_vffff_33", "jsCall_vffff_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var debug_table_vi = [0, "jsCall_vi_0", "jsCall_vi_1", "jsCall_vi_2", "jsCall_vi_3", "jsCall_vi_4", "jsCall_vi_5", "jsCall_vi_6", "jsCall_vi_7", "jsCall_vi_8", "jsCall_vi_9", "jsCall_vi_10", "jsCall_vi_11", "jsCall_vi_12", "jsCall_vi_13", "jsCall_vi_14", "jsCall_vi_15", "jsCall_vi_16", "jsCall_vi_17", "jsCall_vi_18", "jsCall_vi_19", "jsCall_vi_20", "jsCall_vi_21", "jsCall_vi_22", "jsCall_vi_23", "jsCall_vi_24", "jsCall_vi_25", "jsCall_vi_26", "jsCall_vi_27", "jsCall_vi_28", "jsCall_vi_29", "jsCall_vi_30", "jsCall_vi_31", "jsCall_vi_32", "jsCall_vi_33", "jsCall_vi_34", "_free_geobtag", "_free_apic", "_free_chapter", "_free_priv", "_hevc_decode_flush", "_flush", "_flush_3923", "_fft4", "_fft8", "_fft16", "_fft32", "_fft64", "_fft128", "_fft256", "_fft512", "_fft1024", "_fft2048", "_fft4096", "_fft8192", "_fft16384", "_fft32768", "_fft65536", "_fft131072", "_h264_close", "_hevc_parser_close", "_ff_parse_close", "_resample_free", "_logRequest_downloadSucceeded", "_logRequest_downloadFailed", "_downloadSucceeded", "_downloadFailed", "_transform_4x4_luma_9", "_idct_4x4_dc_9", "_idct_8x8_dc_9", "_idct_16x16_dc_9", "_idct_32x32_dc_9", "_transform_4x4_luma_10", "_idct_4x4_dc_10", "_idct_8x8_dc_10", "_idct_16x16_dc_10", "_idct_32x32_dc_10", "_transform_4x4_luma_12", "_idct_4x4_dc_12", "_idct_8x8_dc_12", "_idct_16x16_dc_12", "_idct_32x32_dc_12", "_transform_4x4_luma_8", "_idct_4x4_dc_8", "_idct_8x8_dc_8", "_idct_16x16_dc_8", "_idct_32x32_dc_8", "_main_function", "_sbr_sum64x5_c", "_sbr_neg_odd_64_c", "_sbr_qmf_pre_shuffle_c", "_undo", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var debug_table_vi = [0, "jsCall_vi_0", "jsCall_vi_1", "jsCall_vi_2", "jsCall_vi_3", "jsCall_vi_4", "jsCall_vi_5", "jsCall_vi_6", "jsCall_vi_7", "jsCall_vi_8", "jsCall_vi_9", "jsCall_vi_10", "jsCall_vi_11", "jsCall_vi_12", "jsCall_vi_13", "jsCall_vi_14", "jsCall_vi_15", "jsCall_vi_16", "jsCall_vi_17", "jsCall_vi_18", "jsCall_vi_19", "jsCall_vi_20", "jsCall_vi_21", "jsCall_vi_22", "jsCall_vi_23", "jsCall_vi_24", "jsCall_vi_25", "jsCall_vi_26", "jsCall_vi_27", "jsCall_vi_28", "jsCall_vi_29", "jsCall_vi_30", "jsCall_vi_31", "jsCall_vi_32", "jsCall_vi_33", "jsCall_vi_34", "_free_geobtag", "_free_apic", "_free_chapter", "_free_priv", "_hevc_decode_flush", "_flush", "_flush_3920", "_fft4", "_fft8", "_fft16", "_fft32", "_fft64", "_fft128", "_fft256", "_fft512", "_fft1024", "_fft2048", "_fft4096", "_fft8192", "_fft16384", "_fft32768", "_fft65536", "_fft131072", "_h264_close", "_hevc_parser_close", "_ff_parse_close", "_resample_free", "_logRequest_downloadSucceeded", "_logRequest_downloadFailed", "_downloadSucceeded", "_downloadFailed", "_transform_4x4_luma_9", "_idct_4x4_dc_9", "_idct_8x8_dc_9", "_idct_16x16_dc_9", "_idct_32x32_dc_9", "_transform_4x4_luma_10", "_idct_4x4_dc_10", "_idct_8x8_dc_10", "_idct_16x16_dc_10", "_idct_32x32_dc_10", "_transform_4x4_luma_12", "_idct_4x4_dc_12", "_idct_8x8_dc_12", "_idct_16x16_dc_12", "_idct_32x32_dc_12", "_transform_4x4_luma_8", "_idct_4x4_dc_8", "_idct_8x8_dc_8", "_idct_16x16_dc_8", "_idct_32x32_dc_8", "_main_function", "_sbr_sum64x5_c", "_sbr_neg_odd_64_c", "_sbr_qmf_pre_shuffle_c", "_undo", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_vif = [0, "jsCall_vif_0", "jsCall_vif_1", "jsCall_vif_2", "jsCall_vif_3", "jsCall_vif_4", "jsCall_vif_5", "jsCall_vif_6", "jsCall_vif_7", "jsCall_vif_8", "jsCall_vif_9", "jsCall_vif_10", "jsCall_vif_11", "jsCall_vif_12", "jsCall_vif_13", "jsCall_vif_14", "jsCall_vif_15", "jsCall_vif_16", "jsCall_vif_17", "jsCall_vif_18", "jsCall_vif_19", "jsCall_vif_20", "jsCall_vif_21", "jsCall_vif_22", "jsCall_vif_23", "jsCall_vif_24", "jsCall_vif_25", "jsCall_vif_26", "jsCall_vif_27", "jsCall_vif_28", "jsCall_vif_29", "jsCall_vif_30", "jsCall_vif_31", "jsCall_vif_32", "jsCall_vif_33", "jsCall_vif_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_viff = [0, "jsCall_viff_0", "jsCall_viff_1", "jsCall_viff_2", "jsCall_viff_3", "jsCall_viff_4", "jsCall_viff_5", "jsCall_viff_6", "jsCall_viff_7", "jsCall_viff_8", "jsCall_viff_9", "jsCall_viff_10", "jsCall_viff_11", "jsCall_viff_12", "jsCall_viff_13", "jsCall_viff_14", "jsCall_viff_15", "jsCall_viff_16", "jsCall_viff_17", "jsCall_viff_18", "jsCall_viff_19", "jsCall_viff_20", "jsCall_viff_21", "jsCall_viff_22", "jsCall_viff_23", "jsCall_viff_24", "jsCall_viff_25", "jsCall_viff_26", "jsCall_viff_27", "jsCall_viff_28", "jsCall_viff_29", "jsCall_viff_30", "jsCall_viff_31", "jsCall_viff_32", "jsCall_viff_33", "jsCall_viff_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var debug_table_vifff = [0, "jsCall_vifff_0", "jsCall_vifff_1", "jsCall_vifff_2", "jsCall_vifff_3", "jsCall_vifff_4", "jsCall_vifff_5", "jsCall_vifff_6", "jsCall_vifff_7", "jsCall_vifff_8", "jsCall_vifff_9", "jsCall_vifff_10", "jsCall_vifff_11", "jsCall_vifff_12", "jsCall_vifff_13", "jsCall_vifff_14", "jsCall_vifff_15", "jsCall_vifff_16", "jsCall_vifff_17", "jsCall_vifff_18", "jsCall_vifff_19", "jsCall_vifff_20", "jsCall_vifff_21", "jsCall_vifff_22", "jsCall_vifff_23", "jsCall_vifff_24", "jsCall_vifff_25", "jsCall_vifff_26", "jsCall_vifff_27", "jsCall_vifff_28", "jsCall_vifff_29", "jsCall_vifff_30", "jsCall_vifff_31", "jsCall_vifff_32", "jsCall_vifff_33", "jsCall_vifff_34", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -8107,11 +8107,6 @@ var _getVideoCodecID = Module["_getVideoCodecID"] = function() {
     assert(runtimeInitialized, "you need to wait for the runtime to be ready (e.g. wait for main() to be called)");
     assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
     return Module["asm"]["_getVideoCodecID"].apply(null, arguments)
-};
-var _initMissile = Module["_initMissile"] = function() {
-    assert(runtimeInitialized, "you need to wait for the runtime to be ready (e.g. wait for main() to be called)");
-    assert(!runtimeExited, "the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)");
-    return Module["asm"]["_initMissile"].apply(null, arguments)
 };
 var _initTsMissile = Module["_initTsMissile"] = function() {
     assert(runtimeInitialized, "you need to wait for the runtime to be ready (e.g. wait for main() to be called)");
