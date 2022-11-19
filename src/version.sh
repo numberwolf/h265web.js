@@ -20,4 +20,4 @@
 #  * 
 #  **********************************************************/
 VERSION='v20221106' # output version + index.js
-WASM_VERSION='v20221106'
+WASM_VERSION='v20221120'
