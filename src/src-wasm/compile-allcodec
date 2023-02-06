@@ -1,0 +1,47 @@
+#!/bin/bash
+set -x
+NOWPATH=`pwd`
+FFMPEG_DIR="${NOWPATH}/../ffmpeg-3.4.6"
+LIB_PATH="${FFMPEG_DIR}/lib264265"
+MEM_SIZE=`expr 32 \* 1024 \* 1024`
+OUTPUT="${NOWPATH}/output"
+
+ENTRY_PATH="${NOWPATH}/../../VideoMissilePlayer"
+FNAME="missile-all"
+
+rm $OUTPUT/*
+
+#
+# build
+#
+# emcc web.c process.c about.c \
+# ${LIB_PATH}/libavformat.bc \
+# ${LIB_PATH}/libavutil.bc \
+#${LIB_PATH}/libswresample.bc \
+
+#${LIB_PATH}/libswscale.bc \
+#${LIB_PATH}/libswresample.bc \
+#
+# ${LIB_PATH}/libswscale.bc \
+emcc web_wasm.c vcodec.c about.c \
+utils/secret.c utils/tools.c utils/md5.c utils/common_string.c \
+${LIB_PATH}/libswscale.bc \
+${LIB_PATH}/libavcodec.bc \
+${LIB_PATH}/libavutil.bc \
+-I${FFMPEG_DIR} \
+-Os -s WASM=1 \
+-s FETCH=1 \
+-o ${OUTPUT}/${FNAME}.html \
+-s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
+-s ALLOW_MEMORY_GROWTH=1 \
+-s TOTAL_MEMORY=${MEM_SIZE} \
+-s MEMFS_APPEND_TO_TYPED_ARRAYS=1
+#-s SAFE_HEAP=1
+
+MISSILE_JS=${OUTPUT}/${FNAME}.js
+echo -e "module.exports = Module" >> $MISSILE_JS
+MISSILE_WASM=${OUTPUT}/${FNAME}.wasm
+
+#rm $ENTRY_PATH/*
+cp $MISSILE_WASM ${ENTRY_PATH}/src/decoder
+cp $MISSILE_JS ${ENTRY_PATH}/src/decoder
