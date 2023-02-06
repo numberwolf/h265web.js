@@ -1,0 +1,4 @@
+dist
+dist-multi-thread
+node_modules
+*.mp4

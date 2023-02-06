@@ -1,0 +1,45 @@
+{
+  "name": "h265web.js",
+  "version": "1.0.8",
+  "description": "H.265/Hevc Web端播放器，支持H.265编码的mp4/hls/m3u8/mpegts 的媒体播放，支持点播、直播。A Hevc Web Player , support file type: mp4/hls/m3u8/mpegts, support play type: vod/live。Github:https://github.com/numberwolf/h265web.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/numberwolf/h265web.js.git"
+  },
+  "keywords": [
+    "hevc",
+    "player",
+    "mp4",
+    "hls",
+    "m3u8",
+    "mpegts",
+    "wasm",
+    "decoder",
+    "wasm",
+    "media",
+    "play"
+  ],
+  "main": "src/h265webjs.js",
+  "author": "numberwolf - changyanlong",
+  "license": "GPL-3.0",
+  "scripts": {
+    "start": "cp src/decoder/missile* ./dist/ && cp src/demuxer/missile* ./dist/ && cp -r src/assets dist && browserify src/h265webjs.js -o ./dist/h265webjs_tmp.js && terser ./dist/h265webjs_tmp.js -c pure_funcs=[console.log],toplevel=true -m -o ./dist/h265webjs.js && rm ./dist/h265webjs_tmp.js && cp -r ./dist/* ./demo/dist/ && browserify play.js -o ./dist/play.js && node server.js",
+    "dev": "nodemon --exec 'npm start -s' --ignore bundle*"
+  },
+  "dependencies": {
+    "browserify": "^16.5.1",
+    "mp4box": "^0.3.20",
+    "mpeg.js": "^0.5.0",
+    "webpack": "^4.44.1",
+    "yuv-buffer": "^1.0.0",
+    "yuv-canvas": "^1.2.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "terser-webpack-plugin": "^4.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/numberwolf/h265web.js/issues"
+  },
+  "homepage": "https://github.com/numberwolf/h265web.js"
+}
