@@ -1,2 +1,0 @@
-Mac/Linux can run the `init.sh`
-Windows need copy dist/dist-multi-thread's file to example(normal/vue/vite)'s dist path
