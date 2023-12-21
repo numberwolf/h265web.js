@@ -139,15 +139,15 @@ onmessage = (event) => {
 	        // const functions = data.functions;
 
 	        console.log("start add function probeCallback");
-	        _ptr_probeCallback = Module.addFunction(_probeFinCallback);
+	        _ptr_probeCallback = Module.addFunction(_probeFinCallback, "vdiidiiiii");
 	        console.log("start add function frameCallback");
-	        _ptr_frameCallback = Module.addFunction(_frameCallback);
+	        _ptr_frameCallback = Module.addFunction(_frameCallback, "viiiiiiiidi");
 	        console.log("start add function naluCallback");
-	        _ptr_naluCallback = Module.addFunction(_naluCallback);
+	        _ptr_naluCallback = Module.addFunction(_naluCallback, "viiiiiddi");
 	        console.log("start add function sampleCallback");
-	        _ptr_sampleCallback = Module.addFunction(_samplesCallback);
+	        _ptr_sampleCallback = Module.addFunction(_samplesCallback, "viiid");
 	        console.log("start add function aacCallback");
-	        _ptr_aacCallback = Module.addFunction(_aacFrameCallback);
+	        _ptr_aacCallback = Module.addFunction(_aacFrameCallback, "viiid");
 
 	        const MISSILE_SNIFFSTREAM_MODE_DECODER = 2;
 	        const MISSILE_IGNORE_AUDIO = 0; // no used

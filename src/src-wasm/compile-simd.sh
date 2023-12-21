@@ -55,6 +55,7 @@ ${LIB_PATH}/libavutil.bc \
 -msimd128 -Os -s WASM=1 \
 -s FETCH=1 \
 -o ${OUTPUT}/${FNAME}.html \
+-s EXPORTED_FUNCTIONS='["_malloc"]' \
 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "addFunction", "removeFunction"]' \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s RESERVED_FUNCTION_POINTERS=35 \
