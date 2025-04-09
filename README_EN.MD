@@ -1,6 +1,6 @@
 # h265web.js - Support Hard-Decode
 
-### Cry... I lost my 2FA method device, caused by I had bought a new iPhone and sold the old one. But luckly that I have another account: [girlbymirror](https://github.com/girlbymirror) here, this new account have top permission for modify this project. Remind: new project will create and update in my new account:[girlbymirror](https://github.com/girlbymirror)
+### Cry... I lost my 2FA method device and can not login numberwolf account, caused by I had bought a new iPhone and sold the old one. But luckly that I have another account: [girlbymirror](https://github.com/girlbymirror) here, this new account have top permission for modify this project. Remind: new project will create and update in my new account:[girlbymirror](https://github.com/girlbymirror)
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
