@@ -1,6 +1,6 @@
 # h265web.js - 适配浏览器HEVC硬解码
 
-### 我丢失了我账号的2FA验证，目前找不回来了，以后账号就全部在 [girlbymirror](https://github.com/girlbymirror) 这里, 新账号有这个开源项目的编辑权限，所以暂时不用担心；但是我新开的项目会全部放在新账号里面
+### 找回账号了 一切安好
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
 
