@@ -1271,19 +1271,19 @@ class CHttpLiveCoreModule { // export default
         // console.log("wasmHttpFLVLoaded!!", this.corePtr);
 
         console.log("start add function probeCallback");
-        this._ptr_probeCallback   = Module.addFunction(this._callbackProbe.bind(this));
+        this._ptr_probeCallback   = Module.addFunction(this._callbackProbe.bind(this), "vdiidiiiiii");
 
         console.log("start add function yuvCallback");
-        this._ptr_yuvCallback     = Module.addFunction(this._callbackYUV.bind(this));
+        this._ptr_yuvCallback     = Module.addFunction(this._callbackYUV.bind(this), "viiiiiiiidi");
 
         console.log("start add function naluCallback");
-        this._ptr_naluCallback    = Module.addFunction(this._callbackNALU.bind(this));
+        this._ptr_naluCallback    = Module.addFunction(this._callbackNALU.bind(this), "viiiiidd");
 
         console.log("start add function sampleCallback");
-        this._ptr_sampleCallback  = Module.addFunction(this._callbackPCM.bind(this));
+        this._ptr_sampleCallback  = Module.addFunction(this._callbackPCM.bind(this), "viiid");
 
         console.log("start add function aacCallback");
-        this._ptr_aacCallback     = Module.addFunction(this._callbackAAC.bind(this)); 
+        this._ptr_aacCallback     = Module.addFunction(this._callbackAAC.bind(this), "viiid"); 
 
         let callbackRet = Module.cwrap(
             "initializeSniffHttpFlvModule",

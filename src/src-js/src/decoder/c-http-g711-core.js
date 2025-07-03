@@ -973,13 +973,13 @@ class CHttpG711CoreModule { // export default
         console.log("this.workerFetch flv=>", this.workerFetch);
 
         console.log("start add function probeCallback");
-        this._ptr_probeCallback   = Module.addFunction(this._callbackProbe.bind(this));
+        this._ptr_probeCallback   = Module.addFunction(this._callbackProbe.bind(this), "vdiidiiiii");
 
         console.log("start add function yuvCallback");
-        this._ptr_yuvCallback     = Module.addFunction(this._callbackYUV.bind(this));
+        this._ptr_yuvCallback     = Module.addFunction(this._callbackYUV.bind(this), "viiiiiiiidi");
 
         console.log("start add function sampleCallback");
-        this._ptr_sampleCallback  = Module.addFunction(this._callbackPCM.bind(this));
+        this._ptr_sampleCallback  = Module.addFunction(this._callbackPCM.bind(this), "viidi");
 
         let callbackRet = Module.cwrap(
             "initializeSniffG711Module",

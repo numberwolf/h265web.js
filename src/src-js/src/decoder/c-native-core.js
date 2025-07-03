@@ -244,15 +244,15 @@ class CNativeCoreModule {
         console.log("finish AVSniffStreamInit ,corePtr : ", this.corePtr);
 
         console.log("start add function probeCallback");
-        this._ptr_probeCallback = Module.addFunction(this._probeFinCallback.bind(this));
+        this._ptr_probeCallback = Module.addFunction(this._probeFinCallback.bind(this), "vdiidiiiii");
         console.log("start add function frameCallback");
-        this._ptr_frameCallback = Module.addFunction(this._frameCallback.bind(this));
+        this._ptr_frameCallback = Module.addFunction(this._frameCallback.bind(this), "viiiiiiiidi");
         console.log("start add function naluCallback");
-        this._ptr_naluCallback = Module.addFunction(this._naluCallback.bind(this));
+        this._ptr_naluCallback = Module.addFunction(this._naluCallback.bind(this), "viiiiiddi");
         console.log("start add function sampleCallback");
-        this._ptr_sampleCallback = Module.addFunction(this._samplesCallback.bind(this));
+        this._ptr_sampleCallback = Module.addFunction(this._samplesCallback.bind(this), "viiid");
         console.log("start add function aacCallback");
-        this._ptr_aacCallback = Module.addFunction(this._aacFrameCallback.bind(this));
+        this._ptr_aacCallback = Module.addFunction(this._aacFrameCallback.bind(this), "viiid");
 
         console.log(
             "start add initializeSniffStreamModuleWithAOpt", this.config.ignoreAudio, this.config.playMode, this.playModeEnum);
