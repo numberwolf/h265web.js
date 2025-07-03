@@ -58,6 +58,7 @@ module.exports = options => {
 	    nextBuffer: null,
 	    playTimestamp: 0.0,
 	    playStartTime: 0,
+		playbackRate: 1.0,
 	    durationMs: 	-1,
 	    isLIVE: false,
 		// voice 0.0 ~ 1.0
@@ -67,6 +68,7 @@ module.exports = options => {
 	audioModule.resetStartParam = () => {
 		audioModule.playTimestamp = 0.0;
 	    audioModule.playStartTime = 0;
+		audioModule.playbackRate = 1.0;
 	};
 	audioModule.setOnLoadCache = (callback) => {
 		audioModule.onLoadCache = callback;
@@ -78,6 +80,17 @@ module.exports = options => {
 		// console.log("playFunc ==> setVoic ", voice);
 		audioModule.voice = voice;
 		audioModule.gainNode.gain.value = voice;
+	};
+	audioModule.setPlaybackRate = (rate = 1.0) => {
+		if (rate <= 0) {
+            return;
+        }
+        audioModule.playbackRate = rate;
+		audioModule.sourceList.forEach(source => {
+			if (source && source.playbackRate) {
+				source.playbackRate.value = audioModule.playbackRate;
+			}
+		});
 	};
 	audioModule.getAlignVPTS = () => {
 		// let pts = audioModule.audioCtx.currentTime - audioModule.lastPlay + audioModule.seekPos;
@@ -225,6 +238,11 @@ module.exports = options => {
 			|| audioModule.sourceList[sourceIndex] == undefined
 			|| !audioModule.sourceList[sourceIndex]) {
 			audioModule.sourceList[sourceIndex] = audioModule.audioCtx.createBufferSource();
+			audioModule.sourceList.forEach(source => {
+				if (source && source.playbackRate) {
+					source.playbackRate.value = audioModule.playbackRate;
+				}
+			});
 			audioModule.sourceList[sourceIndex].onended = function() {
 				audioModule.swapSource(sourceIndex, dstIndex);
 			};
@@ -377,6 +395,11 @@ module.exports = options => {
 			|| audioModule.sourceList[sourceIndex] == undefined
 			|| !audioModule.sourceList[sourceIndex]) {
 			audioModule.sourceList[sourceIndex] = audioModule.audioCtx.createBufferSource();
+			audioModule.sourceList.forEach(source => {
+				if (source && source.playbackRate) {
+					source.playbackRate.value = audioModule.playbackRate;
+				}
+			});
 			audioModule.sourceList[sourceIndex].onended = function() {
 				// audioModule.sourceList[sourceIndex].stop();
 			}
@@ -531,6 +554,11 @@ module.exports = options => {
 	/* Construct */
 	audioModule.sourceList.push(audioModule.audioCtx.createBufferSource());
     audioModule.sourceList.push(audioModule.audioCtx.createBufferSource());
+	audioModule.sourceList.forEach(source => {
+		if (source && source.playbackRate) {
+			source.playbackRate.value = audioModule.playbackRate;
+		}
+	});
 
     audioModule.sourceList[0].onended = function() {
     	// console.log("sourceList onended 0");

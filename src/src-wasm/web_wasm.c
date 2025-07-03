@@ -204,7 +204,7 @@ EMSCRIPTEN_KEEPALIVE VCodecContext *registerPlayer(const char *token, const char
 
     printf("initMissile start OK\n");
     // send log
-    logRequest_sendVersion(version);
+    //logRequest_sendVersion(version);
 
     VCodecContext *vcodecer = initVcodec();
     vcodecer->useFree = free;
@@ -294,7 +294,7 @@ EMSCRIPTEN_KEEPALIVE int AVPlayerInit(const char *token, const char* version) {
     }
 
     // send log
-    logRequest_sendVersion(version);
+    //logRequest_sendVersion(version);
     return 0;
 }
 
@@ -562,7 +562,7 @@ EMSCRIPTEN_KEEPALIVE SniffStreamContext *AVSniffStreamInit(const char *token, co
     printf("initMissile SniffStream start OK\n");
 
     // send log
-    logRequest_sendVersion(version);
+    //logRequest_sendVersion(version);
 
     SniffStreamContext *sniffStreamContext = newSniffStreamContext();
     return sniffStreamContext;
@@ -841,15 +841,16 @@ EMSCRIPTEN_KEEPALIVE int releaseG711(SniffG711CoreContext *sniffG711CoreContext)
  *
  * **********************************/
 int main() {
-    printf("h265web.js loaded!\n");
+    printf("ext - h265web.js loaded!\n");
     IS_INTRODUCE_MINE = 0;
-    introduce_mine();
-    logRequest_sendVersionIncludeJS(H265WEBJS_VERSION);
+    //introduce_mine();
+    //logRequest_sendVersionIncludeJS(H265WEBJS_VERSION);
     EM_ASM(
         if (typeof window != "undefined") {
-            window.dispatchEvent(new CustomEvent("wasmLoaded"))
+            window.dispatchEvent(new CustomEvent("h265webjsWasmLoaded"))
         } else {
             // global.onWASMLoaded && global.onWASMLoaded()
+            global.h265webjsWasmLoaded && global.h265webjsWasmLoaded()
         }
     );
     return EXIT_SUCCESS;

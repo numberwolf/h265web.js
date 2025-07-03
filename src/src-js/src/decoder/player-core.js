@@ -109,6 +109,7 @@ module.exports = config => {
         isPlayLoadingFinish: 0, // 0:undo, 1 loading 2 loading finish
         vCachePTS: 0, // 视频缓冲
         aCachePTS: 0,
+        playbackRate: 1.0,
         // setting
         showScreen: false,
         noCacheFrame: 0,
@@ -120,6 +121,15 @@ module.exports = config => {
         onLoadCacheFinshed : null,
         onRender : null,
         // onCacheProcess : null // 这里不需要event  是外部主动获取
+    };
+    player.setPlaybackRate = (rate=1.0) => {
+        if (rate <= 0) {
+            return;
+        }
+        if (player.audio) {
+            player.audio.setPlaybackRate(rate);
+        }
+        player.playbackRate = rate;
     };
     player.setScreen = (setVal = false) => {
         if (null !== player && undefined !== player) {
@@ -558,8 +568,8 @@ module.exports = config => {
         // @TODO false && 
         if (player.config.audioNone === true && player.playParams.mode == def.PLAYER_MODE_NOTIME_LIVE) {
             player.liveStartMs = AVCommon.GetMsTime();
-            player.frameTime = Math.floor(1000 / player.config.fps);
-            player.frameTimeSec = player.frameTime / 1000;
+            player.frameTime = Math.floor(1000 / player.config.fps) / player.playbackRate;
+            player.frameTimeSec = player.frameTime / 1000 / player.playbackRate;
 
             // loop
             let frameIdx = 0;
@@ -596,8 +606,10 @@ module.exports = config => {
             if ((player.videoPTS >= player.playParams.seekPos && !player.isNewSeek)
                 || (player.playParams.seekPos === 0.0 || player.playParams.seekPos === 0)) {
 
-                player.frameTime = (1000 / player.config.fps);
-                player.frameTimeSec = player.frameTime / 1000;
+                // player.frameTime = (1000 / player.config.fps);
+                // player.frameTimeSec = player.frameTime / 1000;
+                player.frameTime = Math.floor(1000 / player.config.fps) / player.playbackRate;
+                player.frameTimeSec = player.frameTime / 1000 / player.playbackRate;
                 // play start
                 player.config.audioNone == false && player.audio.play();
                 player.realVolume = player.config.audioNone ? 0 : player.audio.voice;
@@ -677,6 +689,7 @@ module.exports = config => {
         player.durationMs = -1.0;
         player.videoPTS = 0;
         player.isPlaying = false;
+        player.playbackRate = 1.0;
 
         player.canvas.remove();
         player.canvas = null;
@@ -1005,6 +1018,7 @@ module.exports = config => {
                 sampleRate: player.config.sampleRate,
                 appendType: player.config.appendHevcType
             });
+            player.audio.setPlaybackRate(player.playbackRate);
         }
         player.isPlayLoadingFinish = 1;
     };
