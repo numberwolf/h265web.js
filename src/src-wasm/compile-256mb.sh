@@ -60,7 +60,6 @@ ${LIB_PATH}/libswresample.bc \
 -flto \
 -s FETCH=1 \
 -o ${OUTPUT}/${FNAME}.html \
--s EXPORTED_FUNCTIONS='["_malloc"]' \
 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "addFunction", "removeFunction"]' \
 -s RESERVED_FUNCTION_POINTERS=35 \
 -s ALLOW_TABLE_GROWTH \

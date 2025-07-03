@@ -64,7 +64,6 @@ ${LIB_PATH}/libswresample.bc \
 -s USE_PTHREADS=1 \
 -s PTHREAD_POOL_SIZE=10 \
 -o ${OUTPUT}/${FNAME}.html \
--s EXPORTED_FUNCTIONS='["_malloc"]' \
 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "addFunction", "removeFunction"]' \
 -s RESERVED_FUNCTION_POINTERS=35 \
 -s ALLOW_TABLE_GROWTH \
