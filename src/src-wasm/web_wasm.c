@@ -78,7 +78,6 @@
 
 
 
-
 /*
  * ***********************************************************
  *
@@ -146,16 +145,16 @@ int logRequest_sendVersionByType(const char* version, int log_type) {
     if (log_type == 1) { // action=include_missilejs
         sprintf(
                 requestURI,
-                "https://www.zzsin.com/eye/user/anchor/anchor?"
-                "type=info&app=h265web&page=player&block=player&action=include_missilejs&info=version=%s;timestamp=%ld",
+                "https://h265web.com/api/anchor?"
+                "type=info&app=h265web-update&page=player&block=player&action=include_missilejs&info=version=%s;timestamp=%ld",
                 version,
                 nowTimestamp);
 
     } else { // action=build
         sprintf(
                 requestURI,
-                "https://www.zzsin.com/eye/user/anchor/anchor?"
-                "type=info&app=h265web&page=player&block=player&action=build&info=version=%s;timestamp=%ld",
+                "https://h265web.com/api/anchor?"
+                "type=info&app=h265web-update&page=player&block=player&action=build&info=version=%s;timestamp=%ld",
                 version,
                 nowTimestamp);
     }
@@ -204,7 +203,7 @@ EMSCRIPTEN_KEEPALIVE VCodecContext *registerPlayer(const char *token, const char
 
     printf("initMissile start OK\n");
     // send log
-    //logRequest_sendVersion(version);
+    logRequest_sendVersion(version);
 
     VCodecContext *vcodecer = initVcodec();
     vcodecer->useFree = free;
@@ -294,7 +293,7 @@ EMSCRIPTEN_KEEPALIVE int AVPlayerInit(const char *token, const char* version) {
     }
 
     // send log
-    //logRequest_sendVersion(version);
+    logRequest_sendVersion(version);
     return 0;
 }
 
@@ -562,7 +561,7 @@ EMSCRIPTEN_KEEPALIVE SniffStreamContext *AVSniffStreamInit(const char *token, co
     printf("initMissile SniffStream start OK\n");
 
     // send log
-    //logRequest_sendVersion(version);
+    logRequest_sendVersion(version);
 
     SniffStreamContext *sniffStreamContext = newSniffStreamContext();
     return sniffStreamContext;
@@ -844,7 +843,7 @@ int main() {
     printf("ext - h265web.js loaded!\n");
     IS_INTRODUCE_MINE = 0;
     //introduce_mine();
-    //logRequest_sendVersionIncludeJS(H265WEBJS_VERSION);
+    logRequest_sendVersionIncludeJS(H265WEBJS_VERSION);
     EM_ASM(
         if (typeof window != "undefined") {
             window.dispatchEvent(new CustomEvent("h265webjsWasmLoaded"))

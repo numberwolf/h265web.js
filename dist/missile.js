@@ -607,10 +607,10 @@ function updateGlobalBufferAndViews(buf) {
     Module["HEAPF32"] = HEAPF32 = new Float32Array(buf);
     Module["HEAPF64"] = HEAPF64 = new Float64Array(buf)
 }
-var STACK_BASE = 1398224,
-    STACK_MAX = 6641104,
-    DYNAMIC_BASE = 6641104,
-    DYNAMICTOP_PTR = 1398e3;
+var STACK_BASE = 1398288,
+    STACK_MAX = 6641168,
+    DYNAMIC_BASE = 6641168,
+    DYNAMICTOP_PTR = 1398064;
 assert(STACK_BASE % 16 === 0, "stack must start aligned");
 assert(DYNAMIC_BASE % 16 === 0, "heap must start aligned");
 var TOTAL_STACK = 5242880;
@@ -956,8 +956,10 @@ var tempDouble;
 var tempI64;
 var ASM_CONSTS = [function() {
     if (typeof window != "undefined") {
-        window.dispatchEvent(new CustomEvent("wasmLoaded"))
-    } else {}
+        window.dispatchEvent(new CustomEvent("h265webjsWasmLoaded"))
+    } else {
+        global.h265webjsWasmLoaded && global.h265webjsWasmLoaded()
+    }
 }];
 
 function _emscripten_asm_const_i(code) {
@@ -968,7 +970,7 @@ __ATINIT__.push({
         ___emscripten_environ_constructor()
     }
 });
-var tempDoublePtr = 1398208;
+var tempDoublePtr = 1398272;
 assert(tempDoublePtr % 8 == 0);
 
 function demangle(func) {
@@ -5068,7 +5070,7 @@ function _gettimeofday(ptr) {
     HEAP32[ptr + 4 >> 2] = now % 1e3 * 1e3 | 0;
     return 0
 }
-var ___tm_timezone = (stringToUTF8("GMT", 1398096, 4), 1398096);
+var ___tm_timezone = (stringToUTF8("GMT", 1398160, 4), 1398160);
 
 function _gmtime_r(time, tmPtr) {
     var date = new Date(HEAP32[time >> 2] * 1e3);
