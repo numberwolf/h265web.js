@@ -1,8 +1,8 @@
 # h265web.js - Support Hard-Decode
 
-> If you need more powerful performance  
-> ***Please visit [h265web.com](https://h265web.com/)***    
-> ***h265web.js-pro branch:https://github.com/numberwolf/h265web.js/tree/h265web.js-pro***
+> ### If you need more powerful performance  
+> ***Please visit [www.h265web.com](https://h265web.com/)***    
+> ***h265web.js-pro branch: [h265web.js-pro](https://github.com/numberwolf/h265web.js/tree/h265web.js-pro)***
 
 ### Here is the open source version introduction
 
