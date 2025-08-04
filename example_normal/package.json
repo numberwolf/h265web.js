@@ -1,5 +1,0 @@
-{
-  "scripts": {
-    "serve": "node ./server.js"
-  }
-}

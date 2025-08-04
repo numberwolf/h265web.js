@@ -2,6 +2,7 @@
 *.swp~
 *.swp
 push.sh
+.vscode
 
 #
 # Media

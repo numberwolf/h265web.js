@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="./output/h265web.js"></script>
+    <link rel="stylesheet" href="./demo.css">
+</head>
+<body>
+    <div class="page-container">
+        <center>
+            <h1 style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+                        font-size: 2.5em;
+                        letter-spacing: 2px;
+                        color: #333;">
+                Better Web Player, named h265web.js-pro
+            </h1>
+        </center>
+        <div class="player-container">
+            <div id="canvas111" class="player-sdk"></div>
+        </div>
+        <div class="control-container">
+            <button class="playpause_button" onclick="play()">PLAY</button>
+            <button class="playpause_button" onclick="pause()">PAUSE</button>
+            <button class="playpause_button" onclick="set_voice()">VOLUME</button>
+        </div>
+        <div class="mode-container">
+            <button class="mode_button" onclick="build_player(1)">WEBCODEC</button>
+            <button class="mode_button" onclick="build_player(2)">SIMD</button>
+            <button class="mode_button" onclick="build_player(3)">MSE</button>
+        </div>
+
+    </div> <!-- end page-container -->
+    <script src="./demo.js"></script>
+</body>
+</html>
