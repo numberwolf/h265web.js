@@ -7738,7 +7738,7 @@ function checkIncomingModuleAPI() {
 }
 
 var ASM_CONSTS = {
-  417428: () => {
+  417332: () => {
     if (typeof window != "undefined") {
       console.log("logRequest_downloadSucceeded OK");
       window.dispatchEvent(new CustomEvent("wasmTextDownloadSuccessed"));
@@ -7746,17 +7746,17 @@ var ASM_CONSTS = {
       console.log("logRequest_downloadSucceeded failed");
     }
   },
-  417643: () => {
+  417547: () => {
     self.postMessage({
       type: "restart-load-media"
     });
   },
-  417697: () => {
+  417601: () => {
     self.postMessage({
       type: "release_done"
     });
   },
-  417745: $0 => {
+  417649: $0 => {
     const canvasId = Module.UTF8ToString($0);
     Module.webcodec_seek_target_pts = -1;
     const decoder = Module.decoder;
@@ -7800,12 +7800,12 @@ var ASM_CONSTS = {
       console.log("Released WebGL context");
     }
   },
-  418803: () => {
+  418707: () => {
     self.postMessage({
       type: "release_done"
     });
   },
-  418851: $0 => {
+  418755: $0 => {
     const canvasId = Module.UTF8ToString($0);
     Module.webcodec_seek_target_pts = -1;
     const decoder = Module.decoder;
@@ -7838,7 +7838,7 @@ var ASM_CONSTS = {
     }
     console.warn("wcodec ctx root: clean_tex_queue queue data", Module.frameQueueMap[canvasId]);
   },
-  419700: $0 => {
+  419604: $0 => {
     const canvasId = Module.UTF8ToString($0);
     if (!Module.frameQueueMap || !Module.frameQueueMap[canvasId] || Module.frameQueueMap[canvasId].length === 0) {
       return -1;
@@ -7849,7 +7849,7 @@ var ASM_CONSTS = {
     }
     return -1;
   },
-  419988: $0 => {
+  419892: $0 => {
     const canvasId = Module.UTF8ToString($0);
     if (!Module.frameQueueMap || !Module.frameQueueMap[canvasId] || Module.frameQueueMap[canvasId].length === 0) {
       return 0;
@@ -7861,7 +7861,7 @@ var ASM_CONSTS = {
     }
     return Module.frameQueueMap[canvasId].length;
   },
-  420351: () => {
+  420255: () => {
     const gl = Module.gl;
     if (!gl) return -1;
     const info = gl.getExtension("WEBGL_debug_renderer_info");
@@ -7886,7 +7886,7 @@ var ASM_CONSTS = {
     }
     return count;
   },
-  420974: $0 => {
+  420878: $0 => {
     Module.gl = null;
     Module.shaderProgram = null;
     Module.gopChunk = [];
@@ -8043,14 +8043,14 @@ var ASM_CONSTS = {
     initFrameQueue(c_id);
     initDecoderCall(c_id);
   },
-  426771: $0 => {
+  426675: $0 => {
     const c_id = Module.UTF8ToString($0);
     if (!Module.frameQueueMap || !Module.frameQueueMap[c_id]) {
       return 0;
     }
     return Module.frameQueueMap[c_id].length;
   },
-  426927: $0 => {
+  426831: $0 => {
     if (Module.webcodec_seek_target_pts >= 0) {
       return -1;
     }
@@ -8078,7 +8078,7 @@ var ASM_CONSTS = {
     });
     return 1;
   },
-  427749: ($0, $1, $2, $3, $4, $5) => {
+  427653: ($0, $1, $2, $3, $4, $5) => {
     const canvasId = Module.UTF8ToString($0);
     const data = new Uint8Array(Module.HEAPU8.buffer, $0, $1);
     if ($3 > 0) {
@@ -8314,6 +8314,8 @@ var _init_demuxer_ctx = Module["_init_demuxer_ctx"] = createExportWrapper("init_
 var _release_demuxer_ctx = Module["_release_demuxer_ctx"] = createExportWrapper("release_demuxer_ctx", 1);
 
 var _push_buffer = Module["_push_buffer"] = createExportWrapper("push_buffer", 4);
+
+var _push_probe = Module["_push_probe"] = createExportWrapper("push_probe", 2);
 
 var _fetch_done_buffer = Module["_fetch_done_buffer"] = createExportWrapper("fetch_done_buffer", 1);
 
@@ -8561,7 +8563,7 @@ var _asyncify_start_rewind = createExportWrapper("asyncify_start_rewind", 1);
 
 var _asyncify_stop_rewind = createExportWrapper("asyncify_stop_rewind", 0);
 
-var _ff_h264_cabac_tables = Module["_ff_h264_cabac_tables"] = 196376;
+var _ff_h264_cabac_tables = Module["_ff_h264_cabac_tables"] = 196280;
 
 function invoke_iii(index, a1, a2) {
   var sp = stackSave();
