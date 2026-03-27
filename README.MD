@@ -1,29 +1,40 @@
 # h265web.js - Browser HEVC/H.265 Playback SDK
 
-<a href="README_CN.MD">中文</a> | <a href="README.MD">English</a>
+<p align="center">
+  <a href="README_CN.MD">中文</a> · <a href="README.MD">English</a>
+</p>
+
+<p align="center">
+  <img src="./resource/logo@300x300.png" width="180" alt="h265web.js logo" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="./resource/demo.png" width="520" alt="h265web.js demo preview" />
+</p>
+
+<p align="center">
+  <a href="https://h265web.com/markdown-docs/get-started.php"><img alt="Docs" src="https://img.shields.io/badge/Docs-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="https://h265web.com/"><img alt="Website" src="https://img.shields.io/badge/Website-h265web.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="./index.html"><img alt="English Demo" src="https://img.shields.io/badge/Demo-English-e53935?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="./index-cn.html"><img alt="Chinese Demo" src="https://img.shields.io/badge/Demo-%E4%B8%AD%E6%96%87-a53c34?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="https://github.com/numberwolf/h265web.js/wiki"><img alt="Wiki" src="https://img.shields.io/badge/Wiki-GitHub-111827?style=for-the-badge&logo=github&logoColor=white"></a>
+</p>
+
+> **Built and refined continuously since 2017, h265web.js PRO delivers mature browser playback with broad feature coverage and strong performance.**
+>
+> It covers HEVC/H.265, AVC/H.264, AV1, live streaming, VOD, WebCodec, WASM decoding, MediaInfo, snapshot, fullscreen, seek and multi-instance playback.
+>
+> **Recommended media server:** [ZLMediaKit](https://github.com/ZLMediaKit/ZLMediaKit) - a strong streaming server/framework for live and VOD delivery.
+
+If <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> helps your project, a GitHub star is always appreciated.
 
 ## Quick Links
 
 - GitHub: https://github.com/numberwolf/h265web.js
+- Docs: https://h265web.com/markdown-docs/get-started.php
 - Wiki: https://github.com/numberwolf/h265web.js/wiki
 - Website: https://h265web.com/
 - English Demo: [index.html](./index.html)
 - 中文演示页: [index-cn.html](./index-cn.html)
 - Default Demo Media: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
-
-<hr>
-<img src="./resource/logo@300x300.png" height="220px" />
-<img src="./resource/demo.png" height="200px" />
-<hr>
-
-<strong>
-<font color="red">h265web.js PRO is now free and focuses on delivering a practical, capability-rich HEVC/H.265 browser playback SDK.</font>
-<br>
-<font color="blue">Video Stream Server recommand use <a href="https://github.com/ZLMediaKit/ZLMediaKit">ZLMediaKit(https://github.com/ZLMediaKit/ZLMediaKit) - Pretty good video live stream server/framework</a></font>
-</strong>
-
-A browser playback SDK for HEVC/H.265, AVC/H.264 and AV1, with support for VOD, live streaming, WebCodec, WASM decoding, MediaInfo, seek, fullscreen, snapshot and multi-instance playback.  
-If <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> helps your project, a GitHub star is always appreciated.
 
 ### Current Positioning
 
@@ -37,8 +48,6 @@ If <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> helps your 
 - VOD and live playback in one SDK
 - Protocol validation for MP4 / MOV / MKV / FLV / MPEG-TS / M3U8 / HLS / HTTP-FLV / WS-FLV / HTTP-TS / WS-TS / HEVC ES
 - Browser-side player projects that need seek, playbackRate, fullscreen, snapshot, MediaInfo, multi-instance playback and multi-thread decode
-
-<hr>
 
 <h3>All Features</h3>
 
@@ -1226,8 +1235,6 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 
 <hr>
-
-
 
 
 

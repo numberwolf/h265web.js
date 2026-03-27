@@ -1,29 +1,41 @@
 # h265web.js - 浏览器 HEVC/H.265 播放 SDK
 
-<a href="README_CN.MD">中文</a> | <a href="README.MD">English</a>
+<p align="center">
+  <a href="README_CN.MD">中文</a> · <a href="README.MD">English</a>
+</p>
+
+<p align="center">
+  <img src="./resource/logo@300x300.png" width="180" alt="h265web.js logo" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="./resource/demo.png" width="520" alt="h265web.js demo preview" />
+</p>
+
+<p align="center">
+  <a href="https://h265web.com/markdown-docs/get-started.php"><img alt="文档" src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="https://h265web.com/"><img alt="官网" src="https://img.shields.io/badge/%E5%AE%98%E7%BD%91-h265web.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="./index-cn.html"><img alt="中文演示" src="https://img.shields.io/badge/Demo-%E4%B8%AD%E6%96%87-a53c34?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="./index.html"><img alt="English Demo" src="https://img.shields.io/badge/Demo-English-e53935?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="https://github.com/numberwolf/h265web.js/wiki"><img alt="Wiki" src="https://img.shields.io/badge/Wiki-GitHub-111827?style=for-the-badge&logo=github&logoColor=white"></a>
+</p>
+
+> **自 2017 年持续打磨至今，h265web.js PRO 已沉淀出成熟稳定的浏览器播放能力，兼具丰富特性与强劲性能表现。**
+>
+> 覆盖 HEVC/H.265、AVC/H.264、AV1，以及直播、点播、WebCodec、WASM、MediaInfo、截图、全屏、Seek、多实例等核心能力。
+>
+> **推荐流媒体服务：** [ZLMediaKit](https://github.com/ZLMediaKit/ZLMediaKit)，适合和 h265web.js 搭配做直播与点播分发。
+
+一个支持 HEVC/H.265、AVC/H.264、AV1、多协议直播点播、WebCodec / WASM / 多线程等能力的浏览器播放器 SDK。  
+适合做网页播放器、视频监控、直播观看、点播播放、协议兼容验证和播放器二次封装。 
 
 ## 快速入口
 
 - GitHub: https://github.com/numberwolf/h265web.js
+- 文档: https://h265web.com/markdown-docs/get-started.php
 - Wiki: https://github.com/numberwolf/h265web.js/wiki
 - 官网: https://h265web.com/
 - 中文演示页: [index-cn.html](./index-cn.html)
 - English Demo: [index.html](./index.html)
 - 默认演示视频: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
-
-<hr>
-<img src="./resource/logo@300x300.png" height="220px" />
-<img src="./resource/demo.png" height="200px" />
-<hr>
-<strong>
-<font color="red">h265web.js PRO 现在免费开放，面向浏览器端 HEVC/H.265 播放场景提供尽可能完整的协议与能力支持。</font>
-<br>
-<font color="blue">流媒体服务推荐用 <a href="https://github.com/ZLMediaKit/ZLMediaKit">ZLMediaKit(https://github.com/ZLMediaKit/ZLMediaKit) - 更好用的流媒体服务</a></font>
-</strong>
-<br>
-一个支持 HEVC/H.265、AVC/H.264、AV1、多协议直播点播、WebCodec / WASM / 多线程等能力的浏览器播放器 SDK。  
-适合做网页播放器、视频监控、直播观看、点播播放、协议兼容验证和播放器二次封装。 
-<br>
 
 ### 当前版本定位
 
@@ -53,7 +65,6 @@
 </strong>
 </font>
 
-<hr>
 <h3>能力矩阵</h3>
 
 <strong>
@@ -223,8 +234,6 @@
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
 | <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | TODO |
-
-
 
 
 
