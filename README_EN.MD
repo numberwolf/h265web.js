@@ -1,12 +1,18 @@
-# h265web.js - Support Hard-Decode
+# h265web.js - Browser HEVC/H.265 Playback SDK
 
-> ### If you need more powerful performance  
-> ***Please visit [www.h265web.com](https://h265web.com/)***    
-> ***h265web.js-pro branch: [h265web.js-pro](https://github.com/numberwolf/h265web.js/tree/h265web.js-pro)***
-
-### Here is the open source version introduction
+> This repository now ships the **h265web.js PRO edition for free**.  
+> You can use the current repository directly without any extra paid unlock.
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
+
+## Quick Links
+
+- GitHub: https://github.com/numberwolf/h265web.js
+- Wiki: https://github.com/numberwolf/h265web.js/wiki
+- Website: https://h265web.com/
+- English Demo: [index.html](./index.html)
+- 中文演示页: [index-cn.html](./index-cn.html)
+- Default Demo Media: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
 
 <hr>
 <img src="./resource/logo@300x300.png" height="250px" />
@@ -16,12 +22,26 @@
 <hr>
 
 <strong>
-<font color="red">H265web.js is the best HEVC/H.265 web player you can find.</font>
+<font color="red">h265web.js PRO is now free and focuses on delivering a practical, capability-rich HEVC/H.265 browser playback SDK.</font>
 <br>
 <font color="blue">Video Stream Server recommand use <a href="https://github.com/ZLMediaKit/ZLMediaKit">ZLMediaKit(https://github.com/ZLMediaKit/ZLMediaKit) - Pretty good video live stream server/framework</a></font>
 </strong>
 
-A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https://github.com/numberwolf/h265web.js">h265web</a> helped you, please `star` it~
+A browser playback SDK for HEVC/H.265, AVC/H.264 and AV1, with support for VOD, live streaming, WebCodec, WASM decoding, MediaInfo, seek, fullscreen, snapshot and multi-instance playback.  
+If <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> helps your project, a GitHub star is always appreciated.
+
+### Current Positioning
+
+- The main branch now represents `h265web.js PRO`
+- The current PRO capability set is free to use
+- The recommended entry path is: public demo page -> debug demo -> project integration
+
+### Good Fit For
+
+- Browser playback of HEVC/H.265, AVC/H.264 and AV1
+- VOD and live playback in one SDK
+- Protocol validation for MP4 / MOV / MKV / FLV / MPEG-TS / M3U8 / HLS / HTTP-FLV / WS-FLV / HTTP-TS / WS-TS / HEVC ES
+- Browser-side player projects that need seek, playbackRate, fullscreen, snapshot, MediaInfo, multi-instance playback and multi-thread decode
 
 <hr>
 
@@ -63,10 +83,12 @@ A hevc/h.265 web player, easy to play 1080P. `~^_^~ For love` if <a href="https:
 * Discord:numberwolf#8694
 * Wechat:numberwolf11
 
-#### Online DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (Demo is not newest version, you need to download from github and get newest version)
-</a>
+#### Demo Entry
 
-#### First Demo - for first use <a href="index-debug.html">index-debug.html</a>
+- English Demo: [index.html](./index.html)
+- 中文演示页: [index-cn.html](./index-cn.html)
+- Debug Demo: [index-debug.html](./index-debug.html)
+- Legacy Online Demo: <a href="https://www.zzsin.com/h265webjs.html">h265webjs.html</a> (may not match the latest GitHub version)
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -1209,7 +1231,6 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 
 <hr>
-
 
 
 

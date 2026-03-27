@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>h265web.js | Browser HEVC Player Demo</title>
+    <meta
+        name="description"
+        content="Public h265web.js browser HEVC/H.265 player demo with a player-first workbench, runtime log, build config, and feature matrix."
+    />
+    <script src="./static/h265web.js"></script>
+    <link rel="stylesheet" href="./index.css" />
+</head>
+<body class="public-demo-page" data-locale="en">
+    <div class="demo-shell">
+        <section class="demo-intro">
+            <div class="demo-intro-head">
+                <div class="demo-intro-brandline">
+                    <a class="demo-logo demo-logo-light" href="./index.html">h265web.js</a>
+                    <span class="demo-badge demo-badge-light">PRO Free</span>
+                    <span class="section-eyebrow">Public Demo</span>
+                </div>
+                <div class="demo-intro-actions">
+                    <div class="demo-locale-switch demo-locale-switch-light" aria-label="Language switch">
+                        <a class="demo-locale-link demo-locale-link-light is-active" href="./index.html">EN</a>
+                        <a class="demo-locale-link demo-locale-link-light" href="./index-cn.html">中文</a>
+                    </div>
+                    <nav class="demo-nav-links demo-nav-links-light" aria-label="Public demo links">
+                        <a class="demo-nav-link demo-nav-link-light" href="https://h265web.com/markdown-docs/get-started.php" target="_blank" rel="noreferrer">Docs</a>
+                        <a class="demo-nav-link demo-nav-link-light" href="https://github.com/numberwolf/h265web.js" target="_blank" rel="noreferrer">GitHub</a>
+                        <a class="demo-nav-link demo-nav-link-light" href="https://www.h265web.com/" target="_blank" rel="noreferrer">h265web.com</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="demo-intro-copy">
+                <h1>See the public h265web.js SDK in a player-first demo.</h1>
+                <p>Keep the player on the first screen, then inspect build config, runtime events, and the full feature matrix below.</p>
+            </div>
+        </section>
+
+        <section class="player-workbench">
+            <div class="player-canvas-shell">
+                <div id="demo-player" class="player-sdk"></div>
+                <div id="player-hover-loading" class="player-hover-loading">
+                    <div class="player-hover-spinner"></div>
+                    <span>Loading player...</span>
+                </div>
+                <button id="player-hover-toggle" class="player-hover-toggle" type="button" aria-label="Pause or play public demo">
+                    Play
+                </button>
+                <div class="player-hover-progress-wrap">
+                    <button id="player-hover-progress" class="player-hover-progress" type="button" aria-label="Seek public demo">
+                        <span id="player-hover-progress-fill" class="player-hover-progress-fill"></span>
+                    </button>
+                    <div id="player-hover-time" class="player-hover-time">0.000 / 16.000 s</div>
+                </div>
+            </div>
+
+            <div class="player-status-strip">
+                <div class="status-item">
+                    <label>Play PTS</label>
+                    <span id="play-pts">-</span>
+                </div>
+                <div class="status-item">
+                    <label>Nalu</label>
+                    <span id="nalu-status">-</span>
+                </div>
+                <div class="status-item">
+                    <label>Video Cache</label>
+                    <span id="video-cache">-</span>
+                </div>
+                <div class="status-item">
+                    <label>Audio Cache</label>
+                    <span id="audio-cache">-</span>
+                </div>
+            </div>
+
+            <div class="player-toolbar">
+                <div class="player-toolbar-row">
+                    <span class="player-toolbar-tag">Source</span>
+                    <input class="player-input-text player-input-text-url" id="media-url" type="text" value="./resource/hevc_test_moov_set_head_16s.mp4" />
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">Preset</span>
+                        <select id="preset-select" class="player-input-item"></select>
+                    </label>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">Core</span>
+                        <select id="core-select" class="player-input-item">
+                            <option value="">Auto</option>
+                            <option value="webcodec_hevc">WebCodec</option>
+                            <option value="wasm_hevc">WASM</option>
+                        </select>
+                    </label>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">Autoplay</span>
+                        <select id="autoplay-select" class="player-input-item">
+                            <option value="false">Off</option>
+                            <option value="true" selected>On</option>
+                        </select>
+                    </label>
+                    <button class="player-input-button player-input-button-primary" id="create-load-button" type="button">Create + Load</button>
+                    <button class="player-input-button" id="create-button" type="button">Create</button>
+                    <button class="player-input-button" id="load-button" type="button">Load</button>
+                </div>
+    
+                <div class="player-toolbar-row">
+                    <div class="player-volume-wrap">
+                        <span class="player-toolbar-tag">Volume</span>
+                        <input id="volume-input" class="player-input-item" type="range" min="0" max="1" step="0.05" value="1" />
+                        <span class="player-inline-value" id="volume-value">1.00</span>
+                    </div>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">Rate</span>
+                        <input id="rate-input" class="player-number-input" type="number" min="0.25" max="4" step="0.25" value="1" />
+                    </label>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">Seek</span>
+                        <input id="seek-input" class="player-number-input" type="number" min="0" step="0.1" value="0" />
+                    </label>
+                    <button class="player-input-button" id="seek-button" type="button">Apply Seek + Rate</button>
+                    <button class="player-input-button" id="play-button" type="button">Play</button>
+                    <button class="player-input-button" id="pause-button" type="button">Pause</button>
+                    <button class="player-input-button" id="fullscreen-button" type="button">Fullscreen</button>
+                    <button class="player-input-button player-input-button-danger" id="release-button" type="button">Release</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="secondary-grid">
+            <article class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>Build Config</h2>
+                        <p>Resolved SDK init parameters for the current public demo session.</p>
+                    </div>
+                    <div class="tag">build(config)</div>
+                </div>
+                <div id="build-config" class="code-block"></div>
+            </article>
+
+            <article class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>Runtime Log</h2>
+                        <p>Playback events, probe output, seek flow, and error information.</p>
+                    </div>
+                    <div class="tag">runtime log</div>
+                </div>
+                <div id="runtime-log" class="log-panel"></div>
+            </article>
+        </section>
+
+        <section class="surface-card feature-card">
+            <div class="section-head">
+                <div>
+                    <h2>Feature Matrix</h2>
+                    <p>Keep h265web.js PRO in the first highlighted row, then compare it with the outdated branch and the native browser baseline.</p>
+                </div>
+                <div class="tag">public demo matrix</div>
+            </div>
+
+            <div class="feature-table-wrap">
+                <table class="feature-table">
+                    <thead>
+                        <tr id="feature-head-row"></tr>
+                    </thead>
+                    <tbody id="feature-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="./index.js"></script>
+</body>
+</html>

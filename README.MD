@@ -1,12 +1,18 @@
-# h265web.js - 适配浏览器HEVC硬解码
+# h265web.js - 浏览器 HEVC/H.265 播放 SDK
 
-> ### 如果你需要更强劲的性能 那么 h265web.js-pro 专业版   
-> ***请访问 [www.h265web.com](https://h265web.com/) 获取更多信息***  
-> ***h265web.js-pro分支:[h265web.js-pro](https://github.com/numberwolf/h265web.js/tree/h265web.js-pro)***
-
-### 下面是开源版本介绍
+> 当前仓库已经同步为 **h265web.js PRO 免费版本**。  
+> 现在直接使用当前仓库即可体验完整能力，不再需要额外付费解锁专业版。
 
 <a href="README.MD">中文</a> | <a href="README_EN.MD">English</a>
+
+## 快速入口
+
+- GitHub: https://github.com/numberwolf/h265web.js
+- Wiki: https://github.com/numberwolf/h265web.js/wiki
+- 官网: https://h265web.com/
+- 中文演示页: [index-cn.html](./index-cn.html)
+- English Demo: [index.html](./index.html)
+- 默认演示视频: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
 
 <hr>
 <img src="./resource/logo@300x300.png" height="250px" />
@@ -15,13 +21,27 @@
 </a>
 <hr>
 <strong>
-<font color="red">市场上能找到的支持的能力最多的HEVC/H.265网页播放器.</font>
+<font color="red">h265web.js PRO 现在免费开放，面向浏览器端 HEVC/H.265 播放场景提供尽可能完整的协议与能力支持。</font>
 <br>
 <font color="blue">流媒体服务推荐用 <a href="https://github.com/ZLMediaKit/ZLMediaKit">ZLMediaKit(https://github.com/ZLMediaKit/ZLMediaKit) - 更好用的流媒体服务</a></font>
 </strong>
 <br>
-一个可支持HEVC/H.265编码播放360P、480P、540P、720P、1080P的HEVC播放器 
+一个支持 HEVC/H.265、AVC/H.264、AV1、多协议直播点播、WebCodec / WASM / 多线程等能力的浏览器播放器 SDK。  
+适合做网页播放器、视频监控、直播观看、点播播放、协议兼容验证和播放器二次封装。 
 <br>
+
+### 当前版本定位
+
+- 当前仓库主线就是 `h265web.js PRO`
+- 当前版本免费开放，接入时不再区分“先开源版、再付费专业版”的路径
+- 推荐先从公开演示页和 `index-debug.html` 开始验证环境，再进入业务接入
+
+### 适合什么场景
+
+- 浏览器播放 HEVC / H.265、AVC / H.264、AV1
+- 点播与直播统一接入
+- MP4 / MOV / MKV / FLV / MPEG-TS / M3U8 / HLS / HTTP-FLV / WS-FLV / HTTP-TS / WS-TS / HEVC ES 等协议验证
+- 需要截图、MediaInfo、倍速、Seek、全屏、多实例、多线程等能力的网页播放器项目
 
 ### O、接入案例（部分）
 
@@ -67,10 +87,12 @@
 </font>
 </strong>
 
-#### 在线DEMO <a href="https://www.zzsin.com/h265webjs.html"> h265webjs.html (请以Github最新为准,在线Demo已长时间未更新)
-</a>
+#### 演示入口
 
-#### 入门调试Demo <a href="index-debug.html">index-debug.html</a>
+- 中文公开演示页: [index-cn.html](./index-cn.html)
+- English Demo: [index.html](./index.html)
+- 入门调试页: [index-debug.html](./index-debug.html)
+- 旧线上 Demo: <a href="https://www.zzsin.com/h265webjs.html">h265webjs.html</a>（可能不是最新版本，请以 GitHub 当前仓库为准）
 
 <hr>
 
@@ -206,7 +228,6 @@
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
 | <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | TODO |
-
 
 
 

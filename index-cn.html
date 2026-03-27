@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>h265web.js | 浏览器 HEVC 播放演示</title>
+    <meta
+        name="description"
+        content="公开版 h265web.js 浏览器 HEVC/H.265 播放演示页，把播放器工作台、运行日志、构建配置和能力矩阵放在同一页展示。"
+    />
+    <script src="./static/h265web.js"></script>
+    <link rel="stylesheet" href="./index.css" />
+</head>
+<body class="public-demo-page" data-locale="zh">
+    <div class="demo-shell">
+        <section class="demo-intro">
+            <div class="demo-intro-head">
+                <div class="demo-intro-brandline">
+                    <a class="demo-logo demo-logo-light" href="./index.html">h265web.js</a>
+                    <span class="demo-badge demo-badge-light">PRO Free</span>
+                    <span class="section-eyebrow">公开演示</span>
+                </div>
+                <div class="demo-intro-actions">
+                    <div class="demo-locale-switch demo-locale-switch-light" aria-label="语言切换">
+                        <a class="demo-locale-link demo-locale-link-light" href="./index.html">EN</a>
+                        <a class="demo-locale-link demo-locale-link-light is-active" href="./index-cn.html">中文</a>
+                    </div>
+                    <nav class="demo-nav-links demo-nav-links-light" aria-label="公开演示链接">
+                        <a class="demo-nav-link demo-nav-link-light" href="https://h265web.com/markdown-docs/get-started.php" target="_blank" rel="noreferrer">文档</a>
+                        <a class="demo-nav-link demo-nav-link-light" href="https://github.com/numberwolf/h265web.js" target="_blank" rel="noreferrer">GitHub</a>
+                        <a class="demo-nav-link demo-nav-link-light" href="https://www.h265web.com/" target="_blank" rel="noreferrer">官网</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="demo-intro-copy">
+                <h1>把 h265web.js 的公开演示页收成以播放器为核心的工作台。</h1>
+                <p>先看播放器本体，再往下看构建配置、运行日志和完整能力矩阵，减少来回切换视线。</p>
+            </div>
+        </section>
+
+        <section class="player-workbench">
+
+            <div class="player-canvas-shell">
+                <div id="demo-player" class="player-sdk"></div>
+                <div id="player-hover-loading" class="player-hover-loading">
+                    <div class="player-hover-spinner"></div>
+                    <span>播放器加载中...</span>
+                </div>
+                <button id="player-hover-toggle" class="player-hover-toggle" type="button" aria-label="暂停或播放公开演示">
+                    播放
+                </button>
+                <div class="player-hover-progress-wrap">
+                    <button id="player-hover-progress" class="player-hover-progress" type="button" aria-label="拖动公开演示进度">
+                        <span id="player-hover-progress-fill" class="player-hover-progress-fill"></span>
+                    </button>
+                    <div id="player-hover-time" class="player-hover-time">0.000 / 16.000 s</div>
+                </div>
+            </div>
+
+            <div class="player-status-strip">
+                <div class="status-item">
+                    <label>播放 PTS</label>
+                    <span id="play-pts">-</span>
+                </div>
+                <div class="status-item">
+                    <label>Nalu</label>
+                    <span id="nalu-status">-</span>
+                </div>
+                <div class="status-item">
+                    <label>视频缓存</label>
+                    <span id="video-cache">-</span>
+                </div>
+                <div class="status-item">
+                    <label>音频缓存</label>
+                    <span id="audio-cache">-</span>
+                </div>
+            </div>
+
+            <div class="player-toolbar">
+                <div class="player-toolbar-row">
+                    <span class="player-toolbar-tag">媒体地址</span>
+                    <input class="player-input-text player-input-text-url" id="media-url" type="text" value="./resource/hevc_test_moov_set_head_16s.mp4" />
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">预设</span>
+                        <select id="preset-select" class="player-input-item"></select>
+                    </label>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">内核</span>
+                        <select id="core-select" class="player-input-item">
+                            <option value="">自动</option>
+                            <option value="webcodec_hevc">WebCodec</option>
+                            <option value="wasm_hevc">WASM</option>
+                        </select>
+                    </label>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">自动播放</span>
+                        <select id="autoplay-select" class="player-input-item">
+                            <option value="false">关闭</option>
+                            <option value="true" selected>开启</option>
+                        </select>
+                    </label>
+                    <button class="player-input-button player-input-button-primary" id="create-load-button" type="button">创建并加载</button>
+                    <button class="player-input-button" id="create-button" type="button">创建</button>
+                    <button class="player-input-button" id="load-button" type="button">加载</button>
+                </div>
+
+                <div class="player-toolbar-row">
+                    <div class="player-volume-wrap">
+                        <span class="player-toolbar-tag">音量</span>
+                        <input id="volume-input" class="player-input-item" type="range" min="0" max="1" step="0.05" value="1" />
+                        <span class="player-inline-value" id="volume-value">1.00</span>
+                    </div>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">倍速</span>
+                        <input id="rate-input" class="player-number-input" type="number" min="0.25" max="4" step="0.25" value="1" />
+                    </label>
+                    <label class="player-field player-field-inline">
+                        <span class="player-field-label">跳转</span>
+                        <input id="seek-input" class="player-number-input" type="number" min="0" step="0.1" value="0" />
+                    </label>
+                    <button class="player-input-button" id="seek-button" type="button">应用跳转与倍速</button>
+                    <button class="player-input-button" id="play-button" type="button">播放</button>
+                    <button class="player-input-button" id="pause-button" type="button">暂停</button>
+                    <button class="player-input-button" id="fullscreen-button" type="button">全屏</button>
+                    <button class="player-input-button player-input-button-danger" id="release-button" type="button">释放</button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="secondary-grid">
+            <article class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>构建配置</h2>
+                        <p>展示当前公开演示实际传给 SDK 的初始化参数。</p>
+                    </div>
+                    <div class="tag">构建参数</div>
+                </div>
+                <div id="build-config" class="code-block"></div>
+            </article>
+
+            <article class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>运行日志</h2>
+                        <p>把播放事件、Probe 输出、Seek 流程和错误信息集中放在同一块。</p>
+                    </div>
+                    <div class="tag">运行日志</div>
+                </div>
+                <div id="runtime-log" class="log-panel"></div>
+            </article>
+        </section>
+
+        <section class="surface-card feature-card">
+            <div class="section-head">
+                <div>
+                    <h2>能力矩阵</h2>
+                    <p>继续把 h265web.js PRO 放在第一排高亮，再和旧分支和浏览器原生能力做对照。</p>
+                </div>
+                <div class="tag">公开演示矩阵</div>
+            </div>
+
+            <div class="feature-table-wrap">
+                <table class="feature-table">
+                    <thead>
+                        <tr id="feature-head-row"></tr>
+                    </thead>
+                    <tbody id="feature-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="./index.js"></script>
+</body>
+</html>
