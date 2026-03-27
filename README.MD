@@ -13,9 +13,8 @@
 <p align="center">
   <a href="https://h265web.com/markdown-docs/get-started.php"><img alt="Docs" src="https://img.shields.io/badge/Docs-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
   <a href="https://h265web.com/"><img alt="Website" src="https://img.shields.io/badge/Website-h265web.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <a href="./index.html"><img alt="English Demo" src="https://img.shields.io/badge/Demo-English-e53935?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <a href="./index-cn.html"><img alt="Chinese Demo" src="https://img.shields.io/badge/Demo-%E4%B8%AD%E6%96%87-a53c34?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <a href="https://github.com/numberwolf/h265web.js/wiki"><img alt="Wiki" src="https://img.shields.io/badge/Wiki-GitHub-111827?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://h265web.com/player.php"><img alt="Public Demo" src="https://img.shields.io/badge/Demo-player.php-e53935?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="https://github.com/numberwolf/h265web.js"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-numberwolf%2Fh265web.js-111827?style=for-the-badge&logo=github&logoColor=white"></a>
 </p>
 
 > **Built and refined continuously since 2017, h265web.js PRO delivers mature browser playback with broad feature coverage and strong performance.**
@@ -30,17 +29,15 @@ If <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> helps your 
 
 - GitHub: https://github.com/numberwolf/h265web.js
 - Docs: https://h265web.com/markdown-docs/get-started.php
-- Wiki: https://github.com/numberwolf/h265web.js/wiki
 - Website: https://h265web.com/
-- English Demo: [index.html](./index.html)
-- 中文演示页: [index-cn.html](./index-cn.html)
+- Public Demo: https://h265web.com/player.php
 - Default Demo Media: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
 
 ### Current Positioning
 
 - The main branch now represents `h265web.js PRO`
 - The current PRO capability set is free to use
-- The recommended entry path is: public demo page -> debug demo -> project integration
+- The recommended entry path is: public demo page -> docs -> project integration
 
 ### Good Fit For
 
@@ -89,10 +86,8 @@ If <a href="https://github.com/numberwolf/h265web.js">h265web.js</a> helps your 
 
 #### Demo Entry
 
-- English Demo: [index.html](./index.html)
-- 中文演示页: [index-cn.html](./index-cn.html)
-- Debug Demo: [index-debug.html](./index-debug.html)
-- Legacy Online Demo: <a href="https://www.zzsin.com/h265webjs.html">h265webjs.html</a> (may not match the latest GitHub version)
+- Public Demo: https://h265web.com/player.php
+- Docs: https://h265web.com/markdown-docs/get-started.php
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -112,107 +107,9 @@ Notice：
 * Recommended Bitrate <= 1500kbps
 	* Better: 300~600kbps
 
-
-
-## Index
-
-- [Update Log](#updatelog)
-
-- [0、README](#0readme)
-
-	- [Support what?](#supported)
-
-	- [Free token](#freetoken)
-
-	- [Demo](#demo)
-
-	- [Preview image](#previewimage)
-
-- [1、How to use it? See demo code](#1useitbydemo)
-
-- [2、SDK/API Document](#2sdkandapidocument)
-
-	- [How to install it](#install)
-
-	- [Player Config](#playerconfig)
-
-	- [Init Player](#initplayer)
-
-	- [Player bind events](#playerbindevents)
-
-		- [Seed Finished](#seedfinished)
-
-		- [Callback Yuv Data](#callbackyuvdata)
-
-		- [Media Load Successed](#medialoadsuccessed)
-
-		- [Player Pts Update](#playerptsupdate)
-
-		- [Play Finished](#playfinished)
-
-		- [Cache Download](#cachedownload)
-
-		- [Cover Image Load Finished](#coverimageloadfinished)
-
-		- [Caching Decode Frames](#cachingdecodeframes)
-
-		- [Caching Decode Finished](#cachingdecodefinished)
-
-		- [Open FullScreen Event](#openfullscreenevent)
-
-		- [Exit FullScreen Event](#closefullscreenevent)
-		
-		- [Callback Play State](#callbackplaystate)
-
-	- [Player API Document](#playerapidocument)
-
-		- [Build Player](#buildplayer)
-
-		- [Get Player Play Status](#getplayerplaystatus)
-
-		- [Start Play](#startplay)
-
-		- [Pause](#pause)
-
-		- [Set Render Callback YuvFrame](#setrendercallbackyuvframe)
-
-		- [Seek](#seek)
-
-		- [Volume Option](#volumeoption)
-
-		- [Get MediaInfo - and check is h265 video](#getmediainfo)
-
-		- [Open Fullscreen](#openfullscreen)
-
-		- [Exit Fullscreen](#exitfullscreen)
-
-		- [Play frame by frame(next frame)](#nextframe)
-
-		- [Resize](#resize)
-
-		- [Snapshot](#snapshot)
-
-		- [SetPlayRate](#setplayrate)
-
-		- [GetPlayRate](#getplayrate)
-
-		- [Release Player](#release)
-
-- [3、Others](#3others)
-
-	- [Donate](#donate)
-
-	- [FFmpeg Support H265 Live Encode](#ffmpegsupporth265liveencode)
-	
-	- [Transcode and get HEVC/H.265 media file by ffmpeg](#transcodeandget265codecfilebyffmpeg)
-
 <hr>
 
-### 0、README ###
-
-| TODO | Content |
-| ---- | ---- |
-| 1 | Support HDR10 BT.2020 |
+### Feature Support ###
 
 
 #### Supported ####
@@ -259,6 +156,9 @@ Notice：
 |  Feature | Support | Desc |
 | ---- | ---- |  ----  |
 | Hardware-Decode | Y | For Chrome/Safari etc... |
+| WebCodec | Y | Browser-supported hardware path |
+| SIMD | Y | WASM + SIMD acceleration path |
+| MSE | Y | Browser MSE playback path |
 | Video on demand | Y |  ----  |
 | Live | Y |  ----  |
 | Seek | Y | ----  |
@@ -290,24 +190,14 @@ Notice：
 | Get Video FPS | Y | ---- |
 | Get Audio SampleRate | Y | ---- |
 | Chase Frame | Y | HTTP-FLV(no audio) |
-| PlayBackRate | Y | H.264/AV1 |
+| PlayBackRate | Y | H.264/H.265/AV1 |
 | Resize | Y | ---- |
-
-<br>
-
-#### freeToken ####
-
-```javascript
-token = "base64:QXV0aG9yOmNoYW5neWFubG9uZ3xudW1iZXJ3b2xmLEdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vbnVtYmVyd29sZixFbWFpbDpwb3JzY2hlZ3QyM0Bmb3htYWlsLmNvbSxRUTo1MzEzNjU4NzIsSG9tZVBhZ2U6aHR0cDovL3h2aWRlby52aWRlbyxEaXNjb3JkOm51bWJlcndvbGYjODY5NCx3ZWNoYXI6bnVtYmVyd29sZjExLEJlaWppbmcsV29ya0luOkJhaWR1";
-```
 
 <br>
 
 #### Demo ####
 
-<a href="https://www.zzsin.com/h265webjs.html">https://www.zzsin.com/h265webjs.html</a>
-
-Simple Demo - First <a href="index-debug.html">index-debug.html</a>
+https://h265web.com/player.php
 
 <br>
 
@@ -322,7 +212,7 @@ Simple Demo - First <a href="index-debug.html">index-debug.html</a>
 
 ## 1、UseItByDemo ##
 
-* Simple Demo - First <a href="index-debug.html">index-debug.html</a>
+* Public Demo - First <a href="https://h265web.com/player.php">https://h265web.com/player.php</a>
 
 * You need to put project in your `web server` path, and open it with `index.html`
 
@@ -348,7 +238,7 @@ bash init.sh
 
 * By github 1.1 <a href="https://github.com/numberwolf/h265web.js">h265web.js</a>
 
-* Simple Demo - First <a href="index-debug.html">index-debug.html</a>
+* Public Demo - First <a href="https://h265web.com/player.php">https://h265web.com/player.php</a>
 
 * demo: <a href="./example_normal">example_normal</a> （recommend）
 	```javascript
@@ -980,7 +870,7 @@ player.release();
 
 |  Wechat | Alipay | PayPal |
 |  ---- | ----  | ---- |
-| <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | TODO |
+| <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | - |
 <br>
 
 ### FFmpegSupportH265LiveEncode ###
@@ -1235,8 +1125,6 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 
 <hr>
-
-
 
 
 

@@ -11,11 +11,10 @@
 </p>
 
 <p align="center">
-  <a href="https://h265web.com/markdown-docs/get-started.php"><img alt="文档" src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="https://h265web.com/markdown-docs/zh/get-started.php"><img alt="文档" src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
   <a href="https://h265web.com/"><img alt="官网" src="https://img.shields.io/badge/%E5%AE%98%E7%BD%91-h265web.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <a href="./index-cn.html"><img alt="中文演示" src="https://img.shields.io/badge/Demo-%E4%B8%AD%E6%96%87-a53c34?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <a href="./index.html"><img alt="English Demo" src="https://img.shields.io/badge/Demo-English-e53935?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <a href="https://github.com/numberwolf/h265web.js/wiki"><img alt="Wiki" src="https://img.shields.io/badge/Wiki-GitHub-111827?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://h265web.com/player.php"><img alt="官网演示" src="https://img.shields.io/badge/Demo-player.php-a53c34?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="https://github.com/numberwolf/h265web.js"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-numberwolf%2Fh265web.js-111827?style=for-the-badge&logo=github&logoColor=white"></a>
 </p>
 
 > **自 2017 年持续打磨至今，h265web.js PRO 已沉淀出成熟稳定的浏览器播放能力，兼具丰富特性与强劲性能表现。**
@@ -30,18 +29,16 @@
 ## 快速入口
 
 - GitHub: https://github.com/numberwolf/h265web.js
-- 文档: https://h265web.com/markdown-docs/get-started.php
-- Wiki: https://github.com/numberwolf/h265web.js/wiki
+- 文档: https://h265web.com/markdown-docs/zh/get-started.php
 - 官网: https://h265web.com/
-- 中文演示页: [index-cn.html](./index-cn.html)
-- English Demo: [index.html](./index.html)
+- 官网 Demo: https://h265web.com/player.php
 - 默认演示视频: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
 
 ### 当前版本定位
 
 - 当前仓库主线就是 `h265web.js PRO`
 - 当前版本免费开放，接入时不再区分“先开源版、再付费专业版”的路径
-- 推荐先从公开演示页和 `index-debug.html` 开始验证环境，再进入业务接入
+- 推荐先从官网 Demo 和 Docs 开始验证环境，再进入业务接入
 
 ### 适合什么场景
 
@@ -95,14 +92,12 @@
 
 #### 演示入口
 
-- 中文公开演示页: [index-cn.html](./index-cn.html)
-- English Demo: [index.html](./index.html)
-- 入门调试页: [index-debug.html](./index-debug.html)
-- 旧线上 Demo: <a href="https://www.zzsin.com/h265webjs.html">h265webjs.html</a>（可能不是最新版本，请以 GitHub 当前仓库为准）
+- 官网 Demo: https://h265web.com/player.php
+- 中文文档: https://h265web.com/markdown-docs/zh/get-started.php
 
 <hr>
 
-#### 当前能力 ####
+#### 能力支持 ####
 
 * 协议
 
@@ -145,6 +140,9 @@
 | 能力 | 是否支持 | 其他 |
 | ---- | ---- |  ----  |
 | 硬解码 | 是 |  适配Chrome/Safari等 |
+| WebCodec | 是 | 浏览器硬解码优先路径 |
+| SIMD | 是 | WASM + SIMD 加速路径 |
+| MSE | 是 | 浏览器 MSE 播放路径 |
 | 直播 | 是 |  ----  |
 | 点播 | 是 |  ----  |
 | Seek跳转 | 是 | ---- |
@@ -176,38 +174,21 @@
 | 获取 视频帧率 | 是 | ---- |
 | 获取 音频采样率 | 是 | ---- |
 | 追帧策略算法 | 是 |  HTTP-FLV(no audio) |
-| 倍速调整 | 是 |  H.264/AV1 |
+| 倍速调整 | 是 |  H.264/H.265/AV1 |
 | Resize缩放 | 是 | ---- |
 
 <br>
 
 
-# 全部文档 #
+# 文档入口
 
-* <a href="https://github.com/numberwolf/h265web.js/wiki">WIKI首页</a>
+- 中文 Docs 首页: https://h265web.com/markdown-docs/zh/get-started.php
+- 入门指南: https://h265web.com/markdown-docs/zh/get-started.php
+- 简单演示: https://h265web.com/markdown-docs/zh/simple-demo.php
+- API 文档: https://h265web.com/markdown-docs/zh/api-docs.php
+- Donate: https://h265web.com/markdown-docs/zh/donate.php
 
-
-### 一、SDK使用文档
-
-* [【LICENSE】CYL—Free 1.0](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90LICENSE%E3%80%91CYL%E2%80%94Free-1.0)
-
-* [【说明】播放器能力介绍](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90%E8%AF%B4%E6%98%8E%E3%80%91%E6%92%AD%E6%94%BE%E5%99%A8%E8%83%BD%E5%8A%9B%E4%BB%8B%E7%BB%8D)
-
-* [【说明】创建播放器](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90%E8%AF%B4%E6%98%8E%E3%80%91%E5%88%9B%E5%BB%BA%E6%92%AD%E6%94%BE%E5%99%A8)
-
-* [【说明】API使用](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90%E8%AF%B4%E6%98%8E%E3%80%91API%E4%BD%BF%E7%94%A8)
-
-* [【说明】Event事件 回调](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90%E8%AF%B4%E6%98%8E%E3%80%91Event%E4%BA%8B%E4%BB%B6-%E5%9B%9E%E8%B0%83)
-
-### 二、问题QA指引
-
-* [【QA解答】初始化失败系列](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90QA%E8%A7%A3%E7%AD%94%E3%80%91%E5%88%9D%E5%A7%8B%E5%8C%96%E5%A4%B1%E8%B4%A5%E7%B3%BB%E5%88%97)
-
-* [【QA解答】开始播放后遇到的问题系列](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90QA%E8%A7%A3%E7%AD%94%E3%80%91%E5%BC%80%E5%A7%8B%E6%92%AD%E6%94%BE%E5%90%8E%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E7%B3%BB%E5%88%97)
-
-* [【视频转码指南】如何用FFmpeg编码合格的 直播 点播 视频](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90%E8%A7%86%E9%A2%91%E8%BD%AC%E7%A0%81%E6%8C%87%E5%8D%97%E3%80%91%E5%A6%82%E4%BD%95%E7%94%A8FFmpeg%E7%BC%96%E7%A0%81%E5%90%88%E6%A0%BC%E7%9A%84-%E7%9B%B4%E6%92%AD-%E7%82%B9%E6%92%AD-%E8%A7%86%E9%A2%91)
-
-### 三、合作项目
+### 合作项目
 
 * [好用的流媒体服务 ZLMediaKit](https://github.com/ZLMediaKit/ZLMediaKit)
 
@@ -217,7 +198,7 @@
 
 * [YuvEye 国内第一款图像质量、YUV分析工具](https://www.zzsin.com/YUVEye.html)
 
-### 四、关于
+### 关于
 
 * [【技术社区】提问 交流 — 联系我 技术支持群](https://github.com/numberwolf/h265web.js/wiki/%E3%80%90%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA%E3%80%91%E6%8F%90%E9%97%AE-%E4%BA%A4%E6%B5%81-%E2%80%94-%E8%81%94%E7%B3%BB%E6%88%91-%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81%E7%BE%A4)
 
@@ -233,7 +214,5 @@
 
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
-| <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | TODO |
-
-
+| <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | - |
 
