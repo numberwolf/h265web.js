@@ -7,7 +7,7 @@
 <p align="center">
   <img src="./resource/logo@300x300.png" width="180" alt="h265web.js logo" />
   &nbsp;&nbsp;&nbsp;
-  <img src="./resource/demo.png" width="520" alt="h265web.js demo preview" />
+  <img src="./resource/demo.png" width="300" alt="h265web.js demo preview" />
 </p>
 
 <p align="center">
@@ -32,13 +32,21 @@
 - 文档: https://h265web.com/markdown-docs/zh/get-started.php
 - 官网: https://h265web.com/
 - 官网 Demo: https://h265web.com/player.php
-- 默认演示视频: [resource/hevc_test_moov_set_head_16s.mp4](./resource/hevc_test_moov_set_head_16s.mp4)
 
-### 当前版本定位
+## 联系方式
 
-- 当前仓库主线就是 `h265web.js PRO`
-- 当前版本免费开放，接入时不再区分“先开源版、再付费专业版”的路径
-- 推荐先从官网 Demo 和 Docs 开始验证环境，再进入业务接入
+- GitHub: https://github.com/numberwolf/h265web.js
+- Email: porschegt23@foxmail.com
+- QQ 群: 925466059（推荐）
+- QQ: 531365872
+- Discord: numberwolf#8694
+- Wechat: numberwolf11
+
+## 演示入口
+
+- 官网 Demo: https://h265web.com/player.php
+- 中文文档: https://h265web.com/markdown-docs/zh/get-started.php
+
 
 ### 适合什么场景
 
@@ -89,11 +97,6 @@
 
 </font>
 </strong>
-
-#### 演示入口
-
-- 官网 Demo: https://h265web.com/player.php
-- 中文文档: https://h265web.com/markdown-docs/zh/get-started.php
 
 <hr>
 
@@ -215,4 +218,3 @@
 |  微信 | 支付宝 | PayPal |
 |  ---- | ----  | ---- |
 | <img src="resource/donate/wechat.JPG" height="500"> | <img src="resource/donate/alipay.JPG" height="500"> | - |
-
