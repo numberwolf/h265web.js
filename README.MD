@@ -11,10 +11,11 @@
 </p>
 
 <p align="center">
-  <a href="https://h265web.com/markdown-docs/get-started.php"><img alt="Docs" src="https://img.shields.io/badge/Docs-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
   <a href="https://h265web.com/"><img alt="Website" src="https://img.shields.io/badge/Website-h265web.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://h265web.com/player.php"><img alt="Public Demo" src="https://img.shields.io/badge/Demo-player.php-e53935?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://github.com/numberwolf/h265web.js"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-numberwolf%2Fh265web.js-111827?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://h265web.com/markdown-docs/get-started.php"><img alt="Docs" src="https://img.shields.io/badge/Docs-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="./DOCS/README-HowToUse.MD"><img alt="Docs Local" src="https://img.shields.io/badge/Docs-Local%20How%20To%20Use-374151?style=for-the-badge&logo=gitbook&logoColor=white"></a>
 </p>
 
 > **Built and refined continuously since 2017, h265web.js PRO delivers mature browser playback with broad feature coverage and strong performance.**
@@ -23,12 +24,13 @@
 >
 > **Recommended media server:** [ZLMediaKit](https://github.com/ZLMediaKit/ZLMediaKit) - a strong streaming server/framework for live and VOD delivery.
 
-If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, a GitHub star is always appreciated.
+If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, giving it a GitHub star is a simple way to support the work and help more developers discover it.
 
 ## Quick Links
 
 - GitHub: https://github.com/numberwolf/h265web.js
-- Docs: https://h265web.com/markdown-docs/get-started.php
+- Docs (Website: How to use): https://h265web.com/markdown-docs/get-started.php
+- Docs (Local: How to use): [README-HowToUse.MD](./DOCS/README-HowToUse.MD)
 - Website: https://h265web.com/
 - Public Demo: https://h265web.com/player.php
 
@@ -44,7 +46,8 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, a 
 ## Demo Entry
 
 - Public Demo: https://h265web.com/player.php
-- Docs: https://h265web.com/markdown-docs/get-started.php
+- Docs (Website: How to use): https://h265web.com/markdown-docs/get-started.php
+- Docs (Local: How to use): [README-HowToUse.MD](./DOCS/README-HowToUse.MD)
 
 ### Good Fit For
 
@@ -428,5 +431,3 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 
 <hr>
-
-

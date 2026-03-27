@@ -11,10 +11,11 @@
 </p>
 
 <p align="center">
-  <a href="https://h265web.com/markdown-docs/zh/get-started.php"><img alt="文档" src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
   <a href="https://h265web.com/"><img alt="官网" src="https://img.shields.io/badge/%E5%AE%98%E7%BD%91-h265web.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://h265web.com/player.php"><img alt="官网演示" src="https://img.shields.io/badge/Demo-player.php-a53c34?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://github.com/numberwolf/h265web.js"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-numberwolf%2Fh265web.js-111827?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://h265web.com/markdown-docs/zh/get-started.php"><img alt="文档" src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Get%20Started-1f2937?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
+  <a href="./DOCS/README-HowToUse-CN.MD"><img alt="本地文档" src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E6%9C%AC%E5%9C%B0%20How%20to%20use-374151?style=for-the-badge&logo=gitbook&logoColor=white"></a>
 </p>
 
 > **自 2017 年持续打磨至今，h265web.js PRO 已沉淀出成熟稳定的浏览器播放能力，兼具丰富特性与强劲性能表现。**
@@ -29,7 +30,8 @@
 ## 快速入口
 
 - GitHub: https://github.com/numberwolf/h265web.js
-- 文档: https://h265web.com/markdown-docs/zh/get-started.php
+- 文档（官网 How to use）: https://h265web.com/markdown-docs/zh/get-started.php
+- 文档（本地 How to use）: [README-HowToUse-CN.MD](./DOCS/README-HowToUse-CN.MD)
 - 官网: https://h265web.com/
 - 官网 Demo: https://h265web.com/player.php
 
@@ -45,7 +47,8 @@
 ## 演示入口
 
 - 官网 Demo: https://h265web.com/player.php
-- 中文文档: https://h265web.com/markdown-docs/zh/get-started.php
+- 文档（官网 How to use）: https://h265web.com/markdown-docs/zh/get-started.php
+- 文档（本地 How to use）: [README-HowToUse-CN.MD](./DOCS/README-HowToUse-CN.MD)
 
 
 ### 适合什么场景
@@ -55,7 +58,7 @@
 - MP4 / MOV / MKV / FLV / MPEG-TS / M3U8 / HLS / HTTP-FLV / WS-FLV / HTTP-TS / WS-TS / HEVC ES 等协议验证
 - 需要截图、MediaInfo、倍速、Seek、全屏、多实例、多线程等能力的网页播放器项目
 
-### O、接入案例（部分）
+### 接入案例（部分）
 
 <font color="blue">
 <strong>
