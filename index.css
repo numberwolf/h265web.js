@@ -346,8 +346,84 @@ html[lang^="zh"] .demo-intro-copy p {
 }
 
 .player-input-text-url {
+    width: 100%;
+    min-width: 0;
+    padding-right: 54px;
+}
+
+.media-source-combobox {
+    position: relative;
     flex: 1 1 340px;
     min-width: 280px;
+}
+
+.media-source-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 44px;
+    border: 0;
+    border-left: 1px solid rgba(17, 24, 39, 0.1);
+    border-radius: 0 14px 14px 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.media-source-list {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 30;
+    width: 100%;
+    max-height: min(58vh, 360px);
+    overflow-y: auto;
+    padding: 6px;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 16px 32px rgba(17, 24, 39, 0.18);
+}
+
+.media-source-list[hidden] {
+    display: none;
+}
+
+.media-source-option {
+    display: block;
+    width: 100%;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+}
+
+.media-source-option:hover,
+.media-source-option:focus-visible,
+.media-source-option[aria-selected="true"] {
+    background: rgba(36, 111, 188, 0.1);
+}
+
+.media-source-option-label,
+.media-source-option-url {
+    display: block;
+}
+
+.media-source-option-label {
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+.media-source-option-url {
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    overflow-wrap: anywhere;
 }
 
 .player-field {
@@ -359,6 +435,10 @@ html[lang^="zh"] .demo-intro-copy p {
 .player-field-inline .player-input-item,
 .player-field-inline .player-number-input {
     width: 132px;
+}
+
+.player-field-projection .player-input-item {
+    width: 184px;
 }
 
 .player-number-input {
@@ -861,7 +941,7 @@ input[type="range"].player-input-item::-moz-range-thumb {
         padding-right: 14px;
     }
 
-    .player-input-text-url,
+    .media-source-combobox,
     .player-volume-wrap,
     .player-field,
     .player-input-button {
@@ -876,6 +956,10 @@ input[type="range"].player-input-item::-moz-range-thumb {
     .player-field-inline .player-input-item,
     .player-field-inline .player-number-input {
         width: 144px;
+    }
+
+    .player-field-projection .player-input-item {
+        width: 184px;
     }
 
     .player-sdk {

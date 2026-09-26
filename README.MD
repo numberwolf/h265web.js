@@ -271,6 +271,8 @@ Omit `core` to let the SDK recognize the three WebRTC URL forms automatically. W
 
 Use a real monoscopic 360° video (normally a 2:1 equirectangular/ERP source); an ordinary video does not become 360° when you turn on VR. Set `projection: 'erp360'` to watch it in VR360, or `flat` for ordinary playback. The local Job5 build keeps the existing decoder and clock; view controls are `set_projection()`, `set_vr_view()`, `rotate_vr_view()`, `reset_vr_view()` and `set_vr_controls()`. Check that your SDK bundle exposes these APIs: the pinned public CDN build may not yet include Job5. See [API Docs](https://h265web.com/markdown-docs/api-docs.php) and [QA WIKI](https://h265web.com/markdown-docs/qa-wiki.php) for source, CORS and first-frame checks.
 
+In the local [English demo](./index.html) or [Chinese demo](./index-cn.html), type your own URL in **Source**, or click its arrow to see the local MP4 samples. The list includes H.264 and HEVC VR360 samples; VR360 samples select the ERP view automatically. Use **View** to switch between ordinary flat and VR360 display while the same video is playing.
+
 # Documentation
 
 - English Docs Home: https://h265web.com/markdown-docs/get-started.php

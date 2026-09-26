@@ -35,7 +35,7 @@
             </div>
             <div class="demo-intro-copy">
                 <h1>See the public h265web.js SDK in a player-first demo.</h1>
-                <p>Keep the player on the first screen, then inspect build config, runtime events, and the full feature matrix below.</p>
+                <p>Keep the player on the first screen, then inspect build config, runtime events, and the full feature matrix below. For VR360, choose an ERP preset, click Create + Load, and drag or touch the picture to look around.</p>
             </div>
         </section>
 
@@ -79,11 +79,11 @@
             <div class="player-toolbar">
                 <div class="player-toolbar-row">
                     <span class="player-toolbar-tag">Source</span>
-                    <input class="player-input-text player-input-text-url" id="media-url" type="text" value="./resource/hevc_test_moov_set_head_16s_hvc1.mp4" />
-                    <label class="player-field player-field-inline">
-                        <span class="player-field-label">Preset</span>
-                        <select id="preset-select" class="player-input-item"></select>
-                    </label>
+                    <div class="media-source-combobox" id="media-source-combobox">
+                        <input class="player-input-text player-input-text-url" id="media-url" type="text" autocomplete="off" role="combobox" aria-label="Media URL; type your own or open the full source list" aria-controls="media-source-list" aria-expanded="false" value="./hevc_test_moov_set_head_16s_hvc1.mp4" />
+                        <button class="media-source-toggle" id="media-source-toggle" type="button" aria-label="Show all sample videos" aria-controls="media-source-list" aria-expanded="false">▾</button>
+                        <div class="media-source-list" id="media-source-list" role="listbox" hidden></div>
+                    </div>
                     <label class="player-field player-field-inline">
                         <span class="player-field-label">Core</span>
                         <select id="core-select" class="player-input-item">
@@ -91,6 +91,13 @@
                             <option value="webrtc">WebRTC</option>
                             <option value="webcodec_hevc">WebCodec</option>
                             <option value="wasm_hevc">WASM</option>
+                        </select>
+                    </label>
+                    <label class="player-field player-field-inline player-field-projection">
+                        <span class="player-field-label">View</span>
+                        <select id="projection-select" class="player-input-item">
+                            <option value="flat" selected>Flat (default)</option>
+                            <option value="erp360">VR360 (ERP video)</option>
                         </select>
                     </label>
                     <label class="player-field player-field-inline">

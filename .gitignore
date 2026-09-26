@@ -7,6 +7,10 @@ push.sh
 # Media
 #
 *.mp4
+!resource/flat-h264-aac.mp4
+!resource/vr360-erp-h264-aac.mp4
+!resource/vr360-erp-hevc-aac.mp4
+!resource/vr360-erp-hevc-aac-scene.mp4
 *.hevc
 *.265
 *.h265
@@ -44,4 +48,3 @@ example_normal/dist*
 example_vue3_vite/public/dist
 example_vue3/public/dist
 example_vue2/public/dist
-

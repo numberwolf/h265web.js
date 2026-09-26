@@ -8,9 +8,10 @@ const locale = document.documentElement.lang.toLowerCase().startsWith('zh') ? 'z
 const TEXT = {
     en: {
         presetHevcMp4: 'HEVC MP4 Demo',
-        presetWebRtcWhep: 'WebRTC WHEP (recommended)',
-        presetWebRtcAlias: 'WebRTC compatible URL',
-        presetWebRtcZlm: 'WebRTC ZLM API',
+        presetFlatH264: 'Flat H.264/AAC MP4',
+        presetVrH264: 'VR360 H.264/AAC MP4 (ERP 2:1)',
+        presetVrHevc: 'VR360 HEVC/AAC MP4 (ERP 2:1)',
+        presetVrHevcScene: 'VR360 HEVC/AAC scene (ERP 2:1)',
         featureTags: 'Feature Tags',
         yes: 'Yes',
         no: 'No',
@@ -48,7 +49,10 @@ const TEXT = {
         seek: (target) => `seek -> ${target.toFixed(2)}`,
         progressSeekIgnored: 'progress seek ignored, player not created',
         progressSeek: (target) => `progress seek -> ${target.toFixed(2)}`,
-        preset: (label) => `preset -> ${label}`,
+        preset: (label) => `preset -> ${label}; click Create + Load to switch videos`,
+        projectionRequested: (value) => `view requested -> ${value}`,
+        projectionRejected: (value) => `view change rejected -> ${value}`,
+        projectionUnavailable: 'this SDK build does not expose VR360 view switching',
         fullscreenIgnored: 'fullscreen ignored, player not created',
         fullscreen: 'fullscreen',
         playAction: 'play',
@@ -63,9 +67,10 @@ const TEXT = {
     },
     zh: {
         presetHevcMp4: 'HEVC MP4 演示',
-        presetWebRtcWhep: 'WebRTC WHEP（推荐）',
-        presetWebRtcAlias: 'WebRTC 兼容地址',
-        presetWebRtcZlm: 'WebRTC ZLM 私有接口',
+        presetFlatH264: '普通 H.264/AAC MP4',
+        presetVrH264: 'VR360 H.264/AAC MP4（ERP 2:1）',
+        presetVrHevc: 'VR360 HEVC/AAC MP4（ERP 2:1）',
+        presetVrHevcScene: 'VR360 HEVC/AAC 实景（ERP 2:1）',
         featureTags: '能力标签',
         yes: '支持',
         no: '不支持',
@@ -103,7 +108,10 @@ const TEXT = {
         seek: (target) => `seek -> ${target.toFixed(2)}`,
         progressSeekIgnored: '未创建播放器，忽略进度跳转',
         progressSeek: (target) => `进度跳转 -> ${target.toFixed(2)}`,
-        preset: (label) => `预设 -> ${label}`,
+        preset: (label) => `预设 -> ${label}；点击“创建并加载”切换视频`,
+        projectionRequested: (value) => `已请求观看方式 -> ${value}`,
+        projectionRejected: (value) => `观看方式切换未被接受 -> ${value}`,
+        projectionUnavailable: '当前 SDK 构建没有 VR360 观看方式切换 API',
         fullscreenIgnored: '未创建播放器，忽略全屏',
         fullscreen: '全屏',
         playAction: '播放',
@@ -118,12 +126,13 @@ const TEXT = {
     }
 }[locale];
 
-const DEFAULT_MEDIA_URL = './resource/hevc_test_moov_set_head_16s.mp4';
+const DEFAULT_MEDIA_URL = './hevc_test_moov_set_head_16s_hvc1.mp4';
 const MEDIA_PRESETS = [
-    { label: TEXT.presetHevcMp4, url: DEFAULT_MEDIA_URL },
-    { label: TEXT.presetWebRtcWhep, url: 'http://127.0.0.1/index/api/whep?app=live&stream=test' },
-    { label: TEXT.presetWebRtcAlias, url: 'webrtc://127.0.0.1/live/test' },
-    { label: TEXT.presetWebRtcZlm, url: 'http://127.0.0.1/index/api/webrtc?app=live&stream=test&type=play' },
+    { label: TEXT.presetHevcMp4, url: DEFAULT_MEDIA_URL, projection: 'flat' },
+    { label: TEXT.presetFlatH264, url: './resource/flat-h264-aac.mp4', projection: 'flat' },
+    { label: TEXT.presetVrH264, url: './resource/vr360-erp-h264-aac.mp4', projection: 'erp360' },
+    { label: TEXT.presetVrHevc, url: './resource/vr360-erp-hevc-aac.mp4', projection: 'erp360' },
+    { label: TEXT.presetVrHevcScene, url: './resource/vr360-erp-hevc-aac-scene.mp4', projection: 'erp360' },
 ];
 
 const FEATURE_COLUMNS = [
@@ -169,8 +178,11 @@ const FEATURE_ROWS = [
 
 const elements = {
     mediaUrl: document.getElementById('media-url'),
-    presetSelect: document.getElementById('preset-select'),
+    mediaSourceCombobox: document.getElementById('media-source-combobox'),
+    mediaSourceToggle: document.getElementById('media-source-toggle'),
+    mediaSourceList: document.getElementById('media-source-list'),
     coreSelect: document.getElementById('core-select'),
+    projectionSelect: document.getElementById('projection-select'),
     autoplaySelect: document.getElementById('autoplay-select'),
     volumeInput: document.getElementById('volume-input'),
     volumeValue: document.getElementById('volume-value'),
@@ -349,7 +361,7 @@ function scheduleReadyAudioKick(reason = 'ready') {
 }
 
 function getPlayerConfig() {
-    return {
+    const config = {
         player_id: 'demo-player',
         wasm_js_uri,
         wasm_wasm_uri,
@@ -362,6 +374,31 @@ function getPlayerConfig() {
         ignore_audio: false,
         core: elements.coreSelect.value || null,
     };
+    if (elements.projectionSelect.value === 'erp360') {
+        // The source must already be an ERP panorama; this does not convert a flat video.
+        config.projection = 'erp360';
+        config.vr = { yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true };
+    }
+    return config;
+}
+
+function applyProjectionToPlayer() {
+    const projection = elements.projectionSelect.value;
+    refreshConfigPreview();
+    if (!state.player) {
+        return;
+    }
+    if (typeof state.player.set_projection !== 'function') {
+        appendLog(TEXT.projectionUnavailable, 'warn');
+        return;
+    }
+    if (projection === 'erp360' && typeof state.player.set_vr_controls === 'function') {
+        state.player.set_vr_controls({ mouse: true, touch: true });
+    }
+    // A running player changes presentation only; its decoder and media URL stay intact.
+    const accepted = state.player.set_projection(projection);
+    appendLog(accepted ? TEXT.projectionRequested(projection) : TEXT.projectionRejected(projection),
+        accepted ? 'info' : 'warn');
 }
 
 function refreshConfigPreview() {
@@ -522,9 +559,13 @@ function loadPlayer() {
         return;
     }
 
+    const alreadyBuilt = Boolean(state.player);
     const player = createPlayer();
     if (!player) {
         return;
+    }
+    if (alreadyBuilt) {
+        applyProjectionToPlayer();
     }
 
     state.durationSec = 16;
@@ -644,29 +685,98 @@ function seekFromProgress(event) {
     appendLog(TEXT.progressSeek(target));
 }
 
+function setSourceMenuOpen(open) {
+    elements.mediaSourceList.hidden = !open;
+    elements.mediaSourceToggle.setAttribute('aria-expanded', String(open));
+    elements.mediaUrl.setAttribute('aria-expanded', String(open));
+    if (open) {
+        elements.mediaSourceList.querySelectorAll('.media-source-option').forEach((option) => {
+            const preset = MEDIA_PRESETS[Number(option.dataset.presetIndex)];
+            option.setAttribute('aria-selected', String(preset.url === elements.mediaUrl.value.trim()));
+        });
+    }
+}
+
+function selectMediaPreset(index) {
+    const preset = MEDIA_PRESETS[index];
+    if (!preset) return;
+    elements.mediaUrl.value = preset.url;
+    elements.projectionSelect.value = preset.projection;
+    setSourceMenuOpen(false);
+    elements.mediaUrl.focus();
+    appendLog(TEXT.preset(preset.label));
+    refreshConfigPreview();
+}
+
 function populatePresets() {
     MEDIA_PRESETS.forEach((preset, index) => {
-        const option = document.createElement('option');
-        option.value = String(index);
-        option.textContent = preset.label;
-        elements.presetSelect.appendChild(option);
+        const option = document.createElement('button');
+        option.type = 'button';
+        option.className = 'media-source-option';
+        option.setAttribute('role', 'option');
+        option.dataset.presetIndex = String(index);
+        const label = document.createElement('span');
+        label.className = 'media-source-option-label';
+        label.textContent = preset.label;
+        const url = document.createElement('span');
+        url.className = 'media-source-option-url';
+        url.textContent = preset.url;
+        option.append(label, url);
+        option.addEventListener('click', () => selectMediaPreset(index));
+        elements.mediaSourceList.appendChild(option);
     });
-    elements.presetSelect.value = '0';
     elements.mediaUrl.value = MEDIA_PRESETS[0].url;
+    elements.projectionSelect.value = MEDIA_PRESETS[0].projection;
+    setSourceMenuOpen(false);
+}
+
+function syncPresetFromMediaUrl() {
+    const preset = MEDIA_PRESETS.find(item => item.url === elements.mediaUrl.value.trim());
+    if (preset) {
+        // Selecting a known ERP URL chooses the VR view for the next load.
+        // Arbitrary URLs stay editable; users choose their own view explicitly.
+        elements.projectionSelect.value = preset.projection;
+    }
+    refreshConfigPreview();
 }
 
 function bindEvents() {
-    elements.presetSelect.addEventListener('change', () => {
-        const preset = MEDIA_PRESETS[Number(elements.presetSelect.value)];
-        if (preset) {
-            elements.mediaUrl.value = preset.url;
-            appendLog(TEXT.preset(preset.label));
-            refreshConfigPreview();
+    elements.mediaSourceToggle.addEventListener('click', () => {
+        setSourceMenuOpen(elements.mediaSourceList.hidden);
+    });
+    elements.mediaSourceToggle.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setSourceMenuOpen(false);
+    });
+    elements.mediaUrl.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            setSourceMenuOpen(true);
+            elements.mediaSourceList.querySelector('.media-source-option').focus();
+        } else if (event.key === 'Escape') {
+            setSourceMenuOpen(false);
         }
     });
+    elements.mediaSourceList.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            setSourceMenuOpen(false);
+            elements.mediaUrl.focus();
+        } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            const options = [...elements.mediaSourceList.querySelectorAll('.media-source-option')];
+            const current = options.indexOf(document.activeElement);
+            const next = event.key === 'ArrowDown'
+                ? Math.min(current + 1, options.length - 1)
+                : Math.max(current - 1, 0);
+            options[next].focus();
+        }
+    });
+    document.addEventListener('pointerdown', (event) => {
+        if (!elements.mediaSourceCombobox.contains(event.target)) setSourceMenuOpen(false);
+    });
 
-    elements.mediaUrl.addEventListener('input', refreshConfigPreview);
+    elements.mediaUrl.addEventListener('input', syncPresetFromMediaUrl);
     elements.coreSelect.addEventListener('change', refreshConfigPreview);
+    elements.projectionSelect.addEventListener('change', applyProjectionToPlayer);
     elements.autoplaySelect.addEventListener('change', refreshConfigPreview);
     elements.seekInput.addEventListener('input', refreshConfigPreview);
     elements.rateInput.addEventListener('input', refreshConfigPreview);

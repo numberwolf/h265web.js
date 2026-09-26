@@ -277,6 +277,8 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 使用真正的单目 360° 视频（通常是 2:1 的等距柱状/ERP 片源）；打开 VR 开关不会把普通视频变成全景。设置 `projection: 'erp360'` 可观看 VR360，`flat` 则是普通平面播放。本地 Job5 构建不改原有解码和时钟；视角控制 API 包括 `set_projection()`、`set_vr_view()`、`rotate_vr_view()`、`reset_vr_view()` 和 `set_vr_controls()`。固定公开 CDN 版本不保证包含 Job5，请先检查 SDK。片源、CORS 和首帧排查见 [API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)与 [QA WIKI（常见问题）](https://h265web.com/markdown-docs/zh/qa-wiki.php)。
 
+本地[中文演示页](./index-cn.html)和[英文演示页](./index.html)的“媒体地址”可以手动输入，也可以点输入框右侧箭头，查看本地 MP4 素材。列表包含 H.264、HEVC 的 VR360 素材；选中后会自动切到 VR360 观看方式。播放中也可用“观看方式”在普通平面和 VR360 之间切换，不用更换视频。
+
 
 # 文档入口
 

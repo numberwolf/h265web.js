@@ -35,7 +35,7 @@
             </div>
             <div class="demo-intro-copy">
                 <h1>把 h265web.js 的公开演示页收成以播放器为核心的工作台。</h1>
-                <p>先看播放器本体，再往下看构建配置、运行日志和完整能力矩阵，减少来回切换视线。</p>
+                <p>先看播放器本体，再往下看构建配置、运行日志和完整能力矩阵。要体验 VR360，请选择 ERP 预设、点击“创建并加载”，然后拖动或触摸画面转动视角。</p>
             </div>
         </section>
 
@@ -80,11 +80,11 @@
             <div class="player-toolbar">
                 <div class="player-toolbar-row">
                     <span class="player-toolbar-tag">媒体地址</span>
-                    <input class="player-input-text player-input-text-url" id="media-url" type="text" value="./resource/hevc_test_moov_set_head_16s_hvc1.mp4" />
-                    <label class="player-field player-field-inline">
-                        <span class="player-field-label">预设</span>
-                        <select id="preset-select" class="player-input-item"></select>
-                    </label>
+                    <div class="media-source-combobox" id="media-source-combobox">
+                        <input class="player-input-text player-input-text-url" id="media-url" type="text" autocomplete="off" role="combobox" aria-label="媒体地址，可手动输入或展开完整片源列表" aria-controls="media-source-list" aria-expanded="false" value="./hevc_test_moov_set_head_16s_hvc1.mp4" />
+                        <button class="media-source-toggle" id="media-source-toggle" type="button" aria-label="展开全部测试视频" aria-controls="media-source-list" aria-expanded="false">▾</button>
+                        <div class="media-source-list" id="media-source-list" role="listbox" hidden></div>
+                    </div>
                     <label class="player-field player-field-inline">
                         <span class="player-field-label">内核</span>
                         <select id="core-select" class="player-input-item">
@@ -92,6 +92,13 @@
                             <option value="webrtc">WebRTC</option>
                             <option value="webcodec_hevc">WebCodec</option>
                             <option value="wasm_hevc">WASM</option>
+                        </select>
+                    </label>
+                    <label class="player-field player-field-inline player-field-projection">
+                        <span class="player-field-label">观看方式</span>
+                        <select id="projection-select" class="player-input-item">
+                            <option value="flat" selected>普通平面（默认）</option>
+                            <option value="erp360">VR360（ERP 视频）</option>
                         </select>
                     </label>
                     <label class="player-field player-field-inline">
