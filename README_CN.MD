@@ -32,6 +32,7 @@
 - GitHub: https://github.com/numberwolf/h265web.js
 - 文档（官网 How to use）: https://h265web.com/markdown-docs/zh/get-started.php
 - 文档（本地 How to use）: [README-HowToUse-CN.MD](./DOCS/README-HowToUse-CN.MD)
+- QA WIKI（常见问题）: [中文](https://h265web.com/markdown-docs/zh/qa-wiki.php) · [English](https://h265web.com/markdown-docs/qa-wiki.php)
 - 官网: https://h265web.com/
 - 官网 Demo: https://h265web.com/player.php
 
@@ -160,6 +161,7 @@
 | 原生 WebRTC | 是 | 支持 WHEP、`webrtc://` 兼容地址和 ZLM 私有信令 |
 | WebRTC 自动选链 | 是 | SDK 内识别 URL，也可通过 `core: 'webrtc'` 强制选择 |
 | WebRTC 单轨播放 | 是 | 支持音视频、仅视频和仅音频协商结果 |
+| VR360 视频播放（ERP 片源） | 本地 Job5 构建 | 拖动观看 360° 点播和直播；需使用包含 VR API 的 SDK 构建 |
 | 直播 | 是 |  ----  |
 | 点播 | 是 |  ----  |
 | Seek跳转 | 是 | ---- |
@@ -271,6 +273,10 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 不设置 `core` 时，SDK 会自动识别三种 WebRTC 地址。WebRTC 继续使用播放器原有生命周期和 callback 名称，不需要第二套公开 API。原生 WebRTC 直播固定 1x，不支持 Seek。标准 WebRTC 只能接收浏览器成功协商的编码；未协商编码的 WebCodecs/WASM 降级需要服务器实现可选的 `h265web-rtc-encoded/v1` 编码媒体传输协议。
 
+## 本地 Job5 构建的 VR360 视频播放
+
+使用真正的单目 360° 视频（通常是 2:1 的等距柱状/ERP 片源）；打开 VR 开关不会把普通视频变成全景。设置 `projection: 'erp360'` 可观看 VR360，`flat` 则是普通平面播放。本地 Job5 构建不改原有解码和时钟；视角控制 API 包括 `set_projection()`、`set_vr_view()`、`rotate_vr_view()`、`reset_vr_view()` 和 `set_vr_controls()`。固定公开 CDN 版本不保证包含 Job5，请先检查 SDK。片源、CORS 和首帧排查见 [API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)与 [QA WIKI（常见问题）](https://h265web.com/markdown-docs/zh/qa-wiki.php)。
+
 
 # 文档入口
 
@@ -278,6 +284,7 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 - 入门指南: https://h265web.com/markdown-docs/zh/get-started.php
 - 简单演示: https://h265web.com/markdown-docs/zh/simple-demo.php
 - API 文档: https://h265web.com/markdown-docs/zh/api-docs.php
+- QA WIKI（常见问题）: https://h265web.com/markdown-docs/zh/qa-wiki.php
 - Donate: https://h265web.com/markdown-docs/zh/donate.php
 
 ### 合作项目

@@ -31,6 +31,7 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, gi
 - GitHub: https://github.com/numberwolf/h265web.js
 - Docs (Website: How to use): https://h265web.com/markdown-docs/get-started.php
 - Docs (Local: How to use): [README-HowToUse.MD](./DOCS/README-HowToUse.MD)
+- QA WIKI (FAQ): [English](https://h265web.com/markdown-docs/qa-wiki.php) · [中文](https://h265web.com/markdown-docs/zh/qa-wiki.php)
 - Website: https://h265web.com/
 - Public Demo: https://h265web.com/player.php
 
@@ -154,6 +155,7 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, gi
 | Native WebRTC | Y | WHEP, `webrtc://` compatibility URL and ZLM private signaling |
 | WebRTC Auto Routing | Y | URL recognition in the SDK; `core: 'webrtc'` can force the route |
 | WebRTC Partial A/V | Y | Supports AV, video-only and audio-only negotiated results |
+| VR360 video playback (ERP source) | Local Job5 build | Drag to look around a 360° VOD/live source; requires an SDK build with the VR APIs |
 | Video on demand | Y |  ----  |
 | Live | Y |  ----  |
 | Seek | Y | ----  |
@@ -265,12 +267,17 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 Omit `core` to let the SDK recognize the three WebRTC URL forms automatically. WebRTC uses the existing player lifecycle and callback names; no separate public API is required. Native WebRTC live playback stays at 1x and does not support seek. Standard WebRTC can only receive codecs negotiated by the browser. WebCodecs/WASM fallback for a non-negotiated codec requires the server to implement the optional `h265web-rtc-encoded/v1` encoded-media transport.
 
+## VR360 Video Playback in the Local Job5 Build
+
+Use a real monoscopic 360° video (normally a 2:1 equirectangular/ERP source); an ordinary video does not become 360° when you turn on VR. Set `projection: 'erp360'` to watch it in VR360, or `flat` for ordinary playback. The local Job5 build keeps the existing decoder and clock; view controls are `set_projection()`, `set_vr_view()`, `rotate_vr_view()`, `reset_vr_view()` and `set_vr_controls()`. Check that your SDK bundle exposes these APIs: the pinned public CDN build may not yet include Job5. See [API Docs](https://h265web.com/markdown-docs/api-docs.php) and [QA WIKI](https://h265web.com/markdown-docs/qa-wiki.php) for source, CORS and first-frame checks.
+
 # Documentation
 
 - English Docs Home: https://h265web.com/markdown-docs/get-started.php
 - Getting Started: https://h265web.com/markdown-docs/get-started.php
 - Simple Demo: https://h265web.com/markdown-docs/simple-demo.php
 - API Documentation: https://h265web.com/markdown-docs/api-docs.php
+- QA WIKI (FAQ): https://h265web.com/markdown-docs/qa-wiki.php
 - Donate: https://h265web.com/markdown-docs/donate.php
 
 ### Partner Projects

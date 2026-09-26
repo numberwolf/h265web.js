@@ -199,6 +199,8 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `ignore_audio` | `boolean` | 否 | 是否忽略音频 |
 | `core` | `string` | 否 | 显式指定内核：`mse_hevc`、`wasm_hevc`、`webcodec_hevc` |
 | `hls_strategy` | `string` | 否 | HLS 路由策略：`auto`（默认）、`mainline` 或 `legacy` |
+| `projection` | `'flat' \| 'erp360'` | 否 | 只改变呈现方式；默认 `flat`，本地 Job5 构建可用 |
+| `vr` | `object` | 否 | 本地 Job5 构建可选 ERP 视角 `{yaw, pitch, fov, mouse_control, touch_control}` |
 | `media_uri` | `string` | 否 | 可选媒体地址，但公开接入仍推荐 `build()` 后再 `load_media()` |
 
 ### HLS 路由策略
@@ -212,6 +214,10 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `hls_strategy: 'legacy'` | 直接使用历史 `past-core/ext*` HLS 内核；不会尝试主线候选 |
 
 只有明确需要历史内核时才使用 `legacy`。`ext_src_js_uri` 和 `ext_wasm_js_uri` 只会被这条显式 legacy 路由使用。`auto` 或 `mainline` 的全部主线候选失败后，播放器会报告 HLS 路由错误，不会静默切换到 `ext*`。
+
+### VR360 视频播放（本地 Job5 构建）
+
+默认仍是平面播放。观看**单目等距柱状**源（可见画面通常为 2:1）时，在 `build(config)` 中显式设置 `projection: 'erp360'`，可选 `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}`。原有 `load_media()` URL 和解码内核选链不变。运行时 API 为 `set_projection('flat' | 'erp360')`、`set_vr_view({yaw, pitch, fov})`、`rotate_vr_view({yaw, pitch, fov})`、`get_vr_view()`、`reset_vr_view()`、`set_vr_controls({mouse, touch})`。角度用度，`fov` 是垂直视场角。普通平面片源不要误设 ERP；跨源原生 video 还需媒体服务器允许纹理读取所需的 CORS。显式 HLS `legacy` 仍是平面。固定公开 CDN 构建不保证已包含 Job5，调用前请检查 API 是否存在。完整合同见[站点 API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)。
 
 ### 推荐公开接入方式
 
@@ -403,6 +409,12 @@ python3 -m http.server 8080
 
 即使设置了 `auto_play: true`，某些浏览器场景下仍可能要求用户先交互。
 
+如果 `auto_play` 为 `false`，`on_ready_show_done_callback` 仅代表已有首帧；还需要调用 `play()` 才会推进。片源自己的第 0 帧也可能是黑色。
+
+### MP4 启动与 HTTP Range
+
+MP4 启动卡住时，用 `ffprobe -v trace -i input.mp4 2>&1 | grep -E "type:'(moov|mdat)'"` 看 `moov`/`mdat` 顺序，并确认 `Range: bytes=0-1023` 请求返回 `206 Partial Content`。`moov` 在文件尾且 Range 正常时仍可能播放；若要优化起播，可无损封装到新文件：`ffmpeg -i input.mp4 -map 0 -c copy -movflags +faststart output-faststart.mp4`。同时检查实际媒体 URL 和编码。CORS、WASM、编码等问题见 [QA WIKI（常见问题）](https://h265web.com/markdown-docs/zh/qa-wiki.php)。
+
 ### 先 `build`，再 `load_media`
 
 公开接入和排障时，建议始终保持这个顺序：
@@ -431,6 +443,7 @@ ylplayer.load_media(mediaUrl);
 - 是否接了 `on_ready_show_done_callback`
 - 媒体地址是否可访问
 - 是否考虑了浏览器自动播放限制
+- MP4 启动卡住时是否检查响应与 Range，并先看 QA WIKI 再改内核参数
 
 ## 14. 官方入口
 
@@ -438,5 +451,6 @@ ylplayer.load_media(mediaUrl);
 
 - 公开 Demo：`https://h265web.com/player.php`
 - Docs：`https://h265web.com/markdown-docs/get-started.php`
+- QA WIKI：`https://h265web.com/markdown-docs/zh/qa-wiki.php`
 
 保留这份文件，就是为了在这些页面不可访问时，依然有一份能独立使用的离线接入说明。

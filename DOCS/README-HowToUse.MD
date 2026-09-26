@@ -199,6 +199,8 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `ignore_audio` | `boolean` | No | Ignore audio track |
 | `core` | `string` | No | Explicit core: `mse_hevc`, `wasm_hevc`, `webcodec_hevc` |
 | `hls_strategy` | `string` | No | HLS route policy: `auto` (default), `mainline`, or `legacy` |
+| `projection` | `'flat' \| 'erp360'` | No | Presentation only; default `flat`, available in the local Job5 build |
+| `vr` | `object` | No | Optional ERP view `{yaw, pitch, fov, mouse_control, touch_control}` in the local Job5 build |
 | `media_uri` | `string` | No | Optional media URL, but public usage still recommends `build()` then `load_media()` |
 
 ### HLS route policy
@@ -212,6 +214,10 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `hls_strategy: 'legacy'` | Directly uses the historical `past-core/ext*` HLS core; no mainline candidate is attempted |
 
 Use `legacy` only when you intentionally need the historical core. `ext_src_js_uri` and `ext_wasm_js_uri` are only used by that explicit legacy route. If all mainline candidates fail under `auto` or `mainline`, the player reports an HLS route error instead of silently switching to `ext*`.
+
+### VR360 Video Playback (local Job5 build)
+
+The default is flat playback. To view a **monoscopic equirectangular** source (normally a 2:1 visible raster), explicitly set `projection: 'erp360'` and optionally `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}` in `build(config)`. The existing `load_media()` URL and selected decode core do not change. Runtime view APIs are `set_projection('flat' | 'erp360')`, `set_vr_view({yaw, pitch, fov})`, `rotate_vr_view({yaw, pitch, fov})`, `get_vr_view()`, `reset_vr_view()` and `set_vr_controls({mouse, touch})`. All angles are degrees; `fov` is vertical. Enable ERP only for an ERP source, not for an ordinary flat video. For cross-origin native video, the media server must allow texture-readable CORS. Explicit HLS `legacy` remains flat. The public CDN build may not yet contain Job5; check that the API exists before calling it. Full details: [site API Docs](https://h265web.com/markdown-docs/api-docs.php).
 
 ### Recommended public usage
 
@@ -403,6 +409,12 @@ The easiest pattern is:
 
 Even if `auto_play: true` is set, browser policy can still restrict playback until user interaction in some cases.
 
+If `auto_play` is `false`, `on_ready_show_done_callback` only signals an available frame; call `play()` to advance. A media file may itself have a black first frame.
+
+### MP4 startup and HTTP Range
+
+If MP4 startup stalls, inspect `moov`/`mdat` order with `ffprobe -v trace -i input.mp4 2>&1 | grep -E "type:'(moov|mdat)'"` and verify a `Range: bytes=0-1023` request receives `206 Partial Content`. A trailing `moov` can still play with working Range support; for faster startup, remux to a new file with `ffmpeg -i input.mp4 -map 0 -c copy -movflags +faststart output-faststart.mp4`. Also check the actual media URL and codec. See [QA WIKI](https://h265web.com/markdown-docs/qa-wiki.php) for CORS, WASM and codec diagnostics.
+
 ### Build first, then load media
 
 For public integration and troubleshooting, keep this order:
@@ -431,6 +443,7 @@ Only after those are correct should you continue to seek logic, cache logic, and
 - `on_ready_show_done_callback` is wired
 - Media URL is reachable
 - Browser autoplay restrictions are considered
+- MP4 response and Range are checked if startup stalls; QA WIKI is consulted before changing core settings
 
 ## 14. Official Links
 
@@ -438,5 +451,6 @@ If the website is available, these are still the main public entry points:
 
 - Public demo: `https://h265web.com/player.php`
 - Docs: `https://h265web.com/markdown-docs/get-started.php`
+- QA WIKI: `https://h265web.com/markdown-docs/qa-wiki.php`
 
 This file exists so you still have a usable offline integration guide even when those pages are not reachable.
