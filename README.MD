@@ -90,8 +90,8 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, gi
 | <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | <img src="resource/icon-hdecode.png" width="100"> |
 | MediaInfo | HEVC/H.265 | AVC/H.264 | Hardware decoder<br>(FLV/HTTP-FLV/MP4) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/webrtc.png" width="100"> | <br> | <br> | <br> |
-| WebRTC(LIVE) | <br> | <br> | <br> |
+| <img src="resource/webrtc.png" width="100"> | <img src="resource/icon-vr360.svg" width="100" alt="VR360 video playback"> | <br> | <br> |
+| WebRTC(LIVE) | VR360(VOD/LIVE) | <br> | <br> |
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -155,7 +155,7 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, gi
 | Native WebRTC | Y | WHEP, `webrtc://` compatibility URL and ZLM private signaling |
 | WebRTC Auto Routing | Y | URL recognition in the SDK; `core: 'webrtc'` can force the route |
 | WebRTC Partial A/V | Y | Supports AV, video-only and audio-only negotiated results |
-| VR360 video playback (ERP source) | Local Job5 build | Drag to look around a 360° VOD/live source; requires an SDK build with the VR APIs |
+| VR360 video playback (ERP source) | Y | Drag to look around a 360° VOD/live source; use an SDK build with the VR APIs |
 | Video on demand | Y |  ----  |
 | Live | Y |  ----  |
 | Seek | Y | ----  |
@@ -267,9 +267,9 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 Omit `core` to let the SDK recognize the three WebRTC URL forms automatically. WebRTC uses the existing player lifecycle and callback names; no separate public API is required. Native WebRTC live playback stays at 1x and does not support seek. Standard WebRTC can only receive codecs negotiated by the browser. WebCodecs/WASM fallback for a non-negotiated codec requires the server to implement the optional `h265web-rtc-encoded/v1` encoded-media transport.
 
-## VR360 Video Playback in the Local Job5 Build
+## VR360 Video Playback
 
-Use a real monoscopic 360° video (normally a 2:1 equirectangular/ERP source); an ordinary video does not become 360° when you turn on VR. Set `projection: 'erp360'` to watch it in VR360, or `flat` for ordinary playback. The local Job5 build keeps the existing decoder and clock; view controls are `set_projection()`, `set_vr_view()`, `rotate_vr_view()`, `reset_vr_view()` and `set_vr_controls()`. Check that your SDK bundle exposes these APIs: the pinned public CDN build may not yet include Job5. See [API Docs](https://h265web.com/markdown-docs/api-docs.php) and [QA WIKI](https://h265web.com/markdown-docs/qa-wiki.php) for source, CORS and first-frame checks.
+Use a real monoscopic 360° video (normally a 2:1 equirectangular/ERP source); an ordinary video does not become 360° when you turn on VR. Set `projection: 'erp360'` to watch it in VR360, or `flat` for ordinary playback. VR360 keeps the existing decoder and clock; view controls are `set_projection()`, `set_vr_view()`, `rotate_vr_view()`, `reset_vr_view()` and `set_vr_controls()`. The current public SDK includes these APIs; when using a cached older bundle, check that they exist. See [API Docs](https://h265web.com/markdown-docs/api-docs.php) and [QA WIKI](https://h265web.com/markdown-docs/qa-wiki.php) for source, CORS and first-frame checks.
 
 In the local [English demo](./index.html) or [Chinese demo](./index-cn.html), type your own URL in **Source**, or click its arrow to see the local MP4 samples. The list includes H.264 and HEVC VR360 samples; VR360 samples select the ERP view automatically. Use **View** to switch between ordinary flat and VR360 display while the same video is playing.
 

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">VR360</title>
+  <desc id="desc">A panoramic globe inside a VR headset</desc>
+  <rect width="256" height="256" rx="44" fill="#f4f8fc"/>
+  <circle cx="128" cy="108" r="75" fill="#e8f3fc" stroke="#2877b9" stroke-width="9"/>
+  <path d="M53 108h150M128 33c-24 20-38 46-38 75s14 55 38 75M128 33c24 20 38 46 38 75s-14 55-38 75" fill="none" stroke="#61a9dd" stroke-width="7" stroke-linecap="round"/>
+  <path d="M54 171c0-16 13-29 29-29h90c16 0 29 13 29 29v15c0 11-9 20-20 20h-25c-7 0-12-3-16-8l-8-10h-10l-8 10c-4 5-9 8-16 8H74c-11 0-20-9-20-20v-15Z" fill="#273c52" stroke="#fff" stroke-width="6"/>
+  <rect x="75" y="159" width="106" height="30" rx="15" fill="#fff"/>
+  <text x="128" y="180" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#2877b9">360°</text>
+</svg>

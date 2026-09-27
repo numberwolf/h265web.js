@@ -101,8 +101,8 @@
 | <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | <img src="resource/icon-hdecode.png" width="100"> |
 | MediaInfo | HEVC/H.265 | AVC/H.264 | Hardware decoder<br>硬解码<br>(FLV/HTTP-FLV/MP4) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/webrtc.png" width="100"> | <br> | <br> | <br> |
-| WebRTC（直播） | <br> | <br> | <br> |
+| <img src="resource/webrtc.png" width="100"> | <img src="resource/icon-vr360.svg" width="100" alt="VR360 视频播放"> | <br> | <br> |
+| WebRTC（直播） | VR360（点播/直播） | <br> | <br> |
 
 </font>
 </strong>
@@ -161,7 +161,7 @@
 | 原生 WebRTC | 是 | 支持 WHEP、`webrtc://` 兼容地址和 ZLM 私有信令 |
 | WebRTC 自动选链 | 是 | SDK 内识别 URL，也可通过 `core: 'webrtc'` 强制选择 |
 | WebRTC 单轨播放 | 是 | 支持音视频、仅视频和仅音频协商结果 |
-| VR360 视频播放（ERP 片源） | 本地 Job5 构建 | 拖动观看 360° 点播和直播；需使用包含 VR API 的 SDK 构建 |
+| VR360 视频播放（ERP 片源） | 是 | 拖动观看 360° 点播和直播；使用包含 VR API 的 SDK 构建 |
 | 直播 | 是 |  ----  |
 | 点播 | 是 |  ----  |
 | Seek跳转 | 是 | ---- |
@@ -273,9 +273,9 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 不设置 `core` 时，SDK 会自动识别三种 WebRTC 地址。WebRTC 继续使用播放器原有生命周期和 callback 名称，不需要第二套公开 API。原生 WebRTC 直播固定 1x，不支持 Seek。标准 WebRTC 只能接收浏览器成功协商的编码；未协商编码的 WebCodecs/WASM 降级需要服务器实现可选的 `h265web-rtc-encoded/v1` 编码媒体传输协议。
 
-## 本地 Job5 构建的 VR360 视频播放
+## VR360 视频播放
 
-使用真正的单目 360° 视频（通常是 2:1 的等距柱状/ERP 片源）；打开 VR 开关不会把普通视频变成全景。设置 `projection: 'erp360'` 可观看 VR360，`flat` 则是普通平面播放。本地 Job5 构建不改原有解码和时钟；视角控制 API 包括 `set_projection()`、`set_vr_view()`、`rotate_vr_view()`、`reset_vr_view()` 和 `set_vr_controls()`。固定公开 CDN 版本不保证包含 Job5，请先检查 SDK。片源、CORS 和首帧排查见 [API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)与 [QA WIKI（常见问题）](https://h265web.com/markdown-docs/zh/qa-wiki.php)。
+使用真正的单目 360° 视频（通常是 2:1 的等距柱状/ERP 片源）；打开 VR 开关不会把普通视频变成全景。设置 `projection: 'erp360'` 可观看 VR360，`flat` 则是普通平面播放。VR360 不改原有解码和时钟；视角控制 API 包括 `set_projection()`、`set_vr_view()`、`rotate_vr_view()`、`reset_vr_view()` 和 `set_vr_controls()`。当前公开 SDK 已包含这些 API；使用旧缓存文件时请先确认其存在。片源、CORS 和首帧排查见 [API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)与 [QA WIKI（常见问题）](https://h265web.com/markdown-docs/zh/qa-wiki.php)。
 
 本地[中文演示页](./index-cn.html)和[英文演示页](./index.html)的“媒体地址”可以手动输入，也可以点输入框右侧箭头，查看本地 MP4 素材。列表包含 H.264、HEVC 的 VR360 素材；选中后会自动切到 VR360 观看方式。播放中也可用“观看方式”在普通平面和 VR360 之间切换，不用更换视频。
 
