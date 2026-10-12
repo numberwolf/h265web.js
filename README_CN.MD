@@ -53,6 +53,8 @@
 - 文档（官网 How to use）: https://h265web.com/markdown-docs/zh/get-started.php
 - 文档（本地 How to use）: [README-HowToUse-CN.MD](./DOCS/README-HowToUse-CN.MD)
 
+加载 `static/h265web.js` 时会通过 `console.info` 打印 `[h265web.js] SDK script loaded: https://github.com/numberwolf/h265web.js`。这条信息不依赖 WASM；WASM 启动输出只在播放实际初始化 WASM 时出现。
+
 
 ### 适合什么场景
 
@@ -273,6 +275,14 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 不设置 `core` 时，SDK 会自动识别三种 WebRTC 地址。WebRTC 继续使用播放器原有生命周期和 callback 名称，不需要第二套公开 API。原生 WebRTC 直播固定 1x，不支持 Seek。标准 WebRTC 只能接收浏览器成功协商的编码；未协商编码的 WebCodecs/WASM 降级需要服务器实现可选的 `h265web-rtc-encoded/v1` 编码媒体传输协议。
 
+## ZLMediaKit / PyMKUI 直播接入
+
+[PyMKUI 接入分支](https://github.com/numberwolf/pymkui/tree/dev-cyl/h265web.js-pro)将 RTMP、TS 流行原 Jessibuca 播放路径替换为 h265web.js。浏览器不能直接播放 `rtmp://`：PyMKUI 将 RTMP 行映射到 ZLMediaKit HTTP-FLV（`/{app}/{stream}.live.flv`），TS 行映射到 HTTP-TS（`/{app}/{stream}.live.ts`）。每次播放按当前流获取 `on_play` URL 参数，重试时重新获取；一次性授权 token 不得复用。播放器用 `set_voice(0)` 默认静音，但保留音频链路。
+
+PyMKUI 默认以平面方式播放。确认直播源是真实 ERP 全景后，点击「360°模式」调用 SDK 的 `set_projection('erp360')` 并开启鼠标/触摸视角控制；「重置视角」调用 `reset_vr_view()`。这只是显示方式选择，不会自动识别 ERP，也不增加编解码能力。MP4/WebM 点播和 PyMKUI 的其他协议行不属于本次 RTMP/TS 接入范围。
+
+普通 HTTP 媒体经解封装 Worker 请求时，`on_error_callback` 现在能收到 `http-transport` 错误及可见响应的数字 `status`。HTTP 401/403/404 直接上报，暂时性失败有限次重试；浏览器 CORS 错误可能只能给出 `status: 0`。关闭或替换播放器会取消旧 HTTP 请求，迟到的响应不能复活旧会话。参见[中文 API 合同](https://h265web.com/markdown-docs/zh/api-docs.php)和[英文 API 合同](https://h265web.com/markdown-docs/api-docs.php)。
+
 ## VR360 视频播放
 
 使用真正的单目 360° 视频（通常是 2:1 的等距柱状/ERP 片源）；打开 VR 开关不会把普通视频变成全景。设置 `projection: 'erp360'` 可观看 VR360，`flat` 则是普通平面播放。VR360 不改原有解码和时钟；视角控制 API 包括 `set_projection()`、`set_vr_view()`、`rotate_vr_view()`、`reset_vr_view()` 和 `set_vr_controls()`。当前公开 SDK 已包含这些 API；使用旧缓存文件时请先确认其存在。片源、CORS 和首帧排查见 [API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)与 [QA WIKI（常见问题）](https://h265web.com/markdown-docs/zh/qa-wiki.php)。
@@ -323,6 +333,9 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 | 更新 | 内容 |
 | ---- | ---- |
+| 时间 | 2026/10/11 |
+| - | 0.修复 HTTP 解封装 Worker 的请求取消，并通过原播放器错误回调上报可见的 HTTP 状态；暂时性错误仍有限次重试 |
+| - | 1.PyMKUI 的 ZLMediaKit RTMP/TS 流行接入 HTTP-FLV/HTTP-TS、每次新取 `on_play` 授权、默认静音及手动 ERP 360°视角控件 |
 | 时间 | 2026/08/25 |
 | - | 0.新增原生 WebRTC 直播播放，支持标准 WHEP 信令、`webrtc://` 兼容地址和 ZLMediaKit 私有 WebRTC 接口 |
 | - | 1.新增 WebRTC URL 自动选链和显式 `core: 'webrtc'`，保持原有 `build()`、`load_media()` 调用方式不变 |

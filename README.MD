@@ -52,6 +52,8 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, gi
 - Docs (Website: How to use): https://h265web.com/markdown-docs/get-started.php
 - Docs (Local: How to use): [README-HowToUse.MD](./DOCS/README-HowToUse.MD)
 
+Loading `static/h265web.js` prints `[h265web.js] SDK script loaded: https://github.com/numberwolf/h265web.js` with `console.info`. This message appears without starting WASM; WASM startup output appears only when playback initializes the WASM runtime.
+
 ### Good Fit For
 
 - Browser playback of HEVC/H.265, AVC/H.264 and AV1
@@ -267,6 +269,14 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 Omit `core` to let the SDK recognize the three WebRTC URL forms automatically. WebRTC uses the existing player lifecycle and callback names; no separate public API is required. Native WebRTC live playback stays at 1x and does not support seek. Standard WebRTC can only receive codecs negotiated by the browser. WebCodecs/WASM fallback for a non-negotiated codec requires the server to implement the optional `h265web-rtc-encoded/v1` encoded-media transport.
 
+## ZLMediaKit / PyMKUI Live Playback
+
+The [PyMKUI integration](https://github.com/numberwolf/pymkui/tree/dev-cyl/h265web.js-pro) replaces its Jessibuca playback path for RTMP and TS stream rows with h265web.js. A browser cannot play an `rtmp://` URL directly: PyMKUI maps RTMP rows to ZLMediaKit HTTP-FLV (`/{app}/{stream}.live.flv`) and TS rows to HTTP-TS (`/{app}/{stream}.live.ts`). It requests the current stream's `on_play` URL parameters for each attempt and obtains fresh parameters when retrying; one-time authorization tokens must not be reused. Playback starts muted with `set_voice(0)` while keeping the audio pipeline enabled.
+
+The PyMKUI player defaults to a flat picture. For a real ERP 360° live stream, its **360° mode** button calls the SDK's `set_projection('erp360')` and enables mouse/touch view controls; **Reset view** calls `reset_vr_view()`. This is a display choice, not automatic ERP detection or a new codec. MP4/WebM VOD and PyMKUI's other protocol rows are outside this RTMP/TS integration.
+
+On HTTP media handled by the demux Worker, `on_error_callback` now receives an `http-transport` error with a numeric `status` when the response is visible. HTTP 401/403/404 are reported without retry, while transient failures have bounded retries; browser CORS failures may only expose `status: 0`. Releasing or replacing a player aborts its old HTTP request, so a late response cannot revive the previous session. See the [English API contract](https://h265web.com/markdown-docs/api-docs.php) and [Chinese API contract](https://h265web.com/markdown-docs/zh/api-docs.php).
+
 ## VR360 Video Playback
 
 Use a real monoscopic 360° video (normally a 2:1 equirectangular/ERP source); an ordinary video does not become 360° when you turn on VR. Set `projection: 'erp360'` to watch it in VR360, or `flat` for ordinary playback. VR360 keeps the existing decoder and clock; view controls are `set_projection()`, `set_vr_view()`, `rotate_vr_view()`, `reset_vr_view()` and `set_vr_controls()`. The current public SDK includes these APIs; when using a cached older bundle, check that they exist. See [API Docs](https://h265web.com/markdown-docs/api-docs.php) and [QA WIKI](https://h265web.com/markdown-docs/qa-wiki.php) for source, CORS and first-frame checks.
@@ -364,6 +374,9 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2026/10/11 |
+| - | 0.Fixed HTTP demux Worker request cancellation and forwarded visible HTTP status to the existing player error callback, with bounded transient retries |
+| - | 1.Integrated ZLMediaKit PyMKUI RTMP/TS rows through HTTP-FLV/HTTP-TS, fresh `on_play` authorization, muted playback and manual ERP 360° view controls |
 | Time | 2026/08/25 |
 | - | 0.Added native WebRTC live playback with standard WHEP signaling, `webrtc://` compatibility URLs and the ZLMediaKit private WebRTC API |
 | - | 1.Added automatic WebRTC URL routing and explicit `core: 'webrtc'` selection without changing the existing `build()` and `load_media()` API |
