@@ -22,8 +22,6 @@
 - `h265web.js`
 - `h265web_wasm.js`
 - `h265web_wasm.wasm`
-- `extjs.js`
-- `extwasm.js`
 
 一个常见的本地目录结构如下：
 
@@ -36,9 +34,7 @@ root/
 └── output/
     ├── h265web.js
     ├── h265web_wasm.js
-    ├── h265web_wasm.wasm
-    ├── extjs.js
-    └── extwasm.js
+    └── h265web_wasm.wasm
 ```
 
 ## 2. 路径规则
@@ -49,7 +45,7 @@ SDK 资源路径和媒体路径都支持三种写法：
 - 站点绝对路径：`/output/h265web_wasm.js`
 - 相对路径：`./output/h265web_wasm.js`
 
-如果四个 SDK 运行时文件都放在同一个目录，推荐使用 `base_url`，然后各文件只保留短文件名。
+如果 SDK 运行时文件都放在同一个目录，推荐使用 `base_url`，然后各文件只保留短文件名。
 
 ## 3. 最小 HTML
 
@@ -96,8 +92,6 @@ ylplayer.build({
   base_url: './output/',
   wasm_js_uri: 'h265web_wasm.js',
   wasm_wasm_uri: 'h265web_wasm.wasm',
-  ext_src_js_uri: 'extjs.js',
-  ext_wasm_js_uri: 'extwasm.js',
   width: '100%',
   height: 480,
   color: '#101318',
@@ -188,9 +182,7 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `player_id` | `string` | 是 | 播放器容器元素 id |
 | `wasm_js_uri` | `string` | 是 | `h265web_wasm.js` 路径 |
 | `wasm_wasm_uri` | `string` | 是 | `h265web_wasm.wasm` 路径 |
-| `ext_src_js_uri` | `string` | 否 | `extjs.js` 路径 |
-| `ext_wasm_js_uri` | `string` | 否 | `extwasm.js` 路径 |
-| `base_url` | `string` | 否 | 四个 SDK 运行时文件的统一基准路径 |
+| `base_url` | `string` | 否 | SDK 运行时文件的统一基准路径 |
 | `width` | `number \| string` | 否 | 播放器宽度 |
 | `height` | `number \| string` | 否 | 播放器高度 |
 | `color` | `string` | 否 | 播放器背景色 |
@@ -198,7 +190,7 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `readframe_multi_times` | `number` | 否 | demux 读取倍率 |
 | `ignore_audio` | `boolean` | 否 | 是否忽略音频 |
 | `core` | `string` | 否 | 显式指定内核：`mse_hevc`、`wasm_hevc`、`webcodec_hevc` |
-| `hls_strategy` | `string` | 否 | HLS 路由策略：`auto`（默认）、`mainline` 或 `legacy` |
+| `hls_strategy` | `string` | 否 | HLS 路由策略：`auto`（默认）或 `mainline` |
 | `projection` | `'flat' \| 'erp360'` | 否 | 只改变呈现方式；默认 `flat`，本地 Job5 构建可用 |
 | `vr` | `object` | 否 | 本地 Job5 构建可选 ERP 视角 `{yaw, pitch, fov, mouse_control, touch_control}` |
 | `media_uri` | `string` | 否 | 可选媒体地址，但公开接入仍推荐 `build()` 后再 `load_media()` |
@@ -207,17 +199,14 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 
 | 配置 | 实际行为 |
 |---|---|
-| 不设置 | 使用 `auto`；只尝试兼容的主线候选，不会加载 `past-core/ext*` |
-| `hls_strategy: 'auto'` | 根据浏览器能力、指定的 `core` 和已绑定回调选择兼容的主线路由；不会加载 `past-core/ext*` |
-| `hls_strategy: 'mainline'` | 只使用主线候选；不会加载 `past-core/ext*` |
-| 仅设置 `hls_legacy_fallback: true` | 无效。该旧参数已废弃，不能再开启自动 legacy 兜底 |
-| `hls_strategy: 'legacy'` | 直接使用历史 `past-core/ext*` HLS 内核；不会尝试主线候选 |
+| 不设置 | 使用 `auto`；只尝试兼容的主线候选 |
+| `hls_strategy: 'auto'` | 根据浏览器能力、指定的 `core` 和已绑定回调选择兼容的主线路由 |
+| `hls_strategy: 'mainline'` | 只使用主线候选 |
 
-只有明确需要历史内核时才使用 `legacy`。`ext_src_js_uri` 和 `ext_wasm_js_uri` 只会被这条显式 legacy 路由使用。`auto` 或 `mainline` 的全部主线候选失败后，播放器会报告 HLS 路由错误，不会静默切换到 `ext*`。
 
 ### VR360 视频播放（本地 Job5 构建）
 
-默认仍是平面播放。观看**单目等距柱状**源（可见画面通常为 2:1）时，在 `build(config)` 中显式设置 `projection: 'erp360'`，可选 `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}`。原有 `load_media()` URL 和解码内核选链不变。运行时 API 为 `set_projection('flat' | 'erp360')`、`set_vr_view({yaw, pitch, fov})`、`rotate_vr_view({yaw, pitch, fov})`、`get_vr_view()`、`reset_vr_view()`、`set_vr_controls({mouse, touch})`。角度用度，`fov` 是垂直视场角。普通平面片源不要误设 ERP；跨源原生 video 还需媒体服务器允许纹理读取所需的 CORS。显式 HLS `legacy` 仍是平面。固定公开 CDN 构建不保证已包含 Job5，调用前请检查 API 是否存在。完整合同见[站点 API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)。
+默认仍是平面播放。观看**单目等距柱状**源（可见画面通常为 2:1）时，在 `build(config)` 中显式设置 `projection: 'erp360'`，可选 `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}`。原有 `load_media()` URL 和解码内核选链不变。运行时 API 为 `set_projection('flat' | 'erp360')`、`set_vr_view({yaw, pitch, fov})`、`rotate_vr_view({yaw, pitch, fov})`、`get_vr_view()`、`reset_vr_view()`、`set_vr_controls({mouse, touch})`。角度用度，`fov` 是垂直视场角。普通平面片源不要误设 ERP；跨源原生 video 还需媒体服务器允许纹理读取所需的 CORS。固定公开 CDN 构建不保证已包含 Job5，调用前请检查 API 是否存在。完整合同见[站点 API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)。
 
 ### 推荐公开接入方式
 
@@ -277,8 +266,6 @@ ylplayer.build({
   base_url: './output/',
   wasm_js_uri: 'h265web_wasm.js',
   wasm_wasm_uri: 'h265web_wasm.wasm',
-  ext_src_js_uri: 'extjs.js',
-  ext_wasm_js_uri: 'extwasm.js',
   core: 'webcodec_hevc'
 });
 ```
@@ -346,8 +333,6 @@ function createPlayer(core = null) {
     base_url: './output/',
     wasm_js_uri: 'h265web_wasm.js',
     wasm_wasm_uri: 'h265web_wasm.wasm',
-    ext_src_js_uri: 'extjs.js',
-    ext_wasm_js_uri: 'extwasm.js',
     width: '100%',
     height: 480,
     color: '#101318',
@@ -402,8 +387,6 @@ python3 -m http.server 8080
 - `base_url: './output/'`
 - `wasm_js_uri: 'h265web_wasm.js'`
 - `wasm_wasm_uri: 'h265web_wasm.wasm'`
-- `ext_src_js_uri: 'extjs.js'`
-- `ext_wasm_js_uri: 'extwasm.js'`
 
 ### 自动播放仍可能受浏览器策略影响
 

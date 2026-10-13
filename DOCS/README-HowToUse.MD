@@ -22,8 +22,6 @@ For normal browser playback, keep these files together:
 - `h265web.js`
 - `h265web_wasm.js`
 - `h265web_wasm.wasm`
-- `extjs.js`
-- `extwasm.js`
 
 A common local layout looks like this:
 
@@ -36,9 +34,7 @@ root/
 └── output/
     ├── h265web.js
     ├── h265web_wasm.js
-    ├── h265web_wasm.wasm
-    ├── extjs.js
-    └── extwasm.js
+    └── h265web_wasm.wasm
 ```
 
 ## 2. Path Rules
@@ -49,7 +45,7 @@ Both SDK resource paths and media URLs support:
 - Site-absolute path: `/output/h265web_wasm.js`
 - Relative path: `./output/h265web_wasm.js`
 
-If the four SDK runtime files are in the same directory, use `base_url` and keep the file names short.
+If the SDK runtime files are in the same directory, use `base_url` and keep the file names short.
 
 ## 3. Minimal HTML
 
@@ -96,8 +92,6 @@ ylplayer.build({
   base_url: './output/',
   wasm_js_uri: 'h265web_wasm.js',
   wasm_wasm_uri: 'h265web_wasm.wasm',
-  ext_src_js_uri: 'extjs.js',
-  ext_wasm_js_uri: 'extwasm.js',
   width: '100%',
   height: 480,
   color: '#101318',
@@ -188,9 +182,7 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `player_id` | `string` | Yes | Container element id |
 | `wasm_js_uri` | `string` | Yes | Path to `h265web_wasm.js` |
 | `wasm_wasm_uri` | `string` | Yes | Path to `h265web_wasm.wasm` |
-| `ext_src_js_uri` | `string` | No | Path to `extjs.js` |
-| `ext_wasm_js_uri` | `string` | No | Path to `extwasm.js` |
-| `base_url` | `string` | No | Shared base path for the four SDK runtime files |
+| `base_url` | `string` | No | Shared base path for the SDK runtime files |
 | `width` | `number \| string` | No | Player width |
 | `height` | `number \| string` | No | Player height |
 | `color` | `string` | No | Player background color |
@@ -198,7 +190,7 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `readframe_multi_times` | `number` | No | Demux read scale |
 | `ignore_audio` | `boolean` | No | Ignore audio track |
 | `core` | `string` | No | Explicit core: `mse_hevc`, `wasm_hevc`, `webcodec_hevc` |
-| `hls_strategy` | `string` | No | HLS route policy: `auto` (default), `mainline`, or `legacy` |
+| `hls_strategy` | `string` | No | HLS route policy: `auto` (default) or `mainline` |
 | `projection` | `'flat' \| 'erp360'` | No | Presentation only; default `flat`, available in the local Job5 build |
 | `vr` | `object` | No | Optional ERP view `{yaw, pitch, fov, mouse_control, touch_control}` in the local Job5 build |
 | `media_uri` | `string` | No | Optional media URL, but public usage still recommends `build()` then `load_media()` |
@@ -207,17 +199,14 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 
 | Configuration | Result |
 |---|---|
-| Omitted | Uses `auto`; tries compatible mainline candidates only and never loads `past-core/ext*` |
-| `hls_strategy: 'auto'` | Selects a compatible mainline route from browser capabilities, the requested `core`, and bound callbacks; never loads `past-core/ext*` |
-| `hls_strategy: 'mainline'` | Uses mainline candidates only; never loads `past-core/ext*` |
-| `hls_legacy_fallback: true` only | No effect. This deprecated option no longer enables an automatic legacy fallback |
-| `hls_strategy: 'legacy'` | Directly uses the historical `past-core/ext*` HLS core; no mainline candidate is attempted |
+| Omitted | Uses `auto`; tries compatible mainline candidates only |
+| `hls_strategy: 'auto'` | Selects a compatible mainline route from browser capabilities, the requested `core`, and bound callbacks |
+| `hls_strategy: 'mainline'` | Uses mainline candidates only |
 
-Use `legacy` only when you intentionally need the historical core. `ext_src_js_uri` and `ext_wasm_js_uri` are only used by that explicit legacy route. If all mainline candidates fail under `auto` or `mainline`, the player reports an HLS route error instead of silently switching to `ext*`.
 
 ### VR360 Video Playback (local Job5 build)
 
-The default is flat playback. To view a **monoscopic equirectangular** source (normally a 2:1 visible raster), explicitly set `projection: 'erp360'` and optionally `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}` in `build(config)`. The existing `load_media()` URL and selected decode core do not change. Runtime view APIs are `set_projection('flat' | 'erp360')`, `set_vr_view({yaw, pitch, fov})`, `rotate_vr_view({yaw, pitch, fov})`, `get_vr_view()`, `reset_vr_view()` and `set_vr_controls({mouse, touch})`. All angles are degrees; `fov` is vertical. Enable ERP only for an ERP source, not for an ordinary flat video. For cross-origin native video, the media server must allow texture-readable CORS. Explicit HLS `legacy` remains flat. The public CDN build may not yet contain Job5; check that the API exists before calling it. Full details: [site API Docs](https://h265web.com/markdown-docs/api-docs.php).
+The default is flat playback. To view a **monoscopic equirectangular** source (normally a 2:1 visible raster), explicitly set `projection: 'erp360'` and optionally `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}` in `build(config)`. The existing `load_media()` URL and selected decode core do not change. Runtime view APIs are `set_projection('flat' | 'erp360')`, `set_vr_view({yaw, pitch, fov})`, `rotate_vr_view({yaw, pitch, fov})`, `get_vr_view()`, `reset_vr_view()` and `set_vr_controls({mouse, touch})`. All angles are degrees; `fov` is vertical. Enable ERP only for an ERP source, not for an ordinary flat video. For cross-origin native video, the media server must allow texture-readable CORS. The public CDN build may not yet contain Job5; check that the API exists before calling it. Full details: [site API Docs](https://h265web.com/markdown-docs/api-docs.php).
 
 ### Recommended public usage
 
@@ -277,8 +266,6 @@ ylplayer.build({
   base_url: './output/',
   wasm_js_uri: 'h265web_wasm.js',
   wasm_wasm_uri: 'h265web_wasm.wasm',
-  ext_src_js_uri: 'extjs.js',
-  ext_wasm_js_uri: 'extwasm.js',
   core: 'webcodec_hevc'
 });
 ```
@@ -346,8 +333,6 @@ function createPlayer(core = null) {
     base_url: './output/',
     wasm_js_uri: 'h265web_wasm.js',
     wasm_wasm_uri: 'h265web_wasm.wasm',
-    ext_src_js_uri: 'extjs.js',
-    ext_wasm_js_uri: 'extwasm.js',
     width: '100%',
     height: 480,
     color: '#101318',
@@ -402,8 +387,6 @@ The easiest pattern is:
 - `base_url: './output/'`
 - `wasm_js_uri: 'h265web_wasm.js'`
 - `wasm_wasm_uri: 'h265web_wasm.wasm'`
-- `ext_src_js_uri: 'extjs.js'`
-- `ext_wasm_js_uri: 'extwasm.js'`
 
 ### Autoplay can still be blocked by the browser
 

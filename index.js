@@ -1,7 +1,7 @@
 const wasm_js_uri = './static/h265web_wasm.js';
 const wasm_wasm_uri = './static/h265web_wasm.wasm';
-const ext_src_js_uri = './static/extjs.js';
-const ext_wasm_js_uri = './static/extwasm.js';
+
+
 
 const locale = document.documentElement.lang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
 
@@ -365,8 +365,6 @@ function getPlayerConfig() {
         player_id: 'demo-player',
         wasm_js_uri,
         wasm_wasm_uri,
-        ext_src_js_uri,
-        ext_wasm_js_uri,
         width: 960,
         height: 540,
         color: 'black',

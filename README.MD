@@ -255,8 +255,6 @@ player.build({
   base_url: './static/',
   wasm_js_uri: 'h265web_wasm.js',
   wasm_wasm_uri: 'h265web_wasm.wasm',
-  ext_src_js_uri: 'extjs.js',
-  ext_wasm_js_uri: 'extwasm.js',
   width: 640,
   height: 360,
   auto_play: false,
@@ -378,6 +376,8 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2026/10/14 |
+| - | Removed the legacy HLS route and extension runtime files; SDK initialization now needs only the main JS/WASM assets |
 | Time | 2026/10/13 |
 | - | 0.Fixed MSE FLV startup for video-only streams and aligned HTTP-FLV/WebCodec AAC startup with the first displayed frame and the running audio clock |
 | - | 1.Added native WebM VOD routing with explicit capability errors; WebM does not use software fallback |

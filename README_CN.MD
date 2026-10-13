@@ -261,8 +261,6 @@ player.build({
   base_url: './static/',
   wasm_js_uri: 'h265web_wasm.js',
   wasm_wasm_uri: 'h265web_wasm.wasm',
-  ext_src_js_uri: 'extjs.js',
-  ext_wasm_js_uri: 'extwasm.js',
   width: 640,
   height: 360,
   auto_play: false,
@@ -337,6 +335,8 @@ H.265 MPEG-TS HLS 行使用 SDK。H.264 HLS 在原生播放正常时保留原路
 
 | 更新 | 内容 |
 | ---- | ---- |
+| 时间 | 2026/10/14 |
+| - | 移除 legacy HLS 路由及扩展运行文件；初始化只需主线 JS/WASM 资源 |
 | 时间 | 2026/10/13 |
 | - | 0.修复 MSE FLV 无音轨直播起播，并按实际首帧和运行中的音频时钟对齐 HTTP-FLV/WebCodec AAC 起播 |
 | - | 1.增加 WebM 原生点播路由与明确的能力错误，不为 WebM 启用软件回退 |
