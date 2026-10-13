@@ -275,11 +275,15 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 不设置 `core` 时，SDK 会自动识别三种 WebRTC 地址。WebRTC 继续使用播放器原有生命周期和 callback 名称，不需要第二套公开 API。原生 WebRTC 直播固定 1x，不支持 Seek。标准 WebRTC 只能接收浏览器成功协商的编码；未协商编码的 WebCodecs/WASM 降级需要服务器实现可选的 `h265web-rtc-encoded/v1` 编码媒体传输协议。
 
-## ZLMediaKit / PyMKUI 直播接入
+## ZLMediaKit / PyMKUI 播放接入
 
 [PyMKUI 接入分支](https://github.com/numberwolf/pymkui/tree/dev-cyl/h265web.js-pro)将 RTMP、TS 流行原 Jessibuca 播放路径替换为 h265web.js。浏览器不能直接播放 `rtmp://`：PyMKUI 将 RTMP 行映射到 ZLMediaKit HTTP-FLV（`/{app}/{stream}.live.flv`），TS 行映射到 HTTP-TS（`/{app}/{stream}.live.ts`）。每次播放按当前流获取 `on_play` URL 参数，重试时重新获取；一次性授权 token 不得复用。播放器用 `set_voice(0)` 默认静音，但保留音频链路。
 
-PyMKUI 默认以平面方式播放。确认直播源是真实 ERP 全景后，点击「360°模式」调用 SDK 的 `set_projection('erp360')` 并开启鼠标/触摸视角控制；「重置视角」调用 `reset_vr_view()`。这只是显示方式选择，不会自动识别 ERP，也不增加编解码能力。MP4/WebM 点播和 PyMKUI 的其他协议行不属于本次 RTMP/TS 接入范围。
+PyMKUI 默认以平面方式播放。确认直播源是真实 ERP 全景后，点击「360°模式」调用 SDK 的 `set_projection('erp360')` 并开启鼠标/触摸视角控制；「重置视角」调用 `reset_vr_view()`。这只是显示方式选择，不会自动识别 ERP，也不增加编解码能力。录像管理的单文件 MP4/WebM 播放也已接入 SDK，支持手动切换 ERP 视角、暂停、seek、倍速、截图和全屏。WebM 使用浏览器原生解码，不回退到 VP8/VP9 软件解码。
+
+H.265 MPEG-TS HLS 行使用 SDK。H.264 HLS 在原生播放正常时保留原路径；原生解码或资源错误（3/4）发生后，重新获取授权并尝试一次 SDK MSE 播放。H.265 HLS-fMP4 仍不支持。HTTP-fMP4 和 WHEP 保留原生路径。
+
+只有视频的 FLV 按文件头判断音轨，不再等待不存在的音频元数据。HTTP-FLV/WebCodec 搭配 AAC 时，起播等待实际视频首帧和可运行的 AudioContext，再对齐音频队列；不改变 WS-FLV、TS/HLS、点播或 WASM 的起播方式。
 
 普通 HTTP 媒体经解封装 Worker 请求时，`on_error_callback` 现在能收到 `http-transport` 错误及可见响应的数字 `status`。HTTP 401/403/404 直接上报，暂时性失败有限次重试；浏览器 CORS 错误可能只能给出 `status: 0`。关闭或替换播放器会取消旧 HTTP 请求，迟到的响应不能复活旧会话。参见[中文 API 合同](https://h265web.com/markdown-docs/zh/api-docs.php)和[英文 API 合同](https://h265web.com/markdown-docs/api-docs.php)。
 
@@ -333,6 +337,10 @@ PyMKUI 默认以平面方式播放。确认直播源是真实 ERP 全景后，�
 
 | 更新 | 内容 |
 | ---- | ---- |
+| 时间 | 2026/10/13 |
+| - | 0.修复 MSE FLV 无音轨直播起播，并按实际首帧和运行中的音频时钟对齐 HTTP-FLV/WebCodec AAC 起播 |
+| - | 1.增加 WebM 原生点播路由与明确的能力错误，不为 WebM 启用软件回退 |
+| - | 2.PyMKUI 录像播放加入 ERP 360°控件；H.264 原生 HLS 终止错误后有限回退并重新获取授权 |
 | 时间 | 2026/10/11 |
 | - | 0.修复 HTTP 解封装 Worker 的请求取消，并通过原播放器错误回调上报可见的 HTTP 状态；暂时性错误仍有限次重试 |
 | - | 1.PyMKUI 的 ZLMediaKit RTMP/TS 流行接入 HTTP-FLV/HTTP-TS、每次新取 `on_play` 授权、默认静音及手动 ERP 360°视角控件 |

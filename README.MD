@@ -269,11 +269,15 @@ player.load_media('http://127.0.0.1/index/api/whep?app=live&stream=test');
 
 Omit `core` to let the SDK recognize the three WebRTC URL forms automatically. WebRTC uses the existing player lifecycle and callback names; no separate public API is required. Native WebRTC live playback stays at 1x and does not support seek. Standard WebRTC can only receive codecs negotiated by the browser. WebCodecs/WASM fallback for a non-negotiated codec requires the server to implement the optional `h265web-rtc-encoded/v1` encoded-media transport.
 
-## ZLMediaKit / PyMKUI Live Playback
+## ZLMediaKit / PyMKUI Playback
 
 The [PyMKUI integration](https://github.com/numberwolf/pymkui/tree/dev-cyl/h265web.js-pro) replaces its Jessibuca playback path for RTMP and TS stream rows with h265web.js. A browser cannot play an `rtmp://` URL directly: PyMKUI maps RTMP rows to ZLMediaKit HTTP-FLV (`/{app}/{stream}.live.flv`) and TS rows to HTTP-TS (`/{app}/{stream}.live.ts`). It requests the current stream's `on_play` URL parameters for each attempt and obtains fresh parameters when retrying; one-time authorization tokens must not be reused. Playback starts muted with `set_voice(0)` while keeping the audio pipeline enabled.
 
-The PyMKUI player defaults to a flat picture. For a real ERP 360° live stream, its **360° mode** button calls the SDK's `set_projection('erp360')` and enables mouse/touch view controls; **Reset view** calls `reset_vr_view()`. This is a display choice, not automatic ERP detection or a new codec. MP4/WebM VOD and PyMKUI's other protocol rows are outside this RTMP/TS integration.
+The PyMKUI player defaults to a flat picture. For a real ERP 360° live stream, its **360° mode** button calls the SDK's `set_projection('erp360')` and enables mouse/touch view controls; **Reset view** calls `reset_vr_view()`. This is a display choice, not automatic ERP detection or a new codec. The recording manager also uses the SDK for single MP4/WebM files, including manual ERP view switching, pause, seek, playback rate, screenshot and fullscreen. WebM uses the browser's native decoder; it does not fall back to VP8/VP9 software decoding.
+
+HEVC MPEG-TS HLS rows use the SDK. AVC HLS keeps its native path when playback succeeds; native decode/source errors (3/4) trigger one SDK MSE attempt with fresh authorization. HLS-fMP4 HEVC remains unsupported. HTTP-fMP4 and WHEP retain their existing native paths.
+
+Video-only FLV streams use the FLV header's audio flag rather than waiting for a nonexistent audio track. For HTTP-FLV/WebCodec with AAC, startup waits for the first displayed frame and a running AudioContext before aligning the queued audio. This does not change WS-FLV, TS/HLS, VOD or WASM startup.
 
 On HTTP media handled by the demux Worker, `on_error_callback` now receives an `http-transport` error with a numeric `status` when the response is visible. HTTP 401/403/404 are reported without retry, while transient failures have bounded retries; browser CORS failures may only expose `status: 0`. Releasing or replacing a player aborts its old HTTP request, so a late response cannot revive the previous session. See the [English API contract](https://h265web.com/markdown-docs/api-docs.php) and [Chinese API contract](https://h265web.com/markdown-docs/zh/api-docs.php).
 
@@ -374,6 +378,10 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | 2026/10/13 |
+| - | 0.Fixed MSE FLV startup for video-only streams and aligned HTTP-FLV/WebCodec AAC startup with the first displayed frame and the running audio clock |
+| - | 1.Added native WebM VOD routing with explicit capability errors; WebM does not use software fallback |
+| - | 2.Extended PyMKUI recording playback with ERP 360° controls and added bounded AVC native-HLS error fallback with fresh authorization |
 | Time | 2026/10/11 |
 | - | 0.Fixed HTTP demux Worker request cancellation and forwarded visible HTTP status to the existing player error callback, with bounded transient retries |
 | - | 1.Integrated ZLMediaKit PyMKUI RTMP/TS rows through HTTP-FLV/HTTP-TS, fresh `on_play` authorization, muted playback and manual ERP 360° view controls |
