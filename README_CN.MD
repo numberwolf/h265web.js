@@ -27,6 +27,28 @@
 一个支持 HEVC/H.265、AVC/H.264、AV1、多协议直播点播、WebCodec / WASM / 多线程等能力的浏览器播放器 SDK。  
 适合做网页播放器、视频监控、直播观看、点播播放、协议兼容验证和播放器二次封装。 
 
+## 新增能力：画质、音量与 AI 接入
+
+| 新增能力 | 你可以做什么 | 从哪里开始 |
+| --- | --- | --- |
+| **音量均衡 / 稳定音量** | 平衡过轻和过响的片段；播放中开关，保留用户音量与静音。默认关闭，实际处理状态可查询 | [打开播放器](https://h265web.com/player-cn.php) · [增强指南](https://h265web.com/markdown-docs/zh/playback-enhancements.php) |
+| **实验性 SDR 超分** | 在满足片源、显示尺寸和 GPU 条件时增强画面；Demo 首次开启默认升一档，可选自动，显示实际输出和旁路原因。默认关闭 | [试用超分](https://h265web.com/player-cn.php) · [模型与许可](./static/models/sr/README.md) |
+| **AI 接入与排障 Skills** | 用自然语言生成或接入播放器，覆盖原生 JS、React、Vue、Svelte、Angular、Next、Nuxt，并处理生命周期、音频、超分与播放问题 | [安装与使用 skill](./skills/README_CN.md) |
+
+### 新手：直接用 skill 开始
+
+1. 打开 [skill 安装与使用指南](./skills/README_CN.md)，将两套完整 skill 目录安装到你的 AI 编程工具；Codex 也可用指南中的 `$skill-installer` 安装提示。
+2. 新建或接入播放器选 **h265web-bootstrap**；已有播放器报错、黑屏、无声或超分未生效选 **h265web-troubleshoot**。
+3. 在 AI 对话中发送下面的需求，补充你的框架、媒体地址和 SDK 所在位置：
+
+```text
+使用 $h265web-bootstrap，给我的 React 项目接入 h265web.js。
+需要播放/暂停、音量均衡和实验性 SDR 超分开关，超分首次开启默认升一档。
+请处理组件卸载与重建，并验证实际播放。媒体地址和 SDK 位置请先读取项目配置。
+```
+
+[查看完整 Features](#能力展示) · [查看本次更新日志](#更新日志)
+
 ## 快速入口
 
 - GitHub: https://github.com/numberwolf/h265web.js
@@ -83,6 +105,8 @@
 <strong>
 <font color="black">
 
+### 能力展示
+
 | <font color="gray">Feature</font> | <font color="gray">Feature</font> | <font color="gray">Feature</font> | <font color="gray">Feature</font> |
 | ---- | ---- | ---- | ---- |
 | <img src="resource/icon-hls.png" width="100"> | <img src="resource/icon-m3u8.png" width="100"> | <img src="resource/icon-mp4.png" width="100"> | <img src="resource/icon-flv.png" width="100"> | 
@@ -97,14 +121,17 @@
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100">  |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> |
 | Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | Single-Thread | G711A(HTTP-FLV) | G711U(HTTP-FLV) |
 | <br> | <br> | <br> | <br> |
 | <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | <img src="resource/icon-hdecode.png" width="100"> |
 | MediaInfo | HEVC/H.265 | AVC/H.264 | Hardware decoder<br>硬解码<br>(FLV/HTTP-FLV/MP4) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/webrtc.png" width="100"> | <img src="resource/icon-vr360.svg" width="100" alt="VR360 视频播放"> | <br> | <br> |
-| WebRTC（直播） | VR360（点播/直播） | <br> | <br> |
+| <img src="resource/webrtc.png" width="100"> | <img src="resource/icon-vr360.svg" width="100" alt="VR360 video playback"> | <img src="resource/icon-stable-volume.svg" width="100" alt="Stable volume"> | <img src="resource/icon-super-resolution.svg" width="100" alt="SDR super resolution"> |
+| WebRTC(LIVE) | VR360(VOD/LIVE) | 音量均衡 / 稳定音量<br>播放中开关 · 默认关闭 | 实验性 SDR 超分<br>默认升一档 · 条件支持 |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-player-skills.svg" width="100" alt="Player integration skill"> | <img src="resource/icon-player-skills.svg" width="100" alt="Playback troubleshooting skill"> | <br> | <br> |
+| [AI 播放器接入 Skill](./skills/README_CN.md)<br>七种前端模板 | [AI 播放排障 Skill](./skills/README_CN.md)<br>媒体 / 网络 / 音视频 / 超分 | <br> | <br> |
 
 </font>
 </strong>
@@ -164,6 +191,7 @@
 | WebRTC 自动选链 | 是 | SDK 内识别 URL，也可通过 `core: 'webrtc'` 强制选择 |
 | WebRTC 单轨播放 | 是 | 支持音视频、仅视频和仅音频协商结果 |
 | VR360 视频播放（ERP 片源） | 是 | 拖动观看 360° 点播和直播；使用包含 VR API 的 SDK 构建 |
+| AI 接入与排障 Skills | 是 | [安装与使用](./skills/README_CN.md)；七框架模板、资源与生命周期接入、按证据诊断 |
 | 音量均衡（稳定音量） | 可选 | 播放中开关；默认关闭，保留用户音量/静音，显示实际处理状态 |
 | 实验性 SDR 超分 | 可选 | 播放中请求开关；Demo 首次开启高一档，可切自动；显示实际尺寸与适用条件 |
 | 直播 | 是 |  ----  |
@@ -392,6 +420,13 @@ player.load_media('./hevc_test_moov_set_head_16s_hvc1.mp4');
 
 | 更新 | 内容 |
 | ---- | ---- |
+| 时间 | **2026/10/28** |
+| - | **新增音量均衡（StableVolume）**：运行时开关与状态查询，保留用户音量、静音及暂停状态 |
+| - | **新增实验性 SDR 超分**：配套模型与许可，Demo 开启默认升一档，可切自动；显示实际输出尺寸及旁路原因，需重建时提供显式操作 |
+| - | **新增两套 AI Skills**：播放器接入与播放排障；七框架模板、完整安装步骤及可直接使用的提问示例 |
+| - | **统一 Demo 交互**：中英文单/多实例、WHEP、官网首页及播放器使用一致的增强开关与状态提示 |
+| - | **完善 PyMKUI 集成**：直播与录像增强控件、授权重试及生命周期处理，详见 [PR #25](https://github.com/ZLMediaKit/pymkui/pull/25) |
+| - | **同步交付说明**：README Features 图表、功能列表、双语指南与官网 skill 快速入口；Next 模板固定为 16.4.1 |
 | 时间 | 2026/10/14 |
 | - | 移除 legacy HLS 路由及扩展运行文件；初始化只需主线 JS/WASM 资源 |
 | 时间 | 2026/10/13 |

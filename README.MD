@@ -26,6 +26,29 @@
 
 If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, giving it a GitHub star is a simple way to support the work and help more developers discover it.
 
+## New: Picture Enhancement, Stable Volume and AI Integration
+
+| New capability | What you can do | Start here |
+| --- | --- | --- |
+| **Stable volume / audio leveling** | Balance quiet and loud passages; switch during playback while preserving user volume and mute. Off by default, with observable processing state | [Open player](https://h265web.com/player.php) · [Enhancement guide](https://h265web.com/markdown-docs/playback-enhancements.php) |
+| **Experimental SDR super resolution** | Enhance eligible SDR pictures within display and GPU limits. Demos start one available step up, allow Automatic, and show actual output or bypass reasons. Off by default | [Try SR](https://h265web.com/player.php) · [Models and licenses](./static/models/sr/README.md) |
+| **AI integration and troubleshooting skills** | Build or integrate players with plain JS, React, Vue, Svelte, Angular, Next and Nuxt; handle lifecycle, audio, SR and playback diagnosis | [Install and use the skills](./skills/README.md) |
+
+### New here? Start with a skill
+
+1. Follow the [skill installation and usage guide](./skills/README.md) to install the complete skill folders in your coding assistant. Codex users can also use the guide's `$skill-installer` prompt.
+2. Choose **h265web-bootstrap** to build/integrate a player, or **h265web-troubleshoot** for playback errors, black pictures, missing audio or inactive SR.
+3. Send this to your assistant and provide your framework, media URL and SDK location:
+
+```text
+Use $h265web-bootstrap to integrate h265web.js into my React project.
+Add play/pause, stable-volume and experimental SDR super-resolution switches.
+SR should start one available step up. Handle unmount/rebuild and verify actual playback.
+Read the project's configuration for the media URL and SDK location first.
+```
+
+[See all Features](#feature-matrix) · [Read the latest Update Log](#updatelog)
+
 ## Quick Links
 
 - GitHub: https://github.com/numberwolf/h265web.js
@@ -87,14 +110,17 @@ Loading `static/h265web.js` prints `[h265web.js] SDK script loaded: https://gith
 | <img src="resource/icon-hevc.png" width="100"> | <img src="resource/icon-websockethevc.png" width="100"> | <img src="resource/icon-mkv.png" width="100"><br> | <img src="resource/icon-aac.png" width="100"> |
 | HTTP-HEVC | WS-HEVC | MKV(HEVC) | AAC(MAIN/LC) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-mediainfo.png" width="100">  |
+| <img src="resource/icon-thread.png" width="100"> | <img src="resource/icon-single-thread.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> | <img src="resource/icon-pcm.png" width="100"> |
 | Multi-Thread<br><font color="red">(only:<br>https+nginx conf)</font> | Single-Thread | G711A(HTTP-FLV) | G711U(HTTP-FLV) |
 | <br> | <br> | <br> | <br> |
 | <img src="resource/icon-mediainfo.png" width="100"> | <img src="resource/icon-hevc-s.png" width="100"> | <img src="resource/icon-avc-s.png" width="100"> | <img src="resource/icon-hdecode.png" width="100"> |
 | MediaInfo | HEVC/H.265 | AVC/H.264 | Hardware decoder<br>(FLV/HTTP-FLV/MP4) |
 | <br> | <br> | <br> | <br> |
-| <img src="resource/webrtc.png" width="100"> | <img src="resource/icon-vr360.svg" width="100" alt="VR360 video playback"> | <br> | <br> |
-| WebRTC(LIVE) | VR360(VOD/LIVE) | <br> | <br> |
+| <img src="resource/webrtc.png" width="100"> | <img src="resource/icon-vr360.svg" width="100" alt="VR360 video playback"> | <img src="resource/icon-stable-volume.svg" width="100" alt="Stable volume"> | <img src="resource/icon-super-resolution.svg" width="100" alt="SDR super resolution"> |
+| WebRTC(LIVE) | VR360(VOD/LIVE) | Stable volume / audio leveling<br>Runtime switch · off by default | Experimental SDR super resolution<br>Starts one step up · conditional |
+| <br> | <br> | <br> | <br> |
+| <img src="resource/icon-player-skills.svg" width="100" alt="Player integration skill"> | <img src="resource/icon-player-skills.svg" width="100" alt="Playback troubleshooting skill"> | <br> | <br> |
+| [AI player integration skill](./skills/README.md)<br>Seven frontend templates | [AI playback troubleshooting skill](./skills/README.md)<br>Media / network / audio / SR | <br> | <br> |
 
 | h265web.js | mpeg.js `(ts demuxer)` | h265web.js's H.265 decoder | LICENSE |
 | ---- | ---- | ---- | ---- |
@@ -159,6 +185,7 @@ Loading `static/h265web.js` prints `[h265web.js] SDK script loaded: https://gith
 | WebRTC Auto Routing | Y | URL recognition in the SDK; `core: 'webrtc'` can force the route |
 | WebRTC Partial A/V | Y | Supports AV, video-only and audio-only negotiated results |
 | VR360 video playback (ERP source) | Y | Drag to look around a 360° VOD/live source; use an SDK build with the VR APIs |
+| AI integration and troubleshooting skills | Y | [Install and use](./skills/README.md); seven frontend templates, resources/lifecycle integration and evidence-based diagnosis |
 | Stable volume | Optional | Runtime switch; off by default, preserves user volume/mute and reports actual processing |
 | Experimental SDR super resolution | Optional | Runtime requests; demos start one step up with Automatic available; reports actual output and availability |
 | Video on demand | Y |  ----  |
@@ -434,6 +461,13 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 | Update | Content |
 | ---- | ---- |
+| Time | **2026/10/28** |
+| - | **Added StableVolume audio leveling**: runtime controls and observable state; preserves user volume, mute and pause |
+| - | **Added experimental SDR super resolution**: matching models/licenses, one-step-up demo default, Automatic option, actual output/bypass state and explicit recreation when needed |
+| - | **Added two AI skills**: player integration and playback troubleshooting, seven frontend templates, installation steps and ready-to-use prompts |
+| - | **Unified demo controls**: English/Chinese single/multi-instance, WHEP, website home and full-player enhancement switches and status feedback |
+| - | **Extended PyMKUI integration**: live/recording enhancement controls, authorization retries and lifecycle handling; see [PR #25](https://github.com/ZLMediaKit/pymkui/pull/25) |
+| - | **Updated delivery guidance**: README feature graphics/list, bilingual usage guides and prominent website skill entry; Next template pinned to 16.4.1 |
 | Time | 2026/10/14 |
 | - | Removed the legacy HLS route and extension runtime files; SDK initialization now needs only the main JS/WASM assets |
 | Time | 2026/10/13 |
