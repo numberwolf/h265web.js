@@ -8,8 +8,10 @@
         name="description"
         content="公开版 h265web.js 浏览器 HEVC/H.265 播放演示页，把播放器工作台、运行日志、构建配置和能力矩阵放在同一页展示。"
     />
-    <script src="./static/h265web.js"></script>
+    <script src="./static/h265web.js?v=runtime-20261028"></script>
     <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./demo-enhancements.css?v=runtime-20261028">
+    <link rel="stylesheet" href="./demo-environment.css?v=isolation-20261028">
 </head>
 <body class="public-demo-page" data-locale="zh">
     <div class="demo-shell">
@@ -38,6 +40,8 @@
                 <p>先看播放器本体，再往下看构建配置、运行日志和完整能力矩阵。要体验 VR360，请选择 ERP 预设、点击“创建并加载”，然后拖动或触摸画面转动视角。</p>
             </div>
         </section>
+
+        <section id="demo-environment" data-locale="zh"></section>
 
         <section class="player-workbench">
 
@@ -113,6 +117,7 @@
                     <button class="player-input-button" id="load-button" type="button">加载</button>
                 </div>
 
+                <fieldset id="public-enhancements" data-locale="zh"></fieldset>
                 <div class="player-toolbar-row">
                     <div class="player-volume-wrap">
                         <span class="player-toolbar-tag">音量</span>
@@ -181,6 +186,8 @@
         </section>
     </div>
 
-    <script src="./index.js"></script>
+    <script src="./demo-enhancements.js?v=runtime-20261028"></script>
+    <script src="./demo-environment.js?v=isolation-20261028"></script>
+    <script src="./index.js?v=isolation-20261028"></script>
 </body>
 </html>

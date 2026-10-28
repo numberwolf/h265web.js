@@ -1,0 +1,140 @@
+{
+  "contractRevision": "job7-compat-20261017",
+  "sdkCommit": null,
+  "assetHashes": {
+    "h265web_wasm.js": "e4efc307df982f42e822d65ad657a89a8aacf3ba63d75133e13b32680aa3ed7d",
+    "h265web_wasm.wasm": "451b6bd56a1f092e3913f7f1d8a8f13993363fd4492177c45174d28e00b802d6",
+    "h265web.js": "6154e5c149bb5abe001bfa59959c7d62e595b724cb746db39b8f8dcc57dc7c1a"
+  },
+  "scenarios": [
+    {
+      "id": "mp4",
+      "status": "source-confirmed",
+      "limits": "Native first when callbacks/core preference allow; sample-specific fallback."
+    },
+    {
+      "id": "webm",
+      "status": "source-confirmed",
+      "limits": "Native only; no VP8/VP9 software fallback."
+    },
+    {
+      "id": "flv-ts",
+      "status": "source-confirmed",
+      "limits": "MSE plus applicable software paths; H264 non-HLS TS callback restriction."
+    },
+    {
+      "id": "hls-ts",
+      "status": "source-confirmed",
+      "limits": "Native/MSE/WebCodec/WASM with callback filtering and bounded candidates."
+    },
+    {
+      "id": "hls-advanced",
+      "status": "conditional",
+      "limits": "JS source-session rejects fMP4/encryption/byterange/LL/alternate renditions; native separately checked."
+    },
+    {
+      "id": "rtc-native",
+      "status": "source-confirmed",
+      "limits": "WHEP/webrtc/ZLM signaling; actual negotiated AV; fixed1x/no seek."
+    },
+    {
+      "id": "rtc-encoded",
+      "status": "conditional",
+      "limits": "Explicit compatible server frame protocol; not ordinary WHEP."
+    },
+    {
+      "id": "raw-mov-mkv-ps-av1",
+      "status": "conditional",
+      "limits": "Route/codec/sample verification required; format listing is insufficient."
+    },
+    {
+      "id": "vr360",
+      "status": "source-confirmed",
+      "limits": "Mono ERP, CORS/GPU constraints, nonfatal flat fallback."
+    },
+    {
+      "id": "sei-controls",
+      "status": "source-confirmed",
+      "limits": "Need actual source metadata and compatible core; stepping/snapshot limits."
+    },
+    {
+      "id": "audio-only-video-only",
+      "status": "conditional",
+      "limits": "Actual tracks and supported delivery; no fabricated audio metadata."
+    },
+    {
+      "id": "auth-recordings-multi",
+      "status": "conditional",
+      "limits": "Fresh authorization, opaque format hints, independent session release."
+    },
+    {
+      "id": "stable-volume",
+      "status": "source-confirmed",
+      "limits": "None default; real enum/set/get; pending/active/unavailable; voice and core independent; old SDK disabled."
+    },
+    {
+      "id": "experimental-sr",
+      "status": "conditional",
+      "limits": "Off/unknown default; fixed AN/WebGL2/SDR and descriptor gates; max2 candidates within 1080p/2073600px; actual status required; explicit C++ recreate only."
+    }
+  ],
+  "sealedSnapshot": {
+    "sdkCommit": "732e1735318752f7a22c84df28d6dd42a3717ab5",
+    "assetHashes": {
+      "h265web.js": "450339162dd1fe9a7b5f36af04d0339eb874fea8c2a0b240cd2de86b96080369",
+      "h265web_wasm.js": "3964d4997a1e75d5990ab9a0e67ab8d5962b4cd58d0ae780d72630e23fa801be",
+      "h265web_wasm.wasm": "e2bc58cd2d349fb628ed112f5d26d26cd0edd430f4fb068b7eeeef5e0ac2ad88"
+    }
+  },
+  "historicalTemplateVerification": {
+    "status": "verified-with-limits",
+    "frameworks": [
+      "vanilla",
+      "react",
+      "vue",
+      "svelte",
+      "angular",
+      "next",
+      "nuxt"
+    ],
+    "environment": {
+      "node": "24.21.0",
+      "browser": "Chrome 155.0.8059.79",
+      "os": "macOS",
+      "audio": "muted"
+    },
+    "builds": "All six package-based frameworks passed production build; vanilla passed static HTTP checks.",
+    "playback": "All seven passed H264/AAC native MP4 actual frames, pause, seek, pixel screenshot, rate, source reload and release. Nuxt requires generated Range middleware.",
+    "independentUsage": "React StrictMode two instances, rapid sources, deferred SDK/unmount, close/reopen, AAC decoded bytes; passed.",
+    "limits": "One desktop browser and local sample. Browser/device-specific conditional codecs, production CDNs and live/RTC media routes are not universally certified by template tests.",
+    "testedJSHashes": [
+      "450339162dd1fe9a7b5f36af04d0339eb874fea8c2a0b240cd2de86b96080369",
+      "f9f7c0eedfdd8d120a915d0a6511d72ce815dcb1d72a027296943f68471e2e3f"
+    ],
+    "frameworkLifecycle": "React StrictMode independently verified; Vue KeepAlive, Svelte unmount/mount, Angular destroy/rebootstrap, Next client navigation and Nuxt v-if each acknowledged release and presented new frames.",
+    "softwareVR": "Vanilla HEVC/AAC ERP sample: wasm_hevc and webcodec_hevc both actual selected core matched, visible screenshot variance >1600, paused view redraw with unchanged public time and release passed."
+  },
+  "templateVerification": {
+    "status": "verified-with-recorded-first-failures",
+    "date": "2026-10-17",
+    "frameworks": [
+      "vanilla",
+      "react",
+      "vue",
+      "svelte",
+      "angular",
+      "next",
+      "nuxt"
+    ],
+    "versions": {
+      "sealed": "732e173",
+      "currentJS": "6154e5c149bb5abe001bfa59959c7d62e595b724cb746db39b8f8dcc57dc7c1a"
+    },
+    "builds": "Old/current six package-based framework production builds each passed; vanilla static server passed.",
+    "playback": "14 old/current framework combinations: actual native MP4 frames, pause/seek/rate/pixel snapshot/source/release; old optional APIs disabled, current StableVolume active and voice independent, SR off zero model requests.",
+    "lifecycle": "12 version/framework cases: React StrictMode/source props, Vue KeepAlive voice/request retention, Svelte/Angular destroy, Next/Nuxt unmount/navigation.",
+    "enhancements": "Native small verified SDR input reached actual SR active with StableVolume active; C++ explicit rebuild produced warming output; ERP/unknown/old-WASM descriptor bypass and delayed-model source/release passed.",
+    "independent": "Two players 0.2/0.7 with current/sealed SDK, actual StableVolume active, SR warming reported honestly; close-state defect fixed and 5-case retest passed.",
+    "limits": "One macOS Chrome155 and selected fixtures. Not production quality/ORT/WebGPU/mobile or all-device approval; HDR/wide-gamut/budget gates also checked using existing deterministic SDK contracts."
+  }
+}

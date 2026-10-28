@@ -1,5 +1,5 @@
-const wasm_js_uri = './static/h265web_wasm.js';
-const wasm_wasm_uri = './static/h265web_wasm.wasm';
+const wasm_js_uri = './static/h265web_wasm.js?v=runtime-20261028';
+const wasm_wasm_uri = './static/h265web_wasm.wasm?v=runtime-20261028';
 
 
 
@@ -140,7 +140,9 @@ const FEATURE_COLUMNS = [
     'SuperGpuCache', 'SuperCpuCache', 'PlayBack H265', 'PlayBack H264', 'PlayBack AV1',
     'FLV', 'MP4', 'RawData H265', 'HTTP-FLV', 'HTTP-TS', 'Websocket FLV', 'Websocket TS',
     'Websocket H265', 'MPEG-TS', 'M3U8', 'HLS', 'MKV', 'G711A alaw', 'G711U ulaw', 'AAC',
-    'MP3', 'Capture Frame', 'Auto Play', 'Next Frame', 'MediaInfo(Probe)', 'WebRTC'
+    'MP3', 'Capture Frame', 'Auto Play', 'Next Frame', 'MediaInfo(Probe)', 'WebRTC',
+    locale === 'zh' ? '稳定音量（可选）' : 'Stable volume (optional)',
+    locale === 'zh' ? 'SDR 超分（实验性）' : 'SDR super resolution (experimental)'
 ];
 
 const FEATURE_ROWS = [
@@ -175,6 +177,8 @@ const FEATURE_ROWS = [
         ]
     }
 ];
+
+FEATURE_ROWS.forEach((row, i) => row.statuses.push(...(i === 0 ? ['unsure', 'unsure'] : ['no', 'no'])));
 
 const elements = {
     mediaUrl: document.getElementById('media-url'),
@@ -341,7 +345,6 @@ function scheduleReadyAudioKick(reason = 'ready') {
         return;
     }
     const targetPlayer = state.player;
-    const volume = getCurrentVolume();
     [0, 80, 220].forEach((delay, index) => {
         setTimeout(() => {
             if (state.player !== targetPlayer) {
@@ -350,7 +353,7 @@ function scheduleReadyAudioKick(reason = 'ready') {
             if (typeof targetPlayer.notify_user_gesture === 'function') {
                 targetPlayer.notify_user_gesture();
             }
-            targetPlayer.set_voice(volume);
+            targetPlayer.set_voice(getCurrentVolume());
             targetPlayer.audio_play();
             if (index === 2) {
                 state.audioResumePending = false;
@@ -400,7 +403,7 @@ function applyProjectionToPlayer() {
 }
 
 function refreshConfigPreview() {
-    elements.buildConfig.textContent = JSON.stringify(getPlayerConfig(), null, 2);
+    elements.buildConfig.textContent = JSON.stringify({...getPlayerConfig(), ...enhancements.buildConfig(state.player)}, null, 2);
 }
 
 function renderFeatureMatrix() {
@@ -423,16 +426,19 @@ function renderFeatureMatrix() {
             ? `<td><div class="feature-row-title"><strong>${titleHtml}</strong><span>${escapeHtml(row.subtitle)}</span></div></td>`
             : `<td>${titleHtml}</td>`;
         const cells = row.statuses
-            .map((status) => `<td><span class="feature-status ${status}">${statusLabel[status] || status}</span></td>`)
+            .map((status, i) => `<td><span class="feature-status ${status}">${i >= FEATURE_COLUMNS.length - 2 && row.highlight ? (locale === 'zh' ? '有条件支持 · 默认关闭' : 'Conditional · off by default') : statusLabel[status] || status}</span></td>`)
             .join('');
         return `<tr${row.highlight ? ' class="row-highlight"' : ''}>${firstCell}${cells}</tr>`;
     }).join('');
 }
 
 function wireCallbacks(player) {
-    player.request_pkt_callback = function(vpktCount, apktCount) {
-        appendLog(TEXT.requestPkt(vpktCount, apktCount));
-    };
+    // These callbacks require software routing; keep native routes available without isolation.
+    if (typeof window !== 'undefined' && window.crossOriginIsolated === true && typeof window.SharedArrayBuffer === 'function') {
+        player.request_pkt_callback = function(vpktCount, apktCount) {
+            appendLog(TEXT.requestPkt(vpktCount, apktCount));
+        };
+    }
 
     player.video_probe_callback = function(mediaInfo) {
         const durationSec = normalizeDurationSec(mediaInfo.duration);
@@ -452,43 +458,46 @@ function wireCallbacks(player) {
         scheduleReadyAudioKick('ready show done');
     };
 
-    player.video_nalu_callback = function(pts, dts) {
-        setStatus(elements.naluStatus, TEXT.naluStatus(pts, dts));
-    };
+    // These callbacks require software routing; keep native routes available without isolation.
+    if (typeof window !== 'undefined' && window.crossOriginIsolated === true && typeof window.SharedArrayBuffer === 'function') {
+        player.video_nalu_callback = function(pts, dts) {
+            setStatus(elements.naluStatus, TEXT.naluStatus(pts, dts));
+        };
 
-    player.video_sei_raw_callback = function(rawSei, pts, dts, codec) {
-        console.log('video_sei_raw_callback', {
-            rawSei,
-            pts,
-            dts,
-            codec
-        });
-    };
+        player.video_sei_raw_callback = function(rawSei, pts, dts, codec) {
+            console.log('video_sei_raw_callback', {
+                rawSei,
+                pts,
+                dts,
+                codec
+            });
+        };
 
-    player.video_sei_text_callback = function(text, pts, dts, codec) {
-        console.log('video_sei_text_callback', {
-            text,
-            pts,
-            dts,
-            codec
-        });
-    };
+        player.video_sei_text_callback = function(text, pts, dts, codec) {
+            console.log('video_sei_text_callback', {
+                text,
+                pts,
+                dts,
+                codec
+            });
+        };
 
-    player.video_frame_callback = function(pts, w, h, cacheSize) {
-        setStatus(elements.videoCache, TEXT.frameStatus(cacheSize, pts, w, h));
-    };
+        player.video_frame_callback = function(pts, w, h, cacheSize) {
+            setStatus(elements.videoCache, TEXT.frameStatus(cacheSize, pts, w, h));
+        };
 
-    player.audio_frame_callback = function(pts, cacheSize) {
-        setStatus(elements.audioCache, TEXT.audioCacheStatus(cacheSize, pts));
-    };
+        player.audio_frame_callback = function(pts, cacheSize) {
+            setStatus(elements.audioCache, TEXT.audioCacheStatus(cacheSize, pts));
+        };
 
-    player.video_render_callback = function(pts) {
-        setStatus(elements.playPts, TEXT.timeValue(pts));
-    };
+        player.video_render_callback = function(pts) {
+            setStatus(elements.playPts, TEXT.timeValue(pts));
+        };
 
-    player.audio_render_callback = function(pts) {
-        appendLog(TEXT.audioRender(pts));
-    };
+        player.audio_render_callback = function(pts) {
+            appendLog(TEXT.audioRender(pts));
+        };
+    }
 
     player.on_play_time = function(pts) {
         state.currentPtsSec = Number(pts) || 0;
@@ -526,9 +535,15 @@ function createPlayer() {
     }
 
     const player = H265webjsPlayer();
-    const config = getPlayerConfig();
+    const config = {...getPlayerConfig(), ...enhancements.buildConfig(player)};
+    state.player = player;
+    wireCallbacks(player);
+    enhancements.bind(player);
     const buildRet = player.build(config);
     if (!buildRet) {
+        player.release();
+        state.player = null;
+        enhancements.unbind();
         appendLog(TEXT.buildFailed, 'error');
         return null;
     }
@@ -536,7 +551,8 @@ function createPlayer() {
     state.player = player;
     state.isReady = false;
     state.isPaused = !config.auto_play;
-    wireCallbacks(player);
+    enhancements.refresh();
+    refreshConfigPreview();
     player.set_voice(getCurrentVolume());
 
     if (state.audioResumePending && typeof player.notify_user_gesture === 'function') {
@@ -557,6 +573,7 @@ function loadPlayer() {
         return;
     }
 
+    if (enhancements?.canLoad?.(mediaUrl) === false) return;
     const alreadyBuilt = Boolean(state.player);
     const player = createPlayer();
     if (!player) {
@@ -631,6 +648,7 @@ function releasePlayer(silent = false) {
 
     state.player.release();
     state.player = null;
+    enhancements.unbind();
     state.audioResumePending = false;
     resetHoverUi();
     setStatus(elements.playPts, TEXT.unknown);
@@ -700,6 +718,7 @@ function selectMediaPreset(index) {
     if (!preset) return;
     elements.mediaUrl.value = preset.url;
     elements.projectionSelect.value = preset.projection;
+    enhancements.refresh();
     setSourceMenuOpen(false);
     elements.mediaUrl.focus();
     appendLog(TEXT.preset(preset.label));
@@ -825,6 +844,10 @@ function bindEvents() {
     }
 }
 
+const enhancements = createPlaybackEnhancementControls(document.getElementById('public-enhancements'), () => state.player,
+    {recreate:createAndLoadPlayer, play:playPlayer, sourceInput:elements.mediaUrl});
+document.getElementById('public-enhancements').addEventListener('change', refreshConfigPreview);
+
 function bootstrap() {
     populatePresets();
     updateVolumeLabel();
@@ -832,6 +855,17 @@ function bootstrap() {
     refreshConfigPreview();
     renderFeatureMatrix();
     bindEvents();
+    createPlaybackEnvironmentControls(document.getElementById('demo-environment'), {
+        capture() {
+            enhancements.refresh();
+            return captureDemoControls(document.querySelector('.player-workbench'));
+        },
+        restore(saved) {
+            restoreDemoControls(document.querySelector('.player-workbench'), saved);
+            updateVolumeLabel();
+            refreshConfigPreview();
+        }
+    });
     if (elements.hoverLoading) {
         const label = elements.hoverLoading.querySelector('span');
         if (label) {

@@ -34,6 +34,7 @@ If [h265web.js](https://github.com/numberwolf/h265web.js) helps your project, gi
 - QA WIKI (FAQ): [English](https://h265web.com/markdown-docs/qa-wiki.php) · [中文](https://h265web.com/markdown-docs/zh/qa-wiki.php)
 - Website: https://h265web.com/
 - Public Demo: https://h265web.com/player.php
+- Playback enhancements: [runtime controls and skills](https://h265web.com/markdown-docs/playback-enhancements.php)
 
 ## Contact
 
@@ -158,6 +159,8 @@ Loading `static/h265web.js` prints `[h265web.js] SDK script loaded: https://gith
 | WebRTC Auto Routing | Y | URL recognition in the SDK; `core: 'webrtc'` can force the route |
 | WebRTC Partial A/V | Y | Supports AV, video-only and audio-only negotiated results |
 | VR360 video playback (ERP source) | Y | Drag to look around a 360° VOD/live source; use an SDK build with the VR APIs |
+| Stable volume | Optional | Runtime switch; off by default, preserves user volume/mute and reports actual processing |
+| Experimental SDR super resolution | Optional | Runtime requests; demos start one step up with Automatic available; reports actual output and availability |
 | Video on demand | Y |  ----  |
 | Live | Y |  ----  |
 | Seek | Y | ----  |
@@ -278,6 +281,61 @@ HEVC MPEG-TS HLS rows use the SDK. AVC HLS keeps its native path when playback s
 Video-only FLV streams use the FLV header's audio flag rather than waiting for a nonexistent audio track. For HTTP-FLV/WebCodec with AAC, startup waits for the first displayed frame and a running AudioContext before aligning the queued audio. This does not change WS-FLV, TS/HLS, VOD or WASM startup.
 
 On HTTP media handled by the demux Worker, `on_error_callback` now receives an `http-transport` error with a numeric `status` when the response is visible. HTTP 401/403/404 are reported without retry, while transient failures have bounded retries; browser CORS failures may only expose `status: 0`. Releasing or replacing a player aborts its old HTTP request, so a late response cannot revive the previous session. See the [English API contract](https://h265web.com/markdown-docs/api-docs.php) and [Chinese API contract](https://h265web.com/markdown-docs/zh/api-docs.php).
+
+## Stable Volume, Experimental SR and Integration Skills
+
+The SDK includes stable volume, experimental SDR super resolution and two integration/troubleshooting skills. Both playback effects default to off. Independent switches work during playback, with actual state and next actions shown in the panel. Check API availability when integrating an older SDK.
+
+The demo’s stable-volume switch only changes the leveling request; it does not call play or notify a user gesture. If audio remains pending for activation, **Play & activate audio** is a separate, explicit action that starts or resumes playback through the entry’s play handler. It preserves the user’s volume/mute setting and keeps the playback button state in sync.
+
+| Feature | Integration and scope |
+| --- | --- |
+| Stable volume | `audio_leveling: 'None' / 'StableVolume'`; runtime `set_audio_leveling()`; inspect `get_audio_leveling_state()` for actual processing |
+| Experimental SDR super resolution | Fixed tiny AN CNN in the same WebGL2 context; `super_resolution`, `set_super_resolution()`, `get_super_resolution_state()`; requires the complete `static/models/sr/` directory and license notices |
+| Integration skill | [h265web-bootstrap](./skills/h265web-bootstrap/SKILL.md): vanilla JS, React, Vue, Svelte, Angular, Next and Nuxt templates and lifecycle handling |
+| Troubleshooting skill | [h265web-troubleshoot](./skills/h265web-troubleshoot/SKILL.md): media/HTTP/browser evidence, actual core selection, feature bypass and redacted reports |
+
+| Setting | Runtime support | When it takes effect |
+| --- | --- | --- |
+| `set_audio_leveling('StableVolume' / 'None')` | Supported without waiting for video ready or reloading | When an accessible track and audio graph process audio; inspect `status`/`active` |
+| `set_super_resolution({enabled, level, targetKey})` | Enable/disable and output requests are supported | When frames, SDR, display demand and GPU conditions qualify; an existing C++ renderer may request recreation |
+| `super_resolution.input_color` | Build option | Apply a change through explicit recreation |
+
+Demos initially enable `{enabled:true, level:'light', targetKey:null}` for the smallest currently available enhanced option. Selecting Automatic sends `{enabled:true, level:'standard', targetKey:null}`. The SDK’s omitted `level` default remains `standard`.
+
+Stable volume measures/processes audio before the user's `set_voice(0–1)` control. Toggling it does not move the slider or unmute output. Native source security, AudioWorklet, user activation and audio-track availability determine whether it can become active; unavailable paths retain playback and return a reason.
+
+SR defaults to `input_color: 'unknown'`; declare `sdr` only for confirmed compatible SDR. At most two aspect-preserving 1.25/1.5/2× candidates require input short side ≤720, output long side ≤1920, short side ≤1080 and ≤2,073,600 pixels, subject to display and GPU budget. A 720p source may offer experimental 900p/1080p candidates; bitrate does not unlock 1440p/4K. Normal high-resolution playback is unaffected by SR limits. HDR/wide gamut, ERP, old WASM without a trustworthy descriptor and unsupported devices bypass. Enabling SR on an existing C++ renderer returns `renderer-recreate-required`; the user explicitly rebuilds, with no automatic media reload. The engineering model has no production quality, mobile or long-term power approval. Research-only ORT/WebGPU SR backends are not shipped SDK options.
+
+Place `<div id="player"></div>` in the page. Call `notify_user_gesture()` and `play()` from a user click after loading.
+
+```js
+const player = H265webjsPlayer();
+// Bind business callbacks before build; keep both features opt-in.
+const config = { player_id: 'player', width: 960, height: 540,
+  base_url: './static/', wasm_js_uri: 'h265web_wasm.js',
+  wasm_wasm_uri: 'h265web_wasm.wasm', ignore_audio: false, auto_play: false };
+if (typeof player.set_audio_leveling === 'function' &&
+    typeof player.get_audio_leveling_state === 'function') config.audio_leveling = 'None';
+if (typeof player.set_super_resolution === 'function' &&
+    typeof player.get_super_resolution_state === 'function')
+  config.super_resolution = { enabled: false, input_color: 'unknown' };
+if (!player.build(config)) throw new Error('build failed');
+player.set_voice(0);
+player.load_media('./hevc_test_moov_set_head_16s_hvc1.mp4');
+```
+
+A `true` setter return accepts intent only. Inspect leveling `status/reason` and SR `status/reason/output/options` rather than equating an enabled switch with actual processing. Copy matching JS/WASM runtime files; SR also needs the complete model directory. See the [Playback Enhancements & Skills guide](https://h265web.com/markdown-docs/playback-enhancements.php) and [API docs](https://h265web.com/markdown-docs/api-docs.php). On unmount, wait for `release(callback)` before reusing the container and invalidate late asynchronous work.
+
+## Playback environment and hosting
+
+The website home and player demos load the website’s current SDK and WASM from the same origin by default. Use `?sdk=cdn` only to diagnose the pinned CDN release; remove it to return to the website build. The home demo uses a same-origin SDR sample and an isolated page. Both effects still start off.
+
+The full player and SDK demos accept arbitrary URLs and start in **Compatibility mode**. Choose **Enable software decoding** when a path needs WASM/shared memory. This reloads the page with `?isolation=1`; **Return to compatibility mode** removes it. The tab restores URLs, core choices, volume/mute, enhancement switches and requested SR output. The temporary `sessionStorage` record expires after 10 minutes and is removed after the restore attempt. Playback reconnects; this does not preserve a running decoder or VOD position.
+
+`?isolation=1` is a demo hosting contract, not an SDK API or a way to create response headers. The host must send `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` on the isolated document in a secure context; a direct pthread Worker script also needs COEP. The panel checks the real browser environment and reports missing support without repeatedly reloading. Keep SDK/glue/WASM files from the same build, serve WASM as `application/wasm`, and allow required cross-origin resources through CORS/CORP. In isolated mode, ordinary cross-origin no-CORS video needs CORP; an `Access-Control-Allow-Origin` header alone does not change its request mode. Compatibility mode retains native playback’s existing request behavior.
+
+**SR on a compatible native video does not require the software-decoding switch.** Its frame access, SDR declaration, model, output-size and GPU requirements still apply. These page controls do not change the SDK’s core-selection or enhancement algorithms. See the [hosting and demo guide](https://h265web.com/markdown-docs/playback-enhancements.php).
 
 ## VR360 Video Playback
 
@@ -604,3 +662,19 @@ ffmpeg -ss 20 -t 10 -i ./res/xinxiaomen.mp4 \
 
 
 <hr>
+
+
+### Demo controls
+
+[English demo](./index.html) and [中文 Demo](./index-cn.html) include the same playback-enhancements panel. The development repository’s dynamic `index.html`, fixed `index-multi.html`, website home and full player use consistent switches, output choices and state descriptions. Each instance keeps its own preferences.
+
+| Control | How to use it |
+| --- | --- |
+| Stable volume | Preset before creation or switch during playback without rebuilding. Status shows waiting for audio, processing or an unavailable reason; volume and mute stay unchanged |
+| SR switch | First enable selects “One step up”, with no second selection required. It can be operated during playback; the actual output appears once usable frames and the model are ready |
+| SR output | “One step up” uses the smallest currently available enhanced option; “Automatic” uses the SDK standard policy; offered sizes can also be selected directly |
+| SDR confirmation and reload | Confirm only compatible SDR media. Apply and reload explicitly after changing the declaration or when a renderer requires recreation. VOD starts again; live playback reconnects |
+
+Both effects default to off. The switch records intent; actual output and state describe the result. When no enhanced size is available, the original picture remains with a reason. `input_color` is a build option and cannot be changed by the runtime setter. Requests can be made before ready; enabling a model for the first time while paused may need playback to resume.
+
+[Website home](https://h265web.com/) · [Full player](https://h265web.com/player.php) · [Runtime behavior and integration examples](https://h265web.com/markdown-docs/playback-enhancements.php)

@@ -4,13 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>h265web.js WebRTC WHEP Playback Demo</title>
-    <script src="./static/h265web.js"></script>
+    <script src="./static/h265web.js?v=runtime-20261028"></script>
+    <link rel="stylesheet" href="./demo-enhancements.css?v=runtime-20261028">
     <style>
+        * { box-sizing: border-box; }
         body { max-width: 920px; margin: 32px auto; padding: 0 20px; font: 16px/1.5 system-ui, sans-serif; color: #18212f; }
-        #player { width: 640px; max-width: 100%; min-height: 360px; background: #111; }
+        #player { width: 640px; max-width: 100%; aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: #111; }
         input { width: min(680px, 100%); padding: 10px; }
         button, select { margin: 12px 8px 12px 0; padding: 10px 14px; }
-        #status { white-space: pre-wrap; font-family: ui-monospace, monospace; }
+        #status { overflow-wrap: anywhere; white-space: pre-wrap; font-family: ui-monospace, monospace; }
     </style>
 </head>
 <body>
@@ -30,14 +32,23 @@
         <button id="release" type="button">Release</button>
     </p>
     <div id="player"></div>
-    <div id="status">Idle</div>
+    <p><label>Volume <input id="volume" type="range" min="0" max="1" step="0.01" value="0" aria-label="Playback volume"></label></p>
+    <fieldset id="rtc-enhancements" data-locale="en"></fieldset>
+    <div id="status" role="status" aria-live="polite">Idle</div>
     <p><a href="./webrtc-publish.html">Open the WHIP publish demo</a></p>
 
+    <script src="./demo-enhancements.js?v=runtime-20261028"></script>
     <script>
         let player = null;
         let pendingLoad = false;
+        let releasing = false;
+        let releaseMessage = 'Released';
         const status = document.getElementById('status');
         const urlInput = document.getElementById('media-url');
+        const volume = document.getElementById('volume');
+        const enhancements = createPlaybackEnhancementControls(
+            document.getElementById('rtc-enhancements'), () => player, {recreate:createAndLoad, sourceInput:urlInput});
+        const sizing = observeDemoPlayerSize(document.getElementById('player'), () => releasing ? null : player);
 
         function setStatus(message) {
             status.textContent = message;
@@ -49,66 +60,104 @@
                 setStatus('WebRTC URL is required');
                 return;
             }
-            player = H265webjsPlayer();
-            player.on_ready_show_done_callback = function () {
-                setStatus(`First frame ready\n${url}`);
+            const current = H265webjsPlayer();
+            player = current;
+            current.on_ready_show_done_callback = function () {
+                if (player !== current || releasing) return;
+                setStatus(`First frame ready. Press Play.\n${url}`);
             };
-            player.on_play_time = function (seconds) {
+            current.on_play_time = function (seconds) {
+                if (player !== current || releasing) return;
                 setStatus(`Playing ${Number(seconds).toFixed(3)} s\n${url}`);
             };
-            player.on_error_callback = function (error) {
+            current.on_error_callback = function (error) {
+                if (player !== current || releasing) return;
                 setStatus(`Playback error\n${JSON.stringify(error)}`);
             };
-            player.on_release_done_callback = function () {
+            current.on_release_done_callback = function () {
+                if (player !== current) return;
                 player = null;
-                setStatus('Released');
+                releasing = false;
+                enhancements.unbind();
+                setStatus(releaseMessage);
                 if (pendingLoad) {
                     pendingLoad = false;
                     buildAndLoad();
                 }
             };
+            const dimensions = sizing.size();
             const config = {
                 player_id: 'player',
                 base_url: './static/',
-                wasm_js_uri: 'h265web_wasm.js',
-                wasm_wasm_uri: 'h265web_wasm.wasm',
-                width: 640,
-                height: 360,
+                wasm_js_uri: 'h265web_wasm.js?v=runtime-20261028',
+                wasm_wasm_uri: 'h265web_wasm.wasm?v=runtime-20261028',
+                width: dimensions.width,
+                height: dimensions.height,
                 auto_play: false,
-                ignore_audio: false
+                ignore_audio: false,
+                ...enhancements.buildConfig(current)
             };
             const core = document.getElementById('core').value;
-            if (core) {
-                config.core = core;
-            }
-            if (!player.build(config)) {
-                player = null;
-                setStatus('Player build failed');
+            if (core) config.core = core;
+            enhancements.bind(current);
+            if (!current.build(config)) {
+                releaseMessage = 'Player build failed';
+                releasing = true;
+                current.release();
+                setStatus(releaseMessage);
                 return;
             }
-            player.set_voice(0);
-            player.load_media(url);
+            current.set_voice(Number(volume.value));
+            if (typeof current.notify_user_gesture === 'function') current.notify_user_gesture();
+            current.load_media(url);
+            enhancements.refresh();
+            sizing.refresh();
             setStatus(`Loading\n${url}`);
         }
 
-        function createAndLoad() {
+        function releasePlayer(reload = false) {
+            pendingLoad = reload;
+            if (releasing) return;
+            releaseMessage = 'Released';
             if (player) {
-                pendingLoad = true;
+                releasing = true;
+                setStatus('Releasing…');
                 player.release();
+            } else if (pendingLoad) {
+                pendingLoad = false;
+                buildAndLoad();
+            }
+        }
+
+        function createAndLoad() {
+            if (!urlInput.value.trim()) {
+                setStatus('WebRTC URL is required');
                 return;
             }
-            buildAndLoad();
+            releasePlayer(true);
         }
 
         document.querySelectorAll('.preset').forEach((button) => {
             button.addEventListener('click', () => {
                 urlInput.value = button.dataset.url;
+                enhancements.refresh();
             });
         });
+        volume.addEventListener('input', function () {
+            if (!player || releasing) return;
+            player.set_voice(Number(volume.value));
+        });
         document.getElementById('create-load').addEventListener('click', createAndLoad);
-        document.getElementById('play').addEventListener('click', () => player && player.play());
-        document.getElementById('pause').addEventListener('click', () => player && player.pause());
-        document.getElementById('release').addEventListener('click', () => player && player.release());
+        document.getElementById('play').addEventListener('click', () => {
+            if (!player || releasing) return;
+            if (typeof player.notify_user_gesture === 'function') player.notify_user_gesture();
+            player.play();
+        });
+        document.getElementById('pause').addEventListener('click', () => {
+            if (player && !releasing) player.pause();
+        });
+        document.getElementById('release').addEventListener('click', () => releasePlayer(false));
+        window.addEventListener('beforeunload', () => { sizing.disconnect(); releasePlayer(false); });
     </script>
 </body>
 </html>

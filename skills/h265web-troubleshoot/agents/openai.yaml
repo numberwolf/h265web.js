@@ -1,0 +1,4 @@
+interface:
+  display_name: "h265web Troubleshoot"
+  short_description: "Diagnose h265web.js playback and integration issues"
+  default_prompt: "Use $h265web-troubleshoot to diagnose this h265web.js playback problem."

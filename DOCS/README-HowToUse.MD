@@ -1,3 +1,13 @@
+> **Current playback controls / 当前播放控件**
+>
+> [English demo](../index.html) · [中文 Demo](../index-cn.html) · [English guide](https://h265web.com/markdown-docs/playback-enhancements.php) · [中文指南](https://h265web.com/markdown-docs/zh/playback-enhancements.php)
+>
+> Stable volume supports runtime switching while preserving volume and mute. Experimental SDR SR starts one available step up in the demos, supports runtime output requests, and offers Automatic. Read actual states for readiness and availability; source-color changes and some renderers require explicit recreation.
+>
+> 音量均衡支持播放中开关，保留音量和静音；Demo 超分首次开启默认高一档，可运行时切换档位或回到自动。实际效果看状态，SDR 声明变化和部分渲染器需要明确重建。
+>
+> Framework integration: [h265web-bootstrap](../skills/h265web-bootstrap/SKILL.md). Evidence-based troubleshooting: [h265web-troubleshoot](../skills/h265web-troubleshoot/SKILL.md).
+
 # `h265web.js PRO` How To Use
 
 > Offline quick guide for real integration work. This file summarizes the official docs so you can still build and use the player even if the website is unavailable.
@@ -8,12 +18,22 @@ This guide focuses on the practical public browser SDK flow:
 
 1. Prepare the runtime files
 2. Create the player container
-3. Build the player
-4. Bind the minimum required callbacks
+3. Bind the minimum required callbacks
+4. Build the player
 5. Load media
 6. Play, pause, seek, resize, screenshot, fullscreen, and switch media
 
 If you only need one page to get started quickly, read this file first.
+
+## Playback environment and hosting
+
+The website home and player demos load the website’s current SDK and WASM from the same origin by default. Use `?sdk=cdn` only to diagnose the pinned CDN release; remove it to return to the website build. The home demo uses a same-origin SDR sample and an isolated page. Both effects still start off.
+
+The full player and SDK demos accept arbitrary URLs and start in **Compatibility mode**. Choose **Enable software decoding** when a path needs WASM/shared memory. This reloads the page with `?isolation=1`; **Return to compatibility mode** removes it. The tab restores URLs, core choices, volume/mute, enhancement switches and requested SR output. The temporary `sessionStorage` record expires after 10 minutes and is removed after the restore attempt. Playback reconnects; this does not preserve a running decoder or VOD position.
+
+`?isolation=1` is a demo hosting contract, not an SDK API or a way to create response headers. The host must send `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` on the isolated document in a secure context; a direct pthread Worker script also needs COEP. The panel checks the real browser environment and reports missing support without repeatedly reloading. Keep SDK/glue/WASM files from the same build, serve WASM as `application/wasm`, and allow required cross-origin resources through CORS/CORP. In isolated mode, ordinary cross-origin no-CORS video needs CORP; an `Access-Control-Allow-Origin` header alone does not change its request mode. Compatibility mode retains native playback’s existing request behavior.
+
+**SR on a compatible native video does not require the software-decoding switch.** Its frame access, SDR declaration, model, output-size and GPU requirements still apply. These page controls do not change the SDK’s core-selection or enhancement algorithms. See the [hosting and demo guide](https://h265web.com/markdown-docs/playback-enhancements.php).
 
 ## 1. Runtime Files You Need
 
@@ -191,8 +211,8 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `ignore_audio` | `boolean` | No | Ignore audio track |
 | `core` | `string` | No | Explicit core: `mse_hevc`, `wasm_hevc`, `webcodec_hevc` |
 | `hls_strategy` | `string` | No | HLS route policy: `auto` (default) or `mainline` |
-| `projection` | `'flat' \| 'erp360'` | No | Presentation only; default `flat`, available in the local Job5 build |
-| `vr` | `object` | No | Optional ERP view `{yaw, pitch, fov, mouse_control, touch_control}` in the local Job5 build |
+| `projection` | `'flat' \| 'erp360'` | No | Presentation only; default `flat`, available in this SDK release |
+| `vr` | `object` | No | Optional ERP view `{yaw, pitch, fov, mouse_control, touch_control}` in this SDK release |
 | `media_uri` | `string` | No | Optional media URL, but public usage still recommends `build()` then `load_media()` |
 
 ### HLS route policy
@@ -204,9 +224,9 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `hls_strategy: 'mainline'` | Uses mainline candidates only |
 
 
-### VR360 Video Playback (local Job5 build)
+### VR360 Video Playback
 
-The default is flat playback. To view a **monoscopic equirectangular** source (normally a 2:1 visible raster), explicitly set `projection: 'erp360'` and optionally `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}` in `build(config)`. The existing `load_media()` URL and selected decode core do not change. Runtime view APIs are `set_projection('flat' | 'erp360')`, `set_vr_view({yaw, pitch, fov})`, `rotate_vr_view({yaw, pitch, fov})`, `get_vr_view()`, `reset_vr_view()` and `set_vr_controls({mouse, touch})`. All angles are degrees; `fov` is vertical. Enable ERP only for an ERP source, not for an ordinary flat video. For cross-origin native video, the media server must allow texture-readable CORS. The public CDN build may not yet contain Job5; check that the API exists before calling it. Full details: [site API Docs](https://h265web.com/markdown-docs/api-docs.php).
+The default is flat playback. To view a **monoscopic equirectangular** source (normally a 2:1 visible raster), explicitly set `projection: 'erp360'` and optionally `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}` in `build(config)`. The existing `load_media()` URL and selected decode core do not change. Runtime view APIs are `set_projection('flat' | 'erp360')`, `set_vr_view({yaw, pitch, fov})`, `rotate_vr_view({yaw, pitch, fov})`, `get_vr_view()`, `reset_vr_view()` and `set_vr_controls({mouse, touch})`. All angles are degrees; `fov` is vertical. Enable ERP only for an ERP source, not for an ordinary flat video. For cross-origin native video, the media server must allow texture-readable CORS. When integrating an older cached bundle, check API availability before calling it. Full details: [site API Docs](https://h265web.com/markdown-docs/api-docs.php).
 
 ### Recommended public usage
 

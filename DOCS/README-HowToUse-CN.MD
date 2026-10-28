@@ -2,18 +2,40 @@
 
 > 这是面向实际接入的离线说明文档。它把官网 Docs 的核心内容做了汇总，避免官网不可用时用户完全没有使用参考。
 
+## 播放增强与集成工具
+
+[中文 Demo](../index-cn.html) · [English demo](../index.html) · [播放增强指南](https://h265web.com/markdown-docs/zh/playback-enhancements.php)
+
+| 能力 | 操作与实际状态 |
+| --- | --- |
+| 音量均衡 | 默认关闭，可播放中直接开关；`set_audio_leveling('StableVolume')` 开启，`None` 关闭。保持用户音量和静音；读取 `get_audio_leveling_state()` 的实际状态 |
+| 实验性 SDR 超分 | Demo 首次开启默认高一档：`set_super_resolution({enabled:true, level:'light', targetKey:null})`；可切回 `level:'standard'` 的自动策略。读取 `get_super_resolution_state()` 的尺寸与原因 |
+| 框架接入与排障 | [h265web-bootstrap](../skills/h265web-bootstrap/SKILL.md)提供原生 JS、React、Vue、Svelte、Angular、Next、Nuxt 模板；[h265web-troubleshoot](../skills/h265web-troubleshoot/SKILL.md)检查媒体、HTTP、实际选核、增强与生命周期 |
+
+请求开关不必等 ready；实际处理要等可用音频/视频帧。超分仅对确认兼容 SDR 的片源在 build 配置声明 `input_color:'sdr'`，默认未知色彩保持原画。该声明不能热修改；更改声明或收到 `renderer-recreate-required` 时，按面板提示明确重新加载。点播从头开始，直播重新接入。两项效果与多实例独立，开关旁显示实际生效或不可用原因。使用超分还需复制同次构建的完整 `static/models/sr/` 目录及许可。
+
 ## 这份文档讲什么
 
 这份文档只聚焦最实用的公开浏览器 SDK 使用流程：
 
 1. 准备运行时文件
 2. 创建播放器容器
-3. 构建播放器
-4. 绑定最小必需回调
+3. 绑定最小必需回调
+4. 构建播放器
 5. 加载媒体
 6. 播放、暂停、Seek、截图、全屏、切换媒体
 
 如果你只想最快把播放器跑起来，先看这一份就够了。
+
+## 播放环境与托管
+
+官网首页和播放器默认从本站同源地址加载当前 SDK 与 WASM。`?sdk=cdn` 仅用于固定 CDN 发布版的诊断；移除该参数即回到本站构建。首页使用同源 SDR 样片并启用隔离页面，两项效果仍默认关闭。
+
+完整播放器和 SDK 演示接受任意 URL，默认处于**兼容模式**。播放路径需要 WASM/共享内存时，点击**启用软件解码**，页面会带 `?isolation=1` 重新加载；**切回兼容模式**会移除该参数。本标签页恢复媒体地址、内核、音量/静音、增强开关与请求的超分档位。临时记录只存于 `sessionStorage`，10 分钟过期，尝试恢复后清除。播放会重新建立，不保留正在运行的解码器或点播进度。
+
+`?isolation=1` 是 demo 的托管约定，不是 SDK API，也不会凭空生成响应头。隔离文档需处于安全上下文，由服务器返回 `Cross-Origin-Opener-Policy: same-origin` 与 `Cross-Origin-Embedder-Policy: require-corp`；直接创建的 pthread Worker 脚本还需 COEP。面板读取真实浏览器环境，条件不足时明确提示，不会循环重载。同次构建的 SDK/glue/WASM 要配套，WASM 使用 `application/wasm`，跨域资源按实际请求方式满足 CORS/CORP。隔离模式的跨域 no-CORS 原生视频需要 CORP，仅有 `Access-Control-Allow-Origin` 不会改变其请求方式；兼容模式保留原生播放原有的请求行为。
+
+**兼容原生视频的超分不要求先开启软件解码。** 它仍需满足帧读取、SDR 声明、模型、输出尺寸和 GPU 条件。这些页面控件不改变 SDK 的选核或增强算法。详见[播放与托管指南](https://h265web.com/markdown-docs/zh/playback-enhancements.php)。
 
 ## 1. 需要哪些运行时文件
 
@@ -191,8 +213,8 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `ignore_audio` | `boolean` | 否 | 是否忽略音频 |
 | `core` | `string` | 否 | 显式指定内核：`mse_hevc`、`wasm_hevc`、`webcodec_hevc` |
 | `hls_strategy` | `string` | 否 | HLS 路由策略：`auto`（默认）或 `mainline` |
-| `projection` | `'flat' \| 'erp360'` | 否 | 只改变呈现方式；默认 `flat`，本地 Job5 构建可用 |
-| `vr` | `object` | 否 | 本地 Job5 构建可选 ERP 视角 `{yaw, pitch, fov, mouse_control, touch_control}` |
+| `projection` | `'flat' \| 'erp360'` | 否 | 只改变呈现方式；默认 `flat`，当前 SDK 发布版可用 |
+| `vr` | `object` | 否 | 当前 SDK 可选 ERP 视角 `{yaw, pitch, fov, mouse_control, touch_control}` |
 | `media_uri` | `string` | 否 | 可选媒体地址，但公开接入仍推荐 `build()` 后再 `load_media()` |
 
 ### HLS 路由策略
@@ -204,9 +226,9 @@ ylplayer.video_sei_text_callback = function (text, pts, dts, codec) {
 | `hls_strategy: 'mainline'` | 只使用主线候选 |
 
 
-### VR360 视频播放（本地 Job5 构建）
+### VR360 视频播放
 
-默认仍是平面播放。观看**单目等距柱状**源（可见画面通常为 2:1）时，在 `build(config)` 中显式设置 `projection: 'erp360'`，可选 `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}`。原有 `load_media()` URL 和解码内核选链不变。运行时 API 为 `set_projection('flat' | 'erp360')`、`set_vr_view({yaw, pitch, fov})`、`rotate_vr_view({yaw, pitch, fov})`、`get_vr_view()`、`reset_vr_view()`、`set_vr_controls({mouse, touch})`。角度用度，`fov` 是垂直视场角。普通平面片源不要误设 ERP；跨源原生 video 还需媒体服务器允许纹理读取所需的 CORS。固定公开 CDN 构建不保证已包含 Job5，调用前请检查 API 是否存在。完整合同见[站点 API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)。
+默认仍是平面播放。观看**单目等距柱状**源（可见画面通常为 2:1）时，在 `build(config)` 中显式设置 `projection: 'erp360'`，可选 `vr: {yaw: 0, pitch: 0, fov: 75, mouse_control: true, touch_control: true}`。原有 `load_media()` URL 和解码内核选链不变。运行时 API 为 `set_projection('flat' | 'erp360')`、`set_vr_view({yaw, pitch, fov})`、`rotate_vr_view({yaw, pitch, fov})`、`get_vr_view()`、`reset_vr_view()`、`set_vr_controls({mouse, touch})`。角度用度，`fov` 是垂直视场角。普通平面片源不要误设 ERP；跨源原生 video 还需媒体服务器允许纹理读取所需的 CORS。接入旧缓存文件时，调用前先检查 API 是否存在。完整合同见[站点 API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)。
 
 ### 推荐公开接入方式
 

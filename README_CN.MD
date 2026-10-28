@@ -164,6 +164,8 @@
 | WebRTC 自动选链 | 是 | SDK 内识别 URL，也可通过 `core: 'webrtc'` 强制选择 |
 | WebRTC 单轨播放 | 是 | 支持音视频、仅视频和仅音频协商结果 |
 | VR360 视频播放（ERP 片源） | 是 | 拖动观看 360° 点播和直播；使用包含 VR API 的 SDK 构建 |
+| 音量均衡（稳定音量） | 可选 | 播放中开关；默认关闭，保留用户音量/静音，显示实际处理状态 |
+| 实验性 SDR 超分 | 可选 | 播放中请求开关；Demo 首次开启高一档，可切自动；显示实际尺寸与适用条件 |
 | 直播 | 是 |  ----  |
 | 点播 | 是 |  ----  |
 | Seek跳转 | 是 | ---- |
@@ -284,6 +286,61 @@ H.265 MPEG-TS HLS 行使用 SDK。H.264 HLS 在原生播放正常时保留原路
 只有视频的 FLV 按文件头判断音轨，不再等待不存在的音频元数据。HTTP-FLV/WebCodec 搭配 AAC 时，起播等待实际视频首帧和可运行的 AudioContext，再对齐音频队列；不改变 WS-FLV、TS/HLS、点播或 WASM 的起播方式。
 
 普通 HTTP 媒体经解封装 Worker 请求时，`on_error_callback` 现在能收到 `http-transport` 错误及可见响应的数字 `status`。HTTP 401/403/404 直接上报，暂时性失败有限次重试；浏览器 CORS 错误可能只能给出 `status: 0`。关闭或替换播放器会取消旧 HTTP 请求，迟到的响应不能复活旧会话。参见[中文 API 合同](https://h265web.com/markdown-docs/zh/api-docs.php)和[英文 API 合同](https://h265web.com/markdown-docs/api-docs.php)。
+
+## 稳定音量、实验性超分与 AI 集成 skills
+
+SDK 提供音量均衡、实验性 SDR 超分及两套集成/排障 skills。两项播放增强默认关闭；可在播放中通过独立开关操作，面板显示实际效果和下一步操作。集成旧版 SDK 时先检测 API。
+
+Demo 的音量均衡开关只改变均衡请求，不调用播放或用户手势通知。音频仍因激活条件处于 pending 时，**播放并激活音频**是独立的明确操作：通过该入口的播放处理函数开始或恢复播放，保留用户音量/静音并同步播放按钮状态。
+
+| 能力 | 接入与范围 |
+| --- | --- |
+| 稳定音量 | `audio_leveling: 'None' / 'StableVolume'`；运行中 `set_audio_leveling()`；`get_audio_leveling_state()` 区分请求和实际处理 |
+| 实验性 SDR 超分 | 固定 AN 微型 CNN、WebGL2 同上下文；`super_resolution`、`set_super_resolution()`、`get_super_resolution_state()`；需要配套 `static/models/sr/` 全目录及许可 |
+| 集成 skill | [h265web-bootstrap](./skills/h265web-bootstrap/SKILL.md)：原生 JS、React、Vue、Svelte、Angular、Next、Nuxt 模板与生命周期处理 |
+| 排障 skill | [h265web-troubleshoot](./skills/h265web-troubleshoot/SKILL.md)：媒体/HTTP/浏览器证据、实际选核、特性旁路及脱敏报告 |
+
+| 设置 | 运行时支持 | 何时实际生效 |
+| --- | --- | --- |
+| `set_audio_leveling('StableVolume' / 'None')` | 支持，无需等待视频 ready 或重载 | 可用音轨与音频图开始工作后，读取 `status`/`active` |
+| `set_super_resolution({enabled, level, targetKey})` | 支持请求开关/档位 | 可用帧、SDR、显示需求与 GPU 条件满足后；已有 C++ 渲染器可能提示重建 |
+| `super_resolution.input_color` | build 参数 | 修改后通过显式重建应用 |
+
+Demo 首次开启用 `{enabled:true, level:'light', targetKey:null}` 选择当前最小可用增强档；用户选择“自动”时用 `{enabled:true, level:'standard', targetKey:null}`。SDK 本身的缺省 `level` 仍为 `standard`。
+
+稳定音量在用户 `set_voice(0～1)` 之前测量和处理，开关不改变滑块，静音仍有效。原生来源安全、AudioWorklet、用户激活和音轨可用性决定是否生效；不支持时保留播放并返回原因。
+
+超分默认 `input_color: 'unknown'`，仅确认兼容 SDR 后声明 `sdr`。至多两档保比例 1.25/1.5/2 倍候选；输入短边≤720，输出长边≤1920、短边≤1080、总像素≤2073600，并受实际显示和 GPU 预算限制。720p 可出现 900p/1080p 实验候选，提高码率也不会解锁 1440p/4K 超分档位。原画高分辨率播放不受增强范围限制。HDR/广色域、ERP、旧 WASM 无可信帧描述或设备不满足时旁路；已有 C++ renderer 运行中开启返回 `renderer-recreate-required`，由用户明确重建，不自动重载。当前工程模型不等于生产画质、移动端或长时功耗已验收；SDK 不包含实验用 ORT/WebGPU 超分后端。
+
+页面先提供 `<div id="player"></div>`；加载后在用户点击事件中调用 `notify_user_gesture()` 和 `play()`。
+
+```js
+const player = H265webjsPlayer();
+// Bind business callbacks before build; keep both features opt-in.
+const config = { player_id: 'player', width: 960, height: 540,
+  base_url: './static/', wasm_js_uri: 'h265web_wasm.js',
+  wasm_wasm_uri: 'h265web_wasm.wasm', ignore_audio: false, auto_play: false };
+if (typeof player.set_audio_leveling === 'function' &&
+    typeof player.get_audio_leveling_state === 'function') config.audio_leveling = 'None';
+if (typeof player.set_super_resolution === 'function' &&
+    typeof player.get_super_resolution_state === 'function')
+  config.super_resolution = { enabled: false, input_color: 'unknown' };
+if (!player.build(config)) throw new Error('build failed');
+player.set_voice(0);
+player.load_media('./hevc_test_moov_set_head_16s_hvc1.mp4');
+```
+
+`true` 只表示请求接受；均衡检查 `status/reason`，超分检查 `status/reason/output/options`，不能把“开启”当作“实际生效”。只复制同次构建的 JS/WASM 三件资源；超分额外复制完整模型目录。详见[播放增强与 Skills 指南](https://h265web.com/markdown-docs/zh/playback-enhancements.php)和[API 文档](https://h265web.com/markdown-docs/zh/api-docs.php)。组件卸载须等待 `release(callback)` 完成，禁止迟到任务复活旧实例。
+
+## 播放环境与托管
+
+官网首页和播放器默认从本站同源地址加载当前 SDK 与 WASM。`?sdk=cdn` 仅用于固定 CDN 发布版的诊断；移除该参数即回到本站构建。首页使用同源 SDR 样片并启用隔离页面，两项效果仍默认关闭。
+
+完整播放器和 SDK 演示接受任意 URL，默认处于**兼容模式**。播放路径需要 WASM/共享内存时，点击**启用软件解码**，页面会带 `?isolation=1` 重新加载；**切回兼容模式**会移除该参数。本标签页恢复媒体地址、内核、音量/静音、增强开关与请求的超分档位。临时记录只存于 `sessionStorage`，10 分钟过期，尝试恢复后清除。播放会重新建立，不保留正在运行的解码器或点播进度。
+
+`?isolation=1` 是 demo 的托管约定，不是 SDK API，也不会凭空生成响应头。隔离文档需处于安全上下文，由服务器返回 `Cross-Origin-Opener-Policy: same-origin` 与 `Cross-Origin-Embedder-Policy: require-corp`；直接创建的 pthread Worker 脚本还需 COEP。面板读取真实浏览器环境，条件不足时明确提示，不会循环重载。同次构建的 SDK/glue/WASM 要配套，WASM 使用 `application/wasm`，跨域资源按实际请求方式满足 CORS/CORP。隔离模式的跨域 no-CORS 原生视频需要 CORP，仅有 `Access-Control-Allow-Origin` 不会改变其请求方式；兼容模式保留原生播放原有的请求行为。
+
+**兼容原生视频的超分不要求先开启软件解码。** 它仍需满足帧读取、SDR 声明、模型、输出尺寸和 GPU 条件。这些页面控件不改变 SDK 的选核或增强算法。详见[播放与托管指南](https://h265web.com/markdown-docs/zh/playback-enhancements.php)。
 
 ## VR360 视频播放
 
@@ -562,3 +619,19 @@ H.265 MPEG-TS HLS 行使用 SDK。H.264 HLS 在原生播放正常时保留原路
 | - | 4.新增 `onPlayFinish` 事件，在视频播放结束时触发 |
 
 <hr>
+
+
+### Demo 控件
+
+[中文 Demo](./index-cn.html)和[English demo](./index.html)提供相同的播放增强面板。开发仓库的动态多实例 `index.html`、固定双实例 `index-multi.html`、官网首页和完整播放器采用一致的开关、档位和状态说明；每个实例独立设置。
+
+| 控件 | 使用方式 |
+| --- | --- |
+| 音量均衡 | 创建前预设或播放中直接开关，无需重建。状态显示等待音频、实际处理或不可用原因；音量滑块和静音不变 |
+| 超分开关 | 首次开启默认“高一档”，无需再选择一次档位；可以播放中操作，首帧/模型就绪后显示实际输出 |
+| 超分档位 | “高一档”取当前最小可用增强档；“自动”使用 SDK 标准策略；也可选择当前可用尺寸 |
+| SDR 确认与重新加载 | 仅确认兼容 SDR 后选择；修改声明或渲染器需要重建时，显式应用并重新加载。点播从头开始，直播重新接入 |
+
+两项默认关闭。开关表示请求，实际输出和状态表示效果；没有可用升档时显示原因并保持原画。`input_color` 是创建参数，不能由运行时 setter 热修改。未就绪时可以请求开启；暂停状态首次加载模型可能需要恢复播放后才生效。
+
+[官网首页](https://h265web.com/index-cn.php) · [完整播放器](https://h265web.com/player-cn.php) · [运行时说明与接入示例](https://h265web.com/markdown-docs/zh/playback-enhancements.php)

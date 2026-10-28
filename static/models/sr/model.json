@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "anime4k-cnn-2x-s-an",
+  "recipe": "rgb-cnn4-clamp-x2-bicubic-v1",
+  "experimental": true,
+  "weights": "an.json",
+  "sha256": "aecd5bf215a8962a13e38a8623433a7477f853ccdaefe8b6274f9aa6828368e0",
+  "bytes": 13552
+}

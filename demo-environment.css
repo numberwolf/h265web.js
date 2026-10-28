@@ -1,0 +1,7 @@
+.demo-environment { margin:16px 0; padding:14px 16px; border:1px solid #64748b66; border-radius:12px; text-align:left; font-size:14px; line-height:1.6; }
+.demo-environment strong { display:block; font-size:16px; }
+.demo-environment p { margin:6px 0; font-size:14px; }
+.demo-environment button { min-height:42px; padding:8px 14px; margin:8px 0; border:1px solid #64748b77; border-radius:8px; color:inherit; background:transparent; font:inherit; cursor:pointer; }
+.demo-environment button:focus-visible { outline:3px solid #3b82f6; outline-offset:3px; }
+.demo-environment button:disabled { cursor:default; opacity:.65; }
+.demo-environment small { display:block; font-size:12px; }

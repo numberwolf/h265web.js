@@ -8,8 +8,10 @@
         name="description"
         content="Public h265web.js browser HEVC/H.265 player demo with a player-first workbench, runtime log, build config, and feature matrix."
     />
-    <script src="./static/h265web.js"></script>
+    <script src="./static/h265web.js?v=runtime-20261028"></script>
     <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./demo-enhancements.css?v=runtime-20261028">
+    <link rel="stylesheet" href="./demo-environment.css?v=isolation-20261028">
 </head>
 <body class="public-demo-page" data-locale="en">
     <div class="demo-shell">
@@ -38,6 +40,8 @@
                 <p>Keep the player on the first screen, then inspect build config, runtime events, and the full feature matrix below. For VR360, choose an ERP preset, click Create + Load, and drag or touch the picture to look around.</p>
             </div>
         </section>
+
+        <section id="demo-environment" data-locale="en"></section>
 
         <section class="player-workbench">
             <div class="player-canvas-shell">
@@ -112,6 +116,7 @@
                     <button class="player-input-button" id="load-button" type="button">Load</button>
                 </div>
     
+                <fieldset id="public-enhancements" data-locale="en"></fieldset>
                 <div class="player-toolbar-row">
                     <div class="player-volume-wrap">
                         <span class="player-toolbar-tag">Volume</span>
@@ -179,6 +184,8 @@
         </section>
     </div>
 
-    <script src="./index.js"></script>
+    <script src="./demo-enhancements.js?v=runtime-20261028"></script>
+    <script src="./demo-environment.js?v=isolation-20261028"></script>
+    <script src="./index.js?v=isolation-20261028"></script>
 </body>
 </html>

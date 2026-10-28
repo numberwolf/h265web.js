@@ -8599,6 +8599,8 @@ var _init_ffdecoder_ctx = Module["_init_ffdecoder_ctx"] = createExportWrapper("i
 
 var _release_ffdecoder_ctx = Module["_release_ffdecoder_ctx"] = createExportWrapper("release_ffdecoder_ctx", 1);
 
+var _ffdecoder_get_super_resolution_descriptor = Module["_ffdecoder_get_super_resolution_descriptor"] = createExportWrapper("ffdecoder_get_super_resolution_descriptor", 1);
+
 var _ffdecoder_set_video_decoder = Module["_ffdecoder_set_video_decoder"] = createExportWrapper("ffdecoder_set_video_decoder", 4);
 
 var _ffdecoder_set_video_decoder_with_extra = Module["_ffdecoder_set_video_decoder_with_extra"] = createExportWrapper("ffdecoder_set_video_decoder_with_extra", 6);

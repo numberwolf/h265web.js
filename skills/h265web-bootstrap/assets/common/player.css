@@ -1,0 +1,20 @@
+:root{font-family:system-ui,sans-serif;color:#182435;background:#f4f6f9;color-scheme:light}
+body{margin:0;padding:24px}main{max-width:980px;margin:auto}h1{font-size:24px}
+.player-demo{background:white;padding:20px;margin:16px 0;border-radius:12px;border:1px solid #d7dde5}
+.player-demo label{display:block;margin:12px 0}.player-demo input[type=url]{width:min(90%,700px);padding:8px}
+.player-stage{width:100%;min-height:360px;background:#101318;margin-top:12px;overflow:hidden}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+button{cursor:pointer;padding:8px 12px;border:1px solid #8798ac;background:#f5f8fc;border-radius:5px}
+button:disabled{cursor:default;opacity:.5}.player-demo img{display:block;max-width:100%;max-height:360px}
+[role=status]{min-height:24px}.player-demo:has([data-role=host]:empty) .player-stage{min-height:40px}
+.enhancements{min-width:0;border:1px solid #a8b6c7;border-radius:10px;padding:16px;margin:16px 0}
+.enhancements .enhancement-switch{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;font-weight:650;cursor:pointer}
+.enhancements .switch-control{display:inline-flex;position:relative;flex:none;width:48px;height:28px}
+.enhancements .switch-control input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;z-index:1;cursor:pointer}
+.enhancements .switch-track{width:48px;height:28px;border-radius:16px;background:#697b91;transition:background .15s;pointer-events:none}
+.enhancements .switch-track:after{content:"";display:block;width:22px;height:22px;margin:3px;border-radius:50%;background:white;transition:transform .15s}
+.enhancements input:checked+.switch-track{background:#1667c5}.enhancements input:checked+.switch-track:after{transform:translateX(20px)}
+.enhancements input:focus-visible+.switch-track{outline:3px solid #102f57;outline-offset:3px}
+.enhancements input:disabled+.switch-track{opacity:.4}.enhancements select{max-width:100%;padding:8px}
+.enhancements p{line-height:1.5;overflow-wrap:anywhere}.enhancements [hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.enhancements .switch-track,.enhancements .switch-track:after{transition:none}}

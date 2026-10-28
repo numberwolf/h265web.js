@@ -1,0 +1,4 @@
+interface:
+  display_name: "h265web Bootstrap"
+  short_description: "Build demos and integrate h265web.js players"
+  default_prompt: "Use $h265web-bootstrap to integrate h265web.js into this frontend project."
